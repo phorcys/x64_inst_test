@@ -11,8 +11,8 @@ void print_mmx(__m64 value, const char* name) {
 int main() {
     // Test data
     __m64 a = _mm_set_pi16(0x8000, 0x4000, 0x1234, 0x5678);
-    __m64 b = _mm_set_pi16(1, 2, 3, 4);
-    uint64_t mem = 0x0002000100040003ULL;
+    __m64 b = _mm_set_pi16(0x0, 0x0, 0x0, 0x004);
+    uint64_t mem = 0x0000000000000003ULL;
     
     printf("Testing MMX PSRAW instruction\n\n");
     
@@ -22,6 +22,8 @@ int main() {
     print_mmx(a, "a");
     print_mmx(b, "b");
     print_mmx(res1, "result");
+
+
     printf("\n");
     
     // Test 2: mm, imm8
@@ -42,7 +44,7 @@ int main() {
     // Edge cases
     printf("Edge case tests:\n");
     __m64 max = _mm_set_pi16(0xFFFF, 0x7FFF, 0, 0x8000);
-    __m64 shift = _mm_set_pi16(16, 15, 1, 0);
+    __m64 shift = _mm_set_pi16(0, 0, 0, 16);
     
     // Test 4: edge values
     printf("Test 4: Edge values\n");
