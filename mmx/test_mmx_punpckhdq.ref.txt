@@ -1,0 +1,37 @@
+=== Testing PUNPCKHDQ ===
+
+Test 1: Basic unpack
+Input A: 22222222 11111111
+Input B: bbbbbbbb aaaaaaaa
+Result: 11111111 aaaaaaaa
+Test 1 PASSED
+
+Test 2: Zero values
+Input A: 00000000 00000000
+Input B: ffffffff ffffffff
+Result: 00000000 ffffffff
+Test 2 PASSED
+
+Test 3: Boundary values
+Input A: 80000000 7fffffff
+Input B: ffffffff 00000000
+Result: 7fffffff 00000000
+Test 3 PASSED
+
+Test 4: Memory operands
+Input A: 9abcdef0 12345678
+Input B: 89abcdef 01234567
+Result: 12345678 01234567
+Test 4 PASSED
+
+Test 5: Boundary values test
+Input A: 7fffffff ffffffff
+Input B: 00000000 80000000
+Result: ffffffff 80000000
+Test 5 PASSED
+
+Test 6: Memory operand with addressing
+Input A: 11111111 22222222
+Input B: 33333333 44444444
+Result: 22222222 44444444
+Test 6 PASSED

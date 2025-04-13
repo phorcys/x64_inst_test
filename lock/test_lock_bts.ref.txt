@@ -1,0 +1,17 @@
+=== Testing LOCK BTS instruction ===
+
+Testing LOCK BTS with different operand sizes:
+BYTE: 0x55 with bit 3 set = 0x5D
+WORD: 0x5555 with bit 7 set = 0x55D5
+DWORD: 0x55555555 with bit 15 set = 0x5555D555
+QWORD: 0x5555555555555555 with bit 31 set = 0x55555555D5555555
+
+Testing LOCK BTS with different addressing modes:
+REG->MEM: 0x12345678 with bit 7 set = 0x123456F8
+IMM->MEM: 0x12345678 with bit 15 set = 0x1234D678
+
+Testing LOCK BTS in multithreaded environment:
+Initial value: 0
+Final value: 1 (expected: 1)
+
+=== LOCK BTS test complete ===

@@ -1,0 +1,17 @@
+=== Testing LOCK ADD instruction ===
+
+Testing LOCK ADD with different operand sizes:
+BYTE: 0x55 + 0xAA = 0xFF
+WORD: 0x5555 + 0xAAAA = 0xFFFF
+DWORD: 0x55555555 + 0xAAAAAAAA = 0xFFFFFFFF
+QWORD: 0x5555555555555555 + 0xAAAAAAAAAAAAAAAA = 0xFFFFFFFFFFFFFFFF
+
+Testing LOCK ADD with different addressing modes:
+REG->MEM: 0x12345678 + 0x87654321 = 0x99999999
+IMM->MEM: 0x12345678 + 0x87654321 = 0x99999999
+
+Testing LOCK ADD in multithreaded environment:
+Initial value: 0
+Final value: 20000 (expected: 20000)
+
+=== LOCK ADD test complete ===

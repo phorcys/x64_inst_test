@@ -1,0 +1,31 @@
+=== Testing PCMPGTW ===
+
+Test 1: Basic comparison
+Input A: 0fa0 0bb8 07d0 03e8
+Input B: 1194 0bb8 09c4 01f4
+Result: 0000 0000 0000 ffff
+Test 1 PASSED
+
+Test 2: Signed comparison
+Input A: 01f4 0000 fe0c fc18
+Input B: 0000 0000 fe0c f830
+Result: ffff 0000 0000 ffff
+Test 2 PASSED
+
+Test 3: Boundary values
+Input A: 0000 ffff 8000 7fff
+Input B: 0001 fffe 8001 7ffe
+Result: 0000 ffff 0000 ffff
+Test 3 PASSED
+
+Test 4: Memory operands
+Input A: ec78 0000 1388 2710
+Input B: ec79 0001 1388 270f
+Result: 0000 0000 0000 ffff
+Test 4 PASSED
+
+Test 5: Random values
+Input A: 1234 8000 7fff ffff
+Input B: 5678 7fff 8000 0000
+Result: 0000 0000 ffff 0000
+Test 5 PASSED

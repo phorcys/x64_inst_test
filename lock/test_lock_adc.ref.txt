@@ -1,0 +1,17 @@
+=== Testing LOCK ADC instruction ===
+
+Testing LOCK ADC with different operand sizes:
+BYTE: 0x55 + 0xAA + CF = 0x00
+WORD: 0x5555 + 0xAAAA + CF = 0xFFFF
+DWORD: 0x55555555 + 0xAAAAAAAA + CF = 0xFFFFFFFF
+QWORD: 0x5555555555555555 + 0xAAAAAAAAAAAAAAAA + CF = 0xFFFFFFFFFFFFFFFF
+
+Testing LOCK ADC with different addressing modes:
+REG->MEM: 0x12345678 + 0x87654321 + CF = 0x9999999A
+IMM->MEM: 0x12345678 + 0x87654321 + CF = 0x99999999
+
+Testing LOCK ADC in multithreaded environment:
+Initial value: 0
+Final value: 20000 (expected: 20000)
+
+=== LOCK ADC test complete ===

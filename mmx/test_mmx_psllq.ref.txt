@@ -1,0 +1,21 @@
+Testing MMX PSLLQ instruction
+
+Test 1: PSLLQ mm, mm
+a: [0000000000000001]
+b: [0000000000000001]
+result: [0000000000000002]
+
+Test 2: PSLLQ mm, imm8
+a: [0000000000000001]
+result (shift by 3): [0000000000000008]
+
+Test 3: PSLLQ mm, m64
+a: [0000000000000001]
+mem: [0000000000000002]
+result: [0000000000000004]
+
+Edge case tests:
+Test 4: Edge values
+max: [0000000000000001]
+shift: [0000000000000040]
+result: [0000000000000000]

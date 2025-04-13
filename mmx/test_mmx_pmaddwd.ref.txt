@@ -1,0 +1,22 @@
+Testing PMADDWD (Packed Multiply and Add Words to Doublewords)
+============================================================
+
+Test 1: Positive numbers
+Input A: [2, 3, 4, 5]
+Input B: [1, 2, 3, 4]
+Result: [8, 32]
+Expected: [8, 32]
+
+Test 2: Mixed positive and negative
+Input A: [-2, 3, 4, -1]
+Input B: [1, 2, -3, 4]
+Result: [4, -16]
+Expected: [4, -16]
+
+Test 3: Large numbers (potential overflow)
+Input A: [32767, 32767, 32767, 32767]
+Input B: [32767, 32767, 32767, 32767]
+Result: [2147352578, 2147352578]
+Expected: [2147352578, 2147352578]
+
+PMADDWD tests completed.

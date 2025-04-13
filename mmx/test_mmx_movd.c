@@ -1,74 +1,145 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <mmintrin.h>
+#include <stdlib.h>
+#include <time.h>
 
-void test_movd() {
-    printf("Testing MOVD (Gm, Ed) instruction\n\n");
-    
-    // Test 1: 32-bit integer to MMX register
-    {
-        uint32_t val = 0x12345678;
-        uint64_t mm_val = 0;
-        
-        printf("Test 1: MOVD mm0, [val] (0x%08x)\n", val);
-        asm volatile (
-            "movd %1, %%mm0;"
-            "movd %%mm0, %0"
-            : "=r" (mm_val)
-            : "m" (val)
-            : "%mm0"
-        );
-        
-        uint32_t result = (uint32_t)mm_val;
-        printf("Expected: 0x%08x\n", val);
-        printf("Got:      0x%08x\n", result);
-        printf("Test %s\n\n", (result == val) ? "PASSED" : "FAILED");
-    }
-    
-    // Test 2: MMX register to memory
-    {
-        uint32_t val = 0x87654321;
-        uint32_t dest = 0;
-        
-        printf("Test 2: MOVD [dest], mm0 (0x%08x)\n", val);
-        asm volatile (
-            "movd %1, %%mm0;"
-            "movd %%mm0, %0"
-            : "=m" (dest)
-            : "m" (val)
-            : "%mm0"
-        );
-        
-        printf("Expected: 0x%08x\n", val);
-        printf("Got:      0x%08x\n", dest);
-        printf("Test %s\n\n", (dest == val) ? "PASSED" : "FAILED");
-    }
-    
-    // Test 3: Boundary values
-    {
-        uint32_t tests[] = {0, 0xFFFFFFFF, 0x80000000, 0x7FFFFFFF};
-        for (int i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
-            uint32_t val = tests[i];
-            uint64_t mm_val = 0;
-            
-            printf("Test 3.%d: MOVD boundary value 0x%08x\n", i+1, val);
-            asm volatile (
-                "movd %1, %%mm0;"
-                "movd %%mm0, %0"
-                : "=r" (mm_val)
-                : "m" (val)
-                : "%mm0"
-            );
-            
-            uint32_t result = (uint32_t)mm_val;
-            printf("Expected: 0x%08x\n", val);
-            printf("Got:      0x%08x\n", result);
-            printf("Test %s\n\n", (result == val) ? "PASSED" : "FAILED");
-        }
-    }
+void print_m64(const char* label, __m64 value) {
+    uint32_t v = _mm_cvtsi64_si32(value);
+    printf("%s: %08x\n", label, v);
 }
 
 int main() {
-    test_movd();
+    printf("=== Testing MOVD ===\n");
+    srand(time(NULL));
+    
+    // Test case 1: Basic register to register transfer
+    {
+        uint32_t val = 0x12345678;
+        __m64 res;
+        
+        asm volatile (
+            "movd %1, %%mm0\n\t"
+            "movq %%mm0, %0\n\t"
+            : "=m"(res)
+            : "m"(val)
+            : "mm0"
+        );
+        
+        printf("\nTest 1: Basic transfer\n");
+        print_m64("Input", _mm_set_pi32(0, val));
+        print_m64("Result", res);
+        
+        __m64 expected = _mm_set_pi32(0, val);
+        if(memcmp(&res, &expected, 4) == 0) {
+            printf("Test 1 PASSED\n");
+        } else {
+            printf("Test 1 FAILED\n");
+        }
+    }
+    
+    // Test case 2: Memory to register
+    {
+        uint32_t val = 0x87654321;
+        __m64 res;
+        
+        asm volatile (
+            "movd %1, %%mm0\n\t"
+            "movq %%mm0, %0\n\t"
+            : "=m"(res)
+            : "m"(val)
+            : "mm0"
+        );
+        
+        printf("\nTest 2: Memory to register\n");
+        print_m64("Input", _mm_set_pi32(0, val));
+        print_m64("Result", res);
+        
+        __m64 expected = _mm_set_pi32(0, val);
+        if(memcmp(&res, &expected, 4) == 0) {
+            printf("Test 2 PASSED\n");
+        } else {
+            printf("Test 2 FAILED\n");
+        }
+    }
+    
+    // Test case 3: Boundary values
+    {
+        uint32_t tests[] = {0, 0xFFFFFFFF, 0x80000000, 0x7FFFFFFF};
+        for (size_t i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
+            __m64 res;
+            
+            asm volatile (
+                "movd %1, %%mm0\n\t"
+                "movq %%mm0, %0\n\t"
+                : "=m"(res)
+                : "m"(tests[i])
+                : "mm0"
+            );
+            
+            printf("\nTest 3.%zu: Boundary value 0x%08x\n", i+1, tests[i]);
+            print_m64("Input", _mm_set_pi32(0, tests[i]));
+            print_m64("Result", res);
+            
+            __m64 expected = _mm_set_pi32(0, tests[i]);
+            if(memcmp(&res, &expected, 4) == 0) {
+                printf("Test 3.%zu PASSED\n", i+1);
+            } else {
+                printf("Test 3.%zu FAILED\n", i+1);
+            }
+        }
+    }
+    
+    // Test case 4: Memory operands
+    {
+        uint32_t val = 0x9ABCDEF0;
+        __m64 res;
+        
+        asm volatile (
+            "movd %1, %%mm0\n\t"
+            "movq %%mm0, %0\n\t"
+            : "=m"(res)
+            : "m"(val)
+        );
+        
+        printf("\nTest 4: Memory operands\n");
+        print_m64("Input", _mm_set_pi32(0, val));
+        print_m64("Result", res);
+        
+        __m64 expected = _mm_set_pi32(0, val);
+        if(memcmp(&res, &expected, 4) == 0) {
+            printf("Test 4 PASSED\n");
+        } else {
+            printf("Test 4 FAILED\n");
+        }
+    }
+    
+    // Test case 5: Random values
+    {
+        uint32_t val = 0xA5A5A5A5; // Fixed value instead of random
+        __m64 res;
+        
+        asm volatile (
+            "movd %1, %%mm0\n\t"
+            "movq %%mm0, %0\n\t"
+            : "=m"(res)
+            : "m"(val)
+            : "mm0"
+        );
+        
+        printf("\nTest 5: Random value\n");
+        print_m64("Input", _mm_set_pi32(0, val));
+        print_m64("Result", res);
+        
+        __m64 expected = _mm_set_pi32(0, val);
+        if(memcmp(&res, &expected, 4) == 0) {
+            printf("Test 5 PASSED\n");
+        } else {
+            printf("Test 5 FAILED\n");
+        }
+    }
+    
+    _mm_empty();
     return 0;
 }

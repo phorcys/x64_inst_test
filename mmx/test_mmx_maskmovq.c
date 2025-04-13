@@ -3,9 +3,7 @@
 #include <string.h>
 
 void test_maskmovq() {
-    printf("Testing MASKMOVQ (Gm, Em) instruction\
-\
-");
+    printf("Testing MASKMOVQ (Gm, Em) instruction\n\n");
     
     // Align memory to 16-byte boundary
     uint8_t dest[8] __attribute__((aligned(16))) = {0};
@@ -58,11 +56,11 @@ void test_maskmovq() {
         {0x80, 0x00, 0x80, 0x00, 0x80, 0x00, 0x80, 0x00}  // Alternating
     };
     
-    for (int t = 0; t < sizeof(masks)/sizeof(masks[0]); t++) {
+    for (size_t t = 0; t < sizeof(masks)/sizeof(masks[0]); t++) {
         memcpy(mask, masks[t], sizeof(mask));
         memset(dest, 0xAA, sizeof(dest));
         
-        printf("Test 2.%d: MASKMOVQ with mask pattern\n", t+1);
+        printf("Test 2.%zu: MASKMOVQ with mask pattern\n", t+1);
         printf("Source: ");
         for (int i = 0; i < 8; i++) printf("%02x ", src[i]);
         printf("\nMask:   ");

@@ -1,0 +1,25 @@
+=== Testing PACKSSWB ===
+
+Test 1: Basic packing
+Input A: ffffffcd 00 00 00 ffffffff 00 34 00
+Input B: 34 00 7f 00 ffffff80 00 78 00
+Result: 7f 00 7f 34 34 7f 7f 78
+Test 1 PASSED
+
+Test 2: Boundary values
+Input A: ffffffff ffffffff 7f ffffff80 ffffff80 7f 00 00
+Input B: ffffff80 7f 00 00 00 ffffff80 ffffffff 7f
+Result: ffffffff ffffff80 7f 00 7f 00 ffffff80 7f
+Test 2 PASSED
+
+Test 3: Memory operands
+Input A: fffffff0 ffffffde ffffffbc ffffff9a 78 56 34 12
+Input B: ffffffef ffffffcd ffffffab ffffff89 67 45 23 01
+Result: ffffff80 ffffff80 7f 7f ffffff80 ffffff80 7f 7f
+Test 3 PASSED
+
+Test 4: Random values
+Input A: ffffff80 7f 00 ffffff80 34 12 78 56
+Input B: 00 00 ffffffff 7f ffffffbc ffffff9a fffffff0 ffffffde
+Result: 7f ffffff80 7f 7f 00 7f ffffff80 ffffff80
+Test 4 PASSED

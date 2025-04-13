@@ -1,0 +1,16 @@
+Case 1 a: 00030d40 000186a0
+Case 1 b: 000186a0 00030d40
+Case 1 result: 000493e0 000493e0
+
+Case 2 a: 7fffffff 7fffffff
+Case 2 b: 00000001 00000001
+Case 2 result: 80000000 80000000
+
+Case 3 a: fffcf2c0 fffe7960
+Case 3 b: fffe7960 fffcf2c0
+Case 3 result: fffb6c20 fffb6c20
+
+Case 4 a: 7fffffff 80000000
+Case 4 b: 80000000 7fffffff
+Case 4 result: ffffffff ffffffff
+
