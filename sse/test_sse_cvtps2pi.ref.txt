@@ -1,5 +1,5 @@
 
-[Test Case 1/5]
+[Test Case 1/6]
 Test: Mid-point rounding test [NEAREST]
 Input: [1.500000, -1.500000]
 Expected: [2, -2]
@@ -25,7 +25,7 @@ Actual: [1, -1]
 Result: PASS
 
 
-[Test Case 2/5]
+[Test Case 2/6]
 Test: 32-bit boundary test [NEAREST]
 Input: [2147483648.000000, -2147483648.000000]
 Expected: [-2147483648, -2147483648]
@@ -51,7 +51,33 @@ Actual: [-2147483648, -2147483648]
 Result: PASS
 
 
-[Test Case 3/5]
+[Test Case 3/6]
+Test: 32-bit boundary test 2 [NEAREST]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test 2 [DOWN]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test 2 [UP]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test 2 [TO_ZERO]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+
+[Test Case 4/6]
 Test: Fractional values [NEAREST]
 Input: [3.141590, -2.718280]
 Expected: [3, -3]
@@ -77,7 +103,7 @@ Actual: [3, -2]
 Result: PASS
 
 
-[Test Case 4/5]
+[Test Case 5/6]
 Test: NaN and infinity test [NEAREST]
 Input: [nan, -inf]
 Expected: [-2147483648, -2147483648]
@@ -103,7 +129,7 @@ Actual: [-2147483648, -2147483648]
 Result: PASS
 
 
-[Test Case 5/5]
+[Test Case 6/6]
 Test: Near boundary test [NEAREST]
 Input: [0.499999, -0.500001]
 Expected: [0, -1]

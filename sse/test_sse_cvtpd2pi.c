@@ -53,7 +53,7 @@ static void print_results(const CVTPD2PITestCase* tc, const int32_t* actual, Rou
     };
 
     printf("Test: %s\n", tc->description);
-    printf("Input: [%20.10g, %20.10g]\n", tc->input_a, tc->input_b);
+    printf("Input: [%25.15g, %25.15g]\n", tc->input_a, tc->input_b);
     printf("Mode: %-5s Expected: [%12d, %12d]  Actual: [%12d, %12d]\n",
            mode_str[mode],
            tc->expected[mode_index[mode]],  // 计算模式索引
@@ -124,6 +124,39 @@ int main() {
                 /* Zero    */ 2147483647, -2147483648
             },
             .description = "32-bit integer boundary test"
+        },
+        {
+            .input_a = 2147483648.0,
+            .input_b = -2147483649.0,
+            .expected = {
+                /* Nearest */ -2147483648, -2147483648,
+                /* Down    */ 2147483647, -2147483648,
+                /* Up      */ -2147483648, -2147483648,
+                /* Zero    */ 2147483647, -2147483648
+            },
+            .description = "32-bit integer boundary test 2"
+        },
+        {
+            .input_a = 2147483647.4,
+            .input_b = -2147483648.4,
+            .expected = {
+                /* Nearest */ -2147483648, -2147483648,
+                /* Down    */ 2147483647, -2147483648,
+                /* Up      */ -2147483648, -2147483648,
+                /* Zero    */ 2147483647, -2147483648
+            },
+            .description = "32-bit integer boundary test 3"
+        },
+        {
+            .input_a = 2147483647.6,
+            .input_b = -2147483648.6,
+            .expected = {
+                /* Nearest */ -2147483648, -2147483648,
+                /* Down    */ 2147483647, -2147483648,
+                /* Up      */ -2147483648, -2147483648,
+                /* Zero    */ 2147483647, -2147483648
+            },
+            .description = "32-bit integer boundary test 4"
         },
         {
             .input_a = 3.141592653589793,

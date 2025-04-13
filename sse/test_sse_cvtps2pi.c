@@ -76,6 +76,16 @@ int main() {
             .description = "32-bit boundary test"
         },
         {
+            .input = {-2247483648.0f, 2247483648.0f},
+            .expected = {
+                {0x80000000, 0x80000000},
+                {0x80000000, 0x80000000},
+                {0x80000000, 0x80000000},
+                {0x80000000, 0x80000000}
+            },
+            .description = "32-bit boundary test 2"
+        },        
+        {
             .input = {3.14159f, -2.71828f},
             .expected = {
                 {3, -3},     // NEAREST
