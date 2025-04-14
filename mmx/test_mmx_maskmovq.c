@@ -20,6 +20,9 @@ void test_maskmovq() {
     printf("\nMask:   ");
     for (int i = 0; i < 8; i++) printf("%02x ", mask[i]);
     printf("\n");
+    printf("Dest:   ");
+    for (int i = 0; i < 8; i++) printf("%02x ", dest[i]);
+    printf("\n");
     
     asm volatile (
         "push %%rdi;"
@@ -34,7 +37,7 @@ void test_maskmovq() {
         : "%mm0", "%mm1", "memory"
     );
     
-    printf("Dest:   ");
+    printf("Modified Dest:   ");
     for (int i = 0; i < 8; i++) printf("%02x ", dest[i]);
     printf("\n");
     
@@ -66,7 +69,9 @@ void test_maskmovq() {
         printf("\nMask:   ");
         for (int i = 0; i < 8; i++) printf("%02x ", mask[i]);
         printf("\n");
-        
+        printf("Dest:   ");
+        for (int i = 0; i < 8; i++) printf("%02x ", dest[i]);
+        printf("\n");
         asm volatile (
             "push %%rdi;"
             "movq %1, %%mm0;"
@@ -80,7 +85,7 @@ void test_maskmovq() {
             : "%mm0", "%mm1", "memory"
         );
         
-        printf("Dest:   ");
+        printf("Modified Dest:   ");
         for (int i = 0; i < 8; i++) printf("%02x ", dest[i]);
         printf("\n");
         
