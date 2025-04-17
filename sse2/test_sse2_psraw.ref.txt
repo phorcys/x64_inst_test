@@ -1,0 +1,26 @@
+Testing PSRAW instruction (SSE2 inline assembly)
+
+Test 1: Register shift by register
+Input: 8000 4000 1234 5678 7fff 0001 ffff 0000 
+Shift: 0004 0004 0004 0004 0004 0004 0004 0004 
+Result: ffff 0000 0000 0000 0000 0000 ffff 0000 
+
+Test 2: Immediate shift by 3
+Input: 8000 4000 1234 5678 7fff 0001 ffff 0000 
+Result: f000 0800 0246 0acf 0fff 0000 ffff 0000 
+
+Test 3: Memory operand shift by 5
+Input: 8000 4000 1234 5678 7fff 0001 ffff 0000 
+Shift value: 5
+Result: ffff 0000 0000 0000 0000 0000 ffff 0000 
+
+Test 4: Edge cases (shift by 16)
+Input: 8000 7fff 0000 ffff 0001 fffe 4000 c000 
+Shift: 0010 0010 0010 0010 0010 0010 0010 0010 
+Result: ffff 0000 0000 ffff 0000 ffff 0000 ffff 
+
+Test 5: Edge Case Immediate shift by 18
+Input: 8000 4000 1234 5678 7fff 0001 ffff 0000 
+Result: ffff 0000 0000 0000 0000 0000 ffff 0000 
+
+PSRAW tests completed
