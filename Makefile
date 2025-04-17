@@ -1,7 +1,7 @@
 # Makefile for compiling and generating reference outputs
 
 # Target directories 
-DIRS := mmx lock sse avx crypt arith x87
+DIRS := mmx lock sse sse3 avx crypt arith x87
 
 # Default CFLAGS
 CC := gcc-14
