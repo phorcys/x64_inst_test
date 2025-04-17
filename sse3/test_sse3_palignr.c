@@ -17,8 +17,13 @@ void test_mmx_palignr() {
     // Test MMX alignments with macro
     #define TEST_MMX_PALIGNR(shift) \
         do { \
-            __m64 res = _mm_alignr_pi8(a, b, shift); \
+            __m64 res; \
             uint8_t result[8]; \
+            __asm__ volatile ( \
+                "palignr %3, %2, %0" \
+                : "=y"(res) \
+                : "0"(a), "y"(b), "i"(shift) \
+            ); \
             *(__m64*)result = res; \
             printf("Shift: %d\n", shift); \
             printf("Expected: "); \
@@ -46,7 +51,6 @@ void test_mmx_palignr() {
     
     _mm_empty();
 }
-
 // SSE version test
 void test_sse_palignr() {
     printf("\n=== Testing SSE PALIGNR ===\n");
@@ -63,8 +67,13 @@ void test_sse_palignr() {
     // Test SSE alignments with macro
     #define TEST_SSE_PALIGNR(shift) \
         do { \
-            __m128i res = _mm_alignr_epi8(a, b, shift); \
+            __m128i res; \
             uint8_t result[16]; \
+            __asm__ volatile ( \
+                "palignr %3, %2, %0" \
+                : "=x"(res) \
+                : "0"(a), "x"(b), "i"(shift) \
+            ); \
             _mm_storeu_si128((__m128i*)result, res); \
             printf("Shift: %d\n", shift); \
             printf("Expected: "); \
@@ -160,7 +169,6 @@ void test_data_types() {
         printf("\n\n");
     }
 }
-
 int main() {
     test_mmx_palignr();
     test_sse_palignr();
