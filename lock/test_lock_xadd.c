@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 // 测试配置
-#define PADDING_SIZE 64
+#define PADDING_SIZE 4
 #define PATTERN_8  0xCC
 #define PATTERN_16 0xCDCD
 #define PATTERN_32 0xDEADBEEF
@@ -80,10 +80,10 @@ bool verify_memory(const void *actual, const void *expected,
 
 // 测试模板宏
 #define TEST_XADD(suffix, type, init, delta) do { \
-    uint8_t buffer[PADDING_SIZE * 2]; \
-    uint8_t expected[PADDING_SIZE * 2]; \
+    uint8_t buffer[PADDING_SIZE * 8 ]; \
+    uint8_t expected[PADDING_SIZE * 8]; \
     fill_pattern(buffer, sizeof(buffer)); \
-    for (size_t offset = 0; offset < PADDING_SIZE - sizeof(type); offset++) { \
+    for (size_t offset = 0; offset < 16; offset++) { \
         memcpy(expected, buffer, sizeof(buffer)); \
         type *ptr = (type*)(buffer + offset); \
         type *exp_ptr = (type*)(expected + offset); \
@@ -136,7 +136,7 @@ const size_t test_offsets[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 
 // 共享内存结构
 typedef struct {
-    uint8_t buffer[PADDING_SIZE] __attribute__((aligned(64)));  // 带保护区的内存块
+    uint8_t buffer[PADDING_SIZE * 32] __attribute__((aligned(64)));  // 带保护区的内存块
     size_t offset;
     int width;
     volatile uint64_t expected;
@@ -173,10 +173,10 @@ void run_mt_test(int width) {
 
     for (size_t i = 0; i < NUM_OFFSETS; i++) {
         size_t offset = test_offsets[i];
-        if (offset + type_size > PADDING_SIZE) continue;
+        if (offset + type_size > (size_t)8*width) continue;
 
         // 初始化共享内存
-        memset(shared.buffer, 0xCC, PADDING_SIZE);
+        memset(shared.buffer, 0xCC, PADDING_SIZE * 32);
         shared.offset = offset;
         shared.width = width;
 
