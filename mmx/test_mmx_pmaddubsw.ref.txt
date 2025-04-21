@@ -1,0 +1,19 @@
+Testing PMADDUBSW (Packed Multiply and Add Unsigned Byte to Signed Word with Saturation)
+
+Test 1: Basic multiplication and addition
+a: [100, 100, 50, 50, 127, 127, 64, 64]
+b: [1, -1, 2, -2, 1, -1, 1, -1]
+result: [0, 0, 0, 0]
+Expected: [0, 0, 0, 0]
+
+Test 2: Boundary values with saturation
+c: [4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295]
+d: [127, -128, 127, -128, 127, -128, 127, -128]
+result: [-255, -255, -255, -255]
+Expected: [-255, -255, -255, -255]
+
+Test 3: Memory operand
+reg: [1, 4294967295, 2, 4294967294, 3, 4294967293, 4, 4294967292]
+mem: [10, 20, 30, 40, 50, 60, 70, 80]
+result: [5110, 10220, 15330, 20440]
+Expected: [5110, 10220, 15330, 20440]
