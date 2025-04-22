@@ -1,0 +1,47 @@
+
+==== Testing FST (float) ====
+Original: 0
+Stored: 0
+[TEST] Value stored correctly                   PASS
+Original: -0
+Stored: -0
+[TEST] Value stored correctly                   PASS
+Original: 1
+Stored: 1
+[TEST] Value stored correctly                   PASS
+Original: -1
+Stored: -1
+[TEST] Value stored correctly                   PASS
+Original: 123.456001281738
+Stored: 123.456001281738
+[TEST] Value stored correctly                   PASS
+Original: -123.456001281738
+Stored: -123.456001281738
+[TEST] Value stored correctly                   PASS
+Original: 3.40282346638529e+38
+Stored: 3.40282346638529e+38
+[TEST] Value stored correctly                   PASS
+Original: -3.40282346638529e+38
+Stored: -3.40282346638529e+38
+[TEST] Value stored correctly                   PASS
+Original: 1.17549435082229e-38
+Stored: 1.17549435082229e-38
+[TEST] Value stored correctly                   PASS
+Original: -1.17549435082229e-38
+Stored: -1.17549435082229e-38
+[TEST] Value stored correctly                   PASS
+Original: +INF
+Stored: +INF
+[TEST] Value stored correctly                   PASS
+Original: -INF
+Stored: -INF
+[TEST] Value stored correctly                   PASS
+Original: +NaN
+Stored: +NaN
+[TEST] NaN value stored correctly               PASS
+Original: -NaN
+Stored: -NaN
+[TEST] NaN value stored correctly               PASS
+
+==== Testing FST stack behavior ====
+[TEST] Stack pointer unchanged                  PASS

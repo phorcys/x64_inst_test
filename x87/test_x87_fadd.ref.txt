@@ -1,0 +1,3417 @@
+Testing FADD ST,Msr instruction
+
+=== Test 1: Basic FADD tests ===
+
+Test case 1 + 1:
+Operands: 1 + 1
+Result: 2
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 2:
+Operands: 1 + 2
+Result: 3
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 3:
+Operands: 1 + -1
+Result: 0
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 4:
+Operands: 1 + 0
+Result: 1
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 5:
+Operands: 1 + inf
+Result: inf
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 6:
+Operands: 1 + -inf
+Result: -inf
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 7:
+Operands: 1 + nan
+Result: nan
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 8:
+Operands: 1 + -nan
+Result: -nan
+FPU Status: 0x0000
+PASS
+
+Test case 1 + 9:
+Operands: 1 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x0020
+FPU Exceptions: Precision 
+PASS
+
+Test case 1 + 10:
+Operands: 1 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x0020
+FPU Exceptions: Precision 
+PASS
+
+Test case 1 + 11:
+Operands: 1 + 2.2250738585072e-308
+Result: 1
+FPU Status: 0x0020
+FPU Exceptions: Precision 
+PASS
+
+Test case 1 + 12:
+Operands: 1 + -2.2250738585072e-308
+Result: 1
+FPU Status: 0x0020
+FPU Exceptions: Precision 
+PASS
+
+Test case 1 + 13:
+Operands: 1 + 4.94065645841247e-324
+Result: 1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 14:
+Operands: 1 + -4.94065645841247e-324
+Result: 1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 15:
+Operands: 1 + 1e+300
+Result: 1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 16:
+Operands: 1 + -1e+300
+Result: -1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 17:
+Operands: 1 + 1e-300
+Result: 1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 18:
+Operands: 1 + -1e-300
+Result: 1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 19:
+Operands: 1 + 0.1
+Result: 1.1
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 20:
+Operands: 1 + 0.2
+Result: 1.2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 21:
+Operands: 1 + -0.1
+Result: 0.9
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 1 + 22:
+Operands: 1 + -0.2
+Result: 0.8
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 1:
+Operands: 2 + 1
+Result: 3
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 2:
+Operands: 2 + 2
+Result: 4
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 3:
+Operands: 2 + -1
+Result: 1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 4:
+Operands: 2 + 0
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 5:
+Operands: 2 + inf
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 6:
+Operands: 2 + -inf
+Result: -inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 7:
+Operands: 2 + nan
+Result: nan
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 8:
+Operands: 2 + -nan
+Result: -nan
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 9:
+Operands: 2 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 10:
+Operands: 2 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 11:
+Operands: 2 + 2.2250738585072e-308
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 12:
+Operands: 2 + -2.2250738585072e-308
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 13:
+Operands: 2 + 4.94065645841247e-324
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 14:
+Operands: 2 + -4.94065645841247e-324
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 15:
+Operands: 2 + 1e+300
+Result: 1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 16:
+Operands: 2 + -1e+300
+Result: -1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 17:
+Operands: 2 + 1e-300
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 18:
+Operands: 2 + -1e-300
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 19:
+Operands: 2 + 0.1
+Result: 2.1
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 20:
+Operands: 2 + 0.2
+Result: 2.2
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 21:
+Operands: 2 + -0.1
+Result: 1.9
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 2 + 22:
+Operands: 2 + -0.2
+Result: 1.8
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 1:
+Operands: -1 + 1
+Result: 0
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 2:
+Operands: -1 + 2
+Result: 1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 3:
+Operands: -1 + -1
+Result: -2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 4:
+Operands: -1 + 0
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 5:
+Operands: -1 + inf
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 6:
+Operands: -1 + -inf
+Result: -inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 7:
+Operands: -1 + nan
+Result: nan
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 8:
+Operands: -1 + -nan
+Result: -nan
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 9:
+Operands: -1 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 10:
+Operands: -1 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 11:
+Operands: -1 + 2.2250738585072e-308
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 12:
+Operands: -1 + -2.2250738585072e-308
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 13:
+Operands: -1 + 4.94065645841247e-324
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 14:
+Operands: -1 + -4.94065645841247e-324
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 15:
+Operands: -1 + 1e+300
+Result: 1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 16:
+Operands: -1 + -1e+300
+Result: -1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 17:
+Operands: -1 + 1e-300
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 18:
+Operands: -1 + -1e-300
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 19:
+Operands: -1 + 0.1
+Result: -0.9
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 20:
+Operands: -1 + 0.2
+Result: -0.8
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 21:
+Operands: -1 + -0.1
+Result: -1.1
+FPU Status: 0x0222
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 3 + 22:
+Operands: -1 + -0.2
+Result: -1.2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 1:
+Operands: 0 + 1
+Result: 1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 2:
+Operands: 0 + 2
+Result: 2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 3:
+Operands: 0 + -1
+Result: -1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 4:
+Operands: 0 + 0
+Result: 0
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 5:
+Operands: 0 + inf
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 6:
+Operands: 0 + -inf
+Result: -inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 7:
+Operands: 0 + nan
+Result: nan
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 8:
+Operands: 0 + -nan
+Result: -nan
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 9:
+Operands: 0 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 10:
+Operands: 0 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 11:
+Operands: 0 + 2.2250738585072e-308
+Result: 2.2250738585072e-308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 12:
+Operands: 0 + -2.2250738585072e-308
+Result: -2.2250738585072e-308
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 13:
+Operands: 0 + 4.94065645841247e-324
+Result: 4.94065645841247e-324
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 14:
+Operands: 0 + -4.94065645841247e-324
+Result: -4.94065645841247e-324
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 15:
+Operands: 0 + 1e+300
+Result: 1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 16:
+Operands: 0 + -1e+300
+Result: -1e+300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 17:
+Operands: 0 + 1e-300
+Result: 1e-300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 18:
+Operands: 0 + -1e-300
+Result: -1e-300
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 19:
+Operands: 0 + 0.1
+Result: 0.1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 20:
+Operands: 0 + 0.2
+Result: 0.2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 21:
+Operands: 0 + -0.1
+Result: -0.1
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 4 + 22:
+Operands: 0 + -0.2
+Result: -0.2
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 5 + 1:
+Operands: inf + 1
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 5 + 2:
+Operands: inf + 2
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 5 + 3:
+Operands: inf + -1
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 5 + 4:
+Operands: inf + 0
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 5 + 5:
+Operands: inf + inf
+Result: inf
+FPU Status: 0x0022
+FPU Exceptions: Denormal Precision 
+PASS
+
+Test case 5 + 6:
+Operands: inf + -inf
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 7:
+Operands: inf + nan
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 8:
+Operands: inf + -nan
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 9:
+Operands: inf + 1.79769313486232e+308
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 10:
+Operands: inf + -1.79769313486232e+308
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 11:
+Operands: inf + 2.2250738585072e-308
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 12:
+Operands: inf + -2.2250738585072e-308
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 13:
+Operands: inf + 4.94065645841247e-324
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 14:
+Operands: inf + -4.94065645841247e-324
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 15:
+Operands: inf + 1e+300
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 16:
+Operands: inf + -1e+300
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 17:
+Operands: inf + 1e-300
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 18:
+Operands: inf + -1e-300
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 19:
+Operands: inf + 0.1
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 20:
+Operands: inf + 0.2
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 21:
+Operands: inf + -0.1
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 5 + 22:
+Operands: inf + -0.2
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 1:
+Operands: -inf + 1
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 2:
+Operands: -inf + 2
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 3:
+Operands: -inf + -1
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 4:
+Operands: -inf + 0
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 5:
+Operands: -inf + inf
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 6:
+Operands: -inf + -inf
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 7:
+Operands: -inf + nan
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 8:
+Operands: -inf + -nan
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 9:
+Operands: -inf + 1.79769313486232e+308
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 10:
+Operands: -inf + -1.79769313486232e+308
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 11:
+Operands: -inf + 2.2250738585072e-308
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 12:
+Operands: -inf + -2.2250738585072e-308
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 13:
+Operands: -inf + 4.94065645841247e-324
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 14:
+Operands: -inf + -4.94065645841247e-324
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 15:
+Operands: -inf + 1e+300
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 16:
+Operands: -inf + -1e+300
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 17:
+Operands: -inf + 1e-300
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 18:
+Operands: -inf + -1e-300
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 19:
+Operands: -inf + 0.1
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 20:
+Operands: -inf + 0.2
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 21:
+Operands: -inf + -0.1
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 6 + 22:
+Operands: -inf + -0.2
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 1:
+Operands: nan + 1
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 2:
+Operands: nan + 2
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 3:
+Operands: nan + -1
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 4:
+Operands: nan + 0
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 5:
+Operands: nan + inf
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 6:
+Operands: nan + -inf
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 7:
+Operands: nan + nan
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 8:
+Operands: nan + -nan
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 9:
+Operands: nan + 1.79769313486232e+308
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 10:
+Operands: nan + -1.79769313486232e+308
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 11:
+Operands: nan + 2.2250738585072e-308
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 12:
+Operands: nan + -2.2250738585072e-308
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 13:
+Operands: nan + 4.94065645841247e-324
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 14:
+Operands: nan + -4.94065645841247e-324
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 15:
+Operands: nan + 1e+300
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 16:
+Operands: nan + -1e+300
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 17:
+Operands: nan + 1e-300
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 18:
+Operands: nan + -1e-300
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 19:
+Operands: nan + 0.1
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 20:
+Operands: nan + 0.2
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 21:
+Operands: nan + -0.1
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 7 + 22:
+Operands: nan + -0.2
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 1:
+Operands: -nan + 1
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 2:
+Operands: -nan + 2
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 3:
+Operands: -nan + -1
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 4:
+Operands: -nan + 0
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 5:
+Operands: -nan + inf
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 6:
+Operands: -nan + -inf
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 7:
+Operands: -nan + nan
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 8:
+Operands: -nan + -nan
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 9:
+Operands: -nan + 1.79769313486232e+308
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 10:
+Operands: -nan + -1.79769313486232e+308
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 11:
+Operands: -nan + 2.2250738585072e-308
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 12:
+Operands: -nan + -2.2250738585072e-308
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 13:
+Operands: -nan + 4.94065645841247e-324
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 14:
+Operands: -nan + -4.94065645841247e-324
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 15:
+Operands: -nan + 1e+300
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 16:
+Operands: -nan + -1e+300
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 17:
+Operands: -nan + 1e-300
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 18:
+Operands: -nan + -1e-300
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 19:
+Operands: -nan + 0.1
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 20:
+Operands: -nan + 0.2
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 21:
+Operands: -nan + -0.1
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 8 + 22:
+Operands: -nan + -0.2
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 1:
+Operands: 1.79769313486232e+308 + 1
+Result: 1.79769313486232e+308
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 2:
+Operands: 1.79769313486232e+308 + 2
+Result: 1.79769313486232e+308
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 3:
+Operands: 1.79769313486232e+308 + -1
+Result: 1.79769313486232e+308
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 4:
+Operands: 1.79769313486232e+308 + 0
+Result: 1.79769313486232e+308
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 5:
+Operands: 1.79769313486232e+308 + inf
+Result: inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 6:
+Operands: 1.79769313486232e+308 + -inf
+Result: -inf
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 7:
+Operands: 1.79769313486232e+308 + nan
+Result: nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 8:
+Operands: 1.79769313486232e+308 + -nan
+Result: -nan
+FPU Status: 0x0023
+FPU Exceptions: Invalid Denormal Precision 
+PASS
+
+Test case 9 + 9:
+Operands: 1.79769313486232e+308 + 1.79769313486232e+308
+Result: inf
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 10:
+Operands: 1.79769313486232e+308 + -1.79769313486232e+308
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 11:
+Operands: 1.79769313486232e+308 + 2.2250738585072e-308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 12:
+Operands: 1.79769313486232e+308 + -2.2250738585072e-308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 13:
+Operands: 1.79769313486232e+308 + 4.94065645841247e-324
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 14:
+Operands: 1.79769313486232e+308 + -4.94065645841247e-324
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 15:
+Operands: 1.79769313486232e+308 + 1e+300
+Result: inf
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 16:
+Operands: 1.79769313486232e+308 + -1e+300
+Result: 1.79769312486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 17:
+Operands: 1.79769313486232e+308 + 1e-300
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 18:
+Operands: 1.79769313486232e+308 + -1e-300
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 19:
+Operands: 1.79769313486232e+308 + 0.1
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 20:
+Operands: 1.79769313486232e+308 + 0.2
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 21:
+Operands: 1.79769313486232e+308 + -0.1
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 9 + 22:
+Operands: 1.79769313486232e+308 + -0.2
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 1:
+Operands: -1.79769313486232e+308 + 1
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 2:
+Operands: -1.79769313486232e+308 + 2
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 3:
+Operands: -1.79769313486232e+308 + -1
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 4:
+Operands: -1.79769313486232e+308 + 0
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 5:
+Operands: -1.79769313486232e+308 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 6:
+Operands: -1.79769313486232e+308 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 7:
+Operands: -1.79769313486232e+308 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 8:
+Operands: -1.79769313486232e+308 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 9:
+Operands: -1.79769313486232e+308 + 1.79769313486232e+308
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 10:
+Operands: -1.79769313486232e+308 + -1.79769313486232e+308
+Result: -inf
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 11:
+Operands: -1.79769313486232e+308 + 2.2250738585072e-308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 12:
+Operands: -1.79769313486232e+308 + -2.2250738585072e-308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 13:
+Operands: -1.79769313486232e+308 + 4.94065645841247e-324
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 14:
+Operands: -1.79769313486232e+308 + -4.94065645841247e-324
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 15:
+Operands: -1.79769313486232e+308 + 1e+300
+Result: -1.79769312486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 16:
+Operands: -1.79769313486232e+308 + -1e+300
+Result: -inf
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 17:
+Operands: -1.79769313486232e+308 + 1e-300
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 18:
+Operands: -1.79769313486232e+308 + -1e-300
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 19:
+Operands: -1.79769313486232e+308 + 0.1
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 20:
+Operands: -1.79769313486232e+308 + 0.2
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 21:
+Operands: -1.79769313486232e+308 + -0.1
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 10 + 22:
+Operands: -1.79769313486232e+308 + -0.2
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 1:
+Operands: 2.2250738585072e-308 + 1
+Result: 1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 2:
+Operands: 2.2250738585072e-308 + 2
+Result: 2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 3:
+Operands: 2.2250738585072e-308 + -1
+Result: -1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 4:
+Operands: 2.2250738585072e-308 + 0
+Result: 2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 5:
+Operands: 2.2250738585072e-308 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 6:
+Operands: 2.2250738585072e-308 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 7:
+Operands: 2.2250738585072e-308 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 8:
+Operands: 2.2250738585072e-308 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 9:
+Operands: 2.2250738585072e-308 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 10:
+Operands: 2.2250738585072e-308 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 11:
+Operands: 2.2250738585072e-308 + 2.2250738585072e-308
+Result: 4.4501477170144e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 12:
+Operands: 2.2250738585072e-308 + -2.2250738585072e-308
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 13:
+Operands: 2.2250738585072e-308 + 4.94065645841247e-324
+Result: 2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 14:
+Operands: 2.2250738585072e-308 + -4.94065645841247e-324
+Result: 2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 15:
+Operands: 2.2250738585072e-308 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 16:
+Operands: 2.2250738585072e-308 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 17:
+Operands: 2.2250738585072e-308 + 1e-300
+Result: 1.00000002225074e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 18:
+Operands: 2.2250738585072e-308 + -1e-300
+Result: -9.99999977749261e-301
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 19:
+Operands: 2.2250738585072e-308 + 0.1
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 20:
+Operands: 2.2250738585072e-308 + 0.2
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 21:
+Operands: 2.2250738585072e-308 + -0.1
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 11 + 22:
+Operands: 2.2250738585072e-308 + -0.2
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 1:
+Operands: -2.2250738585072e-308 + 1
+Result: 1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 2:
+Operands: -2.2250738585072e-308 + 2
+Result: 2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 3:
+Operands: -2.2250738585072e-308 + -1
+Result: -1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 4:
+Operands: -2.2250738585072e-308 + 0
+Result: -2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 5:
+Operands: -2.2250738585072e-308 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 6:
+Operands: -2.2250738585072e-308 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 7:
+Operands: -2.2250738585072e-308 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 8:
+Operands: -2.2250738585072e-308 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 9:
+Operands: -2.2250738585072e-308 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 10:
+Operands: -2.2250738585072e-308 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 11:
+Operands: -2.2250738585072e-308 + 2.2250738585072e-308
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 12:
+Operands: -2.2250738585072e-308 + -2.2250738585072e-308
+Result: -4.4501477170144e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 13:
+Operands: -2.2250738585072e-308 + 4.94065645841247e-324
+Result: -2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 14:
+Operands: -2.2250738585072e-308 + -4.94065645841247e-324
+Result: -2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 15:
+Operands: -2.2250738585072e-308 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 16:
+Operands: -2.2250738585072e-308 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 17:
+Operands: -2.2250738585072e-308 + 1e-300
+Result: 9.99999977749261e-301
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 18:
+Operands: -2.2250738585072e-308 + -1e-300
+Result: -1.00000002225074e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 19:
+Operands: -2.2250738585072e-308 + 0.1
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 20:
+Operands: -2.2250738585072e-308 + 0.2
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 21:
+Operands: -2.2250738585072e-308 + -0.1
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 12 + 22:
+Operands: -2.2250738585072e-308 + -0.2
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 1:
+Operands: 4.94065645841247e-324 + 1
+Result: 1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 2:
+Operands: 4.94065645841247e-324 + 2
+Result: 2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 3:
+Operands: 4.94065645841247e-324 + -1
+Result: -1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 4:
+Operands: 4.94065645841247e-324 + 0
+Result: 4.94065645841247e-324
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 5:
+Operands: 4.94065645841247e-324 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 6:
+Operands: 4.94065645841247e-324 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 7:
+Operands: 4.94065645841247e-324 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 8:
+Operands: 4.94065645841247e-324 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 9:
+Operands: 4.94065645841247e-324 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 10:
+Operands: 4.94065645841247e-324 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 11:
+Operands: 4.94065645841247e-324 + 2.2250738585072e-308
+Result: 2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 12:
+Operands: 4.94065645841247e-324 + -2.2250738585072e-308
+Result: -2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 13:
+Operands: 4.94065645841247e-324 + 4.94065645841247e-324
+Result: 9.88131291682493e-324
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 14:
+Operands: 4.94065645841247e-324 + -4.94065645841247e-324
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 15:
+Operands: 4.94065645841247e-324 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 16:
+Operands: 4.94065645841247e-324 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 17:
+Operands: 4.94065645841247e-324 + 1e-300
+Result: 1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 18:
+Operands: 4.94065645841247e-324 + -1e-300
+Result: -1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 19:
+Operands: 4.94065645841247e-324 + 0.1
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 20:
+Operands: 4.94065645841247e-324 + 0.2
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 21:
+Operands: 4.94065645841247e-324 + -0.1
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 13 + 22:
+Operands: 4.94065645841247e-324 + -0.2
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 1:
+Operands: -4.94065645841247e-324 + 1
+Result: 1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 2:
+Operands: -4.94065645841247e-324 + 2
+Result: 2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 3:
+Operands: -4.94065645841247e-324 + -1
+Result: -1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 4:
+Operands: -4.94065645841247e-324 + 0
+Result: -4.94065645841247e-324
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 5:
+Operands: -4.94065645841247e-324 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 6:
+Operands: -4.94065645841247e-324 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 7:
+Operands: -4.94065645841247e-324 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 8:
+Operands: -4.94065645841247e-324 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 9:
+Operands: -4.94065645841247e-324 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 10:
+Operands: -4.94065645841247e-324 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 11:
+Operands: -4.94065645841247e-324 + 2.2250738585072e-308
+Result: 2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 12:
+Operands: -4.94065645841247e-324 + -2.2250738585072e-308
+Result: -2.2250738585072e-308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 13:
+Operands: -4.94065645841247e-324 + 4.94065645841247e-324
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 14:
+Operands: -4.94065645841247e-324 + -4.94065645841247e-324
+Result: -9.88131291682493e-324
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 15:
+Operands: -4.94065645841247e-324 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 16:
+Operands: -4.94065645841247e-324 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 17:
+Operands: -4.94065645841247e-324 + 1e-300
+Result: 1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 18:
+Operands: -4.94065645841247e-324 + -1e-300
+Result: -1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 19:
+Operands: -4.94065645841247e-324 + 0.1
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 20:
+Operands: -4.94065645841247e-324 + 0.2
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 21:
+Operands: -4.94065645841247e-324 + -0.1
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 14 + 22:
+Operands: -4.94065645841247e-324 + -0.2
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 1:
+Operands: 1e+300 + 1
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 2:
+Operands: 1e+300 + 2
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 3:
+Operands: 1e+300 + -1
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 4:
+Operands: 1e+300 + 0
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 5:
+Operands: 1e+300 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 6:
+Operands: 1e+300 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 7:
+Operands: 1e+300 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 8:
+Operands: 1e+300 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 9:
+Operands: 1e+300 + 1.79769313486232e+308
+Result: inf
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 10:
+Operands: 1e+300 + -1.79769313486232e+308
+Result: -1.79769312486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 11:
+Operands: 1e+300 + 2.2250738585072e-308
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 12:
+Operands: 1e+300 + -2.2250738585072e-308
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 13:
+Operands: 1e+300 + 4.94065645841247e-324
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 14:
+Operands: 1e+300 + -4.94065645841247e-324
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 15:
+Operands: 1e+300 + 1e+300
+Result: 2e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 16:
+Operands: 1e+300 + -1e+300
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 17:
+Operands: 1e+300 + 1e-300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 18:
+Operands: 1e+300 + -1e-300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 19:
+Operands: 1e+300 + 0.1
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 20:
+Operands: 1e+300 + 0.2
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 21:
+Operands: 1e+300 + -0.1
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 15 + 22:
+Operands: 1e+300 + -0.2
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 1:
+Operands: -1e+300 + 1
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 2:
+Operands: -1e+300 + 2
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 3:
+Operands: -1e+300 + -1
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 4:
+Operands: -1e+300 + 0
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 5:
+Operands: -1e+300 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 6:
+Operands: -1e+300 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 7:
+Operands: -1e+300 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 8:
+Operands: -1e+300 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 9:
+Operands: -1e+300 + 1.79769313486232e+308
+Result: 1.79769312486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 10:
+Operands: -1e+300 + -1.79769313486232e+308
+Result: -inf
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 11:
+Operands: -1e+300 + 2.2250738585072e-308
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 12:
+Operands: -1e+300 + -2.2250738585072e-308
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 13:
+Operands: -1e+300 + 4.94065645841247e-324
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 14:
+Operands: -1e+300 + -4.94065645841247e-324
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 15:
+Operands: -1e+300 + 1e+300
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 16:
+Operands: -1e+300 + -1e+300
+Result: -2e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 17:
+Operands: -1e+300 + 1e-300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 18:
+Operands: -1e+300 + -1e-300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 19:
+Operands: -1e+300 + 0.1
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 20:
+Operands: -1e+300 + 0.2
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 21:
+Operands: -1e+300 + -0.1
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 16 + 22:
+Operands: -1e+300 + -0.2
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 1:
+Operands: 1e-300 + 1
+Result: 1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 2:
+Operands: 1e-300 + 2
+Result: 2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 3:
+Operands: 1e-300 + -1
+Result: -1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 4:
+Operands: 1e-300 + 0
+Result: 1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 5:
+Operands: 1e-300 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 6:
+Operands: 1e-300 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 7:
+Operands: 1e-300 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 8:
+Operands: 1e-300 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 9:
+Operands: 1e-300 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 10:
+Operands: 1e-300 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 11:
+Operands: 1e-300 + 2.2250738585072e-308
+Result: 1.00000002225074e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 12:
+Operands: 1e-300 + -2.2250738585072e-308
+Result: 9.99999977749261e-301
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 13:
+Operands: 1e-300 + 4.94065645841247e-324
+Result: 1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 14:
+Operands: 1e-300 + -4.94065645841247e-324
+Result: 1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 15:
+Operands: 1e-300 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 16:
+Operands: 1e-300 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 17:
+Operands: 1e-300 + 1e-300
+Result: 2e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 18:
+Operands: 1e-300 + -1e-300
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 19:
+Operands: 1e-300 + 0.1
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 20:
+Operands: 1e-300 + 0.2
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 21:
+Operands: 1e-300 + -0.1
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 17 + 22:
+Operands: 1e-300 + -0.2
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 1:
+Operands: -1e-300 + 1
+Result: 1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 2:
+Operands: -1e-300 + 2
+Result: 2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 3:
+Operands: -1e-300 + -1
+Result: -1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 4:
+Operands: -1e-300 + 0
+Result: -1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 5:
+Operands: -1e-300 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 6:
+Operands: -1e-300 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 7:
+Operands: -1e-300 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 8:
+Operands: -1e-300 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 9:
+Operands: -1e-300 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 10:
+Operands: -1e-300 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 11:
+Operands: -1e-300 + 2.2250738585072e-308
+Result: -9.99999977749261e-301
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 12:
+Operands: -1e-300 + -2.2250738585072e-308
+Result: -1.00000002225074e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 13:
+Operands: -1e-300 + 4.94065645841247e-324
+Result: -1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 14:
+Operands: -1e-300 + -4.94065645841247e-324
+Result: -1e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 15:
+Operands: -1e-300 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 16:
+Operands: -1e-300 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 17:
+Operands: -1e-300 + 1e-300
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 18:
+Operands: -1e-300 + -1e-300
+Result: -2e-300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 19:
+Operands: -1e-300 + 0.1
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 20:
+Operands: -1e-300 + 0.2
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 21:
+Operands: -1e-300 + -0.1
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 18 + 22:
+Operands: -1e-300 + -0.2
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 1:
+Operands: 0.1 + 1
+Result: 1.1
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 2:
+Operands: 0.1 + 2
+Result: 2.1
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 3:
+Operands: 0.1 + -1
+Result: -0.9
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 4:
+Operands: 0.1 + 0
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 5:
+Operands: 0.1 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 6:
+Operands: 0.1 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 7:
+Operands: 0.1 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 8:
+Operands: 0.1 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 9:
+Operands: 0.1 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 10:
+Operands: 0.1 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 11:
+Operands: 0.1 + 2.2250738585072e-308
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 12:
+Operands: 0.1 + -2.2250738585072e-308
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 13:
+Operands: 0.1 + 4.94065645841247e-324
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 14:
+Operands: 0.1 + -4.94065645841247e-324
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 15:
+Operands: 0.1 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 16:
+Operands: 0.1 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 17:
+Operands: 0.1 + 1e-300
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 18:
+Operands: 0.1 + -1e-300
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 19:
+Operands: 0.1 + 0.1
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 20:
+Operands: 0.1 + 0.2
+Result: 0.3
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 21:
+Operands: 0.1 + -0.1
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 19 + 22:
+Operands: 0.1 + -0.2
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 1:
+Operands: 0.2 + 1
+Result: 1.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 2:
+Operands: 0.2 + 2
+Result: 2.2
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 3:
+Operands: 0.2 + -1
+Result: -0.8
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 4:
+Operands: 0.2 + 0
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 5:
+Operands: 0.2 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 6:
+Operands: 0.2 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 7:
+Operands: 0.2 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 8:
+Operands: 0.2 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 9:
+Operands: 0.2 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 10:
+Operands: 0.2 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 11:
+Operands: 0.2 + 2.2250738585072e-308
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 12:
+Operands: 0.2 + -2.2250738585072e-308
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 13:
+Operands: 0.2 + 4.94065645841247e-324
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 14:
+Operands: 0.2 + -4.94065645841247e-324
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 15:
+Operands: 0.2 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 16:
+Operands: 0.2 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 17:
+Operands: 0.2 + 1e-300
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 18:
+Operands: 0.2 + -1e-300
+Result: 0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 19:
+Operands: 0.2 + 0.1
+Result: 0.3
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 20:
+Operands: 0.2 + 0.2
+Result: 0.4
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 21:
+Operands: 0.2 + -0.1
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 20 + 22:
+Operands: 0.2 + -0.2
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 1:
+Operands: -0.1 + 1
+Result: 0.9
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 2:
+Operands: -0.1 + 2
+Result: 1.9
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 3:
+Operands: -0.1 + -1
+Result: -1.1
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 4:
+Operands: -0.1 + 0
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 5:
+Operands: -0.1 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 6:
+Operands: -0.1 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 7:
+Operands: -0.1 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 8:
+Operands: -0.1 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 9:
+Operands: -0.1 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 10:
+Operands: -0.1 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 11:
+Operands: -0.1 + 2.2250738585072e-308
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 12:
+Operands: -0.1 + -2.2250738585072e-308
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 13:
+Operands: -0.1 + 4.94065645841247e-324
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 14:
+Operands: -0.1 + -4.94065645841247e-324
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 15:
+Operands: -0.1 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 16:
+Operands: -0.1 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 17:
+Operands: -0.1 + 1e-300
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 18:
+Operands: -0.1 + -1e-300
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 19:
+Operands: -0.1 + 0.1
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 20:
+Operands: -0.1 + 0.2
+Result: 0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 21:
+Operands: -0.1 + -0.1
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 21 + 22:
+Operands: -0.1 + -0.2
+Result: -0.3
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 1:
+Operands: -0.2 + 1
+Result: 0.8
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 2:
+Operands: -0.2 + 2
+Result: 1.8
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 3:
+Operands: -0.2 + -1
+Result: -1.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 4:
+Operands: -0.2 + 0
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 5:
+Operands: -0.2 + inf
+Result: inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 6:
+Operands: -0.2 + -inf
+Result: -inf
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 7:
+Operands: -0.2 + nan
+Result: nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 8:
+Operands: -0.2 + -nan
+Result: -nan
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 9:
+Operands: -0.2 + 1.79769313486232e+308
+Result: 1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 10:
+Operands: -0.2 + -1.79769313486232e+308
+Result: -1.79769313486232e+308
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 11:
+Operands: -0.2 + 2.2250738585072e-308
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 12:
+Operands: -0.2 + -2.2250738585072e-308
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 13:
+Operands: -0.2 + 4.94065645841247e-324
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 14:
+Operands: -0.2 + -4.94065645841247e-324
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 15:
+Operands: -0.2 + 1e+300
+Result: 1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 16:
+Operands: -0.2 + -1e+300
+Result: -1e+300
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 17:
+Operands: -0.2 + 1e-300
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 18:
+Operands: -0.2 + -1e-300
+Result: -0.2
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 19:
+Operands: -0.2 + 0.1
+Result: -0.1
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 20:
+Operands: -0.2 + 0.2
+Result: 0
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 21:
+Operands: -0.2 + -0.1
+Result: -0.3
+FPU Status: 0x022b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+Test case 22 + 22:
+Operands: -0.2 + -0.2
+Result: -0.4
+FPU Status: 0x002b
+FPU Exceptions: Invalid Denormal Overflow Precision 
+PASS
+
+=== Test 2: Rounding modes ===
+
+Rounding mode: Nearest
+Operands: 1.5 + 2.5
+Result: 4
+
+Rounding mode: Up
+Operands: 1.5 + 2.5
+Result: 4
+
+Rounding mode: Down
+Operands: 1.5 + 2.5
+Result: 4
+
+Rounding mode: Toward Zero
+Operands: 1.5 + 2.5
+Result: 4
+
+=== Test 3: Precision control ===
+
+Precision: Single
+Operands: 0.333333333333333 + 0.142857142857142
+Result: 0.476190447807312
+
+Precision: Double
+Operands: 0.333333333333333 + 0.142857142857142
+Result: 0.476190476190476
+
+Precision: Extended
+Operands: 0.333333333333333 + 0.142857142857142
+Result: 0.476190476190476
+
+FADD test completed
