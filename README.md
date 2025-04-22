@@ -25,6 +25,13 @@ make genref
 ## rebuild testsuits
 make clean;make;make genref
 
+## test specify tests
+make genref-mmx
+make test-mmx
+
+make genref-sse
+make test-sse
+
 # Notes
 All LLM generated stuff is NOT guaranteed.
 Pass the test doesn't means no mistake.

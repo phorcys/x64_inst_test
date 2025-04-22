@@ -33,9 +33,17 @@ all: $(EXES)
 	fi
 	@if [ ! -f $@ ]; then echo "Error: Failed to build $@"; exit 1; fi
 
-# Target to generate reference outputs  
-genref: all
+# Target to generate reference outputs
+genref: $(if $(filter-out genref,$(MAKECMDGOALS)),genref-$(firstword $(filter mmx sse lock avx crypt arith x87,$(MAKECMDGOALS))),genref-all)
+
+genref-all: all
 	@for exe in $(EXES); do \
+		echo "Generating reference for $$exe"; \
+		./$$exe > $$exe.ref.txt; \
+	done
+
+genref-%: all
+	@for exe in $(filter $*/%,$(EXES)); do \
 		echo "Generating reference for $$exe"; \
 		./$$exe > $$exe.ref.txt; \
 	done
