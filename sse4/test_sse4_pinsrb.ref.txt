@@ -1,0 +1,43 @@
+=== Testing PINSRB instruction variants ===
+
+=== TEST: PINSRB with XMM registers ===
+Position  0: inserted=0x12, expected=0x12 - PASS
+Position  1: inserted=0x34, expected=0x34 - PASS
+Position  2: inserted=0x56, expected=0x56 - PASS
+Position  3: inserted=0x78, expected=0x78 - PASS
+Position  4: inserted=0x9A, expected=0x9A - PASS
+Position  5: inserted=0xBC, expected=0xBC - PASS
+Position  6: inserted=0xDE, expected=0xDE - PASS
+Position  7: inserted=0xF0, expected=0xF0 - PASS
+Position  8: inserted=0x11, expected=0x11 - PASS
+Position  9: inserted=0x22, expected=0x22 - PASS
+Position 10: inserted=0x33, expected=0x33 - PASS
+Position 11: inserted=0x44, expected=0x44 - PASS
+Position 12: inserted=0x55, expected=0x55 - PASS
+Position 13: inserted=0x66, expected=0x66 - PASS
+Position 14: inserted=0x77, expected=0x77 - PASS
+Position 15: inserted=0x88, expected=0x88 - PASS
+
+=== TEST: PINSRB with memory operand ===
+Mem pos  0: inserted=0xA1, expected=0xA1 - PASS
+Mem pos  1: inserted=0xB2, expected=0xB2 - PASS
+Mem pos  2: inserted=0xC3, expected=0xC3 - PASS
+Mem pos  3: inserted=0xD4, expected=0xD4 - PASS
+Mem pos  4: inserted=0xE5, expected=0xE5 - PASS
+Mem pos  5: inserted=0xF6, expected=0xF6 - PASS
+Mem pos  6: inserted=0x07, expected=0x07 - PASS
+Mem pos  7: inserted=0x18, expected=0x18 - PASS
+Mem pos  8: inserted=0x29, expected=0x29 - PASS
+Mem pos  9: inserted=0x3A, expected=0x3A - PASS
+Mem pos 10: inserted=0x4B, expected=0x4B - PASS
+Mem pos 11: inserted=0x5C, expected=0x5C - PASS
+Mem pos 12: inserted=0x6D, expected=0x6D - PASS
+Mem pos 13: inserted=0x7E, expected=0x7E - PASS
+Mem pos 14: inserted=0x8F, expected=0x8F - PASS
+Mem pos 15: inserted=0x90, expected=0x90 - PASS
+
+=== TEST: PINSRB boundary cases ===
+First pos: result=0x55, expected=0x55 - PASS
+Last pos: result=0x55, expected=0x55 - PASS
+
+All PINSRB tests passed successfully!

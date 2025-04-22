@@ -1,0 +1,27 @@
+=== Testing PEXTRW instruction variants ===
+
+=== TEST: PEXTRW with XMM registers ===
+Position 0: result=0x1234, expected=0x1234 - PASS
+Position 1: result=0x5678, expected=0x5678 - PASS
+Position 2: result=0x9ABC, expected=0x9ABC - PASS
+Position 3: result=0xDEF0, expected=0xDEF0 - PASS
+Position 4: result=0x1122, expected=0x1122 - PASS
+Position 5: result=0x3344, expected=0x3344 - PASS
+Position 6: result=0x5566, expected=0x5566 - PASS
+Position 7: result=0x7788, expected=0x7788 - PASS
+
+=== TEST: PEXTRW with memory operand ===
+Mem pos 0: result=0xA1B1, expected=0xA1B1 - PASS
+Mem pos 1: result=0xC2D2, expected=0xC2D2 - PASS
+Mem pos 2: result=0xE3F3, expected=0xE3F3 - PASS
+Mem pos 3: result=0x4455, expected=0x4455 - PASS
+Mem pos 4: result=0x6677, expected=0x6677 - PASS
+Mem pos 5: result=0x8899, expected=0x8899 - PASS
+Mem pos 6: result=0xAABB, expected=0xAABB - PASS
+Mem pos 7: result=0xCCDD, expected=0xCCDD - PASS
+
+=== TEST: PEXTRW with immediate operand ===
+First element: result=0x1111, expected=0x1111 - PASS
+Last element: result=0x8888, expected=0x8888 - PASS
+
+All PEXTRW tests passed successfully!
