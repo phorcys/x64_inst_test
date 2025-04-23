@@ -1,0 +1,19 @@
+Testing PHSUBW (Packed Horizontal Subtract Word)
+
+Test 1: Basic subtraction
+a: [1000, -1000, 500, -500]
+b: [2000, -2000, 1000, -1000]
+result: [2000, 1000, 4000, 2000]
+Expected: [2000, 1000, 4000, 2000]
+
+Test 2: Boundary values
+c: [32767, -32768, 32767, -32768]
+d: [1, -1, 1, -1]
+result: [-1, -1, 2, 2]
+Expected: [-1, -1, 2, 2]
+
+Test 3: Memory operand
+reg: [50, 150, 250, 350]
+mem: [100, 200, 300, 400]
+result: [-100, -100, -100, -100]
+Expected: [-100, -100, -100, -100]

@@ -1,0 +1,19 @@
+Testing PSIGND (Packed SIGN Doubleword)
+
+Test 1: Basic sign operations
+a: [100000, -200000]
+b: [1, -1]
+result: [100000, 200000]
+Expected: [100000, 200000]
+
+Test 2: Boundary values
+c: [2147483647, -2147483648]
+d: [1, -1]
+result: [2147483647, -2147483648]
+Expected: [2147483647, -2147483648]
+
+Test 3: Memory operand
+reg: [1, -1]
+mem: [50000, -50000]
+result: [50000, 50000]
+Expected: [50000, 50000]

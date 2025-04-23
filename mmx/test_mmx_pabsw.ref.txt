@@ -1,0 +1,16 @@
+Testing PABSW (Packed Absolute Value of Words)
+
+Test 1: Basic values
+a: [1000, -2000, 3000, -4000]
+result: [1000, 2000, 3000, 4000]
+Expected: [1000, 2000, 3000, 4000]
+
+Test 2: Boundary values
+b: [32767, -32768, 0, -1]
+result: [32767, -32768, 0, 1]
+Expected: [32767, -32768, 0, 1] (Note: -32768 remains unchanged per Intel spec)
+
+Test 3: Memory operand
+mem: [-5000, 5000, -32767, 32767]
+result: [5000, 5000, 32767, 32767]
+Expected: [5000, 5000, 32767, 32767]

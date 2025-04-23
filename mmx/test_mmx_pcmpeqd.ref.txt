@@ -1,0 +1,32 @@
+=== Testing PCMPEQD ===
+
+Test 1: All dwords equal
+A: 22222222 11111111
+B: 22222222 11111111
+Result: ffffffff ffffffff
+Test 1 PASSED
+
+Test 2: No dwords equal
+A: 22222222 11111111
+B: 00000000 00000000
+Result: 00000000 00000000
+Test 2 PASSED
+
+Test 3: One dword equal
+A: 22222222 11111111
+B: 00000000 11111111
+Result: 00000000 ffffffff
+Test 3 PASSED
+
+Test 4: Register to register
+A: aaaaaaaa bbbbbbbb
+B: aaaaaaaa 00000000
+Result: ffffffff 00000000
+Test 4 PASSED
+
+Test 5: Random values
+A: 12345678 9abcdef0
+B: 12345678 00000000
+Result: ffffffff 00000000
+Expected: ffffffff 00000000
+Test 5 PASSED

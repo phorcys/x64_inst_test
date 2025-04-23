@@ -1,0 +1,16 @@
+Testing PMOVMSKB (Gd, Em) instruction
+Test 1: PMOVMSKB with alternating bits
+Data:     80 00 80 00 80 00 80 00 
+Expected: 0x55
+Got:      0x55
+Test PASSED
+Test 2: PMOVMSKB with all bits set
+Data:     ff ff ff ff ff ff ff ff 
+Expected: 0xff
+Got:      0xff
+Test PASSED
+Test 3: PMOVMSKB with random pattern
+Data:     12 34 56 78 9a bc de f0 
+Expected: 0xf0
+Got:      0xf0
+Test PASSED

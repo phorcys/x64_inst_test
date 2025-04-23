@@ -1,0 +1,19 @@
+Testing PSIGNW (Packed SIGN Word)
+
+Test 1: Basic sign operations
+a: [1000, -2000, 3000, -4000]
+b: [1, -1, 0, 1]
+result: [1000, 2000, 0, -4000]
+Expected: [1000, 2000, 0, -4000]
+
+Test 2: Boundary values
+c: [32767, -32768, 0, 32767]
+d: [1, -1, 1, -1]
+result: [32767, -32768, 0, -32767]
+Expected: [32767, -32768, 0, -32767]
+
+Test 3: Memory operand
+reg: [1, -1, 0, 1]
+mem: [500, -500, 1000, -1000]
+result: [500, 500, 0, -1000]
+Expected: [500, 500, 0, -1000]

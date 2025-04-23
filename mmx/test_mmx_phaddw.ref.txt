@@ -1,0 +1,19 @@
+Testing PHADDW (Packed Horizontal Add Word)
+
+Test 1: Basic horizontal addition
+a: [1000, 2000, -1000, -2000]
+b: [3000, 4000, -3000, -4000]
+result: [3000, -3000, 7000, -7000]
+Expected: [3000, -3000, 7000, -7000]
+
+Test 2: Boundary values
+c: [32767, 32767, -32768, -32768]
+d: [1, -1, 1, -1]
+result: [-2, 0, 0, 0]
+Expected: [32767+32767=overflow, -32768+-32768=overflow, 1+-1=0, 1+-1=0]
+
+Test 3: Memory operand
+reg: [50, -50, 150, -150]
+mem: [100, -100, 200, -200]
+result: [0, 0, 0, 0]
+Expected: [50+-50=0, 150+-150=0, 100+-100=0, 200+-200=0]

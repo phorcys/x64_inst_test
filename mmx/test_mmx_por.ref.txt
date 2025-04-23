@@ -1,0 +1,22 @@
+Testing POR (Packed Bitwise OR)
+=============================
+
+Test 1: Basic OR operation
+Input A: 0x00ff00ff00ff00ff
+Input B: 0x0f0f0f0f0f0f0f0f
+Result: 0x0fff0fff0fff0fff
+Expected: 0x0FFF0FFF0FFF0FFF
+
+Test 2: OR with all zeros
+Input A: 0x123456789abcdef0
+Input B: 0x0000000000000000
+Result: 0x123456789abcdef0
+Expected: 0x123456789ABCDEF0
+
+Test 3: OR with all ones
+Input A: 0x123456789abcdef0
+Input B: 0xffffffffffffffff
+Result: 0xffffffffffffffff
+Expected: 0xFFFFFFFFFFFFFFFF
+
+POR tests completed.

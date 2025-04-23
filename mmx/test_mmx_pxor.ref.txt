@@ -1,0 +1,22 @@
+Testing PXOR (Packed Bitwise XOR)
+===============================
+
+Test 1: Basic XOR operation
+Input A: 0x00ff00ff00ff00ff
+Input B: 0x0f0f0f0f0f0f0f0f
+Result: 0x0ff00ff00ff00ff0
+Expected: 0x0FF00FF00FF00FF0
+
+Test 2: XOR with all zeros
+Input A: 0x123456789abcdef0
+Input B: 0x0000000000000000
+Result: 0x123456789abcdef0
+Expected: 0x123456789ABCDEF0
+
+Test 3: XOR with all ones
+Input A: 0x123456789abcdef0
+Input B: 0xffffffffffffffff
+Result: 0xedcba9876543210f
+Expected: 0xEDCBA9876543210F
+
+PXOR tests completed.

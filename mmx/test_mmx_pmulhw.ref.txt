@@ -1,0 +1,22 @@
+Testing PMULHW (Packed Multiply High Signed Word)
+===============================================
+
+Test 1: Positive numbers
+Input A: [2, 3, 4, 5]
+Input B: [1, 2, 3, 4]
+Result: [0, 0, 0, 0]
+Expected: [0, 0, 0, 0]
+
+Test 2: Mixed positive and negative
+Input A: [65534, 3, 4, 65535]
+Input B: [1, 2, 65533, 4]
+Result: [65535, 0, 65535, 65535]
+Expected: [-1, 0, -1, -1]
+
+Test 3: Large numbers (potential overflow)
+Input A: [32767, 32767, 32767, 32767]
+Input B: [32767, 32767, 32767, 32767]
+Result: [16383, 16383, 16383, 16383]
+Expected: [16383, 16383, 16383, 16383]
+
+PMULHW tests completed.

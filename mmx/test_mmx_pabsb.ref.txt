@@ -1,0 +1,11 @@
+Testing PABSB (Packed Absolute Value of Bytes)
+
+Test 1: Basic values
+a: [10, -20, 30, -40, 0, -128, 127, -1]
+result: [10, 20, 30, 40, 0, -128, 127, 1]
+Expected: [10, 20, 30, 40, 0, -128, 127, 1]
+
+Test 2: Memory operand
+mem: [-50, 50, -100, 100, -127, 127, 0, 0]
+result: [50, 50, 100, 100, 127, 127, 0, 0]
+Expected: [50, 50, 100, 100, 127, 127, 0, 0]

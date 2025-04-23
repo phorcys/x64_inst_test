@@ -1,0 +1,22 @@
+Testing PADDSW (Packed Add Signed Word with Saturation)
+======================================================
+
+Test 1: Normal addition
+Input A: [1, 2, 3, 32767]
+Input B: [1, 1, 1, 1]
+Result: [2, 3, 4, 32767]
+Expected: [2, 3, 4, 32767]
+
+Test 2: Positive overflow (saturate to 32767)
+Input A: [32767, 32767, 32767, 32767]
+Input B: [1, 1, 1, 1]
+Result: [32767, 32767, 32767, 32767]
+Expected: [32767, 32767, 32767, 32767]
+
+Test 3: Negative overflow (saturate to -32768)
+Input A: [-32768, -32768, -32768, -32768]
+Input B: [-1, -1, -1, -1]
+Result: [-32768, -32768, -32768, -32768]
+Expected: [-32768, -32768, -32768, -32768]
+
+PADDSW tests completed.

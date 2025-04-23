@@ -1,0 +1,3 @@
+PSHUFB reg/reg test passed
+PSHUFB reg/mem test passed
+PSHUFB edge case test passed
