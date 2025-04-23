@@ -1,0 +1,15 @@
+=== Testing PEXTRD instruction variants ===
+
+=== TEST: PEXTRD with registers ===
+Position 0: result=0x12345678 expected=0x12345678 - PASS
+Position 1: result=0x9ABCDEF0 expected=0x9ABCDEF0 - PASS
+Position 2: result=0x11223344 expected=0x11223344 - PASS
+Position 3: result=0x55667788 expected=0x55667788 - PASS
+
+=== TEST: PEXTRD with memory dst ===
+Position 0: result=0xA1B2C3D4 expected=0xA1B2C3D4 - PASS
+Position 1: result=0xE5F60718 expected=0xE5F60718 - PASS
+Position 2: result=0x91A2B3C4 expected=0x91A2B3C4 - PASS
+Position 3: result=0xD5E6F708 expected=0xD5E6F708 - PASS
+
+All PEXTRD tests passed successfully!

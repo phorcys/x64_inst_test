@@ -1,0 +1,39 @@
+=== Testing PEXTRB instruction variants ===
+
+=== TEST: PEXTRB with registers ===
+Position 0: result=0x12, expected=0x12 - PASS
+Position 1: result=0x34, expected=0x34 - PASS
+Position 2: result=0x56, expected=0x56 - PASS
+Position 3: result=0x78, expected=0x78 - PASS
+Position 4: result=0x9A, expected=0x9A - PASS
+Position 5: result=0xBC, expected=0xBC - PASS
+Position 6: result=0xDE, expected=0xDE - PASS
+Position 7: result=0xF0, expected=0xF0 - PASS
+Position 8: result=0x11, expected=0x11 - PASS
+Position 9: result=0x22, expected=0x22 - PASS
+Position 10: result=0x33, expected=0x33 - PASS
+Position 11: result=0x44, expected=0x44 - PASS
+Position 12: result=0x55, expected=0x55 - PASS
+Position 13: result=0x66, expected=0x66 - PASS
+Position 14: result=0x77, expected=0x77 - PASS
+Position 15: result=0x88, expected=0x88 - PASS
+
+=== TEST: PEXTRB with memory dst ===
+Position 0: result=0xA1, expected=0xA1 - PASS
+Position 1: result=0xB1, expected=0xB1 - PASS
+Position 2: result=0xC2, expected=0xC2 - PASS
+Position 3: result=0xD2, expected=0xD2 - PASS
+Position 4: result=0xE3, expected=0xE3 - PASS
+Position 5: result=0xF3, expected=0xF3 - PASS
+Position 6: result=0x44, expected=0x44 - PASS
+Position 7: result=0x55, expected=0x55 - PASS
+Position 8: result=0x66, expected=0x66 - PASS
+Position 9: result=0x77, expected=0x77 - PASS
+Position 10: result=0x88, expected=0x88 - PASS
+Position 11: result=0x99, expected=0x99 - PASS
+Position 12: result=0xAA, expected=0xAA - PASS
+Position 13: result=0xBB, expected=0xBB - PASS
+Position 14: result=0xCC, expected=0xCC - PASS
+Position 15: result=0xDD, expected=0xDD - PASS
+
+All PEXTRB tests passed successfully!

@@ -1,0 +1,7 @@
+=== Testing PINSRQ instruction variants ===
+
+=== TEST: PINSRQ with registers ===
+Position 0: 123456789ABCDEF0 0000000000000000 - PASS
+Position 1: 0000000000000000 123456789ABCDEF0 - PASS
+
+All PINSRQ tests passed successfully!

@@ -1,0 +1,7 @@
+=== Testing PEXTRQ instruction variants ===
+
+=== TEST: PEXTRQ with registers ===
+Position 0: result=0x123456789ABCDEF0 expected=0x123456789ABCDEF0 - PASS
+Position 1: result=0x1122334455667788 expected=0x1122334455667788 - PASS
+
+All PEXTRQ tests passed successfully!

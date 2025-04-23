@@ -34,40 +34,29 @@ void test_pextrw_reg() {
 }
 
 void test_pextrw_mem() {
-    TEST_CASE("PEXTRW with memory operand");
+    TEST_CASE("PEXTRW with memory dst");
     
     __m128i vec = _mm_setr_epi16(0xA1B1, 0xC2D2, 0xE3F3, 0x4455,
                                  0x6677, 0x8899, 0xAABB, 0xCCDD);
-    uint16_t mem_result;
+    uint16_t mem_result, expected;
     
-    for (int i = 0; i < 8; i++) {
-        uint16_t expected = ((uint16_t*)&vec)[i];
-        mem_result = ((uint16_t*)&vec)[i];
-        
-        printf("Mem pos %d: result=0x%04X, expected=0x%04X - %s\n",
-               i, mem_result, expected,
-               mem_result == expected ? "PASS" : "FAIL");
-        assert(mem_result == expected);
-    }
-}
-
-void test_pextrw_imm() {
-    TEST_CASE("PEXTRW with immediate operand");
+    // Test all positions using macros
+    #define TEST_POS(pos) \
+        asm volatile ( "pextrw $" #pos ", %1, %0\n\t" : "=m" (mem_result): "x" (vec): ); \
+        expected = ((uint16_t*)&vec)[pos]; \
+        printf("Position %d: result=0x%04X, expected=0x%04X - %s\n", \
+               pos, mem_result, expected, \
+               mem_result == expected ? "PASS" : "FAIL"); \
+        assert(mem_result == expected)
     
-    __m128i vec = _mm_setr_epi16(0x1111, 0x2222, 0x3333, 0x4444,
-                                 0x5555, 0x6666, 0x7777, 0x8888);
-    
-    // Test boundary positions
-    uint16_t first = _mm_extract_epi16(vec, 0);
-    uint16_t last = _mm_extract_epi16(vec, 7);
-    
-    printf("First element: result=0x%04X, expected=0x1111 - %s\n",
-           first, first == 0x1111 ? "PASS" : "FAIL");
-    printf("Last element: result=0x%04X, expected=0x8888 - %s\n",
-           last, last == 0x8888 ? "PASS" : "FAIL");
-    
-    assert(first == 0x1111);
-    assert(last == 0x8888);
+    TEST_POS(0);
+    TEST_POS(1);
+    TEST_POS(2); 
+    TEST_POS(3);
+    TEST_POS(4);
+    TEST_POS(5);
+    TEST_POS(6);
+    TEST_POS(7);
 }
 
 int main() {
@@ -75,8 +64,7 @@ int main() {
     
     test_pextrw_reg();
     test_pextrw_mem();
-    test_pextrw_imm();
-    
+   
     printf("\nAll PEXTRW tests passed successfully!\n");
     return 0;
 }
