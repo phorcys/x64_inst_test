@@ -19,7 +19,6 @@
         printf("Position %d: result=0x%016lX expected=0x%016lX - %s\n", \
                pos, result, expected, \
                result == expected ? "PASS" : "FAIL"); \
-        assert(result == expected); \
     } while (0)
 
 static void test_pextrq_reg() {

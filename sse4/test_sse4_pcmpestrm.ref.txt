@@ -1,0 +1,4 @@
+Testing PCMPESTRM instruction
+Result: 0x000000000000FFFF
+Expected: 0x000000000000FFFF (all equal)
+Test PASSED

@@ -1,0 +1,32 @@
+Testing PMULDQ instruction
+-------------------------
+
+Test case 1:
+Register version:
+  Result: [5, 21]
+  Expect: [5, 21]
+  PASS
+Memory version:
+  Result: [5, 21]
+  Expect: [5, 21]
+  PASS
+
+Test case 2:
+Register version:
+  Result: [-5, -21]
+  Expect: [-5, -21]
+  PASS
+Memory version:
+  Result: [-5, -21]
+  Expect: [-5, -21]
+  PASS
+
+Test case 3:
+Register version:
+  Result: [2147483647, 2147483648]
+  Expect: [2147483647, 2147483648]
+  PASS
+Memory version:
+  Result: [2147483647, 2147483648]
+  Expect: [2147483647, 2147483648]
+  PASS

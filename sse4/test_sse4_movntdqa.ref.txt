@@ -1,0 +1,5 @@
+Testing MOVNTDQA instruction
+--------------------------
+Source: [0x12345678, 0x9ABCDEF0, 0x13579BDF, 0x2468ACE0]
+Result: [0x12345678, 0x9ABCDEF0, 0x13579BDF, 0x2468ACE0]
+Test PASSED

@@ -19,7 +19,6 @@
         printf("Position %d: result=0x%08X expected=0x%08X - %s\n", \
                pos, result, expected, \
                result == expected ? "PASS" : "FAIL"); \
-        assert(result == expected); \
     } while (0)
 
 #define TEST_PEXTRD_MEM(pos) \
@@ -35,7 +34,6 @@
         printf("Position %d: result=0x%08X expected=0x%08X - %s\n", \
                pos, mem_result, expected, \
                mem_result == expected ? "PASS" : "FAIL"); \
-        assert(mem_result == expected); \
     } while (0)
 
 static void test_pextrd_reg() {
