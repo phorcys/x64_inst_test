@@ -1,0 +1,27 @@
+Testing PSRLDQ instruction (using inline assembly)
+
+Test 1: Shift right by 1 byte
+Input: 00 ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 
+Result: ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 00 
+
+Test 2: Shift right by 4 bytes
+Input: 00 ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 
+Result: cc bb aa 99 88 77 66 55 44 33 22 11 00 00 00 00 
+
+Test 3: Shift right by 8 bytes
+Input: 00 ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 
+Result: 88 77 66 55 44 33 22 11 00 00 00 00 00 00 00 00 
+
+Test 4: Shift right by 15 bytes
+Input: 00 ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 
+Result: 11 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test 4.1: Shift right by 15 bytes
+Input: 00 ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test 5: Memory operand, shift by 2 bytes
+Input: 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff 
+Result: 22 33 44 55 66 77 88 99 aa bb cc dd ee ff 00 00 
+
+PSRLDQ tests completed

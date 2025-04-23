@@ -1,0 +1,84 @@
+
+[Test Case 1/2]
+Test: Simple integers
+Input: [1, -1]
+Mode: Near  Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+Test: Simple integers
+Input: [1, -1]
+Mode: Near  Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+Test: Simple integers
+Input: [1, -1]
+Mode: Down  Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+Test: Simple integers
+Input: [1, -1]
+Mode: Down  Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+Test: Simple integers
+Input: [1, -1]
+Mode: Up    Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+Test: Simple integers
+Input: [1, -1]
+Mode: Up    Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+Test: Simple integers
+Input: [1, -1]
+Mode: Zero  Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+Test: Simple integers
+Input: [1, -1]
+Mode: Zero  Expected: [       1.000000,       -1.000000]  Actual: [       1.000000,       -1.000000]
+Result: PASS
+
+
+[Test Case 2/2]
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Near  Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Near  Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Down  Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Down  Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Up    Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Up    Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Zero  Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+
+Test: Single precision boundary
+Input: [16777216, -16777216]
+Mode: Zero  Expected: [16777216.000000, -16777216.000000]  Actual: [16777216.000000, -16777216.000000]
+Result: PASS
+

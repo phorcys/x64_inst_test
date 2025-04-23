@@ -1,0 +1,19 @@
+Testing PHSUBSW (Packed Horizontal Subtract Word with Saturation)
+
+Test 1: Basic subtraction with saturation
+a: [30000, -30000, 20000, -20000]
+b: [10000, -10000, 15000, -15000]
+result: [32767, 32767, 20000, 30000]
+Expected: [32767, 32767, 20000, 30000]
+
+Test 2: Boundary values
+c: [32767, -32768, 32767, -32768]
+d: [1, -1, 1, -1]
+result: [32767, 32767, 2, 2]
+Expected: [32767, 32767, 2, 2]
+
+Test 3: Memory operand
+reg: [500, 1500, 2500, 3500]
+mem: [1000, 2000, 3000, 4000]
+result: [-1000, -1000, -1000, -1000]
+Expected: [-1000, -1000, -1000, -1000]

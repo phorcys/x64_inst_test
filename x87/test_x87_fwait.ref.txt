@@ -1,0 +1,16 @@
+Testing FWAIT instruction
+
+Test 1: Basic synchronization
+Control word without FWAIT: 0x0000
+Control word with FWAIT: 0x0000
+Test 1 PASSED - Control words match
+
+Test 2: Exception state
+Status with FWAIT: 0x3804
+Status without FWAIT: 0x3004
+Test 2 PASSED - Exception states match
+
+Test 3: Multiple FWAITs
+Control word with double FWAIT: 0x0000
+Control word without FWAIT: 0x0000
+Test 3 PASSED - Multiple FWAITs work correctly

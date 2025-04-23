@@ -1,0 +1,51 @@
+=== Testing MOVQ ===
+
+Test 1: Basic transfer
+Input: 9abcdef0 12345678
+Result: 9abcdef0 12345678
+Test 1 PASSED
+
+Test 2: Memory to register
+Input: fedcba98 87654321
+Result: fedcba98 87654321
+Test 2 PASSED
+
+Test 3.1: Boundary values
+Input: 00000000 00000000
+Result: 00000000 00000000
+Test 3.1 PASSED
+
+Test 3.2: Boundary values
+Input: ffffffff ffffffff
+Result: ffffffff ffffffff
+Test 3.2 PASSED
+
+Test 3.3: Boundary values
+Input: 7fffffff 80000000
+Result: 7fffffff 80000000
+Test 3.3 PASSED
+
+Test 3.4: Boundary values
+Input: 80000000 7fffffff
+Result: 80000000 7fffffff
+Test 3.4 PASSED
+
+Test 4: Memory operands
+Input: 2468ace0 13579bdf
+Result: 2468ace0 13579bdf
+Test 4 PASSED
+
+Test 5.1: Fixed pattern
+Input: 55555555 aaaaaaaa
+Result: 55555555 aaaaaaaa
+Test 5.1 PASSED
+
+Test 5.2: Fixed pattern
+Input: 9abcdef0 12345678
+Result: 9abcdef0 12345678
+Test 5.2 PASSED
+
+Test 5.3: Fixed pattern
+Input: 0f0f0f0f f0f0f0f0
+Result: 0f0f0f0f f0f0f0f0
+Test 5.3 PASSED

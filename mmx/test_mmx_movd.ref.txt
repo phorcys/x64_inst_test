@@ -1,0 +1,41 @@
+=== Testing MOVD ===
+
+Test 1: Basic transfer
+Input: 12345678
+Result: 12345678
+Test 1 PASSED
+
+Test 2: Memory to register
+Input: 87654321
+Result: 87654321
+Test 2 PASSED
+
+Test 3.1: Boundary value 0x00000000
+Input: 00000000
+Result: 00000000
+Test 3.1 PASSED
+
+Test 3.2: Boundary value 0xffffffff
+Input: ffffffff
+Result: ffffffff
+Test 3.2 PASSED
+
+Test 3.3: Boundary value 0x80000000
+Input: 80000000
+Result: 80000000
+Test 3.3 PASSED
+
+Test 3.4: Boundary value 0x7fffffff
+Input: 7fffffff
+Result: 7fffffff
+Test 3.4 PASSED
+
+Test 4: Memory operands
+Input: 9abcdef0
+Result: 9abcdef0
+Test 4 PASSED
+
+Test 5: Random value
+Input: a5a5a5a5
+Result: a5a5a5a5
+Test 5 PASSED

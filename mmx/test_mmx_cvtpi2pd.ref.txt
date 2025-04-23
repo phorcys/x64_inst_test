@@ -1,0 +1,96 @@
+
+Test Case 1/8
+Register Test - Input: [0, 0]
+  Expected: [                     0,                      0]
+  Actual  : [                     0,                      0]
+  Result  : PASS
+
+Memory   Test - Input: [0, 0]
+  Expected: [                     0,                      0]
+  Actual  : [                     0,                      0]
+  Result  : PASS
+
+
+Test Case 2/8
+Register Test - Input: [1, -1]
+  Expected: [                     1,                     -1]
+  Actual  : [                     1,                     -1]
+  Result  : PASS
+
+Memory   Test - Input: [1, -1]
+  Expected: [                     1,                     -1]
+  Actual  : [                     1,                     -1]
+  Result  : PASS
+
+
+Test Case 3/8
+Register Test - Input: [2147483647, -2147483648]
+  Expected: [            2147483647,            -2147483648]
+  Actual  : [            2147483647,            -2147483648]
+  Result  : PASS
+
+Memory   Test - Input: [2147483647, -2147483648]
+  Expected: [            2147483647,            -2147483648]
+  Actual  : [            2147483647,            -2147483648]
+  Result  : PASS
+
+
+Test Case 4/8
+Register Test - Input: [305419896, -1698898192]
+  Expected: [             305419896,            -1698898192]
+  Actual  : [             305419896,            -1698898192]
+  Result  : PASS
+
+Memory   Test - Input: [305419896, -1698898192]
+  Expected: [             305419896,            -1698898192]
+  Actual  : [             305419896,            -1698898192]
+  Result  : PASS
+
+
+Test Case 5/8
+Register Test - Input: [65535, -32768]
+  Expected: [                 65535,                 -32768]
+  Actual  : [                 65535,                 -32768]
+  Result  : PASS
+
+Memory   Test - Input: [65535, -32768]
+  Expected: [                 65535,                 -32768]
+  Actual  : [                 65535,                 -32768]
+  Result  : PASS
+
+
+Test Case 6/8
+Register Test - Input: [0, 0]
+  Expected: [                     0,                      0]
+  Actual  : [                     0,                      0]
+  Result  : PASS
+
+Memory   Test - Input: [0, 0]
+  Expected: [                     0,                      0]
+  Actual  : [                     0,                      0]
+  Result  : PASS
+
+
+Test Case 7/8
+Register Test - Input: [16777216, -16777216]
+  Expected: [              16777216,              -16777216]
+  Actual  : [              16777216,              -16777216]
+  Result  : PASS
+
+Memory   Test - Input: [16777216, -16777216]
+  Expected: [              16777216,              -16777216]
+  Actual  : [              16777216,              -16777216]
+  Result  : PASS
+
+
+Test Case 8/8
+Register Test - Input: [0, 0]
+  Expected: [                     0,                      0]
+  Actual  : [                     0,                      0]
+  Result  : PASS
+
+Memory   Test - Input: [0, 0]
+  Expected: [                     0,                      0]
+  Actual  : [                     0,                      0]
+  Result  : PASS
+

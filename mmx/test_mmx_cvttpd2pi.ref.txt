@@ -1,0 +1,210 @@
+
+[Test Case 1/5]
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Near  Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Near  Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Down  Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Down  Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Up    Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Up    Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Zero  Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+Test: Truncation test
+Input: [               1.999,               -1.999]
+Mode: Zero  Expected: [           1,           -1]  Actual: [           1,           -1]
+Result: PASS
+
+
+[Test Case 2/5]
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Near  Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Near  Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Down  Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Down  Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Up    Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Up    Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Zero  Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+Test: Fractional values
+Input: [             3.14159,             -2.71828]
+Mode: Zero  Expected: [           3,           -2]  Actual: [           3,           -2]
+Result: PASS
+
+
+[Test Case 3/5]
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Near  Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Near  Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Down  Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Down  Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Up    Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Up    Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Zero  Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+Test: 32-bit integer boundary
+Input: [          2147483648,          -2147483649]
+Mode: Zero  Expected: [  2147483647,  -2147483648]  Actual: [  2147483647,  -2147483648]
+Result: PASS
+
+
+[Test Case 4/5]
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Near  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Near  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Down  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Down  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Up    Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Up    Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Zero  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: Infinity handling
+Input: [                 inf,                 -inf]
+Mode: Zero  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+
+[Test Case 5/5]
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Near  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Near  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Down  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Down  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Up    Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Up    Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Zero  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+
+Test: NaN handling
+Input: [                 nan,                 -nan]
+Mode: Zero  Expected: [ -2147483648,  -2147483648]  Actual: [ -2147483648,  -2147483648]
+Result: PASS
+

@@ -1,0 +1,59 @@
+=== HSUBPD Instruction Test ===
+
+Test: Register to Register
+Input A: [2.00, 1.00]
+Input B: [4.00, 3.00]
+Result: [1.00, 1.00]
+Expected: [1.00, 1.00]
+Test PASSED
+
+Test: Memory to Register
+Input A: [5.00, 6.00]
+Input B: [8.00, 7.00]
+Result: [-1.00, 1.00]
+Expected: [-1.00, 1.00]
+Test PASSED
+
+Test: Zero values
+Input A: [0.00, 0.00]
+Input B: [0.00, 0.00]
+Result: [0.00, 0.00]
+Expected: [0.00, 0.00]
+Test PASSED
+
+Test: Negative values
+Input A: [-2.00, -1.00]
+Input B: [-2.00, -1.00]
+Result: [-1.00, -1.00]
+Expected: [-1.00, -1.00]
+Test PASSED
+
+Test: Mixed signs
+Input A: [-1.00, 1.00]
+Input B: [-1.00, 1.00]
+Result: [-2.00, -2.00]
+Expected: [-2.00, -2.00]
+Test PASSED
+
+Test: Large values
+Input A: [100000000000000000000.00, 100000000000000000000.00]
+Input B: [100000000000000000000.00, 100000000000000000000.00]
+Result: [0.00, 0.00]
+Expected: [0.00, 0.00]
+Test PASSED
+
+Test: Small values
+Input A: [0.00, 0.00]
+Input B: [0.00, 0.00]
+Result: [0.00, 0.00]
+Expected: [0.00, 0.00]
+Test PASSED
+
+Test: Special values (NaN/Inf)
+Input A: [inf, nan]
+Input B: [inf, nan]
+Result: [nan, nan]
+Expected: [nan, nan]
+Test PASSED
+
+=== All tests completed ===

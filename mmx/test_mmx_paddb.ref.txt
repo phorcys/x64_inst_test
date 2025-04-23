@@ -1,0 +1,16 @@
+Case 1 a: 08 07 06 05 04 03 02 01
+Case 1 b: 01 02 03 04 05 06 07 08
+Case 1 result: 09 09 09 09 09 09 09 09
+
+Case 2 a: 7f 7f 7f 7f 7f 7f 7f 7f
+Case 2 b: 01 01 01 01 01 01 01 01
+Case 2 result: 80 80 80 80 80 80 80 80
+
+Case 3 a: f8 f9 fa fb fc fd fe ff
+Case 3 b: ff fe fd fc fb fa f9 f8
+Case 3 result: f7 f7 f7 f7 f7 f7 f7 f7
+
+Case 4 a: 0a f6 19 e7 32 ce 7f 80
+Case 4 b: f6 0a e7 19 ce 32 80 7f
+Case 4 result: 00 00 00 00 00 00 ff ff
+

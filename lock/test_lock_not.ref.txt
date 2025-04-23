@@ -1,0 +1,1046 @@
+========= 8-bit Tests =========
+ 8-bit[ 0] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 1] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 2] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 3] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 4] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 5] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 6] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 7] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 8] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 9] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[10] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[11] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[12] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[13] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[14] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[15] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[16] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[17] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[18] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[19] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[20] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[21] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[22] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[23] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[24] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[25] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[26] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[27] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[28] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[29] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[30] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[31] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[32] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[33] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[34] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[35] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[36] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[37] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[38] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[39] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[40] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[41] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[42] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[43] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[44] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[45] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[46] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[47] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[48] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[49] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[50] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[51] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[52] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[53] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[54] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[55] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[56] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[57] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[58] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[59] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[60] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[61] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[62] RES:ff EXP:ff [32m[MEM][0m
+ 8-bit[ 0] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 1] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 2] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 3] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 4] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 5] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 6] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 7] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 8] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 9] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[10] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[11] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[12] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[13] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[14] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[15] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[16] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[17] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[18] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[19] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[20] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[21] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[22] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[23] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[24] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[25] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[26] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[27] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[28] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[29] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[30] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[31] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[32] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[33] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[34] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[35] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[36] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[37] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[38] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[39] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[40] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[41] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[42] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[43] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[44] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[45] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[46] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[47] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[48] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[49] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[50] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[51] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[52] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[53] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[54] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[55] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[56] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[57] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[58] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[59] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[60] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[61] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[62] RES:00 EXP:00 [32m[MEM][0m
+ 8-bit[ 0] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 1] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 2] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 3] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 4] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 5] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 6] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 7] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 8] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 9] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[10] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[11] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[12] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[13] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[14] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[15] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[16] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[17] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[18] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[19] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[20] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[21] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[22] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[23] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[24] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[25] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[26] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[27] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[28] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[29] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[30] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[31] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[32] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[33] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[34] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[35] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[36] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[37] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[38] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[39] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[40] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[41] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[42] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[43] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[44] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[45] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[46] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[47] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[48] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[49] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[50] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[51] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[52] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[53] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[54] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[55] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[56] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[57] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[58] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[59] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[60] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[61] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[62] RES:aa EXP:aa [32m[MEM][0m
+ 8-bit[ 0] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 1] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 2] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 3] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 4] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 5] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 6] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 7] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 8] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[ 9] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[10] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[11] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[12] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[13] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[14] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[15] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[16] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[17] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[18] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[19] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[20] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[21] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[22] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[23] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[24] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[25] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[26] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[27] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[28] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[29] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[30] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[31] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[32] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[33] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[34] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[35] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[36] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[37] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[38] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[39] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[40] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[41] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[42] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[43] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[44] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[45] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[46] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[47] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[48] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[49] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[50] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[51] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[52] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[53] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[54] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[55] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[56] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[57] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[58] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[59] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[60] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[61] RES:55 EXP:55 [32m[MEM][0m
+ 8-bit[62] RES:55 EXP:55 [32m[MEM][0m
+
+========= 16-bit Tests =========
+16-bit[ 0] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 1] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 2] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 3] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 4] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 5] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 6] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 7] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 8] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 9] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[10] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[11] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[12] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[13] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[14] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[15] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[16] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[17] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[18] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[19] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[20] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[21] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[22] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[23] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[24] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[25] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[26] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[27] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[28] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[29] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[30] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[31] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[32] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[33] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[34] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[35] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[36] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[37] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[38] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[39] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[40] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[41] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[42] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[43] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[44] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[45] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[46] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[47] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[48] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[49] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[50] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[51] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[52] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[53] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[54] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[55] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[56] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[57] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[58] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[59] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[60] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[61] RES:ffff EXP:ffff [32m[MEM][0m
+16-bit[ 0] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 1] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 2] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 3] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 4] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 5] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 6] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 7] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 8] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 9] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[10] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[11] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[12] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[13] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[14] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[15] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[16] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[17] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[18] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[19] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[20] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[21] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[22] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[23] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[24] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[25] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[26] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[27] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[28] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[29] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[30] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[31] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[32] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[33] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[34] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[35] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[36] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[37] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[38] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[39] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[40] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[41] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[42] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[43] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[44] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[45] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[46] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[47] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[48] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[49] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[50] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[51] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[52] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[53] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[54] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[55] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[56] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[57] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[58] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[59] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[60] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[61] RES:0000 EXP:0000 [32m[MEM][0m
+16-bit[ 0] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 1] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 2] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 3] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 4] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 5] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 6] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 7] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 8] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 9] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[10] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[11] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[12] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[13] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[14] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[15] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[16] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[17] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[18] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[19] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[20] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[21] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[22] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[23] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[24] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[25] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[26] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[27] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[28] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[29] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[30] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[31] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[32] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[33] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[34] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[35] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[36] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[37] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[38] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[39] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[40] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[41] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[42] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[43] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[44] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[45] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[46] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[47] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[48] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[49] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[50] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[51] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[52] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[53] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[54] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[55] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[56] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[57] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[58] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[59] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[60] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[61] RES:aaaa EXP:aaaa [32m[MEM][0m
+16-bit[ 0] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 1] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 2] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 3] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 4] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 5] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 6] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 7] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 8] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[ 9] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[10] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[11] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[12] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[13] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[14] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[15] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[16] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[17] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[18] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[19] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[20] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[21] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[22] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[23] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[24] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[25] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[26] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[27] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[28] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[29] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[30] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[31] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[32] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[33] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[34] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[35] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[36] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[37] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[38] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[39] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[40] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[41] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[42] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[43] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[44] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[45] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[46] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[47] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[48] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[49] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[50] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[51] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[52] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[53] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[54] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[55] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[56] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[57] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[58] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[59] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[60] RES:5555 EXP:5555 [32m[MEM][0m
+16-bit[61] RES:5555 EXP:5555 [32m[MEM][0m
+
+========= 32-bit Tests =========
+32-bit[ 0] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 1] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 2] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 3] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 4] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 5] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 6] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 7] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 8] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 9] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[10] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[11] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[12] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[13] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[14] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[15] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[16] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[17] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[18] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[19] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[20] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[21] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[22] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[23] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[24] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[25] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[26] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[27] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[28] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[29] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[30] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[31] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[32] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[33] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[34] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[35] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[36] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[37] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[38] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[39] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[40] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[41] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[42] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[43] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[44] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[45] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[46] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[47] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[48] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[49] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[50] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[51] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[52] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[53] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[54] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[55] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[56] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[57] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[58] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[59] RES:ffffffff EXP:ffffffff [32m[MEM][0m
+32-bit[ 0] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 1] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 2] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 3] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 4] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 5] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 6] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 7] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 8] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 9] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[10] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[11] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[12] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[13] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[14] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[15] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[16] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[17] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[18] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[19] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[20] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[21] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[22] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[23] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[24] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[25] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[26] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[27] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[28] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[29] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[30] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[31] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[32] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[33] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[34] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[35] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[36] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[37] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[38] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[39] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[40] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[41] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[42] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[43] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[44] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[45] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[46] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[47] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[48] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[49] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[50] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[51] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[52] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[53] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[54] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[55] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[56] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[57] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[58] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[59] RES:00000000 EXP:00000000 [32m[MEM][0m
+32-bit[ 0] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 1] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 2] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 3] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 4] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 5] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 6] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 7] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 8] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 9] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[10] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[11] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[12] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[13] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[14] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[15] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[16] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[17] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[18] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[19] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[20] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[21] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[22] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[23] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[24] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[25] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[26] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[27] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[28] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[29] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[30] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[31] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[32] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[33] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[34] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[35] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[36] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[37] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[38] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[39] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[40] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[41] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[42] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[43] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[44] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[45] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[46] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[47] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[48] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[49] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[50] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[51] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[52] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[53] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[54] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[55] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[56] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[57] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[58] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[59] RES:aaaaaaaa EXP:aaaaaaaa [32m[MEM][0m
+32-bit[ 0] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 1] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 2] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 3] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 4] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 5] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 6] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 7] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 8] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[ 9] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[10] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[11] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[12] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[13] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[14] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[15] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[16] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[17] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[18] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[19] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[20] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[21] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[22] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[23] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[24] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[25] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[26] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[27] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[28] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[29] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[30] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[31] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[32] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[33] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[34] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[35] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[36] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[37] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[38] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[39] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[40] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[41] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[42] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[43] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[44] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[45] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[46] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[47] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[48] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[49] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[50] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[51] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[52] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[53] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[54] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[55] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[56] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[57] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[58] RES:55555555 EXP:55555555 [32m[MEM][0m
+32-bit[59] RES:55555555 EXP:55555555 [32m[MEM][0m
+
+========= 64-bit Tests =========
+64-bit[ 0] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 1] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 2] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 3] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 4] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 5] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 6] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 7] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 8] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 9] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[10] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[11] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[12] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[13] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[14] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[15] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[16] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[17] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[18] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[19] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[20] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[21] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[22] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[23] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[24] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[25] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[26] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[27] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[28] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[29] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[30] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[31] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[32] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[33] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[34] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[35] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[36] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[37] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[38] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[39] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[40] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[41] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[42] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[43] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[44] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[45] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[46] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[47] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[48] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[49] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[50] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[51] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[52] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[53] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[54] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[55] RES:ffffffffffffffff EXP:ffffffffffffffff [32m[MEM][0m
+64-bit[ 0] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 1] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 2] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 3] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 4] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 5] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 6] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 7] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 8] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 9] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[10] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[11] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[12] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[13] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[14] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[15] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[16] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[17] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[18] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[19] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[20] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[21] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[22] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[23] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[24] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[25] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[26] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[27] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[28] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[29] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[30] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[31] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[32] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[33] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[34] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[35] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[36] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[37] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[38] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[39] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[40] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[41] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[42] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[43] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[44] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[45] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[46] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[47] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[48] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[49] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[50] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[51] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[52] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[53] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[54] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[55] RES:0000000000000000 EXP:0000000000000000 [32m[MEM][0m
+64-bit[ 0] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 1] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 2] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 3] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 4] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 5] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 6] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 7] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 8] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 9] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[10] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[11] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[12] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[13] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[14] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[15] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[16] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[17] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[18] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[19] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[20] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[21] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[22] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[23] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[24] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[25] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[26] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[27] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[28] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[29] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[30] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[31] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[32] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[33] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[34] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[35] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[36] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[37] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[38] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[39] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[40] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[41] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[42] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[43] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[44] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[45] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[46] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[47] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[48] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[49] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[50] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[51] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[52] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[53] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[54] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[55] RES:aaaaaaaaaaaaaaaa EXP:aaaaaaaaaaaaaaaa [32m[MEM][0m
+64-bit[ 0] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 1] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 2] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 3] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 4] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 5] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 6] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 7] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 8] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[ 9] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[10] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[11] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[12] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[13] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[14] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[15] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[16] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[17] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[18] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[19] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[20] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[21] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[22] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[23] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[24] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[25] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[26] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[27] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[28] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[29] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[30] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[31] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[32] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[33] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[34] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[35] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[36] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[37] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[38] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[39] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[40] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[41] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[42] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[43] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[44] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[45] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[46] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[47] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[48] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[49] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[50] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[51] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[52] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[53] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[54] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+64-bit[55] RES:5555555555555555 EXP:5555555555555555 [32m[MEM][0m
+========= 8-bit Multi-thread Test =========
+MT  8-bit[ 0] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 1] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 2] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 3] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 4] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 5] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 6] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 7] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 8] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[ 9] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[10] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[11] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[12] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[13] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[14] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[15] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+MT  8-bit[16] ACT:        55 EXP:0x0000000000000055 [32mPASS[0m
+
+========= 16-bit Multi-thread Test =========
+MT 16-bit[ 0] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 1] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 2] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 3] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 4] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 5] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 6] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 7] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 8] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[ 9] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[10] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[11] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[12] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[13] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[14] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[15] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+MT 16-bit[16] ACT:      5555 EXP:0x0000000000005555 [32mPASS[0m
+
+========= 32-bit Multi-thread Test =========
+MT 32-bit[ 0] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 1] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 2] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 3] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 4] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 5] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 6] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 7] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 8] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[ 9] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[10] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[11] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[12] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[13] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[14] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[15] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+MT 32-bit[16] ACT:  55555555 EXP:0x0000000055555555 [32mPASS[0m
+
+========= 64-bit Multi-thread Test =========
+MT 64-bit[ 0] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 1] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 2] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 3] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 4] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 5] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 6] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 7] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 8] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[ 9] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[10] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[11] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[12] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[13] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[14] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[15] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m
+MT 64-bit[16] ACT:5555555555555555 EXP:0x5555555555555555 [32mPASS[0m

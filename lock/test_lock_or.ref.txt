@@ -1,0 +1,769 @@
+========= 8-bit Tests =========
+ 8-bit[ 0] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 1] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 2] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 3] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 4] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 5] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 6] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 7] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 8] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 9] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[10] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[11] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[12] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[13] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[14] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[15] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[16] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[17] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[18] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[19] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[20] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[21] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[22] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[23] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[24] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[25] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[26] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[27] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[28] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[29] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[30] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[31] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[32] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[33] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[34] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[35] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[36] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[37] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[38] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[39] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[40] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[41] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[42] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[43] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[44] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[45] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[46] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[47] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[48] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[49] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[50] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[51] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[52] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[53] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[54] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[55] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[56] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[57] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[58] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[59] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[60] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[61] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[62] OLD:00 NEW:00 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 0] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 1] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 2] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 3] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 4] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 5] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 6] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 7] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 8] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 9] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[10] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[11] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[12] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[13] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[14] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[15] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[16] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[17] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[18] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[19] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[20] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[21] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[22] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[23] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[24] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[25] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[26] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[27] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[28] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[29] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[30] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[31] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[32] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[33] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[34] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[35] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[36] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[37] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[38] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[39] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[40] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[41] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[42] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[43] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[44] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[45] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[46] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[47] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[48] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[49] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[50] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[51] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[52] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[53] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[54] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[55] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[56] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[57] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[58] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[59] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[60] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[61] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[62] OLD:00 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 0] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 1] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 2] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 3] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 4] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 5] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 6] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 7] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 8] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[ 9] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[10] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[11] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[12] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[13] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[14] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[15] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[16] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[17] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[18] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[19] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[20] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[21] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[22] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[23] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[24] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[25] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[26] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[27] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[28] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[29] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[30] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[31] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[32] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[33] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[34] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[35] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[36] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[37] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[38] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[39] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[40] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[41] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[42] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[43] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[44] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[45] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[46] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[47] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[48] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[49] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[50] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[51] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[52] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[53] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[54] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[55] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[56] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[57] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[58] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[59] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[60] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[61] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+ 8-bit[62] OLD:55 NEW:ff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+
+========= 16-bit Tests =========
+16-bit[ 0] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 1] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 2] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 3] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 4] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 5] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 6] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 7] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 8] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 9] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[10] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[11] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[12] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[13] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[14] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[15] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[16] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[17] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[18] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[19] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[20] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[21] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[22] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[23] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[24] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[25] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[26] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[27] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[28] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[29] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[30] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[31] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[32] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[33] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[34] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[35] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[36] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[37] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[38] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[39] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[40] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[41] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[42] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[43] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[44] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[45] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[46] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[47] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[48] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[49] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[50] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[51] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[52] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[53] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[54] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[55] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[56] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[57] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[58] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[59] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[60] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[61] OLD:0000 NEW:0000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 0] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 1] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 2] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 3] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 4] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 5] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 6] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 7] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 8] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 9] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[10] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[11] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[12] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[13] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[14] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[15] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[16] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[17] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[18] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[19] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[20] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[21] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[22] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[23] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[24] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[25] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[26] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[27] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[28] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[29] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[30] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[31] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[32] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[33] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[34] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[35] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[36] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[37] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[38] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[39] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[40] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[41] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[42] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[43] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[44] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[45] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[46] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[47] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[48] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[49] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[50] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[51] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[52] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[53] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[54] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[55] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[56] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[57] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[58] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[59] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[60] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[61] OLD:1234 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 0] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 1] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 2] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 3] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 4] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 5] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 6] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 7] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 8] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[ 9] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[10] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[11] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[12] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[13] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[14] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[15] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[16] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[17] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[18] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[19] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[20] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[21] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[22] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[23] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[24] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[25] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[26] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[27] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[28] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[29] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[30] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[31] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[32] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[33] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[34] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[35] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[36] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[37] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[38] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[39] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[40] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[41] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[42] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[43] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[44] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[45] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[46] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[47] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[48] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[49] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[50] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[51] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[52] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[53] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[54] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[55] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[56] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[57] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[58] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[59] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[60] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+16-bit[61] OLD:5555 NEW:ffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+
+========= 32-bit Tests =========
+32-bit[ 0] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 1] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 2] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 3] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 4] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 5] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 6] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 7] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 8] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 9] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[10] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[11] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[12] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[13] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[14] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[15] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[16] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[17] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[18] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[19] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[20] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[21] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[22] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[23] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[24] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[25] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[26] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[27] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[28] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[29] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[30] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[31] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[32] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[33] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[34] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[35] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[36] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[37] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[38] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[39] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[40] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[41] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[42] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[43] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[44] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[45] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[46] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[47] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[48] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[49] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[50] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[51] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[52] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[53] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[54] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[55] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[56] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[57] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[58] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[59] OLD:00000000 NEW:00000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 0] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 1] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 2] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 3] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 4] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 5] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 6] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 7] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 8] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 9] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[10] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[11] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[12] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[13] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[14] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[15] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[16] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[17] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[18] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[19] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[20] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[21] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[22] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[23] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[24] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[25] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[26] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[27] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[28] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[29] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[30] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[31] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[32] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[33] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[34] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[35] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[36] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[37] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[38] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[39] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[40] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[41] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[42] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[43] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[44] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[45] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[46] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[47] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[48] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[49] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[50] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[51] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[52] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[53] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[54] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[55] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[56] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[57] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[58] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[59] OLD:12345678 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 0] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 1] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 2] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 3] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 4] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 5] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 6] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 7] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 8] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[ 9] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[10] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[11] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[12] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[13] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[14] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[15] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[16] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[17] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[18] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[19] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[20] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[21] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[22] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[23] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[24] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[25] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[26] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[27] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[28] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[29] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[30] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[31] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[32] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[33] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[34] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[35] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[36] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[37] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[38] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[39] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[40] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[41] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[42] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[43] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[44] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[45] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[46] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[47] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[48] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[49] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[50] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[51] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[52] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[53] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[54] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[55] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[56] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[57] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[58] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+32-bit[59] OLD:55555555 NEW:ffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+
+========= 64-bit Tests =========
+64-bit[ 0] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 1] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 2] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 3] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 4] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 5] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 6] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 7] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 8] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 9] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[10] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[11] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[12] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[13] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[14] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[15] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[16] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[17] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[18] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[19] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[20] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[21] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[22] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[23] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[24] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[25] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[26] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[27] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[28] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[29] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[30] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[31] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[32] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[33] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[34] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[35] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[36] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[37] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[38] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[39] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[40] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[41] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[42] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[43] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[44] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[45] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[46] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[47] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[48] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[49] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[50] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[51] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[52] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[53] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[54] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[55] OLD:0000000000000000 NEW:0000000000000000 CF:0/0 ZF:1/1 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 0] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 1] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 2] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 3] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 4] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 5] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 6] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 7] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 8] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 9] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[10] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[11] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[12] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[13] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[14] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[15] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[16] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[17] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[18] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[19] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[20] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[21] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[22] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[23] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[24] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[25] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[26] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[27] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[28] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[29] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[30] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[31] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[32] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[33] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[34] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[35] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[36] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[37] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[38] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[39] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[40] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[41] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[42] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[43] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[44] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[45] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[46] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[47] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[48] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[49] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[50] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[51] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[52] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[53] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[54] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[55] OLD:123456789abcdef0 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 0] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 1] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 2] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 3] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 4] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 5] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 6] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 7] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 8] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[ 9] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[10] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[11] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[12] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[13] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[14] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[15] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[16] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[17] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[18] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[19] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[20] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[21] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[22] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[23] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[24] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[25] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[26] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[27] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[28] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[29] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[30] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[31] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[32] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[33] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[34] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[35] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[36] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[37] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[38] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[39] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[40] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[41] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[42] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[43] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[44] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[45] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[46] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[47] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[48] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[49] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[50] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[51] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[52] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[53] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[54] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+64-bit[55] OLD:5555555555555555 NEW:ffffffffffffffff CF:0/0 ZF:0/0 [32m[MEM][0m[32m[FLAGS][0m
+========= 8-bit Multi-thread Test =========
+MT OR  8-bit[ 0] ACT:       255 EXP:       255 [32mPASS[0m
+MT OR  8-bit[ 2] ACT:       255 EXP:       255 [32mPASS[0m
+MT OR  8-bit[ 4] ACT:       255 EXP:       255 [32mPASS[0m
+MT OR  8-bit[ 6] ACT:       255 EXP:       255 [32mPASS[0m
+MT OR  8-bit[ 8] ACT:       255 EXP:       255 [32mPASS[0m
+MT OR  8-bit[10] ACT:       255 EXP:       255 [32mPASS[0m
+MT OR  8-bit[12] ACT:       255 EXP:       255 [32mPASS[0m
+MT OR  8-bit[14] ACT:       255 EXP:       255 [32mPASS[0m
+
+========= 16-bit Multi-thread Test =========
+MT OR 16-bit[ 0] ACT:     65535 EXP:     65535 [32mPASS[0m
+MT OR 16-bit[ 2] ACT:     65535 EXP:     65535 [32mPASS[0m
+MT OR 16-bit[ 4] ACT:     65535 EXP:     65535 [32mPASS[0m
+MT OR 16-bit[ 6] ACT:     65535 EXP:     65535 [32mPASS[0m
+MT OR 16-bit[ 8] ACT:     65535 EXP:     65535 [32mPASS[0m
+MT OR 16-bit[10] ACT:     65535 EXP:     65535 [32mPASS[0m
+MT OR 16-bit[12] ACT:     65535 EXP:     65535 [32mPASS[0m
+MT OR 16-bit[14] ACT:     65535 EXP:     65535 [32mPASS[0m
+
+========= 32-bit Multi-thread Test =========
+MT OR 32-bit[ 0] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+MT OR 32-bit[ 2] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+MT OR 32-bit[ 4] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+MT OR 32-bit[ 6] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+MT OR 32-bit[ 8] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+MT OR 32-bit[10] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+MT OR 32-bit[12] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+MT OR 32-bit[14] ACT:4294967295 EXP:4294967295 [32mPASS[0m
+
+========= 64-bit Multi-thread Test =========
+MT OR 64-bit[ 0] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m
+MT OR 64-bit[ 2] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m
+MT OR 64-bit[ 4] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m
+MT OR 64-bit[ 6] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m
+MT OR 64-bit[ 8] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m
+MT OR 64-bit[10] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m
+MT OR 64-bit[12] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m
+MT OR 64-bit[14] ACT:18446744073709551615 EXP:18446744073709551615 [32mPASS[0m

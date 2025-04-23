@@ -1,0 +1,91 @@
+
+==== Testing FLD (float) ====
+Original: 0
+Loaded: 0
+[TEST] Value loaded correctly                   PASS
+Original: -0
+Loaded: -0
+[TEST] Value loaded correctly                   PASS
+Original: 1
+Loaded: 1
+[TEST] Value loaded correctly                   PASS
+Original: -1
+Loaded: -1
+[TEST] Value loaded correctly                   PASS
+Original: 123.456001281738
+Loaded: 123.456001281738
+[TEST] Value loaded correctly                   PASS
+Original: -123.456001281738
+Loaded: -123.456001281738
+[TEST] Value loaded correctly                   PASS
+Original: 3.40282346638529e+38
+Loaded: 3.40282346638529e+38
+[TEST] Value loaded correctly                   PASS
+Original: -3.40282346638529e+38
+Loaded: -3.40282346638529e+38
+[TEST] Value loaded correctly                   PASS
+Original: 1.17549435082229e-38
+Loaded: 1.17549435082229e-38
+[TEST] Value loaded correctly                   PASS
+Original: -1.17549435082229e-38
+Loaded: -1.17549435082229e-38
+[TEST] Value loaded correctly                   PASS
+Original: +INF
+Loaded: +INF
+[TEST] Value loaded correctly                   PASS
+Original: -INF
+Loaded: -INF
+[TEST] Value loaded correctly                   PASS
+Original: +NaN
+Loaded: +NaN
+[TEST] NaN value loaded correctly               PASS
+Original: -NaN
+Loaded: -NaN
+[TEST] NaN value loaded correctly               PASS
+
+==== Testing FLD (double) ====
+Original: 0
+Loaded: 0
+[TEST] Value loaded correctly                   PASS
+Original: -0
+Loaded: -0
+[TEST] Value loaded correctly                   PASS
+Original: 1
+Loaded: 1
+[TEST] Value loaded correctly                   PASS
+Original: -1
+Loaded: -1
+[TEST] Value loaded correctly                   PASS
+Original: 123.456789
+Loaded: 123.456789
+[TEST] Value loaded correctly                   PASS
+Original: -123.456789
+Loaded: -123.456789
+[TEST] Value loaded correctly                   PASS
+Original: 1.79769313486232e+308
+Loaded: 1.79769313486232e+308
+[TEST] Value loaded correctly                   PASS
+Original: -1.79769313486232e+308
+Loaded: -1.79769313486232e+308
+[TEST] Value loaded correctly                   PASS
+Original: 2.2250738585072e-308
+Loaded: 2.2250738585072e-308
+[TEST] Value loaded correctly                   PASS
+Original: -2.2250738585072e-308
+Loaded: -2.2250738585072e-308
+[TEST] Value loaded correctly                   PASS
+Original: +INF
+Loaded: +INF
+[TEST] Value loaded correctly                   PASS
+Original: -INF
+Loaded: -INF
+[TEST] Value loaded correctly                   PASS
+Original: +NaN
+Loaded: +NaN
+[TEST] NaN value loaded correctly               PASS
+Original: -NaN
+Loaded: -NaN
+[TEST] NaN value loaded correctly               PASS
+
+==== Testing FLD stack pointer ====
+[TEST] Stack pointer decremented                PASS

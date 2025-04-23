@@ -1,0 +1,156 @@
+
+[Test Case 1/6]
+Test: Mid-point rounding test [NEAREST]
+Input: [1.500000, -1.500000]
+Expected: [2, -2]
+Actual: [2, -2]
+Result: PASS
+
+Test: Mid-point rounding test [DOWN]
+Input: [1.500000, -1.500000]
+Expected: [1, -2]
+Actual: [1, -2]
+Result: PASS
+
+Test: Mid-point rounding test [UP]
+Input: [1.500000, -1.500000]
+Expected: [2, -1]
+Actual: [2, -1]
+Result: PASS
+
+Test: Mid-point rounding test [TO_ZERO]
+Input: [1.500000, -1.500000]
+Expected: [1, -1]
+Actual: [1, -1]
+Result: PASS
+
+
+[Test Case 2/6]
+Test: 32-bit boundary test [NEAREST]
+Input: [2147483648.000000, -2147483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test [DOWN]
+Input: [2147483648.000000, -2147483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test [UP]
+Input: [2147483648.000000, -2147483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test [TO_ZERO]
+Input: [2147483648.000000, -2147483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+
+[Test Case 3/6]
+Test: 32-bit boundary test 2 [NEAREST]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test 2 [DOWN]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test 2 [UP]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: 32-bit boundary test 2 [TO_ZERO]
+Input: [-2247483648.000000, 2247483648.000000]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+
+[Test Case 4/6]
+Test: Fractional values [NEAREST]
+Input: [3.141590, -2.718280]
+Expected: [3, -3]
+Actual: [3, -3]
+Result: PASS
+
+Test: Fractional values [DOWN]
+Input: [3.141590, -2.718280]
+Expected: [3, -3]
+Actual: [3, -3]
+Result: PASS
+
+Test: Fractional values [UP]
+Input: [3.141590, -2.718280]
+Expected: [4, -2]
+Actual: [4, -2]
+Result: PASS
+
+Test: Fractional values [TO_ZERO]
+Input: [3.141590, -2.718280]
+Expected: [3, -2]
+Actual: [3, -2]
+Result: PASS
+
+
+[Test Case 5/6]
+Test: NaN and infinity test [NEAREST]
+Input: [nan, -inf]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: NaN and infinity test [DOWN]
+Input: [nan, -inf]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: NaN and infinity test [UP]
+Input: [nan, -inf]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+Test: NaN and infinity test [TO_ZERO]
+Input: [nan, -inf]
+Expected: [-2147483648, -2147483648]
+Actual: [-2147483648, -2147483648]
+Result: PASS
+
+
+[Test Case 6/6]
+Test: Near boundary test [NEAREST]
+Input: [0.499999, -0.500001]
+Expected: [0, -1]
+Actual: [0, -1]
+Result: PASS
+
+Test: Near boundary test [DOWN]
+Input: [0.499999, -0.500001]
+Expected: [0, -1]
+Actual: [0, -1]
+Result: PASS
+
+Test: Near boundary test [UP]
+Input: [0.499999, -0.500001]
+Expected: [1, 0]
+Actual: [1, 0]
+Result: PASS
+
+Test: Near boundary test [TO_ZERO]
+Input: [0.499999, -0.500001]
+Expected: [0, 0]
+Actual: [0, 0]
+Result: PASS
+

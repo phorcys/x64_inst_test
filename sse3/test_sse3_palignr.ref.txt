@@ -1,0 +1,82 @@
+=== Testing MMX PALIGNR ===
+Shift: 0
+Expected: 21 22 23 24 25 26 27 28 
+Result:   21 22 23 24 25 26 27 28 
+
+Shift: 1
+Expected: 22 23 24 25 26 27 28 11 
+Result:   22 23 24 25 26 27 28 11 
+
+Shift: 7
+Expected: 28 11 12 13 14 15 16 17 
+Result:   28 11 12 13 14 15 16 17 
+
+Shift: 8
+Expected: 11 12 13 14 15 16 17 18 
+Result:   11 12 13 14 15 16 17 18 
+
+Shift: 15
+Expected: 18 00 00 00 00 00 00 00 
+Result:   18 00 00 00 00 00 00 00 
+
+Shift: 16
+Expected: 00 00 00 00 00 00 00 00 
+Result:   00 00 00 00 00 00 00 00 
+
+Shift: 31
+Expected: 00 00 00 00 00 00 00 00 
+Result:   00 00 00 00 00 00 00 00 
+
+
+=== Testing SSE PALIGNR ===
+Shift: 0
+Expected: 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 20 
+Result:   21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 20 
+
+Shift: 1
+Expected: 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 20 11 
+Result:   22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 20 11 
+
+Shift: 7
+Expected: 28 29 2a 2b 2c 2d 2e 2f 20 11 12 13 14 15 16 17 
+Result:   28 29 2a 2b 2c 2d 2e 2f 20 11 12 13 14 15 16 17 
+
+Shift: 8
+Expected: 29 2a 2b 2c 2d 2e 2f 20 11 12 13 14 15 16 17 18 
+Result:   29 2a 2b 2c 2d 2e 2f 20 11 12 13 14 15 16 17 18 
+
+Shift: 15
+Expected: 20 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+Result:   20 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+
+Shift: 16
+Expected: 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 10 
+Result:   11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 10 
+
+Shift: 31
+Expected: 10 01 00 00 00 00 00 00 00 a4 81 00 00 00 00 00 
+Result:   10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Shift: 32
+Expected: 01 00 00 00 00 00 00 00 a4 81 00 00 00 00 00 00 
+Result:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Shift: 63
+Expected: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+
+=== Testing Different Data Types ===
+16-bit data (shift 4 bytes):
+Expected: 0x2323 0x2424 0x2525 0x2626 0x2727 0x2828 0x1111 0x1212
+Result:   0x2323 0x2424 0x2525 0x2626 0x2727 0x2828 0x1111 0x1212 
+
+32-bit data (shift 8 bytes):
+Expected: 0x23232323 0x24242424 0x11111111 0x12121212
+Result:   0x23232323 0x24242424 0x11111111 0x12121212 
+
+64-bit data (shift 8 bytes):
+Expected: 0x2222222222222222 0x1111111111111111
+Result:   0x2222222222222222 0x1111111111111111 
+
+=== PALIGNR Tests Completed ===

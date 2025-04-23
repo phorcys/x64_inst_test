@@ -1,0 +1,14 @@
+Testing PUNPCKLBW instruction
+
+Test 1: Register to register
+Expected: 0xDD44CC33BB22AA11
+Got:      0xAA11BB22CC33DD44
+
+Test 2: Memory to register
+Expected: 0xDD44CC33BB22AA11
+Got:      0xAA11BB22CC33DD44
+
+Test 3: Boundary values
+Expected: 0xFF00FF00FF00FF00
+Got:      0xFF00FF00FF00FF00
+

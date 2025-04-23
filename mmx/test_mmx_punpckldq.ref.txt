@@ -1,0 +1,43 @@
+=== Testing PUNPCKLDQ (Unpack Low Doublewords) ===
+
+Test 1: Basic unpack
+Input A        : [0]=55667788 [1]=11223344
+Input B        : [0]=e5f60718 [1]=a1b2c3d4
+Result         : [0]=55667788 [1]=e5f60718
+Test 1 PASSED
+
+Test 2: Zero values
+Input A        : [0]=00000000 [1]=00000000
+Input B        : [0]=ffffffff [1]=ffffffff
+Result         : [0]=00000000 [1]=ffffffff
+Test 2 PASSED
+
+Test 3: Boundary values
+Input A        : [0]=7fffffff [1]=80000000
+Input B        : [0]=80000000 [1]=7fffffff
+Result         : [0]=7fffffff [1]=80000000
+Test 3 PASSED
+
+Test 4: Memory operands
+Input A        : [0]=9abcdef0 [1]=12345678
+Input B        : [0]=89abcdef [1]=01234567
+Result         : [0]=9abcdef0 [1]=89abcdef
+Test 4 PASSED
+
+Test 5: Mixed values with memory operands
+Input A        : [0]=12345678 [1]=9abcdef0
+Input B        : [0]=01234567 [1]=89abcdef
+Result         : [0]=12345678 [1]=01234567
+Test 5 PASSED
+
+Test 6: Max/Min values
+Input A        : [0]=00000000 [1]=ffffffff
+Input B        : [0]=ffffffff [1]=00000000
+Result         : [0]=00000000 [1]=ffffffff
+Test 6 PASSED
+
+Test 7: Same values
+Input A        : [0]=55555555 [1]=aaaaaaaa
+Input B        : [0]=55555555 [1]=aaaaaaaa
+Result         : [0]=55555555 [1]=55555555
+Test 7 PASSED

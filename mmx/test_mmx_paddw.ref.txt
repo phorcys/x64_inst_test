@@ -1,0 +1,16 @@
+Case 1 a: 0190 012c 00c8 0064
+Case 1 b: 0064 00c8 012c 0190
+Case 1 result: 01f4 01f4 01f4 01f4
+
+Case 2 a: 7fff 7fff 7fff 7fff
+Case 2 b: 0001 0001 0001 0001
+Case 2 result: 8000 8000 8000 8000
+
+Case 3 a: fe70 fed4 ff38 ff9c
+Case 3 b: ff9c ff38 fed4 fe70
+Case 3 result: fe0c fe0c fe0c fe0c
+
+Case 4 a: 3e80 c180 7fff 8000
+Case 4 b: c180 3e80 8000 7fff
+Case 4 result: 0000 0000 ffff ffff
+
