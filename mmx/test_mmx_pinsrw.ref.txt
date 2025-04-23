@@ -1,5 +1,0 @@
-=== PINSTRW Test ===
-Original: 1111 2222 3333 4444 5555 6666 7777 8888 
-Modified: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF 
-
-Test Summary: PASS - 0 failures

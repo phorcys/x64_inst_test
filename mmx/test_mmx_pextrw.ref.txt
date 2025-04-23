@@ -1,4 +1,0 @@
-=== PEXTRW Test ===
-Source: 1234 5678 9ABC DEF0 CAFE BABE DEAD BEEF 
-
-Test Summary: PASS - 0 failures

@@ -1,0 +1,57 @@
+=== Testing POPCNT instruction ===
+
+16-bit tests:
+popcntw 0x0000 => 0x0000 (expected 0x0000)
+  EFLAGS after:0x0000000000000242
+  Flags: CF=0 PF=0 AF=0 ZF=1 SF=0 OF=0 PASS
+popcntw 0xffff => 0x0010 (expected 0x0010)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntw 0x5555 => 0x0008 (expected 0x0008)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntw 0xaaaa => 0x0008 (expected 0x0008)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntw 0x1234 => 0x0005 (expected 0x0005)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+
+32-bit tests:
+popcntl 0x00000000 => 0x00000000 (expected 0x00000000)
+  EFLAGS after:0x0000000000000242
+  Flags: CF=0 PF=0 AF=0 ZF=1 SF=0 OF=0 PASS
+popcntl 0xffffffff => 0x00000020 (expected 0x00000020)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntl 0x55555555 => 0x00000010 (expected 0x00000010)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntl 0xaaaaaaaa => 0x00000010 (expected 0x00000010)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntl 0x12345678 => 0x0000000d (expected 0x0000000d)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+
+64-bit tests:
+popcntq 0x0000000000000000 => 0x0000000000000000 (expected 0x0000000000000000)
+  EFLAGS after:0x0000000000000242
+  Flags: CF=0 PF=0 AF=0 ZF=1 SF=0 OF=0 PASS
+popcntq 0xffffffffffffffff => 0x0000000000000040 (expected 0x0000000000000040)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntq 0x5555555555555555 => 0x0000000000000020 (expected 0x0000000000000020)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntq 0xaaaaaaaaaaaaaaaa => 0x0000000000000020 (expected 0x0000000000000020)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+popcntq 0x0123456789abcdef => 0x0000000000000020 (expected 0x0000000000000020)
+  EFLAGS after:0x0000000000000202
+  Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0 PASS
+
+Memory operand tests:
+popcntw [mem16] => 0x0005 (expected 0x0005) PASS
+popcntl [mem32] => 0x0000000d (expected 0x0000000D) PASS
+popcntq [mem64] => 0x0000000000000020 (expected 0x0000000000000020) PASS

@@ -24,7 +24,7 @@
 static void test_pextrq_reg() {
     TEST_CASE("PEXTRQ with registers");
     
-    __m128i vec = _mm_set_epi64x((__m64)0x1122334455667788ULL, (__m64)0x123456789ABCDEF0ULL);
+    __m128i vec = _mm_set_epi64x(0x1122334455667788ULL, 0x123456789ABCDEF0ULL);
     uint64_t result, expected;
     
     // Test all positions
