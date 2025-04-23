@@ -18,7 +18,7 @@ int main() {
         "movdqu %1, %%xmm1\n\t"
         "mov $1000000000, %%ecx\n\t"
         "1:\n\t"
-        "dpps $0x77, %%xmm1, %%xmm0\n\t" // 全掩码模式
+        "dpps $0xff, %%xmm1, %%xmm0\n\t" // 全掩码模式
         "dec %%ecx\n\t"
         "jnz 1b\n\t"
         : 
