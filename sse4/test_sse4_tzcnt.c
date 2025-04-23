@@ -16,10 +16,8 @@
             : "=r"(eflags_before), "=r"(res), "=r"(eflags_after) \
             : "r"(a)); \
         printf("tzcntw 0x%04x => 0x%04x (expected 0x%04x)\n" \
-               "  EFLAGS after:0x%016" PRIx64 "\n" \
                "  Flags: CF=%d ZF=%d %s\n", \
                a, res, expected, \
-               eflags_after, \
                (int)((eflags_after >> 0) & 1), (int)((eflags_after >> 6) & 1), \
                res == expected ? "PASS" : "FAIL"); \
     } while(0)
@@ -38,10 +36,8 @@
             : "=r"(eflags_before), "=r"(res), "=r"(eflags_after) \
             : "r"(a)); \
         printf("tzcntl 0x%08x => 0x%08x (expected 0x%08x)\n" \
-               "  EFLAGS after:0x%016" PRIx64 "\n" \
                "  Flags: CF=%d ZF=%d %s\n", \
                a, res, expected, \
-               eflags_after, \
                (int)((eflags_after >> 0) & 1), (int)((eflags_after >> 6) & 1), \
                res == expected ? "PASS" : "FAIL"); \
     } while(0)
@@ -60,10 +56,8 @@
             : "=r"(eflags_before), "=r"(res), "=r"(eflags_after) \
             : "r"(a)); \
         printf("tzcntq 0x%016" PRIx64 " => 0x%016" PRIx64 " (expected 0x%016" PRIx64 ")\n" \
-               "  EFLAGS after:0x%016" PRIx64 "\n" \
                "  Flags: CF=%d ZF=%d %s\n", \
                (uint64_t)a, (uint64_t)res, (uint64_t)expected, \
-               (uint64_t)eflags_after, \
                (int)((eflags_after >> 0) & 1), (int)((eflags_after >> 6) & 1), \
                res == expected ? "PASS" : "FAIL"); \
     } while(0)
