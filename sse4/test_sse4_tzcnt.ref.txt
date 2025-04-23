@@ -37,6 +37,6 @@ tzcntq 0xaaaaaaaaaaaaaaaa => 0x0000000000000001 (expected 0x0000000000000001)
   Flags: CF=0 ZF=0 PASS
 
 Memory operand tests:
-tzcntw [mem16] => 0x0003 (expected 0x0003) PASS
-tzcntl [mem32] => 0x00000004 (expected 0x00000004) PASS
-tzcntq [mem64] => 0x0000000000000005 (expected 0x0000000000000005) PASS
+tzcntw [mem16] 0x0008  => 0x0003 (expected 0x0003) PASS
+tzcntl [mem32] 0x00000010 => 0x00000004 (expected 0x00000004) PASS
+tzcntq [mem64] 0x0000000000000020 => 0x0000000000000005 (expected 0x0000000000000005) PASS

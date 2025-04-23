@@ -97,17 +97,17 @@ int main() {
     printf("\nMemory operand tests:\n");
     uint16_t res16;
     __asm__ volatile ("tzcntw %1, %0" : "=r"(res16) : "m"(mem16));
-    printf("tzcntw [mem16] => 0x%04x (expected 0x0003) %s\n",
+    printf("tzcntw [mem16] 0x%04x  => 0x%04x (expected 0x0003) %s\n", mem16,
            res16, res16 == 3 ? "PASS" : "FAIL");
 
     uint32_t res32;
     __asm__ volatile ("tzcntl %1, %0" : "=r"(res32) : "m"(mem32));
-    printf("tzcntl [mem32] => 0x%08x (expected 0x00000004) %s\n",
+    printf("tzcntl [mem32] 0x%08x => 0x%08x (expected 0x00000004) %s\n",mem32,
            res32, res32 == 4 ? "PASS" : "FAIL");
 
     uint64_t res64;
     __asm__ volatile ("tzcntq %q1, %q0" : "=r"(res64) : "m"(mem64));
-    printf("tzcntq [mem64] => 0x%016" PRIx64 " (expected 0x0000000000000005) %s\n",
+    printf("tzcntq [mem64] 0x%016x => 0x%016" PRIx64 " (expected 0x0000000000000005) %s\n", mem64,
            res64, res64 == 5 ? "PASS" : "FAIL");
 
     return 0;
