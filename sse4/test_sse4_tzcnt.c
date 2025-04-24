@@ -89,7 +89,7 @@ int main() {
     TEST_TZCNT64(0x8000000000000000ULL, 63);  // Should clear CF, ZF=0
     TEST_TZCNT64(0xAAAAAAAAAAAAAAAAULL, 1);   // Should clear CF, ZF=0
 
-    // Test memory operands
+   // Test memory operands
     uint16_t mem16 = 0x0008;
     uint32_t mem32 = 0x00000010;
     uint64_t mem64 = 0x0000000000000020ULL;
