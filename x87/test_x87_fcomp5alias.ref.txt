@@ -1,0 +1,121 @@
+Testing FCOMP5alias (ST(0) vs ST(5) with pop):
+
+Test case 1:
+ST(0): 0.00000000000000000000 (0x00000000000000000000)
+ST(5): 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x5800
+Tag Word:     0x5800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test case 2:
+ST(0): 0.00000000000000000000 (0x00000000000000000000)
+ST(5): -0.00000000000000000000 (0x80000000000000000000)
+Control Word: 0x037f
+Status Word:  0x5800
+Tag Word:     0x5800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test case 3:
+ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
+ST(5): 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x5800
+Tag Word:     0x5800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test case 4:
+ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
+ST(5): -1.00000000000000000000 (0xbfff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x1800
+Tag Word:     0x1800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 5:
+ST(0): inf (0x7fff8000000000000000)
+ST(5): inf (0x7fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x5800
+Tag Word:     0x5800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test case 6:
+ST(0): inf (0x7fff8000000000000000)
+ST(5): -inf (0xffff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x1800
+Tag Word:     0x1800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 7:
+ST(0): nan (0x7fffc000000000000000)
+ST(5): nan (0x7fffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x5d01
+Tag Word:     0x5d01
+Top: 3
+C0: 1, C1: 0, C2: 1, C3: 1
+Exceptions: IE 
+
+Test case 8:
+ST(0): nan (0x7fffc000000000000000)
+ST(5): 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x5d01
+Tag Word:     0x5d01
+Top: 3
+C0: 1, C1: 0, C2: 1, C3: 1
+Exceptions: IE 
+
+Test case 9:
+ST(0): 0.00000000000000000000 (0x00000000000000000001)
+ST(5): 0.00000000000000000000 (0x00000000000000000001)
+Control Word: 0x037f
+Status Word:  0x5802
+Tag Word:     0x5802
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: DE 
+
+Test case 10:
+ST(0): 3.14159265358979323851 (0x4000c90fdaa22168c235)
+ST(5): 2.71828182845904523543 (0x4000adf85458a2bb4a9b)
+Control Word: 0x037f
+Status Word:  0x1800
+Tag Word:     0x1800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 11:
+ST(0): 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
+ST(5): 0.00000000000000000000 (0x3eb2dff9772470297ebd)
+Control Word: 0x037f
+Status Word:  0x1800
+Tag Word:     0x1800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 12:
+ST(0): 0.00000000000000000000 (0x3eb2dff9772470297ebd)
+ST(5): 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
+Control Word: 0x037f
+Status Word:  0x1900
+Tag Word:     0x1900
+Top: 3
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 

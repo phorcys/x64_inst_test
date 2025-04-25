@@ -1,0 +1,144 @@
+=== Testing FCOMI ===
+
+Test 1: Equal values
+Values: 1.000000 vs 1.000000
+EFLAGS: 0x00000242
+ZF: 1
+PF: 0
+CF: 0
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 2: First less than second
+Values: 1.000000 vs 2.000000
+EFLAGS: 0x00000202
+ZF: 0
+PF: 0
+CF: 0
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3: First greater than second
+Values: 2.000000 vs 1.000000
+EFLAGS: 0x00000203
+ZF: 0
+PF: 0
+CF: 1
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: Positive and negative zero
+Values: 0.000000 vs -0.000000
+EFLAGS: 0x00000242
+ZF: 1
+PF: 0
+CF: 0
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 5: Positive infinities
+Values: inf vs inf
+EFLAGS: 0x00000242
+ZF: 1
+PF: 0
+CF: 0
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 6: Positive vs negative infinity
+Values: inf vs -inf
+EFLAGS: 0x00000203
+ZF: 0
+PF: 0
+CF: 1
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 7: Infinity vs finite
+Values: inf vs 1.000000
+EFLAGS: 0x00000203
+ZF: 0
+PF: 0
+CF: 1
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 8: NaN values
+Values: nan vs nan
+EFLAGS: 0x00000247
+ZF: 1
+PF: 1
+CF: 1
+Control Word: 0x037f
+Status Word:  0x0101
+Tag Word:     0x0101
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE 
+
+Test 9: NaN vs finite
+Values: nan vs 1.000000
+EFLAGS: 0x00000247
+ZF: 1
+PF: 1
+CF: 1
+Control Word: 0x037f
+Status Word:  0x0101
+Tag Word:     0x0101
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE 
+
+Test 10: Denormal values
+Values: 0.000000 vs 0.000000
+EFLAGS: 0x00000242
+ZF: 1
+PF: 0
+CF: 0
+Control Word: 0x037f
+Status Word:  0x0103
+Tag Word:     0x0103
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE 
+
+Test 11: PI vs E
+Values: 3.141593 vs 2.718282
+EFLAGS: 0x00000203
+ZF: 0
+PF: 0
+CF: 1
+Control Word: 0x037f
+Status Word:  0x0103
+Tag Word:     0x0103
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE 

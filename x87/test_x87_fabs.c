@@ -9,6 +9,11 @@ void test_fabs() {
     long double test_values[] = {
         POS_ZERO, NEG_ZERO,            // 零值
         POS_ONE, NEG_ONE,              // 正常值
+        0.5L, -0.5L,                   // 小数
+        1e-10L, -1e-10L,               // 接近零的小数
+        1e10L, -1e10L,                 // 大数
+        1e100L, -1e100L,               // 极大数
+        1e-100L, -1e-100L,             // 极小数
         POS_DENORM, NEG_DENORM,        // 非正规数
         POS_INF, NEG_INF,              // 无穷大
         POS_NAN, NEG_NAN               // NaN

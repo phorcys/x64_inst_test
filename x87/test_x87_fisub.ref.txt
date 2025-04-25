@@ -1,0 +1,143 @@
+=== Testing FISUB (16-bit) ===
+
+Test 1: Normal subtraction
+Operation: 4.000000 - 2
+Result: 2.00000000000000000000 (0x40008000000000000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 2: Fraction subtraction
+Operation: 1.500000 - 3
+Result: -1.50000000000000000000 (0xbfffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3: Subtract zero
+Operation: 1.000000 - 0
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: Infinity subtraction
+Operation: inf - 2
+Result: inf (0x7fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 5: Subtract INT16_MAX
+Operation: 2.000000 - 32767
+Result: -32765.00000000000000000000 (0xc00dfffa000000000000)
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 6: Subtract INT16_MIN
+Operation: 2.000000 - -32768
+Result: 32770.00000000000000000000 (0x400e8002000000000000)
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 7: NaN subtraction
+Operation: nan - 2
+Result: nan (0x7fffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+=== Testing FISUB (32-bit) ===
+
+Test 1: Normal subtraction
+Operation: 4.000000 - 2
+Result: 2.00000000000000000000 (0x40008000000000000000)
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 2: Fraction subtraction
+Operation: 1.500000 - 3
+Result: -1.50000000000000000000 (0xbfffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3: Subtract zero
+Operation: 1.000000 - 0
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: Infinity subtraction
+Operation: inf - 2
+Result: inf (0x7fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 5: Subtract INT32_MAX
+Operation: 2.000000 - 2147483647
+Result: -2147483645.00000000000000000000 (0xc01dfffffffa00000000)
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 6: Subtract INT32_MIN
+Operation: 2.000000 - -2147483648
+Result: 2147483650.00000000000000000000 (0x401e8000000200000000)
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 7: NaN subtraction
+Operation: nan - 2
+Result: nan (0x7fffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 

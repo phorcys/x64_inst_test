@@ -14,12 +14,19 @@ void test_faddp() {
         long double b;
         long double expected;
     } test_cases[] = {
-        {1.0L, 2.0L, 3.0L},          // 简单加法
-        {-1.0L, 1.0L, 0.0L},         // 正负相加
-        {POS_ZERO, NEG_ZERO, 0.0L},   // 零值相加
-        {POS_INF, POS_INF, POS_INF},  // 无穷大相加
-        {POS_INF, NEG_INF, POS_NAN},  // 正负无穷相加
-        {POS_NAN, 1.0L, POS_NAN},     // NaN相加
+        {1.0L, 2.0L, 3.0L},                  // 简单加法
+        {-1.0L, 1.0L, 0.0L},                 // 正负相加
+        {POS_ZERO, NEG_ZERO, 0.0L},          // 零值相加
+        {POS_INF, POS_INF, POS_INF},         // 无穷大相加
+        {POS_INF, NEG_INF, POS_NAN},         // 正负无穷相加
+        {POS_NAN, 1.0L, POS_NAN},            // NaN与数值相加
+        {POS_NAN, POS_NAN, POS_NAN},         // NaN与NaN相加
+        {1e100L, 1e100L, 2e100L},            // 极大数相加
+        {1e-100L, 1e-100L, 2e-100L},         // 极小数相加
+        {1.0000000000000001L, 1.0L, 2.0000000000000001L}, // 精度边界
+        {1.0L, -1.0000000000000001L, -0.0000000000000001L}, // 精度边界
+        {POS_DENORM, POS_DENORM, 2*POS_DENORM}, // 非正规数相加
+        {NEG_DENORM, POS_DENORM, 0.0L}        // 正负非正规数相加
     };
 
     for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {

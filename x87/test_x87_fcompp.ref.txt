@@ -1,0 +1,155 @@
+=== Testing FCOMPP ===
+
+Test 1: Equal values
+Values: 1.000000 vs 1.000000
+Stack depth before: 0, after: 0
+Status Word: 0x4000
+C0 (Unordered): 0
+C2 (Equal): 1
+C3 (Greater): 0
+Control Word: 0x037f
+Status Word:  0x4000
+Tag Word:     0x4000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 2: First less than second
+Values: 1.000000 vs 2.000000
+Stack depth before: 0, after: 0
+Status Word: 0x0000
+C0 (Unordered): 0
+C2 (Equal): 0
+C3 (Greater): 0
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3: First greater than second
+Values: 2.000000 vs 1.000000
+Stack depth before: 0, after: 0
+Status Word: 0x0100
+C0 (Unordered): 1
+C2 (Equal): 0
+C3 (Greater): 0
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: Positive and negative zero
+Values: 0.000000 vs -0.000000
+Stack depth before: 0, after: 0
+Status Word: 0x4000
+C0 (Unordered): 0
+C2 (Equal): 1
+C3 (Greater): 0
+Control Word: 0x037f
+Status Word:  0x4000
+Tag Word:     0x4000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 5: Positive infinities
+Values: inf vs inf
+Stack depth before: 0, after: 0
+Status Word: 0x4000
+C0 (Unordered): 0
+C2 (Equal): 1
+C3 (Greater): 0
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 6: Positive vs negative infinity
+Values: inf vs -inf
+Stack depth before: 0, after: 0
+Status Word: 0x0100
+C0 (Unordered): 1
+C2 (Equal): 0
+C3 (Greater): 0
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 7: Infinity vs finite
+Values: inf vs 1.000000
+Stack depth before: 0, after: 0
+Status Word: 0x0100
+C0 (Unordered): 1
+C2 (Equal): 0
+C3 (Greater): 0
+Control Word: 0x037f
+Status Word:  0x0500
+Tag Word:     0x0500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 8: NaN values
+Values: nan vs nan
+Stack depth before: 0, after: 0
+Status Word: 0x4501
+C0 (Unordered): 1
+C2 (Equal): 1
+C3 (Greater): 1
+Control Word: 0x037f
+Status Word:  0x0101
+Tag Word:     0x0101
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE 
+
+Test 9: NaN vs finite
+Values: nan vs 1.000000
+Stack depth before: 0, after: 0
+Status Word: 0x4501
+C0 (Unordered): 1
+C2 (Equal): 1
+C3 (Greater): 1
+Control Word: 0x037f
+Status Word:  0x0101
+Tag Word:     0x0101
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE 
+
+Test 10: Denormal values
+Values: 0.000000 vs 0.000000
+Stack depth before: 0, after: 0
+Status Word: 0x4003
+C0 (Unordered): 0
+C2 (Equal): 1
+C3 (Greater): 1
+Control Word: 0x037f
+Status Word:  0x4003
+Tag Word:     0x4003
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: IE DE 
+
+Test 11: PI vs E
+Values: 3.141593 vs 2.718282
+Stack depth before: 0, after: 0
+Status Word: 0x0103
+C0 (Unordered): 1
+C2 (Equal): 0
+C3 (Greater): 1
+Control Word: 0x037f
+Status Word:  0x0103
+Tag Word:     0x0103
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE 

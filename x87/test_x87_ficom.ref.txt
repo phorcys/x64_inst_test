@@ -1,0 +1,111 @@
+Testing FICOM (ST(0) vs memory integer):
+
+Test case 1:
+ST(0): 0.00000000000000000000 (0x00000000000000000000)
+Mem: 0 (0x00000000)
+Control Word: 0x037f
+Status Word:  0x7800
+Tag Word:     0x7800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test case 2:
+ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
+Mem: 1 (0x00000001)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 3:
+ST(0): -1.00000000000000000000 (0xbfff8000000000000000)
+Mem: -1 (0xffffffff)
+Control Word: 0x037f
+Status Word:  0x3900
+Tag Word:     0x3900
+Top: 7
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 4:
+ST(0): 1.50000000000000000000 (0x3fffc000000000000000)
+Mem: 1 (0x00000001)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 5:
+ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
+Mem: 2 (0x00000002)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 6:
+ST(0): 100.00000000000000000000 (0x4005c800000000000000)
+Mem: 100 (0x00000064)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 7:
+ST(0): 10000000000.00000000000000000000 (0x40209502f90000000000)
+Mem: 1000000000 (0x3b9aca00)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 8:
+ST(0): 0.00000000010000000000 (0x3fdddbe6fecebdedd5bf)
+Mem: 0 (0x00000000)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 9:
+ST(0): inf (0x7fff8000000000000000)
+Mem: 2147483647 (0x7fffffff)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 10:
+ST(0): -inf (0xffff8000000000000000)
+Mem: -2147483648 (0x80000000)
+Control Word: 0x037f
+Status Word:  0x3900
+Tag Word:     0x3900
+Top: 7
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 11:
+ST(0): nan (0x7fffc000000000000000)
+Mem: 0 (0x00000000)
+Control Word: 0x037f
+Status Word:  0x7d01
+Tag Word:     0x7d01
+Top: 7
+C0: 1, C1: 0, C2: 1, C3: 1
+Exceptions: IE 

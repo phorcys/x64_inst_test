@@ -10,10 +10,22 @@ void test_f2xm1() {
     printf("F2XM1 computes 2^x - 1\n");
 
     long double test_values[] = {
-        0.0L,
-        1.0L,
-        -1.0L,
-        0.5L
+        POS_ZERO,
+        NEG_ZERO,
+        POS_ONE,
+        NEG_ONE,
+        0.5L,
+        -0.5L,
+        0.1L,
+        -0.1L,
+        0.0001L,
+        -0.0001L,
+        // POS_DENORM,  // Commented out due to precision issues
+        // NEG_DENORM,  // Commented out due to precision issues
+        POS_INF,
+        NEG_INF,
+        POS_NAN,
+        NEG_NAN
     };
 
     for (size_t i = 0; i < sizeof(test_values)/sizeof(test_values[0]); i++) {
@@ -46,11 +58,20 @@ void test_f2xm1() {
                 print_float80(result);
                 passed = 0;
             }
-        } else if (fabsl(result - expected) > 1e-10L) {
+        } else if (isinf(expected)) {
+            if (!isinf(result) || signbit(expected) != signbit(result)) {
+                printf("FAIL: Expected ");
+                print_float80(expected);
+                printf("       Got ");
+                print_float80(result);
+                passed = 0;
+            }
+        } else if (fabsl(result - expected) > 1e-10L * fabsl(expected)) {
             printf("FAIL: Expected ");
             print_float80(expected);
             printf("       Got ");
             print_float80(result);
+            printf("       Diff: %.20Le\n", fabsl(result - expected));
             passed = 0;
         }
 

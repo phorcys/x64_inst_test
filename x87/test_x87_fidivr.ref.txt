@@ -1,0 +1,143 @@
+=== Testing FIDIVR (16-bit) ===
+
+Test 1: Normal division
+Operation: 2 / 4.000000
+Result: 0.50000000000000000000 (0x3ffe8000000000000000)
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 2: Fraction division
+Operation: 3 / 1.000000
+Result: 3.00000000000000000000 (0x4000c000000000000000)
+Control Word: 0x037f
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3: Divide by zero
+Operation: 0 / 1.000000
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: Infinity divided
+Operation: 2 / inf
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x2500
+Tag Word:     0x2500
+Top: 4
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 5: Divide by INT16_MAX
+Operation: 32767 / 2.000000
+Result: 16383.50000000000000000000 (0x400cfffe000000000000)
+Control Word: 0x037f
+Status Word:  0x1d00
+Tag Word:     0x1d00
+Top: 3
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: 
+
+Test 6: Divide by INT16_MIN
+Operation: -32768 / 2.000000
+Result: -16384.00000000000000000000 (0xc00d8000000000000000)
+Control Word: 0x037f
+Status Word:  0x1541
+Tag Word:     0x1541
+Top: 2
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: IE SF 
+
+Test 7: NaN divided
+Operation: 2 / nan
+Result: nan (0x7fffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x0941
+Tag Word:     0x0941
+Top: 1
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE SF 
+
+=== Testing FIDIVR (32-bit) ===
+
+Test 1: Normal division
+Operation: 2 / 4.000000
+Result: 0.50000000000000000000 (0x3ffe8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0141
+Tag Word:     0x0141
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE SF 
+
+Test 2: Fraction division
+Operation: 3 / 1.000000
+Result: 3.00000000000000000000 (0x4000c000000000000000)
+Control Word: 0x037f
+Status Word:  0x3941
+Tag Word:     0x3941
+Top: 7
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE SF 
+
+Test 3: Divide by zero
+Operation: 0 / 1.000000
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x3141
+Tag Word:     0x3141
+Top: 6
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE SF 
+
+Test 4: Infinity divided
+Operation: 2 / inf
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x2d41
+Tag Word:     0x2d41
+Top: 5
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: IE SF 
+
+Test 5: Divide by INT32_MAX
+Operation: 2147483647 / 2.000000
+Result: -0.50000000000000000000 (0xbffe8000000000000000)
+Control Word: 0x037f
+Status Word:  0x2541
+Tag Word:     0x2541
+Top: 4
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: IE SF 
+
+Test 6: Divide by INT32_MIN
+Operation: -2147483648 / 2.000000
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x1d41
+Tag Word:     0x1d41
+Top: 3
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: IE SF 
+
+Test 7: NaN divided
+Operation: 2 / nan
+Result: nan (0x7fffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x1141
+Tag Word:     0x1141
+Top: 2
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE SF 

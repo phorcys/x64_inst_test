@@ -1,0 +1,57 @@
+#include "x87.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+
+// Test FDIV instruction
+void test_fdiv() {
+    long double result = 0;
+    uint16_t status = 0;
+    
+    printf("=== Testing FDIV ===\n");
+    
+    // Test cases
+    struct {
+        long double a;
+        long double b;
+        const char* desc;
+    } tests[] = {
+        {4.0L, 2.0L, "Normal division"},
+        {1.0L, 0.0L, "Divide by zero"},
+        {0.0L, 0.0L, "Zero divided by zero"},
+        {POS_INF, 2.0L, "Infinity divided"},
+        {2.0L, POS_INF, "Divide by infinity"},
+        {POS_INF, POS_INF, "Infinity divided by infinity"},
+        {POS_NAN, 2.0L, "NaN divided"},
+        {2.0L, POS_NAN, "Divide by NaN"},
+        {POS_DENORM, 2.0L, "Denormal divided"},
+        {2.0L, POS_DENORM, "Divide by denormal"},
+        {1.0L, 3.0L, "Fraction result"}
+    };
+    
+    for (size_t i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
+        asm volatile (
+            "fldt %1\n\t"      // Load a (dividend)
+            "fldt %2\n\t"      // Load b (divisor)
+            "fdiv %%st(1)\n\t" // st(0) = st(0) / st(1)
+            "fstpt %0\n\t"     // Store result
+            "fnstsw %3\n\t"    // Store status word
+            "fstp %%st(0)\n\t" // Pop stack
+            : "=m" (result), "=m" (status)
+            : "m" (tests[i].a), "m" (tests[i].b)
+            : "cc"
+        );
+        
+        printf("\nTest %zu: %s\n", i+1, tests[i].desc);
+        printf("Operation: %Lf / %Lf\n", tests[i].b, tests[i].a);
+        printf("Result: %Lf\n", result);
+        printf("Status Word: 0x%04x\n", status);
+        print_x87_status();
+    }
+}
+
+int main() {
+    printf("NOTE: FDIV test needs further debugging\n");
+    test_fdiv();
+    return 0;
+}

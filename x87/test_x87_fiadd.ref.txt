@@ -1,0 +1,111 @@
+=== Testing FIADD ===
+
+Test 1.1: Positive integers (32-bit)
+Operation: 50.000000 + 100
+Result: 150.000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 1.2: Positive integers (64-bit)
+Operation: 50.000000 + 100
+Result: 150.000000000000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 2.1: Negative integers (32-bit)
+Operation: 100.000000 + -50
+Result: 50.000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 2.2: Negative integers (64-bit)
+Operation: 100.000000 + -50
+Result: 50.000000000000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3.1: Large positive integers (32-bit)
+Operation: 1.000000 + 2147483647
+Result: 2147483648.000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3.2: Large positive integers (64-bit)
+Operation: 1.000000 + 1000000000
+Result: 1000000001.000000000000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4.1: Large negative integers (32-bit)
+Operation: 1.000000 + -2147483648
+Result: -2147483647.000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4.2: Large negative integers (64-bit)
+Operation: 1.000000 + -1000000000
+Result: -999999999.000000000000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 5.1: Zero values (32-bit)
+Operation: 0.000000 + 0
+Result: 0.000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 5.2: Zero values (64-bit)
+Operation: 0.000000 + 0
+Result: 0.000000000000000
+Status Word: 0x0000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 

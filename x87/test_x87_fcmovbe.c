@@ -20,8 +20,14 @@ void test_fcmovbe() {
         {1.0L, 2.0L, 0, 1},  // CF=0, ZF=1
         {1.0L, 2.0L, 1, 1},  // CF=1, ZF=1
         {1.0L, 2.0L, 0, 0},  // CF=0, ZF=0
-        {POS_INF, NEG_INF, 1, 0},
-        {POS_NAN, NEG_NAN, 0, 1}
+        {POS_INF, NEG_INF, 1, 0},  // 无穷大
+        {POS_NAN, NEG_NAN, 0, 1},  // NaN
+        {1e100L, -1e100L, 1, 0},   // 极大数
+        {1e-100L, -1e-100L, 0, 1}, // 极小数
+        {POS_DENORM, NEG_DENORM, 1, 0}, // 非正规数
+        {3.14159265358979323846L, -3.14159265358979323846L, 0, 0}, // π值
+        {0.0L, -0.0L, 1, 1},       // 零值
+        {1.0000000000000001L, -1.0000000000000001L, 0, 0} // 精度边界
     };
 
     for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {

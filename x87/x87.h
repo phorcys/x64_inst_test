@@ -6,6 +6,41 @@
 #include <math.h>
 #include <fenv.h>
 
+
+// x87控制字定义
+#define X87_CW_IM        0x0001  // 无效操作异常
+#define X87_CW_DM        0x0002  // 非规格化异常  
+#define X87_CW_ZM        0x0004  // 除零异常
+#define X87_CW_OM        0x0008  // 溢出异常
+#define X87_CW_UM        0x0010  // 下溢异常
+#define X87_CW_PM        0x0020  // 精度异常
+#define X87_CW_PC_MASK   0x0300  // 精度控制掩码
+#define X87_CW_PC_SINGLE 0x0000  // 单精度(24位)
+#define X87_CW_PC_DOUBLE 0x0200  // 双精度(53位)
+#define X87_CW_PC_EXTEND 0x0300  // 扩展精度(64位)
+#define X87_CW_RC_MASK   0x0C00  // 舍入控制掩码
+#define X87_CW_RC_NEAR   0x0000  // 舍入到最近
+#define X87_CW_RC_DOWN   0x0400  // 向下舍入
+#define X87_CW_RC_UP     0x0800  // 向上舍入
+#define X87_CW_RC_ZERO   0x0C00  // 向零舍入
+
+// x87状态字定义
+#define X87_SW_IE        0x0001  // 无效操作异常
+#define X87_SW_DE        0x0002  // 非规格化异常
+#define X87_SW_ZE        0x0004  // 除零异常
+#define X87_SW_OE        0x0008  // 溢出异常
+#define X87_SW_UE        0x0010  // 下溢异常
+#define X87_SW_PE        0x0020  // 精度异常
+#define X87_SW_SF        0x0040  // 堆栈错误
+#define X87_SW_ES        0x0080  // 错误状态
+#define X87_SW_C0        0x0100  // 条件码0
+#define X87_SW_C1        0x0200  // 条件码1
+#define X87_SW_C2        0x0400  // 条件码2
+#define X87_SW_C3        0x4000  // 条件码3
+#define X87_SW_TOP_MASK  0x3800  // TOP位掩码
+#define X87_SW_TOP_SHIFT 11      // TOP位移量
+
+
 // Print 80-bit float value
 static inline void print_float80(long double val) {
     printf("%.20Lf (0x%04x%016llx)\n", val,
@@ -31,6 +66,16 @@ static inline uint16_t get_x87_tw() {
     uint16_t tw;
     asm volatile ("fnstsw %0" : "=m" (tw));
     return tw;
+}
+
+// Initialize x87 environment
+static inline void init_x87_env() {
+    // Set default control word (mask all exceptions, double precision, round to nearest)
+    uint16_t cw = X87_CW_PC_DOUBLE | X87_CW_RC_NEAR;
+    asm volatile ("fldcw %0" : : "m" (cw));
+    
+    // Clear x87 stack
+    asm volatile ("fninit");
 }
 
 // Print x87 status
@@ -75,5 +120,11 @@ static inline void print_x87_status() {
 #define NEG_DENORM   (-3.6451995318824746e-4951L) // Smallest negative denormal
 #define PI           3.1415926535897932385L
 #define E            2.7182818284590452354L
+
+// EFLAGS标志位定义
+#define X86_EFLAGS_CF   0x00000001  // 进位标志
+#define X86_EFLAGS_PF   0x00000004  // 奇偶标志  
+#define X86_EFLAGS_ZF   0x00000040  // 零标志
+#define X86_EFLAGS_NONE 0x00000000  // 无标志
 
 #endif // X87_H

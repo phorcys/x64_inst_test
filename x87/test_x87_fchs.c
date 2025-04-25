@@ -11,7 +11,13 @@ void test_fchs() {
         POS_ONE, NEG_ONE,              // 正常值
         POS_DENORM, NEG_DENORM,        // 非正规数
         POS_INF, NEG_INF,              // 无穷大
-        POS_NAN, NEG_NAN               // NaN
+        POS_NAN, NEG_NAN,              // NaN
+        1e100L, -1e100L,               // 极大数
+        1e-100L, -1e-100L,             // 极小数
+        1.0000000000000001L,           // 精度边界
+        -1.0000000000000001L,          // 精度边界
+        3.14159265358979323846L,       // π
+        -3.14159265358979323846L       // -π
     };
 
     printf("Testing FCHS instruction\n");

@@ -1,0 +1,72 @@
+NOTE: FDIV test needs further debugging
+=== Testing FDIV ===
+
+Test 1: Normal division
+Operation: 4.000000 / 2.000000
+Result: 2.000000
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 2: Fraction division
+Operation: 1.000000 / 3.000000
+Result: 0.333333
+Control Word: 0x037f
+Status Word:  0x0020
+Tag Word:     0x0020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: PE 
+
+Test 3: Divide by zero
+Operation: 1.000000 / 0.000000
+Result: inf
+Control Word: 0x037f
+Status Word:  0x0524
+Tag Word:     0x0524
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: ZE PE 
+
+Test 4: Infinity divided
+Operation: inf / 2.000000
+Result: inf
+Control Word: 0x037f
+Status Word:  0x0524
+Tag Word:     0x0524
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: ZE PE 
+
+Test 5: Divide by infinity
+Operation: 2.000000 / inf
+Result: 0.000000
+Control Word: 0x037f
+Status Word:  0x0524
+Tag Word:     0x0524
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: ZE PE 
+
+Test 6: NaN divided
+Operation: nan / 2.000000
+Result: nan
+Control Word: 0x037f
+Status Word:  0x0124
+Tag Word:     0x0124
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: ZE PE 
+
+Test 7: Divide by NaN
+Operation: 2.000000 / nan
+Result: nan
+Control Word: 0x037f
+Status Word:  0x0124
+Tag Word:     0x0124
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: ZE PE 
