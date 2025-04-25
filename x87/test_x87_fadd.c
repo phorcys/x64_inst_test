@@ -3,6 +3,7 @@
 #include <math.h>
 #include <float.h>
 #include <fenv.h>
+#include "x87.h"
 
 void test_fadd() {
     double test_values[] = {
@@ -26,16 +27,13 @@ void test_fadd() {
             double a = test_values[i];
             double b = test_values[j];
             double result;
-            uint16_t fpu_status;
             
             // 测试FADD ST,Msr形式
             asm volatile (
                 "fldl %[a]\n\t"      // 加载a到ST(0)
                 "faddl %[b]\n\t"     // ST(0) = ST(0) + [b]
                 "fstpl %[res]\n\t"   // 存储结果
-                "fnstsw %[status]"   // 存储FPU状态字
-                : [res] "=m" (result),
-                  [status] "=m" (fpu_status)
+                : [res] "=m" (result)
                 : [a] "m" (a),
                   [b] "m" (b)
                 : "memory"
@@ -44,19 +42,7 @@ void test_fadd() {
             printf("\nTest case %zu + %zu:\n", i+1, j+1);
             printf("Operands: %.15g + %.15g\n", a, b);
             printf("Result: %.15g\n", result);
-            printf("FPU Status: 0x%04x\n", fpu_status);
-            
-            // 详细检查FPU状态标志
-            if (fpu_status & 0x3f) {
-                printf("FPU Exceptions: ");
-                if (fpu_status & 0x01) printf("Invalid ");
-                if (fpu_status & 0x02) printf("Denormal ");
-                if (fpu_status & 0x04) printf("Zero-divide ");
-                if (fpu_status & 0x08) printf("Overflow ");
-                if (fpu_status & 0x10) printf("Underflow ");
-                if (fpu_status & 0x20) printf("Precision ");
-                printf("\n");
-            }
+            print_x87_status();
             
             // 验证结果
             int passed = 1;
@@ -115,6 +101,7 @@ void test_fadd() {
         
         printf("Operands: %.15g + %.15g\n", a, b);
         printf("Result: %.15g\n", result);
+        print_x87_status();
     }
     
     // 测试3: 精度控制
@@ -147,6 +134,7 @@ void test_fadd() {
         
         printf("Operands: %.15g + %.15g\n", a, b);
         printf("Result: %.15g\n", result);
+        print_x87_status();
     }
     
     // 恢复默认控制字

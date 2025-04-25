@@ -1,0 +1,46 @@
+=== Testing FSTSW/FNSTSW instructions ===
+
+==== Testing FSTSW Boundary Conditions ====
+
+Test 1: Minimum control word (all unmasked) (CW=0x0000)
+Status Word: 0xB884
+Exceptions: 0x4
+[TEST] Exception flag set                       PASS
+Status word details: C3=0 C2=0 C1=0 C0=0 TOP=7
+
+Test 2: Single bit set (IE unmasked) (CW=0x0001)
+Status Word: 0xB884
+Exceptions: 0x4
+[TEST] Exception flag set                       PASS
+Status word details: C3=0 C2=0 C1=0 C0=0 TOP=7
+[TEST] Correct exceptions raised                PASS
+
+Test 3: Max value - 1 (CW=0x7FFF)
+Status Word: 0x3804
+Exceptions: 0x4
+[TEST] Exception flag set                       PASS
+Status word details: C3=0 C2=0 C1=0 C0=0 TOP=7
+[TEST] Correct exceptions raised                PASS
+
+Test 4: Maximum control word (CW=0xFFFF)
+Status Word: 0x3804
+Exceptions: 0x4
+[TEST] Exception flag set                       PASS
+Status word details: C3=0 C2=0 C1=0 C0=0 TOP=7
+[TEST] Correct exceptions raised                PASS
+
+Test 5: Alternating bits (CW=0x5555)
+Status Word: 0x3804
+Exceptions: 0x4
+[TEST] Exception flag set                       PASS
+Status word details: C3=0 C2=0 C1=0 C0=0 TOP=7
+[TEST] Correct exceptions raised                PASS
+
+Test 6: Inverse bits (CW=0xAAAA)
+Status Word: 0xB884
+Exceptions: 0x4
+[TEST] Exception flag set                       PASS
+Status word details: C3=0 C2=0 C1=0 C0=0 TOP=7
+[TEST] Correct exceptions raised                PASS
+
+=== FSTSW/FNSTSW tests completed ===

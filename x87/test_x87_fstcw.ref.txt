@@ -1,0 +1,231 @@
+=== Testing FSTCW/FNSTCW instructions ===
+
+==== Comparing FSTCW vs FNSTCW ====
+FSTCW value: 0x037F
+FNSTCW value: 0x037F
+[TEST] FSTCW and FNSTCW values match            PASS
+
+==== Testing FSTCW with Rounding Modes ====
+Mode: Nearest
+Set CW: 0x037F, Saved CW: 0x037F
+[TEST] Rounding mode saved correctly            PASS
+Mode: Down
+Set CW: 0x077F, Saved CW: 0x077F
+[TEST] Rounding mode saved correctly            PASS
+Mode: Up
+Set CW: 0x0B7F, Saved CW: 0x0B7F
+[TEST] Rounding mode saved correctly            PASS
+Mode: Truncate
+Set CW: 0x0F7F, Saved CW: 0x0F7F
+[TEST] Rounding mode saved correctly            PASS
+
+==== Testing FSTCW with Precision Control ====
+Precision: Single
+Set CW: 0x007F, Saved CW: 0x007F
+[TEST] Precision control saved correctly        PASS
+Precision: Double
+Set CW: 0x027F, Saved CW: 0x027F
+[TEST] Precision control saved correctly        PASS
+Precision: Extended
+Set CW: 0x037F, Saved CW: 0x037F
+[TEST] Precision control saved correctly        PASS
+
+==== Testing Control Word Save ====
+Original CW: 0x027F
+Saved CW:    0x027F
+[TEST] Control word saved correctly             PASS
+[TEST] Precision control saved                  PASS
+[TEST] Rounding control saved                   PASS
+[TEST] Exception masks saved                    PASS
+
+==== Testing FSTCW Boundary Values ====
+
+Test 1: Minimum control word (all unmasked) (CW=0x0000)
+Set CW:    0x0000
+Saved CW:  0x0040
+Exceptions: 0x0
+Control Word: 0x0040
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:129
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:130
+
+Test 2: Single bit set (IE unmasked) (CW=0x0001)
+Set CW:    0x0001
+Saved CW:  0x0041
+Exceptions: 0x0
+Control Word: 0x0041
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:129
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:130
+
+Test 3: Max value - 1 (CW=0x7FFF)
+Set CW:    0x7FFF
+Saved CW:  0x1F7F
+Exceptions: 0x0
+Control Word: 0x1f7f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:129
+[TEST] Correct exceptions raised                PASS
+
+Test 4: Maximum control word (CW=0xFFFF)
+Set CW:    0xFFFF
+Saved CW:  0x1F7F
+Exceptions: 0x0
+Control Word: 0x1f7f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:129
+[TEST] Correct exceptions raised                PASS
+
+Test 5: Alternating bits (CW=0x5555)
+Set CW:    0x5555
+Saved CW:  0x1555
+Exceptions: 0x0
+Control Word: 0x1555
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:129
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:130
+
+Test 6: Alternating bits (inverse) (CW=0xAAAA)
+Set CW:    0xAAAA
+Saved CW:  0x0A6A
+Exceptions: 0x0
+Control Word: 0x0a6a
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:129
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:130
+
+==== Testing FSTCW with Modern CPU Features ====
+
+-- Test 1: With SSE --
+MXCSR before: 0x00001F80
+MXCSR after:  0x00001F80
+[TEST] MXCSR unchanged with FSTCW               PASS
+[TEST] Control word saved correctly             PASS
+
+-- Test 2: With AVX --
+XCR0 before: 0x0000000000000003
+XCR0 after:  0x0000000000000003
+[TEST] XCR0 unchanged with FSTCW                PASS
+[TEST] Control word saved correctly             PASS
+
+==== Testing FSTCW Status Register Effects ====
+
+Test 1: All exceptions unmasked, single precision (CW=0x0000)
+Status before: 0x0000
+Status after:  0x0000
+Saved CW:      0x0040
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:49
+[TEST] Status word unchanged by FSTCW           PASS
+
+Test 2: Default control word (CW=0x037F)
+Status before: 0x0000
+Status after:  0x0000
+Saved CW:      0x037F
+[TEST] Control word saved correctly             PASS
+[TEST] Status word unchanged by FSTCW           PASS
+
+Test 3: Truncate rounding, all masked (CW=0x0C00)
+Status before: 0x0000
+Status after:  0x0000
+Saved CW:      0x0C40
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:49
+[TEST] Status word unchanged by FSTCW           PASS
+
+Test 4: All bits set (CW=0xFFFF)
+Status before: 0x0000
+Status after:  0x0000
+Saved CW:      0x1F7F
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:49
+[TEST] Status word unchanged by FSTCW           PASS
+
+==== Testing FSTCW Combinations ====
+
+Test 1: Default settings
+Set CW: 0x037F, Saved CW: 0x037F
+[TEST] Control word saved correctly             PASS
+
+Test 2: Double precision
+Set CW: 0x027F, Saved CW: 0x027F
+[TEST] Control word saved correctly             PASS
+
+Test 3: Single precision
+Set CW: 0x007F, Saved CW: 0x007F
+[TEST] Control word saved correctly             PASS
+
+Test 4: Invalid op unmasked
+Set CW: 0x033F, Saved CW: 0x037F
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:162
+
+Test 5: Denormal unmasked
+Set CW: 0x035F, Saved CW: 0x035F
+[TEST] Control word saved correctly             PASS
+
+Test 6: Zero-divide unmasked
+Set CW: 0x036F, Saved CW: 0x036F
+[TEST] Control word saved correctly             PASS
+
+Test 7: Overflow unmasked
+Set CW: 0x0377, Saved CW: 0x0377
+[TEST] Control word saved correctly             PASS
+
+Test 8: Extended prec, nearest, all unmasked
+Set CW: 0x0300, Saved CW: 0x0340
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:162
+
+Test 9: Extended prec, truncate, all masked
+Set CW: 0x0C00, Saved CW: 0x0C40
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:162
+
+==== Testing FSTCW with Exceptions ====
+After exception:
+Control Word: 0x037f
+Status Word:  0x3804
+Tag Word:     0x3804
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+Saved control word: 0x037F
+[TEST] Exception flags preserved                FAIL
+  [FAIL DETAIL] x87/test_x87_fstcw.c:183
+
+=== FSTCW/FNSTCW tests completed ===

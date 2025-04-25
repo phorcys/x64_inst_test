@@ -1,0 +1,113 @@
+=== Testing FLD ST(i) instruction ===
+
+==== Testing FLD ST(i) Basic ====
+Initial stack:
+Control Word: 0x037f
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FLD ST(0):
+Control Word: 0x037f
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Top value: 2.34567890000000000010 (0x4000961f9a649ab44bcd)
+Second value: 2.34567890000000000010 (0x4000961f9a649ab44bcd)
+[TEST] FLD ST(0) duplicates value               PASS
+
+After FLD ST(1):
+Control Word: 0x037f
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Top value: 1.23456789000000000003 (0x3fff9e0652141ef0dbf6)
+Second value: 2.34567890000000000010 (0x4000961f9a649ab44bcd)
+Third value: 1.23456789000000000003 (0x3fff9e0652141ef0dbf6)
+[TEST] FLD ST(1) works correctly                PASS
+
+==== Testing FLD ST(i) Boundary ====
+Before FLD ST(0) (full stack):
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FLD ST(0):
+Control Word: 0x037f
+Status Word:  0x3a41
+Tag Word:     0x3a41
+Top: 7
+C0: 0, C1: 1, C2: 0, C3: 0
+Exceptions: IE SF 
+[TEST] Stack overflow detected                  FAIL
+  [FAIL DETAIL] x87/test_x87_fld_esr.c:81
+[TEST] Stack pointer updated                    PASS
+
+Before FLD ST(0) (empty stack):
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FLD ST(0):
+Control Word: 0x037f
+Status Word:  0x3841
+Tag Word:     0x3841
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: IE SF 
+[TEST] Stack underflow detected                 FAIL
+  [FAIL DETAIL] x87/test_x87_fld_esr.c:96
+
+==== Testing FLD ST(i) Status ====
+Before FLD ST(0):
+Control Word: 0x037f
+Status Word:  0x3800
+Tag Word:     0x3800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FLD ST(0):
+Control Word: 0x037f
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Control word unchanged                   PASS
+[TEST] Status word updated                      PASS
+[TEST] Tag word updated                         PASS
+
+==== Testing FLD ST(i) Exceptions ====
+Before FLD ST(7):
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FLD ST(7):
+Control Word: 0x037f
+Status Word:  0x0041
+Tag Word:     0x0041
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: IE SF 
+[TEST] Stack overflow detected                  PASS
+[TEST] Stack fault flag set                     FAIL
+  [FAIL DETAIL] x87/test_x87_fld_esr.c:154
+
+=== FLD ST(i) tests completed ===

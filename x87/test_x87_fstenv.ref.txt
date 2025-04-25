@@ -1,0 +1,214 @@
+=== Testing FSTENV/FNSTENV instructions ===
+
+==== Comparing FSTENV vs FNSTENV ====
+Control Word:
+  FSTENV: 0x037F
+  FNSTENV: 0x037F
+[TEST] Control words match                      PASS
+
+Status Word:
+  FSTENV: 0x3800
+  FNSTENV: 0x3800
+[TEST] Status words match                       PASS
+
+Tag Word:
+  FSTENV: 0x7FFF
+  FNSTENV: 0x7FFF
+[TEST] Tag words match                          PASS
+
+==== Testing Control Word Save ====
+Saved Control Word: 0x027F
+[TEST] Control word saved correctly             PASS
+[TEST] Precision control saved                  PASS
+[TEST] Rounding control saved                   PASS
+[TEST] Exception masks saved                    PASS
+
+==== Testing FSTENV Boundary Values ====
+
+Test 1: Minimum control word (all unmasked) (CW=0x0000)
+Saved Control Word: 0x0040
+Saved Status Word: 0x0000
+Saved Tag Word: 0xFFFF
+Exceptions: 0x0
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:243
+[TEST] Status word valid                        PASS
+[TEST] Tag word valid                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:245
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:246
+
+Test 2: Single bit set (IE unmasked) (CW=0x0001)
+Saved Control Word: 0x0041
+Saved Status Word: 0x0000
+Saved Tag Word: 0xFFFF
+Exceptions: 0x0
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:243
+[TEST] Status word valid                        PASS
+[TEST] Tag word valid                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:245
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:246
+
+Test 3: Max value - 1 (CW=0x7FFF)
+Saved Control Word: 0x1F7F
+Saved Status Word: 0x0000
+Saved Tag Word: 0xFFFF
+Exceptions: 0x0
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:243
+[TEST] Status word valid                        PASS
+[TEST] Tag word valid                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:245
+[TEST] Correct exceptions raised                PASS
+
+Test 4: Maximum control word (CW=0xFFFF)
+Saved Control Word: 0x1F7F
+Saved Status Word: 0x0000
+Saved Tag Word: 0xFFFF
+Exceptions: 0x0
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:243
+[TEST] Status word valid                        PASS
+[TEST] Tag word valid                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:245
+[TEST] Correct exceptions raised                PASS
+
+Test 5: Alternating bits (CW=0x5555)
+Saved Control Word: 0x1555
+Saved Status Word: 0x0000
+Saved Tag Word: 0xFFFF
+Exceptions: 0x0
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:243
+[TEST] Status word valid                        PASS
+[TEST] Tag word valid                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:245
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:246
+
+Test 6: Inverse bits (CW=0xAAAA)
+Saved Control Word: 0x0A6A
+Saved Status Word: 0x0000
+Saved Tag Word: 0xFFFF
+Exceptions: 0x0
+[TEST] Control word saved correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:243
+[TEST] Status word valid                        PASS
+[TEST] Tag word valid                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:245
+[TEST] Correct exceptions raised                FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:246
+
+==== Testing FSTENV with Modern CPU Features ====
+
+-- Test 1: With SSE --
+MXCSR before: 0x00001F80
+MXCSR after:  0x00001F80
+[TEST] MXCSR unchanged with FSTENV              PASS
+
+-- Test 2: With AVX --
+XCR0 before: 0x0000000000000003
+XCR0 after:  0x0000000000000003
+[TEST] XCR0 unchanged with FSTENV               PASS
+
+==== Testing FSTENV Status Effects ====
+
+Test 1: All exceptions masked
+Saved CW: 0x037F, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       PASS
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:164
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:165
+
+Test 2: All exceptions unmasked
+Saved CW: 0x0340, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:163
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:164
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:165
+
+Test 3: Partial exceptions
+Saved CW: 0x037F, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:163
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:164
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:165
+
+Test 4: Extended precision
+Saved CW: 0x0340, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:163
+[TEST] Status word saved                        PASS
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:165
+
+Test 5: Single precision
+Saved CW: 0x0040, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:163
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:164
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:165
+
+==== Testing FSTENV Combinations ====
+
+Test 1: All exceptions masked
+Saved CW: 0x037F, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       PASS
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:285
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:286
+
+Test 2: All exceptions unmasked
+Saved CW: 0x0340, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:284
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:285
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:286
+
+Test 3: Partial exceptions
+Saved CW: 0x037F, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:284
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:285
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:286
+
+Test 4: Extended precision
+Saved CW: 0x0340, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:284
+[TEST] Status word saved                        PASS
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:286
+
+Test 5: Single precision
+Saved CW: 0x0040, SW: 0x3800, TW: 0x7FFF
+[TEST] Control word saved                       FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:284
+[TEST] Status word saved                        FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:285
+[TEST] Tag word saved                           FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:286
+
+==== Testing Environment Save ====
+Saved Control Word: 0x037F
+Saved Status Word: 0x3800
+Saved Tag Word: 0x7FFF
+[TEST] Divide by zero flag set                  FAIL
+  [FAIL DETAIL] x87/test_x87_fstenv.c:309
+[TEST] ST0 tag valid                            PASS
+
+=== FSTENV/FNSTENV tests completed ===

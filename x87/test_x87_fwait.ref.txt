@@ -1,16 +1,122 @@
-Testing FWAIT instruction
+=== Testing FWAIT instruction ===
+=== Testing FWAIT instruction ===
 
 Test 1: Basic synchronization
 Control word without FWAIT: 0x0000
 Control word with FWAIT: 0x0000
-Test 1 PASSED - Control words match
+[TEST] Control words match                      PASS
 
 Test 2: Exception state
 Status with FWAIT: 0x3804
 Status without FWAIT: 0x3004
-Test 2 PASSED - Exception states match
+[TEST] Exception states match                   PASS
 
 Test 3: Multiple FWAITs
 Control word with double FWAIT: 0x0000
 Control word without FWAIT: 0x0000
-Test 3 PASSED - Multiple FWAITs work correctly
+[TEST] Multiple FWAITs work correctly           PASS
+
+==== Testing FWAIT vs FNOP ====
+Initial state:
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FWAIT:
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FNOP:
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] FWAIT vs FNOP control word               PASS
+[TEST] FWAIT vs FNOP status word                PASS
+[TEST] FWAIT vs FNOP tag word                   PASS
+
+==== Testing FWAIT with Modern CPU Features ====
+
+-- Test 1: With SSE --
+MXCSR before: 0x00001F80
+MXCSR after:  0x00001F80
+[TEST] MXCSR unchanged with FWAIT               PASS
+
+-- Test 2: With AVX --
+XCR0 before: 0x0000000000000003
+XCR0 after:  0x0000000000000003
+[TEST] XCR0 unchanged with FWAIT                PASS
+
+==== Testing FWAIT Status Effects ====
+
+Test 1: All exceptions masked
+Status after FWAIT: 0x0000
+[TEST] Status word matches expected             PASS
+
+Test 2: All exceptions unmasked
+Status after FWAIT: 0x0000
+[TEST] Status word matches expected             PASS
+
+Test 3: Partial exceptions masked
+Status after FWAIT: 0x0000
+[TEST] Status word matches expected             PASS
+
+Test 4: Extended precision
+Status after FWAIT: 0x0000
+[TEST] Status word matches expected             FAIL
+  [FAIL DETAIL] x87/test_x87_fwait.c:257
+
+Test 5: Single precision
+Status after FWAIT: 0x0000
+[TEST] Status word matches expected             PASS
+
+==== Testing FWAIT Combinations ====
+
+Test 1: All exceptions masked
+Status after FWAIT: 0x0000
+[TEST] No unexpected exceptions                 PASS
+
+Test 2: All exceptions unmasked
+Status after FWAIT: 0x0000
+[TEST] No unexpected exceptions                 PASS
+
+Test 3: Partial exceptions masked
+Status after FWAIT: 0x0000
+[TEST] No unexpected exceptions                 PASS
+
+Test 4: Different rounding modes
+Status after FWAIT: 0x0000
+[TEST] No unexpected exceptions                 PASS
+
+Test 5: Different precision modes
+Status after FWAIT: 0x0000
+[TEST] No unexpected exceptions                 PASS
+
+==== Extended FWAIT Tests ====
+Before exception:
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After exception with FWAIT:
+Control Word: 0x037f
+Status Word:  0x3804
+Tag Word:     0x3804
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+[TEST] Divide by zero flag set                  PASS
+
+=== FWAIT tests completed ===

@@ -1,49 +1,39 @@
 
-==== Testing FSTP (float) ====
-Original: 0
-Stored: 0
-[TEST] Value stored correctly                   PASS
-Original: -0
-Stored: -0
-[TEST] Value stored correctly                   PASS
-Original: 1
-Stored: 1
-[TEST] Value stored correctly                   PASS
-Original: -1
-Stored: -1
-[TEST] Value stored correctly                   PASS
-Original: 123.456001281738
-Stored: 123.456001281738
-[TEST] Value stored correctly                   PASS
-Original: -123.456001281738
-Stored: -123.456001281738
-[TEST] Value stored correctly                   PASS
-Original: 3.40282346638529e+38
-Stored: 3.40282346638529e+38
-[TEST] Value stored correctly                   PASS
-Original: -3.40282346638529e+38
-Stored: -3.40282346638529e+38
-[TEST] Value stored correctly                   PASS
-Original: 1.17549435082229e-38
-Stored: 1.17549435082229e-38
-[TEST] Value stored correctly                   PASS
-Original: -1.17549435082229e-38
-Stored: -1.17549435082229e-38
-[TEST] Value stored correctly                   PASS
-Original: +INF
-Stored: +INF
-[TEST] Value stored correctly                   PASS
-Original: -INF
-Stored: -INF
-[TEST] Value stored correctly                   PASS
-Original: +NaN
-Stored: +NaN
-[TEST] NaN value stored correctly               PASS
-Original: -NaN
-Stored: -NaN
-[TEST] NaN value stored correctly               PASS
+==== Testing FSTP in Multithread Context ====
 
-==== Testing FSTP stack behavior ====
-Initial TOP: 7, New TOP: 0
-FPU Status Word: 0x0000
-[TEST] Stack pointer incremented (popped)       PASS
+==== Testing FSTP Combinations ====
+
+Test 1: Normal value, default rounding
+Original: 1.23450005054474
+Stored:   1.23450005054474
+[TEST] Value stored correctly                   PASS
+
+Test 2: Normal value, round down
+Original: 1.23450005054473
+Stored:   1.23450005054473
+[TEST] Value stored correctly                   PASS
+
+Test 3: Normal value, round up
+Original: 1.23450005054474
+Stored:   1.23450005054474
+[TEST] Value stored correctly                   PASS
+
+Test 4: Normal value, truncate
+Original: 1.23450005054473
+Stored:   1.23450005054473
+[TEST] Value stored correctly                   PASS
+
+Test 5: Denormal value
+Original: 5.87747175411144e-39
+Stored:   5.87747175411144e-39
+[TEST] Value stored correctly                   PASS
+
+Test 6: Large value
+Original: 3.39942068652608e+38
+Stored:   3.39942068652608e+38
+[TEST] Value stored correctly                   PASS
+
+Test 7: Small value
+Original: 2.35098870164458e-38
+Stored:   2.35098870164458e-38
+[TEST] Value stored correctly                   PASS

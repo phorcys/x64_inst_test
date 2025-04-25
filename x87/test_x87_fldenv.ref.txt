@@ -1,0 +1,105 @@
+=== Testing FLDENV instruction ===
+
+==== Testing FLDENV (basic) ====
+Control Word:
+  Expected: 0x037F
+  Actual:   0x037F
+[TEST] Control word loaded correctly            PASS
+Status Word:
+  Expected: 0x0000
+  Actual:   0x0000
+[TEST] Status word loaded correctly             PASS
+Tag Word:
+  Expected: 0xFFFF
+  Actual:   0x0000
+[TEST] Tag word loaded correctly                PASS
+
+==== Testing FLDENV (stack state) ====
+After FLDENV:
+Control Word: 0x0040
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+[TEST] Stack pointer loaded correctly           PASS
+[TEST] Tag word loaded correctly                PASS
+
+==== Testing FLDENV (Instruction Pointer) ====
+Instruction Pointer:
+  Expected: FIP=0x12345678 FCS=0x9ABC
+  Actual:   FIP=0x12345678 FCS=0x9ABC
+[TEST] Instruction pointer loaded correctly     PASS
+
+==== Testing FLDENV (Data Pointer) ====
+Data Pointer:
+  Expected: FDP=0x87654321 FDS=0xDEF0
+  Actual:   FDP=0x87654321 FDS=0xDEF0
+[TEST] Data pointer loaded correctly            PASS
+
+==== Testing FLDENV Boundary Values ====
+
+Test 1: Minimum values
+Expected:
+CW: 0x0000 SW: 0x0000 TW: 0x0000
+FIP: 0x00000000 FCS: 0x0000
+FDP: 0x00000000 FDS: 0x0000
+Actual:
+CW: 0x0040 SW: 0x0000 TW: 0x5555
+FIP: 0x00000000 FCS: 0x0000
+FDP: 0x00000000 FDS: 0x0000
+[TEST] Environment loaded correctly             PASS
+
+Test 2: Maximum values
+Expected:
+CW: 0xFFFF SW: 0xFFFF TW: 0xFFFF
+FIP: 0xFFFFFFFF FCS: 0xFFFF
+FDP: 0xFFFFFFFF FDS: 0xFFFF
+Actual:
+CW: 0x1F7F SW: 0x7F7F TW: 0xFFFF
+FIP: 0xFFFFFFFF FCS: 0xFFFF
+FDP: 0xFFFFFFFF FDS: 0xFFFF
+[TEST] Environment loaded correctly             PASS
+
+Test 3: Alternating bits
+Expected:
+CW: 0x5555 SW: 0x5555 TW: 0x5555
+FIP: 0x55555555 FCS: 0x5555
+FDP: 0x55555555 FDS: 0x5555
+Actual:
+CW: 0x1555 SW: 0x5555 TW: 0x5555
+FIP: 0x55555555 FCS: 0x5555
+FDP: 0x55555555 FDS: 0x5555
+[TEST] Environment loaded correctly             PASS
+
+Test 4: Inverse bits
+Expected:
+CW: 0xAAAA SW: 0xAAAA TW: 0xAAAA
+FIP: 0xAAAAAAAA FCS: 0xAAAA
+FDP: 0xAAAAAAAA FDS: 0xAAAA
+Actual:
+CW: 0x0A6A SW: 0x2A2A TW: 0x5555
+FIP: 0xAAAAAAAA FCS: 0xAAAA
+FDP: 0xAAAAAAAA FDS: 0xAAAA
+[TEST] Environment loaded correctly             PASS
+
+==== Testing FLDENV with Modern CPU Features ====
+Control Word:
+  Expected: 0x1F7F
+  Actual:   0x1F7F
+[TEST] Modern control word loaded correctly     PASS
+MXCSR before: 0x00001F80
+MXCSR after modification: 0x00001F80
+[TEST] FLDENV doesn't affect MXCSR              PASS
+
+==== Testing FLDENV Status Effects ====
+Status Word:
+  Expected: 0x4700
+  Actual:   0x4700
+[TEST] Condition flags loaded correctly         PASS
+Exception Flags:
+  Expected: 0x3F00
+  Actual:   0x3F00
+[TEST] Exception flags loaded correctly         PASS
+
+=== FLDENV tests completed ===
