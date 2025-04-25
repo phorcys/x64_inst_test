@@ -1,0 +1,21 @@
+Testing FINCSTP instruction
+FINCSTP increments stack pointer by 1
+
+Initial state:
+Control Word: 0x037f
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FINCSTP:
+Control Word: 0x037f
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+PASS: Stack pointer correctly incremented
+
+FINCSTP test completed

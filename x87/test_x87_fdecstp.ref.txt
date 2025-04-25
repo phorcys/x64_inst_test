@@ -1,0 +1,21 @@
+Testing FDECSTP instruction
+FDECSTP decrements stack pointer by 1
+
+Initial state:
+Control Word: 0x037f
+Status Word:  0x2000
+Tag Word:     0x2000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+After FDECSTP:
+Control Word: 0x037f
+Status Word:  0x1800
+Tag Word:     0x1800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+PASS: Stack pointer correctly decremented
+
+FDECSTP test completed

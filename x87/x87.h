@@ -71,8 +71,8 @@ static inline void print_x87_status() {
 #define NEG_INF      -INFINITY
 #define POS_NAN      NAN
 #define NEG_NAN      -NAN
-#define POS_DENORM   3.6451995318824746e-4951L  // Smallest positive denormal
-#define NEG_DENORM   -3.6451995318824746e-4951L // Smallest negative denormal
+#define POS_DENORM   (3.6451995318824746e-4951L)  // Smallest positive denormal
+#define NEG_DENORM   (-3.6451995318824746e-4951L) // Smallest negative denormal
 #define PI           3.1415926535897932385L
 #define E            2.7182818284590452354L
 

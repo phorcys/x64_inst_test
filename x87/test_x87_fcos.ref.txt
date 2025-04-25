@@ -1,0 +1,52 @@
+Testing FCOS instruction
+FCOS computes cosine of ST(0)
+
+Test case 1:
+Angle: 0.00000000000000000000 (0x00000000000000000000)
+Expected: 1.00000000000000000000 (0x3fff8000000000000000)
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x4000
+Tag Word:     0x4000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+PASS
+
+Test case 2:
+Angle: 1.57079632679489655800 (0x3fffc90fdaa22168c000)
+Expected: 0.00000000000000006123 (0x3fc98d313198a2e03707)
+Result: 0.00000000000000006123 (0x3fc98d30000000000000)
+Control Word: 0x037f
+Status Word:  0x4020
+Tag Word:     0x4020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: PE 
+PASS
+
+Test case 3:
+Angle: 3.14159265358979311600 (0x4000c90fdaa22168c000)
+Expected: -1.00000000000000000000 (0xbfff8000000000000000)
+Result: -1.00000000000000000000 (0xbfff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0020
+Tag Word:     0x0020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 4:
+Angle: 6.28318530717958623200 (0x4001c90fdaa22168c000)
+Expected: 1.00000000000000000000 (0x3fff8000000000000000)
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0020
+Tag Word:     0x0020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: PE 
+PASS
+
+FCOS test completed

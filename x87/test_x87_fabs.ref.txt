@@ -1,0 +1,114 @@
+Testing FABS instruction
+FABS computes absolute value of ST(0)
+
+Test case 1:
+Input: 0.00000000000000000000 (0x00000000000000000000)
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+PASS
+
+Test case 2:
+Input: -0.00000000000000000000 (0x80000000000000000000)
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+PASS
+
+Test case 3:
+Input: 1.00000000000000000000 (0x3fff8000000000000000)
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+PASS
+
+Test case 4:
+Input: -1.00000000000000000000 (0xbfff8000000000000000)
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+PASS
+
+Test case 5:
+Input: 0.00000000000000000000 (0x00000000000000000001)
+Result: 0.00000000000000000000 (0x00000000000000000001)
+Control Word: 0x037f
+Status Word:  0x0002
+Tag Word:     0x0002
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: DE 
+PASS
+
+Test case 6:
+Input: -0.00000000000000000000 (0x80000000000000000001)
+Result: 0.00000000000000000000 (0x00000000000000000001)
+Control Word: 0x037f
+Status Word:  0x0002
+Tag Word:     0x0002
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: DE 
+PASS
+
+Test case 7:
+Input: inf (0x7fff8000000000000000)
+Result: inf (0x7fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0502
+Tag Word:     0x0502
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: DE 
+PASS
+
+Test case 8:
+Input: -inf (0xffff8000000000000000)
+Result: inf (0x7fff8000000000000000)
+Control Word: 0x037f
+Status Word:  0x0502
+Tag Word:     0x0502
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: DE 
+PASS
+
+Test case 9:
+Input: nan (0x7fffc000000000000000)
+Result: nan (0x7fffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x0102
+Tag Word:     0x0102
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: DE 
+PASS
+
+Test case 10:
+Input: -nan (0xffffc000000000000000)
+Result: nan (0x7fffc000000000000000)
+Control Word: 0x037f
+Status Word:  0x0102
+Tag Word:     0x0102
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: DE 
+PASS
+
+FABS test completed
