@@ -1,0 +1,141 @@
+=== Testing FUCOMPP ===
+
+Test case 1: 1.00 vs 1.00
+Expected: -1, Actual: -1
+Control Word: 0x037f
+Status Word:  0x4000
+Tag Word:     0x4000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+  [PASS]
+
+Test case 2: 1.00 vs 2.00
+Expected: 1, Actual: 1
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS]
+
+Test case 3: 2.00 vs 1.00
+Expected: -1, Actual: -1
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS]
+
+Test case 4: 0.00 vs 0.00
+Expected: -1, Actual: -1
+Control Word: 0x037f
+Status Word:  0x4000
+Tag Word:     0x4000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+  [PASS]
+
+Test case 5: -0.00 vs 0.00
+Expected: -1, Actual: -1
+Control Word: 0x037f
+Status Word:  0x4000
+Tag Word:     0x4000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+  [PASS]
+
+Test case 6: -1.00 vs 1.00
+Expected: 1, Actual: 1
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS]
+
+Test case 7: 1.00 vs -1.00
+Expected: -1, Actual: -1
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS]
+
+Test case 8: 1.00 vs -nan
+Expected: 1, Actual: 1
+Control Word: 0x037f
+Status Word:  0x4500
+Tag Word:     0x4500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 1
+Exceptions: 
+  [PASS]
+
+Test case 9: -nan vs 1.00
+Expected: 1, Actual: 1
+Control Word: 0x037f
+Status Word:  0x4500
+Tag Word:     0x4500
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 1
+Exceptions: 
+  [PASS]
+
+Test case 10: inf vs 1.00
+Expected: -1, Actual: -1
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS]
+
+Test case 11: 1.00 vs inf
+Expected: 1, Actual: 1
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS]
+
+Test case 12: -inf vs inf
+Expected: 1, Actual: 1
+Control Word: 0x037f
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS]
+
+Test case 13: 0.00 vs 0.00
+Expected: -1, Actual: -1
+Control Word: 0x037f
+Status Word:  0x0002
+Tag Word:     0x0002
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: DE 
+  [PASS]
+
+Test case 14: 0.00 vs 0.00
+Expected: 1, Actual: 1
+Control Word: 0x037f
+Status Word:  0x0102
+Tag Word:     0x0102
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: DE 
+  [PASS]

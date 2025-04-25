@@ -1,0 +1,133 @@
+=== Testing FXTRACT ===
+
+Test case 1: 正数 (123.456000)
+Exponent: 6.000000 (expected 6.000000)
+Significand: 1.929000 (expected 1.929000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS] FXTRACT correct
+
+Test case 2: 负数 (-0.031250)
+Exponent: -5.000000 (expected -5.000000)
+Significand: -1.000000 (expected -1.000000)
+Control Word: 0x037f
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+  [PASS] FXTRACT correct
+
+Test case 3: 零 (0.000000)
+Exponent: -inf (expected -inf)
+Significand: 0.000000 (expected 0.000000)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 4: 负零 (-0.000000)
+Exponent: -inf (expected -inf)
+Significand: -0.000000 (expected -0.000000)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 5: 无穷大 (inf)
+Exponent: inf (expected inf)
+Significand: inf (expected inf)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 6: 负无穷 (-inf)
+Exponent: inf (expected inf)
+Significand: -inf (expected -inf)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 7: NaN (nan)
+Exponent: nan (expected nan)
+Significand: nan (expected nan)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 8: 规格化边界值 (0.000000)
+Exponent: -1022.000000 (expected -1022.000000)
+Significand: 1.000000 (expected 1.000000)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 9: 接近最大值 (179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000)
+Exponent: 1023.000000 (expected 1023.000000)
+Significand: 2.000000 (expected 2.000000)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 10: 特殊值1 (1.000000)
+Exponent: 0.000000 (expected 0.000000)
+Significand: 1.000000 (expected 1.000000)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 11: 特殊值2 (0.500000)
+Exponent: -1.000000 (expected -1.000000)
+Significand: 1.000000 (expected 1.000000)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
+
+Test case 12: 特殊值3 (3.000000)
+Exponent: 1.000000 (expected 1.000000)
+Significand: 1.500000 (expected 1.500000)
+Control Word: 0x037f
+Status Word:  0x0004
+Tag Word:     0x0004
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: ZE 
+  [PASS] FXTRACT correct
