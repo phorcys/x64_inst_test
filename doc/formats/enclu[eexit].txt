@@ -1,0 +1,51 @@
+  • Index
+  • December 2023
+
+EEXIT — Exits an Enclave
+
+Opcode/Op/En 64/32 CPUID Description Instruction bit Mode Feature Support Flag EAX = 04H IR V/V SGX1 This leaf function is used to exit an enclave. ENCLU[EEXIT]
+
+Instruction Operand Encoding ¶
+
+Op/En EAX        RBX                                      RCX
+IR    EEXIT (In) Target address outside the enclave (In)  Address of the current AEP (Out)
+
+Description ¶
+
+The ENCLU[EEXIT] instruction exits the currently executing enclave and branches to the location specified in RBX. RCX receives the current AEP. If RBX is not within the CS (32-bit mode) or is not canonical (64-bit mode) a #GP(0) results.
+
+EEXIT Memory Parameter Semantics ¶
+
+Target Address
+Non-Enclave read and execute access
+
+If RBX specifies an address that is inside the enclave, the instruction will complete normally. The fetch of the next instruction will occur in non-enclave mode, but will attempt to fetch from inside the enclave. This fetch returns a fixed data pattern.
+
+If secrets are contained in any registers, it is responsibility of enclave software to clear those registers.
+
+If XCR0 was modified on enclave entry, it is restored to the value it had at the time of the most recent EENTER or ERESUME.
+
+If the enclave is opt-out, RFLAGS.TF is loaded from the value previously saved on EENTER.
+
+Code and data breakpoints are unsuppressed.
+
+Performance monitoring counters are unsuppressed.
+
+Concurrency Restrictions ¶
+
+Leaf  Parameter  Base Concurrency Restrictions
+                                 On Conflict
+EEXIT            Concurrent
+
+
+Table 38-64. Base Concurrency Restrictions of EEXIT
+
+                                                                                                                     Additional Concurrency Restrictions
+Leaf  Parameter    vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On        vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.       vs. ETRACK,
+                                                                                 Conflict EMODPE, EMODPR, EMODT                                                                                        ETRACK, ETRACKC                            ETRACKC
+                                                      Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EEXIT           Concurrent                                                                                                                                                       Concurrent                                                   Concurrent
+
+
+Table 38-65. Additional Concurrency Restrictions of EEXIT
+

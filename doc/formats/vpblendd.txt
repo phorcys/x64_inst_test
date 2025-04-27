@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VPBLENDD — Blend Packed Dwords
+
+                       Opcode/Instruction                        Op/En 64/32 -bit Mode CPUID Feature Flag                                            Description
+VEX.128.66.0F3A.W0 02 /r ib VPBLENDD xmm1, xmm2, xmm3/m128, imm8 RVMI  V/V             AVX2               Select dwords from xmm2 and xmm3/m128 from mask specified in imm8 and store the values into xmm1.
+VEX.256.66.0F3A.W0 02 /r ib VPBLENDD ymm1, ymm2, ymm3/m256, imm8 RVMI  V/V             AVX2               Select dwords from ymm2 and ymm3/m256 from mask specified in imm8 and store the values into ymm1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1     Operand 2     Operand 3    Operand 4
+RVMI  ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  imm8
+
+Description ¶
+
+Dword elements from the source operand (second operand) are conditionally written to the destination operand (first operand) depending on bits in the immediate operand (third operand). The immediate bits (bits 7:0) form a mask that determines whether the
+corresponding dword in the destination is copied from the source. If a bit in the mask, corresponding to a dword, is “1", then the dword is copied, else the dword is unchanged.
+
+VEX.128 encoded version: The second source operand can be an XMM register or a 128-bit memory location. The first source and destination operands are XMM registers. Bits (MAXVL-1:128) of the corresponding YMM register are zeroed.
+
+VEX.256 encoded version: The first source operand is a YMM register. The second source operand is a YMM register or a 256-bit memory location. The destination operand is a YMM register.
+

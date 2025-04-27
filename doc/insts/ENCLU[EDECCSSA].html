@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>EDECCSSA
+		— Decrements TCS.CSSA</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>EDECCSSA
+		— Decrements TCS.CSSA</h1>
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>EAX = 09H ENCLU[EDECCSSA]</td>
+<td>IR</td>
+<td>V/V</td>
+<td>EDECCSSA</td>
+<td>This leaf function decrements TCS.CSSA.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>Op/En</td>
+<td>EAX</td></tr>
+<tr>
+<td>IR</td>
+<td>EDECCSSA (In)</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This leaf function changes the current SSA frame by decrementing TCS.CSSA for the current enclave thread. If the enclave has enabled CET shadow stacks or indirect branch tracking, then EDECCSSA also changes the current CET state save frame. This instruction leaf can only be executed inside an enclave.</p>
+<h2 id="edeccssa-memory-parameter-semantics">EDECCSSA Memory Parameter Semantics<a class="anchor" href="#edeccssa-memory-parameter-semantics">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>TCS</td></tr>
+<tr>
+<td>Read/Write access by Enclave</td></tr></table>
+<p>The instruction faults if any of the following:</p>
+<h2 id="edeccssa-faulting-conditions">EDECCSSA Faulting Conditions<a class="anchor" href="#edeccssa-faulting-conditions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>TCS.CSSA is 0.</td>
+<td>TCS is not valid or available or locked.</td></tr>
+<tr>
+<td>The SSA frame is not valid or in use.</td>
+<td></td></tr></table>
+<h3 id="concurrency-restrictions">Concurrency Restrictions<a class="anchor" href="#concurrency-restrictions">
+			¶
+		</a></h3>
+<figure id="tbl-38-60">
+<table>
+<tr>
+<th rowspan="2">Leaf</th>
+<th rowspan="2">Parameter</th>
+<th colspan="3">Base Concurrency Restrictions</th></tr>
+<tr>
+<th></th>
+<th>On Conflict </th>
+<th></th></tr>
+<tr>
+<td>EDECCSSA EDECCSSA
+TCS [CR_TCS_PA]
+Shared  EDECCSSA
+TCS [CR_TCS_PA]
+</td>
+<td>TCS [CR_TCS_PA]</td>
+<td></td>
+<td></td>
+<td></td></tr></table>
+<figcaption><span class="not-imported">Table 38-60</span>. Base Concurrency Restrictions of EDECCSSA</figcaption></figure>
+<figure id="tbl-38-61">
+<table>
+<tr>
+<th rowspan="3">Leaf</th>
+<th rowspan="3">Parameter</th>
+<th colspan="6">Additional Concurrency Restrictions</th></tr>
+<tr>
+<th colspan="2">vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT
+vs. ETRACK, ETRACKC
+Access  vs. ETRACK, ETRACKC
+Access On Conflict
+Access  vs. ETRACK, ETRACKC
+Access On Conflict
+ EMODPE, EMODPR, EMODT</th>
+<th colspan="2">vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT
+vs. ETRACK, ETRACKC
+</th>
+<th colspan="2">vs. ETRACK, ETRACKC</th></tr>
+<tr>
+<th>Access On Conflict
+Access On Conflict
+Access  Access On Conflict
+Access On Conflict
+</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th></tr>
+<tr>
+<td>EDECCSSA</td>
+<td>TCS [CR_TCS_PA]</td>
+<td>Concurrent</td>
+<td></td>
+<td>Concurrent</td>
+<td></td>
+<td>Concurrent</td>
+<td></td></tr></table>
+<figcaption><span class="not-imported">Table 38-61</span>. Additional Concurrency Restrictions of EDECCSSA</figcaption></figure>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<h2 id="temp-variables-in-edeccssa-operational-flow">Temp Variables in EDECCSSA Operational Flow<a class="anchor" href="#temp-variables-in-edeccssa-operational-flow">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Size (bits)</th>
+<th>Description</th></tr>
+<tr>
+<td>TMP_SSA</td>
+<td>Effective Address</td>
+<td>32/64</td>
+<td>Address of current SSA frame.</td></tr>
+<tr>
+<td>TMP_XSIZE</td>
+<td>Integer</td>
+<td>64</td>
+<td>Size of XSAVE area based on SECS.ATTRIBUTES.XFRM.</td></tr>
+<tr>
+<td>TMP_SSA_PAGE</td>
+<td>Effective Address</td>
+<td>32/64</td>
+<td>Pointer used to iterate over the SSA pages in the target frame.</td></tr>
+<tr>
+<td>TMP_GPR</td>
+<td>Effective Address</td>
+<td>32/64</td>
+<td>Address of the GPR area within the target SSA frame.</td></tr>
+<tr>
+<td>TMP_XSAVE_PAGE_PA_n</td>
+<td>Physical Address</td>
+<td>32/64</td>
+<td>Physical address of the nth page within the target SSA frame.</td></tr>
+<tr>
+<td>TMP_CET_SAVE_AREA</td>
+<td>Effective Address</td>
+<td>32/64</td>
+<td>Address of the current CET save area.</td></tr>
+<tr>
+<td>TMP_CET_SAVE_PAGE</td>
+<td>Effective Address</td>
+<td>32/64</td>
+<td>Address of the current CET save area page.</td></tr></table>
+<p>IF (CR_TCS_PA.CSSA = 0)</p>
+<p>THEN #GP(0); FI;</p>
+<p>(* Compute linear address of SSA frame *)</p>
+<p>TMP_SSA := CR_TCS_PA.OSSA + CR_ACTIVE_SECS.BASEADDR + 4096 * CR_ACTIVE_SECS.SSAFRAMESIZE * (CR_TCS_PA.CSSA - 1);</p>
+<p>TMP_XSIZE := compute_XSAVE_frame_size(CR_ACTIVE_SECS.ATTRIBUTES.XFRM);</p>
+<p>FOR EACH TMP_SSA_PAGE = TMP_SSA to TMP_SSA + TMP_XSIZE</p>
+<p>(* Check page is read/write accessible *)</p>
+<p>Check that DS:TMP_SSA_PAGE is read/write accessible;</p>
+<p>If a fault occurs, release locks, abort and deliver that fault;</p>
+<p>IF (DS:TMP_SSA_PAGE does not resolve to EPC page)</p>
+<p>THEN #PF(DS:TMP_SSA_PAGE); FI;</p>
+<p>IF (EPCM(DS:TMP_SSA_PAGE).VALID = 0)</p>
+<p>THEN #PF(DS:TMP_SSA_PAGE); FI;</p>
+<p>IF (EPCM(DS:TMP_SSA_PAGE).BLOCKED = 1)</p>
+<p>THEN #PF(DS:TMP_SSA_PAGE); FI;</p>
+<p>IF ((EPCM(DS:TMP_SSA_PAGE).PENDING = 1) or (EPCM(DS:TMP_SSA_PAGE_.MODIFIED = 1))</p>
+<p>THEN #PF(DS:TMP_SSA_PAGE); FI;</p>
+<p>IF ( ( EPCM(DS:TMP_SSA_PAGE).ENCLAVEADDRESS ≠ DS:TMPSSA_PAGE) or</p>
+<p>(EPCM(DS:TMP_SSA_PAGE).PT ≠ PT_REG) or</p>
+<p>(EPCM(DS:TMP_SSA_PAGE).ENCLAVESECS ≠ EPCM(CR_TCS_PA).ENCLAVESECS) or</p>
+<p>(EPCM(DS:TMP_SSA_PAGE).R = 0) or (EPCM(DS:TMP_SSA_PAGE).W = 0))</p>
+<p>THEN #PF(DS:TMP_SSA_PAGE); FI;</p>
+<p>TMP_XSAVE_PAGE_PA_n := Physical_Address(DS:TMP_SSA_PAGE);</p>
+<p>ENDFOR</p>
+<p>(* Compute address of GPR area*)</p>
+<p>TMP_GPR := TMP_SSA + 4096 * CR_ACTIVE_SECS.SSAFRAMESIZE - sizeof(GPRSGX_AREA);</p>
+<p>Check that DS:TMP_SSA_PAGE is read/write accessible;</p>
+<p>If a fault occurs, release locks, abort and deliver that fault;</p>
+<p>IF (DS:TMP_GPR does not resolve to EPC page)</p>
+<p>THEN #PF(DS:TMP_GPR); FI;</p>
+<p>IF (EPCM(DS:TMP_GPR).VALID = 0)</p>
+<p>THEN #PF(DS:TMP_GPR); FI;</p>
+<p>IF (EPCM(DS:TMP_GPR).BLOCKED = 1)</p>
+<p>THEN #PF(DS:TMP_GPR); FI;</p>
+<p>IF ((EPCM(DS:TMP_GPR).PENDING = 1) or (EPCM(DS:TMP_GPR).MODIFIED = 1))</p>
+<p>THEN #PF(DS:TMP_GPR); FI;</p>
+<p>IF ( ( EPCM(DS:TMP_GPR).ENCLAVEADDRESS ≠ DS:TMP_GPR) or</p>
+<p>(EPCM(DS:TMP_GPR).PT ≠ PT_REG) or</p>
+<p>(EPCM(DS:TMP_GPR).ENCLAVESECS ≠ EPCM(CR_TCS_PA).ENCLAVESECS) or</p>
+<p>(EPCM(DS:TMP_GPR).R = 0) or (EPCM(DS:TMP_GPR).W = 0) )</p>
+<p>THEN #PF(DS:TMP_GPR); FI;</p>
+<p>IF (TMP_MODE64 = 0)</p>
+<p>THEN</p>
+<p>IF (TMP_GPR + (sizeof(GPRSGX_AREA) -1) is not in DS segment)</p>
+<p>THEN #GP(0); FI;</p>
+<p>FI;</p>
+<p>IF (CPUID.(EAX=12H, ECX=1):EAX[6] = 1)</p>
+<p>THEN</p>
+<p>IF ((CR_ACTIVE_SECS.CET_ATTRIBUTES.SH_STK_EN == 1) OR (CR_ACTIVE_SECS.CET_ATTRIBUTES.ENDBR_EN == 1))</p>
+<p>THEN</p>
+<p>(* Compute linear address of what will become new CET state save area and cache its PA *)</p>
+<p>TMP_CET_SAVE_AREA := CR_TCS_PA.OCETSSA + CR_ACTIVE_SECS.BASEADDR + (CR_TCS_PA.CSSA - 1) * 16;</p>
+<p>TMP_CET_SAVE_PAGE := TMP_CET_SAVE_AREA &amp; ~0xFFF;</p>
+<p>Check the TMP_CET_SAVE_PAGE page is read/write accessible</p>
+<p>If fault occurs release locks, abort and deliver fault</p>
+<p>(* read the EPCM VALID, PENDING, MODIFIED, BLOCKED and PT fields atomically *)</p>
+<p>IF ((DS:TMP_CET_SAVE_PAGE Does NOT RESOLVE TO EPC PAGE) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).VALID = 0) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).PENDING = 1) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).MODIFIED = 1) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).BLOCKED = 1) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).R = 0) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).W = 0) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).ENCLAVEADDRESS ≠ DS:TMP_CET_SAVE_PAGE) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).PT ≠ PT_SS_REST) OR</p>
+<p>(EPCM(DS:TMP_CET_SAVE_PAGE).ENCLAVESECS ≠ EPCM(CR_TCS_PA).ENCLAVESECS))</p>
+<p>THEN #PF(DS:TMP_CET_SAVE_PAGE); FI;</p>
+<p>FI;</p>
+<p>FI;</p>
+<p>(* At this point, the instruction is guaranteed to complete *)</p>
+<p>CR_TCS_PA.CSSA := CR_TCS_PA.CSSA - 1;</p>
+<p>CR_GPR_PA := Physical_Address(DS:TMP_GPR);</p>
+<p>FOR EACH TMP_XSAVE_PAGE_n</p>
+<p>CR_XSAVE_PAGE_n := TMP_XSAVE_PAGE_PA_n;</p>
+<p>ENDFOR</p>
+<p>IF (CPUID.(EAX=12H, ECX=1):EAX[6] = 1)</p>
+<p>IF ((TMP_SECS.CET_ATTRIBUTES.SH_STK_EN == 1) OR</p>
+<p>(TMP_SECS.CET_ATTRIBUTES.ENDBR_EN == 1))</p>
+<p>THEN</p>
+<p>CR_CET_SAVE_AREA_PA := Physical_Address(DS:TMP_CET_SAVE_AREA);</p>
+<p>FI;</p>
+<p>FI;</p>
+<h3 id="flags-affected">Flags Affected<a class="anchor" href="#flags-affected">
+			¶
+		</a></h3>
+<p>None</p>
+<h3 class="exceptions" id="protected-mode-exceptions">Protected Mode Exceptions<a class="anchor" href="#protected-mode-exceptions">
+			¶
+		</a></h3>
+<table>
+<tr>
+<td rowspan="2">#GP(0)</td>
+<td>If executed outside an enclave.</td></tr>
+<tr>
+<td>If CR_TCS_PA.CSSA = 0.</td></tr>
+<tr>
+<td rowspan="3">#PF(error</td>
+<td>code) If a page fault occurs in accessing memory.</td></tr>
+<tr>
+<td>If one or more pages of the target SSA frame are not readable/writable, or do not resolve to a valid PT_REG EPC page.</td></tr>
+<tr>
+<td>If CET is enabled for the enclave and the target CET SSA frame is not readable/writable, or does not resolve to a valid PT_REG EPC page.</td></tr></table>
+<h3 class="exceptions" id="64-bit-mode-exceptions">64-Bit Mode Exceptions<a class="anchor" href="#64-bit-mode-exceptions">
+			¶
+		</a></h3>
+<table>
+<tr>
+<td rowspan="2">#GP(0)</td>
+<td>If executed outside an enclave.</td></tr>
+<tr>
+<td>If CR_TCS_PA.CSSA = 0.</td></tr>
+<tr>
+<td rowspan="3">#PF(error</td>
+<td>code) If a page fault occurs in accessing memory.</td></tr>
+<tr>
+<td>If one or more pages of the target SSA frame are not readable/writable, or do not resolve to a valid PT_REG EPC page.</td></tr>
+<tr>
+<td>If CET is enabled for the enclave and the target CET SSA frame is not readable/writable, or does not resolve to a valid PT_REG EPC page.</td></tr></table><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

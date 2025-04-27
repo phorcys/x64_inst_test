@@ -1,0 +1,32 @@
+  • Index
+  • December 2023
+
+VPMOVM2B/VPMOVM2W/VPMOVM2D/VPMOVM2Q — Convert a Mask Register to a VectorRegister
+
+            Opcode/Instruction              Op/En 64/32 bit Mode Support CPUID Feature Flag                                              Description
+EVEX.128.F3.0F38.W0 28 /r VPMOVM2B xmm1, k1 RM    V/V                    AVX512VL AVX512BW  Sets each byte in XMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.256.F3.0F38.W0 28 /r VPMOVM2B ymm1, k1 RM    V/V                    AVX512VL AVX512BW  Sets each byte in YMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.512.F3.0F38.W0 28 /r VPMOVM2B zmm1, k1 RM    V/V                    AVX512BW           Sets each byte in ZMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.128.F3.0F38.W1 28 /r VPMOVM2W xmm1, k1 RM    V/V                    AVX512VL AVX512BW  Sets each word in XMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.256.F3.0F38.W1 28 /r VPMOVM2W ymm1, k1 RM    V/V                    AVX512VL AVX512BW  Sets each word in YMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.512.F3.0F38.W1 28 /r VPMOVM2W zmm1, k1 RM    V/V                    AVX512BW           Sets each word in ZMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.128.F3.0F38.W0 38 /r VPMOVM2D xmm1, k1 RM    V/V                    AVX512VL AVX512DQ  Sets each doubleword in XMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.256.F3.0F38.W0 38 /r VPMOVM2D ymm1, k1 RM    V/V                    AVX512VL AVX512DQ  Sets each doubleword in YMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.512.F3.0F38.W0 38 /r VPMOVM2D zmm1, k1 RM    V/V                    AVX512DQ           Sets each doubleword in ZMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.128.F3.0F38.W1 38 /r VPMOVM2Q xmm1, k1 RM    V/V                    AVX512VL AVX512DQ  Sets each quadword in XMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.256.F3.0F38.W1 38 /r VPMOVM2Q ymm1, k1 RM    V/V                    AVX512VL AVX512DQ  Sets each quadword in YMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+EVEX.512.F3.0F38.W1 38 /r VPMOVM2Q zmm1, k1 RM    V/V                    AVX512DQ           Sets each quadword in ZMM1 to all 1’s or all 0’s based on the value of the corresponding bit in k1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Converts a mask register to a vector register. Each element in the destination register is set to all 1’s or all 0’s depending on the value of the corresponding bit in the source mask register.
+
+The source operand is a mask register. The destination operand is a ZMM/YMM/XMM register.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

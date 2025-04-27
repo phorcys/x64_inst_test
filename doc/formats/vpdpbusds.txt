@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+VPDPBUSDS — Multiply and Add Unsigned and Signed Bytes With Saturation
+
+                  Opcode/Instruction                   Op/   64/32 bit Mode   CPUID Feature                                                                             Description
+                                                        En      Support           Flag
+VEX.128.66.0F38.W0 51 /r VPDPBUSDS xmm1, xmm2, xmm3/   A    V/V              AVX-VNNI        Multiply groups of 4 pairs signed bytes in xmm3/m128 with corresponding unsigned bytes of xmm2, summing those products and adding them to doubleword result, with
+m128                                                                                         signed saturation in xmm1.
+VEX.256.66.0F38.W0 51 /r VPDPBUSDS ymm1, ymm2, ymm3/   A    V/V              AVX-VNNI        Multiply groups of 4 pairs signed bytes in ymm3/m256 with corresponding unsigned bytes of ymm2, summing those products and adding them to doubleword result, with
+m256                                                                                         signed saturation in ymm1.
+EVEX.128.66.0F38.W0 51 /r VPDPBUSDS xmm1{k1}{z}, xmm2, B    V/V              AVX512_VNNI     Multiply groups of 4 pairs signed bytes in xmm3/m128/m32bcst with corresponding unsigned bytes of xmm2, summing those products and adding them to doubleword
+xmm3/m128/m32bcst                                                            AVX512VL        result, with signed saturation in xmm1, under writemask k1.
+EVEX.256.66.0F38.W0 51 /r VPDPBUSDS ymm1{k1}{z}, ymm2, B    V/V              AVX512_VNNI     Multiply groups of 4 pairs signed bytes in ymm3/m256/m32bcst with corresponding unsigned bytes of ymm2, summing those products and adding them to doubleword
+ymm3/m256/m32bcst                                                            AVX512VL        result, with signed saturation in ymm1, under writemask k1.
+EVEX.512.66.0F38.W0 51 /r VPDPBUSDS zmm1{k1}{z}, zmm2, B    V/V              AVX512_VNNI     Multiply groups of 4 pairs signed bytes in zmm3/m512/m32bcst with corresponding unsigned bytes of zmm2, summing those products and adding them to doubleword
+zmm3/m512/m32bcst                                                                            result, with signed saturation in zmm1, under writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A   ModRM:reg (r, w)  VEX.vvvv (r)  ModRM:r/m (r) N/A
+B     Full  ModRM:reg (r, w)  EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Multiplies the individual unsigned bytes of the first source operand by the corresponding signed bytes of the second source operand, producing intermediate signed word results. The word results are then summed and accumulated in the destination dword
+element size operand. If the intermediate sum overflows a 32b signed number the result is saturated to either 0x7FFF_FFFF for positive numbers of 0x8000_0000 for negative numbers.
+
+This instruction supports memory fault suppression.
+

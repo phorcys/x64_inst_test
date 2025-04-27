@@ -1,0 +1,29 @@
+  • Index
+  • December 2023
+
+VCVTUDQ2PD — Convert Packed Unsigned Doubleword Integers to Packed Double PrecisionFloating-Point Values
+
+                      Opcode/Instruction                       Op/En    64/32 Bit Mode       CPUID Feature                                                                      Description
+                                                                            Support              Flag
+EVEX.128.F3.0F.W0 7A /r VCVTUDQ2PD xmm1 {k1}{z}, xmm2/m64/     A     V/V                   AVX512VL AVX512F  Convert two packed unsigned doubleword integers from ymm2/m64/m32bcst to packed double precision floating-point values in zmm1 with writemask k1.
+m32bcst
+EVEX.256.F3.0F.W0 7A /r VCVTUDQ2PD ymm1 {k1}{z}, xmm2/m128/    A     V/V                   AVX512VL AVX512F  Convert four packed unsigned doubleword integers from xmm2/m128/m32bcst to packed double precision floating-point values in zmm1 with writemask
+m32bcst                                                                                                      k1.
+EVEX.512.F3.0F.W0 7A /r VCVTUDQ2PD zmm1 {k1}{z}, ymm2/m256/    A     V/V                   AVX512F           Convert eight packed unsigned doubleword integers from ymm2/m256/m32bcst to eight packed double precision floating-point values in zmm1 with
+m32bcst                                                                                                      writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Half       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Converts packed unsigned doubleword integers in the source operand (second operand) to packed double precision floating-point values in the destination operand (first operand).
+
+The source operand is a YMM/XMM/XMM (low 64 bits) register, a 256/128/64-bit memory location or a 256/128/64-bit vector broadcasted from a 32-bit memory location. The destination operand is a ZMM/YMM/XMM register conditionally updated with writemask k1.
+
+Attempt to encode this instruction with EVEX embedded rounding is ignored.
+
+Note: EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.
+

@@ -1,0 +1,24 @@
+  • Index
+  • December 2023
+
+STI — Set Interrupt Flag
+
+Opcode Instruction Op/En 64-Bit Mode Compat/Leg Mode                                          Description
+FB     STI         ZO    Valid       Valid           Set interrupt flag; external, maskable interrupts enabled at the end of the next instruction.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+In most cases, STI sets the interrupt flag (IF) in the EFLAGS register. This allows the processor to respond to maskable hardware interrupts.
+
+If IF = 0, maskable hardware interrupts remain inhibited on the instruction boundary following an execution of STI. (The delayed effect of this instruction is provided to allow interrupts to be enabled just before returning from a procedure or
+subroutine. For instance, if an STI instruction is followed by an RET instruction, the RET instruction is allowed to execute before external interrupts are recognized. No interrupts can be recognized if an execution of CLI immediately follow such an
+execution of STI.) The inhibition ends after delivery of another event (e.g., exception) or the execution of the next instruction.
+
+The IF flag and the STI and CLI instructions do not prohibit the generation of exceptions and nonmaskable interrupts (NMIs). However, NMIs (and system-management interrupts) may be inhibited on the instruction boundary following an execution of STI that
+begins with IF = 0.
+

@@ -1,0 +1,14 @@
+  • Index
+  • December 2023
+
+FFREE — Free Floating-Point Register
+
+Opcode   Mode Leg Mode           Description
+DD C0+i                 Sets tag for ST(i) to empty.
+
+Description ¶
+
+Sets the tag in the FPU tag register associated with register ST(i) to empty (11B). The contents of ST(i) and the FPU stack-top pointer (TOP) are not affected.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

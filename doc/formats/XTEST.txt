@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+XTEST — Test if in Transactional Execution
+
+Opcode/Instruction Op/En 64/32bit Mode Support CPUID Feature Flag                  Description
+NP 0F 01 D6 XTEST  ZO    V/V                   HLE or RTM         Test if executing in a transactional region.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand2 Operand3 Operand4
+ZO    N/A        N/A      N/A      N/A
+
+Description ¶
+
+The XTEST instruction queries the transactional execution status. If the instruction executes inside a transactionally executing RTM region or a transactionally executing HLE region, then the ZF flag is cleared, else it is set.
+

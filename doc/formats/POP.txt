@@ -1,0 +1,68 @@
+  • Index
+  • December 2023
+
+POP — Pop a Value From the Stack
+
+Opcode Instruction Op/En 64-Bit Mode Compat/Leg Mode                                       Description
+8F /0  POP r/m16   M     Valid       Valid           Pop top of stack into m16; increment stack pointer.
+8F /0  POP r/m32   M     N.E.        Valid           Pop top of stack into m32; increment stack pointer.
+8F /0  POP r/m64   M     Valid       N.E.            Pop top of stack into m64; increment stack pointer. Cannot encode 32-bit operand size.
+58+ rw POP r16     O     Valid       Valid           Pop top of stack into r16; increment stack pointer.
+58+ rd POP r32     O     N.E.        Valid           Pop top of stack into r32; increment stack pointer.
+58+ rd POP r64     O     Valid       N.E.            Pop top of stack into r64; increment stack pointer. Cannot encode 32-bit operand size.
+1F     POP DS      ZO    Invalid     Valid           Pop top of stack into DS; increment stack pointer.
+07     POP ES      ZO    Invalid     Valid           Pop top of stack into ES; increment stack pointer.
+17     POP SS      ZO    Invalid     Valid           Pop top of stack into SS; increment stack pointer.
+0F A1  POP FS      ZO    Valid       Valid           Pop top of stack into FS; increment stack pointer by 16 bits.
+0F A1  POP FS      ZO    N.E.        Valid           Pop top of stack into FS; increment stack pointer by 32 bits.
+0F A1  POP FS      ZO    Valid       N.E.            Pop top of stack into FS; increment stack pointer by 64 bits.
+0F A9  POP GS      ZO    Valid       Valid           Pop top of stack into GS; increment stack pointer by 16 bits.
+0F A9  POP GS      ZO    N.E.        Valid           Pop top of stack into GS; increment stack pointer by 32 bits.
+0F A9  POP GS      ZO    Valid       N.E.            Pop top of stack into GS; increment stack pointer by 64 bits.
+
+Instruction Operand Encoding ¶
+
+Op/En    Operand 1     Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (w)    N/A       N/A       N/A
+O     opcode + rd (w)  N/A       N/A       N/A
+ZO    N/A              N/A       N/A       N/A
+
+Description ¶
+
+Loads the value from the top of the stack to the location specified with the destination operand (or explicit opcode) and then increments the stack pointer. The destination operand can be a general-purpose register, memory location, or segment register.
+
+Address and operand sizes are determined and used as follows:
+
+  • Address size. The D flag in the current code-segment descriptor determines the default address size; it may be overridden by an instruction prefix (67H).
+
+The address size is used only when writing to a destination operand in memory.
+
+  • Operand size. The D flag in the current code-segment descriptor determines the default operand size; it may be overridden by instruction prefixes (66H or REX.W).
+
+The operand size (16, 32, or 64 bits) determines the amount by which the stack pointer is incremented (2, 4 or 8).
+
+  • Stack-address size. Outside of 64-bit mode, the B flag in the current stack-segment descriptor determines the size of the stack pointer (16 or 32 bits); in 64-bit mode, the size of the stack pointer is always 64 bits.
+
+The stack-address size determines the width of the stack pointer when reading from the stack in memory and when incrementing the stack pointer. (As stated above, the amount by which the stack pointer is incremented is determined by the operand size.)
+
+If the destination operand is one of the segment registers DS, ES, FS, GS, or SS, the value loaded into the register must be a valid segment selector. In protected mode, popping a segment selector into a segment register automat-
+
+ically causes the descriptor information associated with that segment selector to be loaded into the hidden (shadow) part of the segment register and causes the selector and the descriptor information to be validated (see the “Operation” section below).
+
+A NULL value (0000-0003) may be popped into the DS, ES, FS, or GS register without causing a general protection fault. However, any subsequent attempt to reference a segment whose corresponding segment register is loaded with a NULL value causes a
+general protection exception (#GP). In this situation, no memory reference occurs and the saved value of the segment register is NULL.
+
+The POP instruction cannot pop a value into the CS register. To load the CS register from the stack, use the RET instruction.
+
+If the ESP register is used as a base register for addressing a destination operand in memory, the POP instruction computes the effective address of the operand after it increments the ESP register. For the case of a 16-bit stack where ESP wraps to 0H as
+a result of the POP instruction, the resulting location of the memory write is processor-family-specific.
+
+The POP ESP instruction increments the stack pointer (ESP) before data at the old top of stack is written into the destination.
+
+Loading the SS register with a POP instruction suppresses or inhibits some debug exceptions and inhibits interrupts on the following instruction boundary. (The inhibition ends after delivery of an exception or the execution of the next instruction.) This
+behavior allows a stack pointer to be loaded into the ESP register with the next instruction (POP ESP) before an event can be delivered. See Section 6.8.3, “Masking Exceptions and Interrupts When Switching Stacks,” in the Intel^® 64 and IA-32
+Architectures Software Developer’s Manual, Volume 3A. Intel recommends that software use the LSS instruction to load the SS register and ESP together.
+
+In 64-bit mode, using a REX prefix in the form of REX.R permits access to additional registers (R8-R15). When in 64-bit mode, POPs using 32-bit operands are not encodable and POPs to DS, ES, SS are not valid. See the summary chart at the beginning of
+this section for encoding data and limits.
+

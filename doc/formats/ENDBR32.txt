@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+ENDBR32 — Terminate an Indirect Branch in 32-bit and Compatibility Mode
+
+Opcode/Instruction  Op / En 64/32 bit Mode Support CPUID Feature Flag                         Description
+F3 0F 1E FB ENDBR32 ZO      V/V                    CET_IBT            Terminate indirect branch in 32-bit and compatibility mode.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type  Operand 1 Operand 2 Operand 3 Operand 4
+ZO    N/A         N/A       N/A       N/A       N/A
+
+Description ¶
+
+Terminate an indirect branch in 32 bit and compatibility mode.
+

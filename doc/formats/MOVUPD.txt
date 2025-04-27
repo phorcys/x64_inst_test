@@ -1,0 +1,52 @@
+  • Index
+  • December 2023
+
+MOVUPD — Move Unaligned Packed Double Precision Floating-Point Values
+
+                  Opcode/Instruction                    Op / En 64/32 bit Mode Support CPUID Feature Flag                                               Description
+66 0F 10 /r MOVUPD xmm1, xmm2/m128                      A       V/V                    SSE2               Move unaligned packed double precision floating-point from xmm2/mem to xmm1.
+66 0F 11 /r MOVUPD xmm2/m128, xmm1                      B       V/V                    SSE2               Move unaligned packed double precision floating-point from xmm1 to xmm2/mem.
+VEX.128.66.0F.WIG 10 /r VMOVUPD xmm1, xmm2/m128         A       V/V                    AVX                Move unaligned packed double precision floating-point from xmm2/mem to xmm1.
+VEX.128.66.0F.WIG 11 /r VMOVUPD xmm2/m128, xmm1         B       V/V                    AVX                Move unaligned packed double precision floating-point from xmm1 to xmm2/mem.
+VEX.256.66.0F.WIG 10 /r VMOVUPD ymm1, ymm2/m256         A       V/V                    AVX                Move unaligned packed double precision floating-point from ymm2/mem to ymm1.
+VEX.256.66.0F.WIG 11 /r VMOVUPD ymm2/m256, ymm1         B       V/V                    AVX                Move unaligned packed double precision floating-point from ymm1 to ymm2/mem.
+EVEX.128.66.0F.W1 10 /r VMOVUPD xmm1 {k1}{z}, xmm2/m128 C       V/V                    AVX512VL AVX512F   Move unaligned packed double precision floating-point from xmm2/m128 to xmm1 using writemask k1.
+EVEX.128.66.0F.W1 11 /r VMOVUPD xmm2/m128 {k1}{z}, xmm1 D       V/V                    AVX512VL AVX512F   Move unaligned packed double precision floating-point from xmm1 to xmm2/m128 using writemask k1.
+EVEX.256.66.0F.W1 10 /r VMOVUPD ymm1 {k1}{z}, ymm2/m256 C       V/V                    AVX512VL AVX512F   Move unaligned packed double precision floating-point from ymm2/m256 to ymm1 using writemask k1.
+EVEX.256.66.0F.W1 11 /r VMOVUPD ymm2/m256 {k1}{z}, ymm1 D       V/V                    AVX512VL AVX512F   Move unaligned packed double precision floating-point from ymm1 to ymm2/m256 using writemask k1.
+EVEX.512.66.0F.W1 10 /r VMOVUPD zmm1 {k1}{z}, zmm2/m512 C       V/V                    AVX512F            Move unaligned packed double precision floating-point values from zmm2/m512 to zmm1 using writemask k1.
+EVEX.512.66.0F.W1 11 /r VMOVUPD zmm2/m512 {k1}{z}, zmm1 D       V/V                    AVX512F            Move unaligned packed double precision floating-point values from zmm1 to zmm2/m512 using writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     N/A        ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+B     N/A        ModRM:r/m (w)  ModRM:reg (r)  N/A       N/A
+C     Full Mem   ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+D     Full Mem   ModRM:r/m (w)  ModRM:reg (r)  N/A       N/A
+
+Description ¶
+
+Note: VEX.vvvv and EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+
+EVEX.512 encoded version:
+
+Moves 512 bits of packed double precision floating-point values from the source operand (second operand) to the destination operand (first operand). This instruction can be used to load a ZMM register from a float64 memory location, to store the contents
+of a ZMM register into a memory. The destination operand is updated according to the writemask.
+
+VEX.256 encoded version:
+
+Moves 256 bits of packed double precision floating-point values from the source operand (second operand) to the destination operand (first operand). This instruction can be used to load a YMM register from a 256-bit memory location, to store the contents
+of a YMM register into a 256-bit memory location, or to move data between two YMM registers. Bits (MAXVL-1:256) of the destination register are zeroed.
+
+128-bit versions:
+
+Moves 128 bits of packed double precision floating-point values from the source operand (second operand) to the destination operand (first operand). This instruction can be used to load an XMM register from a 128-bit memory location, to store the
+contents of an XMM register into a 128-bit memory location, or to move data between two XMM registers.
+
+128-bit Legacy SSE version: Bits (MAXVL-1:128) of the corresponding destination register remain unchanged.
+
+When the source or destination operand is a memory operand, the operand may be unaligned on a 16-byte boundary without causing a general-protection exception (#GP) to be generated
+
+VEX.128 and EVEX.128 encoded versions: Bits (MAXVL-1:128) of the destination register are zeroed.
+

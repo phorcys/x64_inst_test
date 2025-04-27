@@ -1,0 +1,26 @@
+  • Index
+  • December 2023
+
+VPSHUFBITQMB — Shuffle Bits From Quadword Elements Using Byte Indexes Into Mask
+
+                      Opcode/Instruction                       Op/En 64/32 bit Mode Support   CPUID Feature Flag                                                      Description
+EVEX.128.66.0F38.W0 8F /r VPSHUFBITQMB k1{k2}, xmm2, xmm3/m128 A     V/V                    AVX512_BITALG AVX512VL Extract values in xmm2 using control bits of xmm3/m128 with writemask k2 and leave the result in mask register k1.
+EVEX.256.66.0F38.W0 8F /r VPSHUFBITQMB k1{k2}, ymm2, ymm3/m256 A     V/V                    AVX512_BITALG AVX512VL Extract values in ymm2 using control bits of ymm3/m256 with writemask k2 and leave the result in mask register k1.
+EVEX.512.66.0F38.W0 8F /r VPSHUFBITQMB k1{k2}, zmm2, zmm3/m512 A     V/V                    AVX512_BITALG          Extract values in zmm2 using control bits of zmm3/m512 with writemask k2 and leave the result in mask register k1.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple     Operand 1      Operand 2      Operand 3    Operand 4
+A     Full Mem ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+The VPSHUFBITQMB instruction performs a bit gather select using second source as control and first source as data. Each bit uses 6 control bits (2nd source operand) to select which data bit is going to be gathered (first source operand). A given bit can
+only access 64 different bits of data (first 64 destination bits can access first 64 data bits, second 64 destination bits can access second 64 data bits, etc.).
+
+Control data for each output bit is stored in 8 bit elements of SRC2, but only the 6 least significant bits of each element are used.
+
+This instruction uses write masking (zeroing only). This instruction supports memory fault suppression.
+
+The first source operand is a ZMM register. The second source operand is a ZMM register or a memory location. The destination operand is a mask register.
+

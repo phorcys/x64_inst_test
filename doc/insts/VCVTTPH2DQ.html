@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VCVTTPH2DQ
+		— Convert with Truncation Packed FP16 Values to Signed Doubleword Integers</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VCVTTPH2DQ
+		— Convert with Truncation Packed FP16 Values to Signed Doubleword Integers</h1>
+
+<table>
+<tr>
+<th> Instruction En Bit Mode Flag
+Support  Instruction En Bit Mode Flag
+Support  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature </th>
+<th></th>
+<th>Support</th>
+<th></th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.128.F3.MAP5.W0 5B /r VCVTTPH2DQ xmm1{k1}{z}, xmm2/m64/m16bcst</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Convert four packed FP16 values in xmm2/m64/m16bcst to four signed doubleword integers, and store the result in xmm1 using truncation subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.F3.MAP5.W0 5B /r VCVTTPH2DQ ymm1{k1}{z}, xmm2/m128/m16bcst</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Convert eight packed FP16 values in xmm2/m128/m16bcst to eight signed doubleword integers, and store the result in ymm1 using truncation subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.F3.MAP5.W0 5B /r VCVTTPH2DQ zmm1{k1}{z}, ymm2/m256/m16bcst {sae}</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Convert sixteen packed FP16 values in ymm2/m256/m16bcst to sixteen signed doubleword integers, and store the result in zmm1 using truncation subject to writemask k1.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Half</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction converts packed FP16 values in the source operand to signed doubleword integers in destination operand.</p>
+<p>When a conversion is inexact, a truncated (round toward zero) value is returned. If a converted result is larger than the maximum signed doubleword integer, the floating-point invalid exception is raised, and if this exception is masked, the indefinite integer value is returned.</p>
+<p>The destination elements are updated according to the writemask.</p>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<h4 id="vcvttph2dq-dest--src">VCVTTPH2DQ dest, src<a class="anchor" href="#vcvttph2dq-dest--src">
+			¶
+		</a></h4>
+<pre>VL = 128, 256 or 512
+KL := VL / 32
+FOR j := 0 TO KL-1:
+    IF k1[j] OR *no writemask*:
+        IF *SRC is memory* and EVEX.b = 1:
+            tsrc := SRC.fp16[0]
+        ELSE
+            tsrc := SRC.fp16[j]
+        DEST.fp32[j] := Convert_fp16_to_integer32_truncate(tsrc)
+    ELSE IF *zeroing*:
+        DEST.fp32[j] := 0
+    // else dest.fp32[j] remains unchanged
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VCVTTPH2DQ __m512i _mm512_cvtt_roundph_epi32 (__m256h a, int sae);
+</pre>
+<pre>VCVTTPH2DQ __m512i _mm512_mask_cvtt_roundph_epi32 (__m512i src, __mmask16 k, __m256h a, int sae);
+</pre>
+<pre>VCVTTPH2DQ __m512i _mm512_maskz_cvtt_roundph_epi32 (__mmask16 k, __m256h a, int sae);
+</pre>
+<pre>VCVTTPH2DQ __m128i _mm_cvttph_epi32 (__m128h a);
+</pre>
+<pre>VCVTTPH2DQ __m128i _mm_mask_cvttph_epi32 (__m128i src, __mmask8 k, __m128h a);
+</pre>
+<pre>VCVTTPH2DQ __m128i _mm_maskz_cvttph_epi32 (__mmask8 k, __m128h a);
+</pre>
+<pre>VCVTTPH2DQ __m256i _mm256_cvttph_epi32 (__m128h a);
+</pre>
+<pre>VCVTTPH2DQ __m256i _mm256_mask_cvttph_epi32 (__m256i src, __mmask8 k, __m128h a);
+</pre>
+<pre>VCVTTPH2DQ __m256i _mm256_maskz_cvttph_epi32 (__mmask8 k, __m128h a);
+</pre>
+<pre>VCVTTPH2DQ __m512i _mm512_cvttph_epi32 (__m256h a);
+</pre>
+<pre>VCVTTPH2DQ __m512i _mm512_mask_cvttph_epi32 (__m512i src, __mmask16 k, __m256h a);
+</pre>
+<pre>VCVTTPH2DQ __m512i _mm512_maskz_cvttph_epi32 (__mmask16 k, __m256h a);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Invalid, Precision.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>EVEX-encoded instructions, see <span class="not-imported">Table 2-46</span>, “Type E2 Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+TESTUI — Determine User Interrupt Flag
+
+Opcode/Instruction Op/En 64/32 bit Mode Support CPUID Feature Flag                   Description
+F3 0F 01 ED TESTUI ZO    V/I                    UINTR              Copies the current value of UIF into EFLAGS.CF.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A   N/A        N/A        N/A        N/A
+
+TESTUI copies the current value of the user interrupt flag (UIF) into EFLAGS.CF. This instruction can be executed regardless of CPL.
+
+TESTUI may be executed normally inside a transactional region.
+

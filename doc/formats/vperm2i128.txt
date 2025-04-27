@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+VPERM2I128 — Permute Integer Values
+
+                        Opcode/Instruction                         Op/En 64/32 -bit Mode CPUID Feature Flag                                             Description
+VEX.256.66.0F3A.W0 46 /r ib VPERM2I128 ymm1, ymm2, ymm3/m256, imm8 RVMI  V/V             AVX2               Permute 128-bit integer data in ymm2 and ymm3/mem using controls from imm8 and store result in ymm1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1     Operand 2     Operand 3    Operand 4
+RVMI  ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  imm8
+
+Description ¶
+
+Permute 128 bit integer data from the first source operand (second operand) and second source operand (third operand) using bits in the 8-bit immediate and store results in the destination operand (first operand). The first source operand is a YMM
+register, the second source operand is a YMM register or a 256-bit memory location, and the destination operand is a YMM register.
+
+Y1 Y0 SRC2 X1 X0 SRC1 X0, X1, Y0, or Y1 DEST X0, X1, Y0, or Y1
+Figure 5-22. VPERM2I128 Operation
+
+Imm8[1:0] select the source for the first destination 128-bit field, imm8[5:4] select the source for the second destination field. If imm8[3] is set, the low 128-bit field is zeroed. If imm8[7] is set, the high 128-bit field is zeroed.
+
+VEX.L must be 1, otherwise the instruction will #UD.
+

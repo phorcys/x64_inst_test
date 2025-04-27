@@ -1,0 +1,63 @@
+  • Index
+  • December 2023
+
+EDBGRD — Read From a Debug Enclave
+
+  Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                           Description
+EAX = 04H ENCLS[EDBGRD] IR    V/V                    SGX1               This leaf function reads a dword/quadword from a debug enclave.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                 RBX                                  RCX
+IR    EDBGRD (In) Return error code (Out) Data read from a debug enclave (Out) Address of source memory in the EPC (In)
+
+Description ¶
+
+This leaf function copies a quadword/doubleword from an EPC page belonging to a debug enclave into the RBX register. Eight bytes are read in 64-bit mode, four bytes are read in non-64-bit modes. The size of data read cannot be overridden.
+
+The effective address of the source location inside the EPC is provided in the register RCX.
+
+EDBGRD Memory Parameter Semantics ¶
+
+EPCQW
+Read access permitted by Enclave
+
+The error codes are:
+
+Error Code (see Table 38-4)                                   Description
+No Error                    EDBGRD successful.
+SGX_PAGE_NOT_DEBUGGABLE     The EPC page cannot be accessed because it is in the PENDING or MODIFIED state.
+
+
+Table 38-17. EDBGRD Return Value in RAX
+
+The instruction faults if any of the following:
+
+EDBGRD Faulting Conditions ¶
+
+RCX points into a page that is an SECS.                                        RCX does not resolve to a naturally aligned linear address.
+RCX points to a page that does not belong to an enclave that is in debug mode. RCX points to a location inside a TCS that is beyond the architectural size of the TCS (SGX_TCS_LIMIT).
+An operand causing any segment violation.                                      May page fault.
+CPL > 0.
+
+This instruction ignores the EPCM RWX attributes on the enclave page. Consequently, violation of EPCM RWX attributes via EDBGRD does not result in a #GP.
+
+Concurrency Restrictions ¶
+
+                            Leaf                                Parameter    Base Concurrency Restrictions
+                                                                                      On Conflict
+EDBGRD EDBGRD Target [DS:RCX] Shared EDBGRD Target [DS:RCX]  Target [DS:RCX]
+
+
+Table 38-18. Base Concurrency Restrictions of EDBGRD
+
+                                                                                                                       Additional Concurrency Restrictions
+ Leaf   Parameter     vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On      vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                   Conflict EMODPE, EMODPR, EMODT                                                                                       ETRACK, ETRACKC                           ETRACKC
+                                                         Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EDBGRD Target       Concurrent                                                                                                                                                    Concurrent                                                  Concurrent
+       [DS:RCX]
+
+
+Table 38-19. Additional Concurrency Restrictions of EDBGRD
+

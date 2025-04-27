@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+LZCNT — Count the Number of Leading Zero Bits
+
+        Opcode/Instruction         Op/En 64/32-bit Mode CPUID Feature Flag                              Description
+F3 0F BD /r LZCNT r16, r/m16       RM    V/V            LZCNT              Count the number of leading zero bits in r/m16, return result in r16.
+F3 0F BD /r LZCNT r32, r/m32       RM    V/V            LZCNT              Count the number of leading zero bits in r/m32, return result in r32.
+F3 REX.W 0F BD /r LZCNT r64, r/m64 RM    V/N.E.         LZCNT              Count the number of leading zero bits in r/m64, return result in r64.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Counts the number of leading most significant zero bits in a source operand (second operand) returning the result into a destination (first operand).
+
+LZCNT differs from BSR. For example, LZCNT will produce the operand size when the input operand is zero. It should be noted that on processors that do not support LZCNT, the instruction byte encoding is executed as BSR.
+
+In 64-bit mode 64-bit operand size requires REX.W=1.
+

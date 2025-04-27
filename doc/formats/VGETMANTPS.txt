@@ -1,0 +1,45 @@
+  • Index
+  • December 2023
+
+VGETMANTPS — Extract Float32 Vector of Normalized Mantissas From Float32 Vector
+
+                         Opcode/Instruction                           Op/    64/32 Bit Mode     CPUID Feature                                                                    Description
+                                                                       En        Support            Flag
+EVEX.128.66.0F3A.W0 26 /r ib VGETMANTPS xmm1 {k1}{z}, xmm2/m128/      A    V/V                 AVX512VL        Get normalized mantissa from float32 vector xmm2/m128/m32bcst and store the result in xmm1, using imm8 for sign control and mantissa interval
+m32bcst, imm8                                                                                  AVX512F         normalization, under writemask.
+EVEX.256.66.0F3A.W0 26 /r ib VGETMANTPS ymm1 {k1}{z}, ymm2/m256/      A    V/V                 AVX512VL        Get normalized mantissa from float32 vector ymm2/m256/m32bcst and store the result in ymm1, using imm8 for sign control and mantissa interval
+m32bcst, imm8                                                                                  AVX512F         normalization, under writemask.
+EVEX.512.66.0F3A.W0 26 /r ib VGETMANTPS zmm1 {k1}{z}, zmm2/m512/      A    V/V                 AVX512F         Get normalized mantissa from float32 vector zmm2/m512/m32bcst and store the result in zmm1, using imm8 for sign control and mantissa interval
+m32bcst{sae}, imm8                                                                                             normalization, under writemask.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  imm8      N/A
+
+Description ¶
+
+Convert single-precision floating values in the source operand (the second operand) to single-precision floating-point values with the mantissa normalization and sign control specified by the imm8 byte, see Figure 5-15. The converted results are written
+to the destination operand (the first operand) using writemask k1. The normalized mantissa is specified by interv (imm8[1:0]) and the sign control (sc) is specified by bits 3:2 of the immediate byte.
+
+The destination operand is a ZMM/YMM/XMM register updated under the writemask. The source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location, or a 512/256/128-bit vector broadcasted from a 32-bit memory location.
+
+For each input single-precision floating-point value x, The conversion operation is:
+
+GetMant(x) = ±2^k|x.significand|
+
+where:
+
+1 <= |x.significand| < 2
+
+Unbiased exponent k can be either 0 or -1, depending on the interval range defined by interv, the range of the significand and whether the exponent of the source is even or odd. The sign of the final result is determined by sc and the source sign. The
+encoded value of imm8[1:0] and sign control are shown in Figure 5-15.
+
+Each converted single-precision floating-point result is encoded according to the sign control, the unbiased exponent k (adding bias) and a mantissa normalized to the range specified by interv.
+
+The GetMant() function follows Table 5-18 when dealing with floating-point special numbers.
+
+This instruction is writemasked, so only those elements with the corresponding bit set in vector mask register k1 are computed and stored into the destination. Elements in zmm1 with the corresponding bit clear in k1 retain their previous values.
+
+Note: EVEX.vvvv is reserved and must be 1111b, VEX.L must be 0; otherwise instructions will #UD.
+

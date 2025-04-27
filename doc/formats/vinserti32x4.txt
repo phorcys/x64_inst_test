@@ -1,0 +1,43 @@
+  • Index
+  • December 2023
+
+VINSERTI128/VINSERTI32x4/VINSERTI64x2/VINSERTI32x8/VINSERTI64x4 — Insert PackedInteger Values
+
+                            Opcode/Instruction                              Op / En 64/32 Bit Mode Support CPUID Feature Flag                                                           Description
+VEX.256.66.0F3A.W0 38 /r ib VINSERTI128 ymm1, ymm2, xmm3/m128, imm8         A       V/V                    AVX2               Insert 128 bits of integer data from xmm3/m128 and the remaining values from ymm2 into ymm1.
+EVEX.256.66.0F3A.W0 38 /r ib VINSERTI32X4 ymm1 {k1}{z}, ymm2, xmm3/m128,    C       V/V                    AVX512VL AVX512F   Insert 128 bits of packed doubleword integer values from xmm3/m128 and the remaining values from ymm2 into ymm1 under writemask
+imm8                                                                                                                          k1.
+EVEX.512.66.0F3A.W0 38 /r ib VINSERTI32X4 zmm1 {k1}{z}, zmm2, xmm3/m128,    C       V/V                    AVX512F            Insert 128 bits of packed doubleword integer values from xmm3/m128 and the remaining values from zmm2 into zmm1 under writemask
+imm8                                                                                                                          k1.
+EVEX.256.66.0F3A.W1 38 /r ib VINSERTI64X2 ymm1 {k1}{z}, ymm2, xmm3/m128,    B       V/V                    AVX512VL AVX512DQ  Insert 128 bits of packed quadword integer values from xmm3/m128 and the remaining values from ymm2 into ymm1 under writemask
+imm8                                                                                                                          k1.
+EVEX.512.66.0F3A.W1 38 /r ib VINSERTI64X2 zmm1 {k1}{z}, zmm2, xmm3/m128,    B       V/V                    AVX512DQ           Insert 128 bits of packed quadword integer values from xmm3/m128 and the remaining values from zmm2 into zmm1 under writemask
+imm8                                                                                                                          k1.
+EVEX.512.66.0F3A.W0 3A /r ib VINSERTI32X8 zmm1 {k1}{z}, zmm2, ymm3/m256,    D       V/V                    AVX512DQ           Insert 256 bits of packed doubleword integer values from ymm3/m256 and the remaining values from zmm2 into zmm1 under writemask
+imm8                                                                                                                          k1.
+EVEX.512.66.0F3A.W1 3A /r ib VINSERTI64X4 zmm1 {k1}{z}, zmm2, ymm3/m256,    C       V/V                    AVX512F            Insert 256 bits of packed quadword integer values from ymm3/m256 and the remaining values from zmm2 into zmm1 under writemask
+imm8                                                                                                                          k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     N/A        ModRM:reg (w)  VEX.vvvv (r)   ModRM:r/m (r)  imm8
+B     Tuple2     ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  imm8
+C     Tuple4     ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  imm8
+D     Tuple8     ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  imm8
+
+Description ¶
+
+VINSERTI32x4 and VINSERTI64x2 inserts 128-bits of packed integer values from the second source operand (the third operand) into the destination operand (the first operand) at an 128-bit granular offset multiplied by imm8[0] (256-bit) or imm8[1:0]. The
+remaining portions of the destination are copied from the corresponding fields of the first source operand (the second operand). The second source operand can be either an XMM register or a 128-bit memory location. The high 6/7bits of the immediate are
+ignored. The destination operand is a ZMM/YMM register and updated at 32 and 64-bit granularity according to the writemask.
+
+VINSERTI32x8 and VINSERTI64x4 inserts 256-bits of packed integer values from the second source operand (the third operand) into the destination operand (the first operand) at a 256-bit granular offset multiplied by imm8[0]. The remaining portions of the
+destination are copied from the corresponding fields of the first source operand (the second operand). The second source operand can be either an YMM register or a 256-bit memory location. The upper bits of the immediate are ignored. The destination
+operand is a ZMM register and updated at 32 and 64-bit granularity according to the writemask.
+
+VINSERTI128 inserts 128-bits of packed integer data from the second source operand (the third operand) into the destination operand (the first operand) at a 128-bit granular offset multiplied by imm8[0]. The remaining portions of the destination are
+copied from the corresponding fields of the first source operand (the second operand). The
+
+second source operand can be either an XMM register or a 128-bit memory location. The high 7 bits of the immediate are ignored. VEX.L must be 1, otherwise attempt to execute this instruction with VEX.L=0 will cause #UD.
+

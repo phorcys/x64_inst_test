@@ -1,0 +1,41 @@
+  • Index
+  • December 2023
+
+VSHUFF32x4/VSHUFF64x2/VSHUFI32x4/VSHUFI64x2 — Shuffle Packed Values at 128-BitGranularity
+
+                          Opcode/Instruction                            Op/    64/32 bit Mode     CPUID Feature                                                                   Description
+                                                                         En        Support             Flag
+EVEX.256.66.0F3A.W0 23 /r ib VSHUFF32X4 ymm1{k1}{z}, ymm2, ymm3/m256/   A    V/V                 AVX512VL AVX512F Shuffle 128-bit packed single-precision floating-point values selected by imm8 from ymm2 and ymm3/m256/m32bcst and place results in ymm1
+m32bcst, imm8                                                                                                     subject to writemask k1.
+EVEX.512.66.0F3A.W0 23 /r ib VSHUFF32x4 zmm1{k1}{z}, zmm2, zmm3/m512/   A    V/V                 AVX512F          Shuffle 128-bit packed single-precision floating-point values selected by imm8 from zmm2 and zmm3/m512/m32bcst and place results in zmm1
+m32bcst, imm8                                                                                                     subject to writemask k1.
+EVEX.256.66.0F3A.W1 23 /r ib VSHUFF64X2 ymm1{k1}{z}, ymm2, ymm3/m256/   A    V/V                 AVX512VL AVX512F Shuffle 128-bit packed double precision floating-point values selected by imm8 from ymm2 and ymm3/m256/m64bcst and place results in ymm1
+m64bcst, imm8                                                                                                     subject to writemask k1.
+EVEX.512.66.0F3A.W1 23 /r ib VSHUFF64x2 zmm1{k1}{z}, zmm2, zmm3/m512/   A    V/V                 AVX512F          Shuffle 128-bit packed double precision floating-point values selected by imm8 from zmm2 and zmm3/m512/m64bcst and place results in zmm1
+m64bcst, imm8                                                                                                     subject to writemask k1.
+EVEX.256.66.0F3A.W0 43 /r ib VSHUFI32X4 ymm1{k1}{z}, ymm2, ymm3/m256/   A    V/V                 AVX512VL AVX512F Shuffle 128-bit packed double-word values selected by imm8 from ymm2 and ymm3/m256/m32bcst and place results in ymm1 subject to writemask
+m32bcst, imm8                                                                                                     k1.
+EVEX.512.66.0F3A.W0 43 /r ib VSHUFI32x4 zmm1{k1}{z}, zmm2, zmm3/m512/   A    V/V                 AVX512F          Shuffle 128-bit packed double-word values selected by imm8 from zmm2 and zmm3/m512/m32bcst and place results in zmm1 subject to writemask
+m32bcst, imm8                                                                                                     k1.
+EVEX.256.66.0F3A.W1 43 /r ib VSHUFI64X2 ymm1{k1}{z}, ymm2, ymm3/m256/   A    V/V                 AVX512VL AVX512F Shuffle 128-bit packed quad-word values selected by imm8 from ymm2 and ymm3/m256/m64bcst and place results in ymm1 subject to writemask k1.
+m64bcst, imm8
+EVEX.512.66.0F3A.W1 43 /r ib VSHUFI64x2 zmm1{k1}{z}, zmm2, zmm3/m512/   A    V/V                 AVX512F          Shuffle 128-bit packed quad-word values selected by imm8 from zmm2 and zmm3/m512/m64bcst and place results in zmm1 subject to writemask k1.
+m64bcst, imm8
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     Full       ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+256-bit Version: Moves one of the two 128-bit packed single-precision floating-point values from the first source operand (second operand) into the low 128-bit of the destination operand (first operand); moves one of the two packed 128-bit floating-point
+values from the second source operand (third operand) into the high 128-bit of the destination operand. The selector operand (third operand) determines which values are moved to the destination operand.
+
+512-bit Version: Moves two of the four 128-bit packed single-precision floating-point values from the first source operand (second operand) into the low 256-bit of each double qword of the destination operand (first operand); moves two of the four packed
+128-bit floating-point values from the second source operand (third operand) into the high 256-bit of the destination operand. The selector operand (third operand) determines which values are moved to the destination operand.
+
+The first source operand is a vector register. The second source operand can be a ZMM register, a 512-bit memory location or a 512-bit vector broadcasted from a 32/64-bit memory location. The destination operand is a vector register.
+
+The writemask updates the destination operand with the granularity of 32/64-bit data elements.
+

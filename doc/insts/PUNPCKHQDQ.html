@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>PUNPCKHBW/PUNPCKHWD/PUNPCKHDQ/PUNPCKHQDQ
+		— Unpack High Data</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>PUNPCKHBW/PUNPCKHWD/PUNPCKHDQ/PUNPCKHQDQ
+		— Unpack High Data</h1>
+
+
+
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>NP 0F 68 /r<sup>1</sup> PUNPCKHBW mm, mm/m64</td>
+<td>A</td>
+<td>V/V</td>
+<td>MMX</td>
+<td>Unpack and interleave high-order bytes from mm and mm/m64 into mm.</td></tr>
+<tr>
+<td>66 0F 68 /r PUNPCKHBW xmm1, xmm2/m128</td>
+<td>A</td>
+<td>V/V</td>
+<td>SSE2</td>
+<td>Unpack and interleave high-order bytes from xmm1 and xmm2/m128 into xmm1.</td></tr>
+<tr>
+<td>NP 0F 69 /r<sup>1</sup> PUNPCKHWD mm, mm/m64</td>
+<td>A</td>
+<td>V/V</td>
+<td>MMX</td>
+<td>Unpack and interleave high-order words from mm and mm/m64 into mm.</td></tr>
+<tr>
+<td>66 0F 69 /r PUNPCKHWD xmm1, xmm2/m128</td>
+<td>A</td>
+<td>V/V</td>
+<td>SSE2</td>
+<td>Unpack and interleave high-order words from xmm1 and xmm2/m128 into xmm1.</td></tr>
+<tr>
+<td>NP 0F 6A /r<sup>1</sup> PUNPCKHDQ mm, mm/m64</td>
+<td>A</td>
+<td>V/V</td>
+<td>MMX</td>
+<td>Unpack and interleave high-order doublewords from mm and mm/m64 into mm.</td></tr>
+<tr>
+<td>66 0F 6A /r PUNPCKHDQ xmm1, xmm2/m128</td>
+<td>A</td>
+<td>V/V</td>
+<td>SSE2</td>
+<td>Unpack and interleave high-order doublewords from xmm1 and xmm2/m128 into xmm1.</td></tr>
+<tr>
+<td>66 0F 6D /r PUNPCKHQDQ xmm1, xmm2/m128</td>
+<td>A</td>
+<td>V/V</td>
+<td>SSE2</td>
+<td>Unpack and interleave high-order quadwords from xmm1 and xmm2/m128 into xmm1.</td></tr>
+<tr>
+<td>VEX.128.66.0F.WIG 68/r VPUNPCKHBW xmm1,xmm2, xmm3/m128</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Interleave high-order bytes from xmm2 and xmm3/m128 into xmm1.</td></tr>
+<tr>
+<td>VEX.128.66.0F.WIG 69/r VPUNPCKHWD xmm1,xmm2, xmm3/m128</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Interleave high-order words from xmm2 and xmm3/m128 into xmm1.</td></tr>
+<tr>
+<td>VEX.128.66.0F.WIG 6A/r VPUNPCKHDQ xmm1, xmm2, xmm3/m128</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Interleave high-order doublewords from xmm2 and xmm3/m128 into xmm1.</td></tr>
+<tr>
+<td>VEX.128.66.0F.WIG 6D/r VPUNPCKHQDQ xmm1, xmm2, xmm3/m128</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Interleave high-order quadword from xmm2 and xmm3/m128 into xmm1 register.</td></tr>
+<tr>
+<td>VEX.256.66.0F.WIG 68 /r VPUNPCKHBW ymm1, ymm2, ymm3/m256</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Interleave high-order bytes from ymm2 and ymm3/m256 into ymm1 register.</td></tr>
+<tr>
+<td>VEX.256.66.0F.WIG 69 /r VPUNPCKHWD ymm1, ymm2, ymm3/m256</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Interleave high-order words from ymm2 and ymm3/m256 into ymm1 register.</td></tr>
+<tr>
+<td>VEX.256.66.0F.WIG 6A /r VPUNPCKHDQ ymm1, ymm2, ymm3/m256</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Interleave high-order doublewords from ymm2 and ymm3/m256 into ymm1 register.</td></tr>
+<tr>
+<td>VEX.256.66.0F.WIG 6D /r VPUNPCKHQDQ ymm1, ymm2, ymm3/m256</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Interleave high-order quadword from ymm2 and ymm3/m256 into ymm1 register.</td></tr>
+<tr>
+<td>EVEX.128.66.0F.WIG 68 /r VPUNPCKHBW xmm1 {k1}{z}, xmm2, xmm3/m128</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Interleave high-order bytes from xmm2 and xmm3/m128 into xmm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.128.66.0F.WIG 69 /r VPUNPCKHWD xmm1 {k1}{z}, xmm2, xmm3/m128</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Interleave high-order words from xmm2 and xmm3/m128 into xmm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.128.66.0F.W0 6A /r VPUNPCKHDQ xmm1 {k1}{z}, xmm2, xmm3/m128/m32bcst</td>
+<td>D</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Interleave high-order doublewords from xmm2 and xmm3/m128/m32bcst into xmm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.128.66.0F.W1 6D /r VPUNPCKHQDQ xmm1 {k1}{z}, xmm2, xmm3/m128/m64bcst</td>
+<td>D</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Interleave high-order quadword from xmm2 and xmm3/m128/m64bcst into xmm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.256.66.0F.WIG 68 /r VPUNPCKHBW ymm1 {k1}{z}, ymm2, ymm3/m256</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Interleave high-order bytes from ymm2 and ymm3/m256 into ymm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.256.66.0F.WIG 69 /r VPUNPCKHWD ymm1 {k1}{z}, ymm2, ymm3/m256</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Interleave high-order words from ymm2 and ymm3/m256 into ymm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.256.66.0F.W0 6A /r VPUNPCKHDQ ymm1 {k1}{z}, ymm2, ymm3/m256/m32bcst</td>
+<td>D</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Interleave high-order doublewords from ymm2 and ymm3/m256/m32bcst into ymm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.256.66.0F.W1 6D /r VPUNPCKHQDQ ymm1 {k1}{z}, ymm2, ymm3/m256/m64bcst</td>
+<td>D</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Interleave high-order quadword from ymm2 and ymm3/m256/m64bcst into ymm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.512.66.0F.WIG 68/r VPUNPCKHBW zmm1 {k1}{z}, zmm2, zmm3/m512</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512BW</td>
+<td>Interleave high-order bytes from zmm2 and zmm3/m512 into zmm1 register.</td></tr>
+<tr>
+<td>EVEX.512.66.0F.WIG 69/r VPUNPCKHWD zmm1 {k1}{z}, zmm2, zmm3/m512</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512BW</td>
+<td>Interleave high-order words from zmm2 and zmm3/m512 into zmm1 register.</td></tr>
+<tr>
+<td>EVEX.512.66.0F.W0 6A /r VPUNPCKHDQ zmm1 {k1}{z}, zmm2, zmm3/m512/m32bcst</td>
+<td>D</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Interleave high-order doublewords from zmm2 and zmm3/m512/m32bcst into zmm1 register using k1 write mask.</td></tr>
+<tr>
+<td>EVEX.512.66.0F.W1 6D /r VPUNPCKHQDQ zmm1 {k1}{z}, zmm2, zmm3/m512/m64bcst</td>
+<td>D</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Interleave high-order quadword from zmm2 and zmm3/m512/m64bcst into zmm1 register using k1 write mask.</td></tr></table>
+<blockquote>
+<p>1. See note in Section 2.5, “Intel® AVX and Intel® SSE Instruction Exception Classification,” in the Intel<sup>®</sup> 64 and IA-32 Architectures Software Developer’s Manual, Volume 2A, and Section 23.25.3, “Exception Conditions of Legacy SIMD Instructions Operating on MMX Registers,” in the Intel<sup>®</sup> 64 and IA-32 Architectures Software Developer’s Manual, Volume 3B.</p></blockquote>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple Type</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>N/A</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td>
+<td>N/A</td></tr>
+<tr>
+<td>B</td>
+<td>N/A</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr>
+<tr>
+<td>C</td>
+<td>Full Mem</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr>
+<tr>
+<td>D</td>
+<td>Full</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr></table>
+<h2 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h2>
+<p>Unpacks and interleaves the high-order data elements (bytes, words, doublewords, or quadwords) of the destination operand (first operand) and source operand (second operand) into the destination operand. <a href='/x86/punpckhbw:punpckhwd:punpckhdq:punpckhqdq#fig-4-20'>Figure 4-20</a> shows the unpack operation for bytes in 64-bit operands. The low-order data elements are ignored.</p>
+<figure id="fig-4-20">
+<svg style="width: 455.616pt; height: 117.28797599999993pt" viewBox="109.10000000000001 0.0 384.68 102.73997999999995">
+<g xmlns="http://www.w3.org/2000/svg" style="fill: none; stroke: none">
+<rect height="96.72" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="111.60000000000001" y="0.479979999999955"></rect>
+<rect height="96.72" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="490.8" y="0.479979999999955"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="379.68" x="111.60000000000001" y="0.0"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="379.68" x="111.60000000000001" y="97.25999999999999"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="163.86" y="72.72000000000003"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="307.62" y="72.95997999999997"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="163.62" y="90.72000000000003"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="163.62" y="72.71997999999996"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="199.5" y="72.71998999999994"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="199.5" y="72.95997999999997"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="235.5" y="72.71998999999994"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="235.5" y="72.95997999999997"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="271.56" y="72.71998999999994"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="271.56" y="72.95997999999997"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="289.62" y="72.71998999999994"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="289.62" y="72.95997999999997"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="217.62" y="72.71998999999994"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="217.62" y="72.95997999999997"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="253.62" y="72.71998999999994"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="253.62" y="72.95997999999997"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="181.62" y="72.71998999999994"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="181.62" y="72.95997999999997"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="144.0" x="307.98" y="10.199979999999982"></rect>
+<rect height="0.48004" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="307.98" y="9.95993999999996"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="451.74" y="10.199979999999982"></rect>
+<rect height="0.48004" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="307.74" y="27.95993999999996"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="307.74" y="9.959979999999973"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="343.56" y="9.959989999999948"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="343.56" y="10.199979999999982"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="379.62" y="9.959989999999948"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="379.62" y="10.199979999999982"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="415.68" y="9.959989999999948"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="415.68" y="10.199979999999982"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="433.74" y="9.959989999999948"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="433.74" y="10.199979999999982"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="361.74" y="9.959989999999948"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="361.74" y="10.199979999999982"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="397.74" y="9.959989999999948"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="397.74" y="10.199979999999982"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="325.74" y="9.959989999999948"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="325.74" y="10.199979999999982"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="144.0" x="145.68" y="10.319979999999873"></rect>
+<rect height="0.48004" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="145.68" y="10.079939999999965"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="289.44" y="10.319979999999987"></rect>
+<rect height="0.48004" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="145.44" y="28.079939999999965"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="145.44" y="10.079979999999864"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="181.32" y="10.079989999999839"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="181.32" y="10.319979999999987"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="217.32" y="10.079989999999839"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="217.32" y="10.319979999999987"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="253.38" y="10.079989999999839"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="253.38" y="10.319979999999987"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="271.44" y="10.079989999999839"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="271.44" y="10.319979999999987"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="199.44" y="10.079989999999839"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="199.44" y="10.319979999999987"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="235.44" y="10.079989999999839"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="235.44" y="10.319979999999987"></rect>
+<rect height="0.23999" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="163.44" y="10.079989999999839"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="163.44" y="10.319979999999987"></rect>
+<path d="M 198.24 70.61997999999994 L 198.12 70.13997999999992 L 197.10000000000002 70.49997999999994 L 197.22 70.97997999999995" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 197.58 70.37997999999993 L 198.66000000000003 71.63997999999992 L 199.32000000000002 72.47997999999995 L 198.24 72.5399799999999 L 192.66000000000003 72.89997999999991 L 190.92000000000002 72.95997999999997 L 192.36 71.93997999999988 L 196.86 68.69997999999998 L 197.76000000000002 68.09997999999996 L 197.76000000000002 69.11997999999994 L 197.52 69.5399799999999 L 192.96 72.77997999999991 L 192.36 71.93997999999988 L 192.60000000000002 71.87997999999993 L 198.18 71.51997999999992 L 198.24 72.5399799999999 L 197.82000000000002 72.35997999999995 L 196.74 71.09997999999996" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 197.76 69.11997999999994 L 197.7 70.73997999999995 L 196.73999999999998 71.09997999999996 L 196.67999999999998 70.9199799999999 L 196.62 70.73997999999995 L 196.67999999999998 69.11997999999994" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 197.16 70.73997999999995 L 198.24 71.99997999999994 L 192.66 72.35997999999995 L 197.22 69.11997999999994" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 316.98 28.199979999999982 L 317.22 28.139980000000037 L 317.04 27.65998000000002 L 316.8 27.719979999999964" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 198.3 70.61997999999994 L 198.06 70.67997999999989 L 197.88000000000002 70.19997999999998 L 198.12 70.13997999999992" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 316.98 28.199979999999982 L 316.8 27.719979999999964 L 198.12 70.13998000000004 L 198.3 70.61997999999994" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 235.14000000000001 70.25997999999993 L 234.9 69.77997999999991 L 233.88000000000002 70.13997999999992 L 234.12 70.61997999999994" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 234.36 70.01997999999992 L 235.5 71.27997999999991 L 236.22000000000003 72.05997999999988 L 235.14000000000001 72.17997999999989 L 229.56 72.83997999999997 L 227.82000000000002 73.01997999999992 L 229.20000000000002 71.93997999999988 L 233.58 68.39997999999991 L 234.42000000000002 67.73997999999995 L 234.48000000000002 68.75997999999993 L 234.24 69.17997999999989 L 229.86 72.71997999999996 L 229.20000000000002 71.93997999999988 L 229.5 71.81997999999987 L 235.08 71.1599799999999 L 235.14000000000001 72.17997999999989 L 234.78 71.99997999999994 L 233.64000000000001 70.73997999999995" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 234.48000000000002 68.75997999999993 L 234.54000000000002 70.37997999999993 L 233.64000000000001 70.73997999999995 L 233.52 70.55997999999988 L 233.46 70.37997999999993 L 233.4 68.75997999999993" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 234.0 70.37997999999993 L 235.14 71.63997999999992 L 229.56 72.29997999999989 L 233.94 68.75997999999993" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 334.62 28.199979999999982 L 334.8 28.139980000000037 L 334.62 27.719979999999964 L 334.44 27.779980000000023" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 235.14000000000001 70.25997999999993 L 234.96 70.31997999999987 L 234.78 69.89997999999991 L 234.96 69.83997999999997" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 334.62 28.199979999999982 L 334.44 27.779980000000023 L 234.96 69.83997999999997 L 235.14 70.25997999999993" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 269.76 69.77997999999991 L 269.52 69.29997999999989 L 268.56 69.77997999999991 L 268.8 70.25997999999993" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 269.04 69.6599799999999 L 270.24 70.79997999999989 L 270.96000000000004 71.45997999999986 L 269.94 71.63997999999992 L 264.42 72.6599799999999 L 262.68 73.01997999999992 L 264.0 71.81997999999987 L 268.14000000000004 68.0399799999999 L 268.92 67.31997999999987 L 268.98 68.33997999999985 L 268.8 68.75997999999993 L 264.66 72.5399799999999 L 264.0 71.81997999999987 L 264.24 71.69997999999987 L 269.76000000000005 70.67997999999989 L 269.94 71.63997999999992 L 269.52000000000004 71.51997999999992 L 268.32 70.37997999999993" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 268.98 68.33997999999997 L 269.22 69.95997999999997 L 268.32 70.37997999999993 L 268.20000000000005 70.25997999999993 L 268.20000000000005 70.07997999999998 L 268.02000000000004 68.45997999999997" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 268.68 70.01997999999992 L 269.88 71.1599799999999 L 264.36 72.17997999999989 L 268.5 68.39997999999991" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 353.40000000000003 28.199979999999982 L 353.58000000000004 28.079979999999978 L 353.34000000000003 27.65998000000002 L 353.16 27.779980000000023" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 269.76 69.77997999999991 L 269.58 69.89997999999991 L 269.34 69.47997999999995 L 269.52 69.35997999999995" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 353.40000000000003 28.199979999999982 L 353.16 27.779980000000023 L 269.52000000000004 69.35997999999995 L 269.76000000000005 69.77998000000002" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 304.74 69.11997999999994 L 304.5 68.75997999999993 L 303.6 69.29997999999989 L 303.84000000000003 69.6599799999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 304.02 69.05998 L 305.28 70.07997999999998 L 306.12 70.73997999999995 L 305.09999999999997 70.97997999999995 L 299.76 72.47997999999995 L 298.08 72.95997999999997 L 299.21999999999997 71.69997999999998 L 302.94 67.55998 L 303.65999999999997 66.77998000000002 L 303.84 67.73997999999995 L 303.71999999999997 68.21997999999996 L 300.0 72.35997999999995 L 299.21999999999997 71.69997999999998 L 299.46 71.51998000000003 L 304.79999999999995 70.01998000000003 L 305.09999999999997 70.97997999999995 L 304.68 70.91998000000001 L 303.41999999999996 69.89998000000003" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 303.84000000000003 67.73997999999995 L 304.20000000000005 69.35997999999995 L 303.42 69.89997999999991 L 303.24 69.77997999999991 L 303.24 69.59997999999996 L 302.88000000000005 67.97997999999995" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 303.72 69.47997999999995 L 304.98 70.49997999999994 L 299.64000000000004 71.99997999999994 L 303.36 67.85997999999995" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 370.56 28.199979999999982 L 370.74 28.079979999999978 L 370.5 27.65998000000002 L 370.32 27.779980000000023" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 304.74 69.17998 L 304.56 69.29998 L 304.32 68.87998000000005 L 304.5 68.75998000000004" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 370.56 28.199979999999982 L 370.32 27.779980000000023 L 304.5 68.75997999999993 L 304.74 69.17998" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 273.48 68.75997999999993 L 273.24 69.11997999999994 L 274.14000000000004 69.6599799999999 L 274.38 69.29997999999989" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 273.78000000000003 69.35997999999995 L 274.08000000000004 67.73997999999995 L 274.26000000000005 66.77997999999991 L 274.98 67.55998 L 278.76000000000005 71.75997999999993 L 279.90000000000003 73.01997999999992 L 278.22 72.5399799999999 L 272.82000000000005 70.97997999999995 L 271.8 70.73997999999995 L 272.64000000000004 70.07997999999998 L 273.12 70.01997999999992 L 278.52000000000004 71.57997999999998 L 278.22 72.5399799999999 L 277.98 72.4199799999999 L 274.20000000000005 68.21997999999996 L 274.98 67.55998 L 275.04 67.97997999999995 L 274.74 69.59997999999996" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 272.64 70.07997999999998 L 273.96 69.05998 L 274.74 69.59997999999996 L 274.74 69.77998000000002 L 274.56 69.89998000000003 L 273.24 70.91998000000001" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 274.26 69.47997999999995 L 274.56 67.85997999999995 L 278.34 72.05998 L 272.94 70.49997999999994" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 209.28 28.85997999999995 L 209.1 28.739979999999946 L 208.86 29.159979999999905 L 209.04 29.27997999999991" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 273.48 68.75997999999993 L 273.66 68.87997999999993 L 273.42 69.29997999999989 L 273.24 69.17997999999989" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 209.28 28.85997999999995 L 209.04 29.27997999999991 L 273.24 69.17998 L 273.48 68.75997999999993" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 239.22 67.97997999999995 L 238.85999999999999 68.33997999999997 L 239.7 68.99997999999994 L 240.06 68.63997999999992" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 239.4 68.63997999999992 L 239.94 67.07997999999998 L 240.18 66.05997999999988 L 240.84 67.01997999999992 L 244.08 71.57997999999998 L 245.1 72.95997999999997 L 243.48000000000002 72.29997999999989 L 238.32 70.13997999999992 L 237.36 69.71997999999996 L 238.26000000000002 69.23997999999995 L 238.68 69.23997999999995 L 243.84 71.39997999999991 L 243.48000000000002 72.29997999999989 L 243.24 72.11997999999994 L 240.0 67.55997999999988 L 240.84 67.01997999999992 L 240.9 67.43997999999988 L 240.36 68.99997999999994" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 238.26 69.23997999999995 L 239.64 68.39997999999991 L 240.35999999999999 68.99997999999994 L 240.29999999999998 69.17998 L 240.12 69.23997999999995 L 238.73999999999998 70.07997999999998" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 239.88 68.81997999999987 L 240.42 67.25997999999993 L 243.66 71.81997999999987 L 238.5 69.6599799999999" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 190.02 28.319979999999873 L 189.84 28.19997999999987 L 189.54000000000002 28.559979999999882 L 189.72 28.679979999999887" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 239.22 67.97997999999995 L 239.4 68.09997999999996 L 239.1 68.45997999999997 L 238.92 68.33997999999997" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 190.02 28.319979999999873 L 189.72 28.679979999999887 L 238.92000000000002 68.33997999999985 L 239.22000000000003 67.97997999999984" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 203.88 66.89997999999991 L 203.51999999999998 67.25997999999993 L 204.18 68.0399799999999 L 204.54 67.67997999999989" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 203.94 67.61997999999994 L 204.78 66.23997999999995 L 205.2 65.27997999999991 L 205.68 66.29997999999989 L 207.96 71.39997999999991 L 208.62 72.95997999999997 L 207.24 71.99997999999994 L 202.62 68.87997999999993 L 201.78 68.33997999999997 L 202.62 68.0399799999999 L 203.16 68.0399799999999 L 207.78 71.1599799999999 L 207.24 71.99997999999994 L 207.06 71.81997999999999 L 204.78 66.71997999999996 L 205.68 66.29997999999989 L 205.62 66.71997999999996 L 204.78 68.09997999999996" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 202.62 68.0399799999999 L 204.12 67.43997999999988 L 204.78 68.09997999999985 L 204.72 68.27997999999991 L 204.54 68.33997999999985 L 203.04 68.93997999999988" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 204.36 67.85997999999995 L 205.20000000000002 66.47997999999995 L 207.48000000000002 71.57997999999998 L 202.86 68.45997999999997" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 171.84 28.379979999999932 L 171.72 28.199979999999982 L 171.36 28.499979999999937 L 171.48 28.679979999999887" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 203.88 66.95997999999997 L 204.0 67.13997999999992 L 203.64 67.43997999999999 L 203.51999999999998 67.25997999999993" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 171.84 28.379979999999932 L 171.48 28.679979999999887 L 203.52 67.25997999999993 L 203.88 66.95997999999997" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 170.64000000000001 65.75997999999993 L 170.16000000000003 65.87997999999993 L 170.58 66.89997999999991 L 171.06 66.77997999999991" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 170.46 66.47997999999995 L 171.66 65.39997999999991 L 172.44 64.61997999999994 L 172.56 65.75997999999993 L 173.16 71.27997999999991 L 173.28 72.95997999999997 L 172.26000000000002 71.63997999999992 L 168.84 67.25997999999993 L 168.18 66.41998000000001 L 169.20000000000002 66.35997999999995 L 169.62 66.59997999999996 L 173.04000000000002 70.97997999999995 L 172.26000000000002 71.63997999999992 L 172.14000000000001 71.33997999999997 L 171.54000000000002 65.81997999999999 L 172.56 65.75997999999993 L 172.38 66.11997999999994 L 171.18 67.19997999999998" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 169.20000000000002 66.35997999999995 L 170.82000000000002 66.29998 L 171.18 67.19997999999998 L 171.00000000000003 67.31997999999999 L 170.82000000000002 67.37997999999993 L 169.20000000000002 67.43997999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 170.82 66.83997999999997 L 172.01999999999998 65.75997999999993 L 172.62 71.27998000000002 L 169.2 66.89997999999991" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 155.82 28.43997999999999 L 155.76 28.25998000000004 L 155.34 28.43997999999999 L 155.4 28.61997999999994" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 170.64000000000001 65.75997999999993 L 170.70000000000002 65.93997999999988 L 170.28 66.11997999999994 L 170.22000000000003 65.93997999999988" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 155.82 28.43997999999999 L 155.4 28.61997999999994 L 170.22 65.93997999999999 L 170.64 65.75998000000004" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 10.47779920000005pt; fill: #000" textLength="349.22507930000006" x="126.35891400000007" y="24.786872500000072">SRC Y7 Y6 Y5 Y4 Y3 Y2 Y1 Y0 X7 X6 X5 X4 X3 X2 X1 X0 DEST</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 9.159284200000002pt; fill: #000" textLength="163.32421279999988" x="140.33916850000008" y="86.1074092">DEST Y7 X7 Y6 X6 Y5 X5 Y4 X4</text></g></svg>
+<figcaption><a href='/x86/punpckhbw:punpckhwd:punpckhdq:punpckhqdq#fig-4-20'>Figure 4-20</a>. PUNPCKHBW Instruction Operation Using 64-bit Operands</figcaption></figure>
+<p>255 <sup>31 0</sup> 255 31 0</p>
+<figure id="fig-4-21">
+<svg style="width: 390.9585337200001pt; height: 97.48800000000001pt" viewBox="125.48122189999997 0.0 330.7987781000001 86.24000000000001">
+<g xmlns="http://www.w3.org/2000/svg" style="fill: none; stroke: none">
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="278.34000000000003" y="62.759990000000016"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="422.1" y="63.0"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="278.1" y="80.75999000000002"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="278.1" y="62.75999999999999"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="313.92" y="62.75999999999999"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="349.98" y="62.75999999999999"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="386.04" y="62.75999999999999"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="404.1" y="62.75999999999999"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="332.1" y="62.75999999999999"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="368.1" y="62.75999999999999"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="296.1" y="62.75999999999999"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="144.0" x="309.54" y="0.2400000000000091"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="309.54" y="2.0000000063191692e-05"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="453.3" y="0.2400000000000091"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="309.3" y="18.000020000000063"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="309.3" y="0.0"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="345.18" y="0.0"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="381.24" y="0.0"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="417.24" y="0.0"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="435.3" y="0.0"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="363.3" y="0.0"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="399.3" y="0.0"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="327.3" y="0.0"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="144.0" x="147.3" y="0.36000000000001364"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="147.3" y="0.12002000000006774"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="291.06" y="0.36000000000001364"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="144.24" x="147.06" y="18.120020000000068"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="147.06" y="0.12000000000000455"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="182.88" y="0.12000000000000455"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="218.94" y="0.12000000000000455"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="255.0" y="0.12000000000000455"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="273.06" y="0.12000000000000455"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="201.06" y="0.12000000000000455"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="237.06" y="0.12000000000000455"></rect>
+<rect height="18.48" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="165.06" y="0.12000000000000455"></rect>
+<path d="M 306.96 55.44 L 306.47999999999996 55.31999999999999 L 306.29999999999995 56.39999999999998 L 306.78 56.51999999999998" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 306.48 55.98000000000002 L 308.1 55.74000000000001 L 309.12 55.56 L 308.58000000000004 56.52000000000004 L 305.88 61.44 L 305.04 62.879999999999995 L 304.98 61.200000000000045 L 304.62 55.620000000000005 L 304.5 54.54000000000002 L 305.40000000000003 55.14000000000004 L 305.58000000000004 55.56 L 305.94 61.14000000000004 L 304.98 61.200000000000045 L 305.04 60.900000000000034 L 307.74 55.98000000000002 L 308.58000000000004 56.52000000000004 L 308.22 56.700000000000045 L 306.6 56.94" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 305.40000000000003 55.139999999999986 L 306.84000000000003 56.039999999999964 L 306.6 56.94 L 306.42 57.0 L 306.24 56.879999999999995 L 304.8 55.97999999999996" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 306.54 56.460000000000036 L 308.16 56.22000000000003 L 305.46000000000004 61.14000000000004 L 305.1 55.56000000000006" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 315.12 19.5 L 315.18 19.25999999999999 L 314.7 19.139999999999986 L 314.64 19.379999999999995" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 306.96 55.44 L 306.9 55.68000000000001 L 306.41999999999996 55.56 L 306.47999999999996 55.31999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 315.12 19.5 L 314.64 19.379999999999995 L 306.48 55.31999999999999 L 306.96 55.44" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 340.44 55.25999999999999 L 339.96 55.25999999999999 L 340.02 56.27999999999997 L 340.5 56.27999999999997" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 340.02 55.80000000000001 L 341.52 55.079999999999984 L 342.47999999999996 54.660000000000025 L 342.24 55.68000000000001 L 341.21999999999997 61.19999999999999 L 340.91999999999996 62.94 L 340.26 61.31999999999999 L 338.21999999999997 56.160000000000025 L 337.85999999999996 55.19999999999999 L 338.76 55.44 L 339.18 55.74000000000001 L 341.21999999999997 60.900000000000034 L 340.26 61.31999999999999 L 340.26 61.02000000000004 L 341.28 55.5 L 342.24 55.68000000000001 L 342.0 56.04000000000002 L 340.5 56.75999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 338.76 55.44 L 340.32 55.80000000000001 L 340.5 56.75999999999999 L 340.32 56.81999999999999 L 340.14 56.75999999999999 L 338.58 56.39999999999998" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 340.26 56.28000000000003 L 341.76 55.56 L 340.74 61.08000000000004 L 338.7 55.920000000000016" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 336.72 18.24000000000001 L 336.72 18.0 L 336.24 18.06000000000006 L 336.24 18.299999999999955" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 340.44 55.25999999999999 L 340.44 55.5 L 339.96 55.56 L 339.96 55.31999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 336.72 18.24000000000001 L 336.24 18.299999999999955 L 339.96000000000004 55.31999999999999 L 340.44000000000005 55.25999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 380.16 55.68000000000001 L 379.68 55.56 L 379.32000000000005 56.579999999999984 L 379.8 56.69999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 379.56 56.10000000000002 L 381.18 56.10000000000002 L 382.2 56.04000000000002 L 381.6 56.94 L 378.42 61.5 L 377.4 62.94 L 377.46 61.200000000000045 L 377.76 55.620000000000005 L 377.82 54.60000000000002 L 378.6 55.200000000000045 L 378.78000000000003 55.68000000000001 L 378.48 61.26000000000005 L 377.46 61.200000000000045 L 377.58 60.900000000000034 L 380.76 56.34000000000003 L 381.6 56.94 L 381.18 57.18000000000001 L 379.56 57.18000000000001" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 378.6 55.19999999999999 L 379.86 56.21999999999997 L 379.56 57.18000000000001 L 379.38 57.120000000000005 L 379.26000000000005 57.06 L 378.0 56.039999999999964" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 379.56 56.639999999999986 L 381.18 56.639999999999986 L 378.0 61.19999999999999 L 378.3 55.620000000000005" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 392.52 20.159999999999968 L 392.58 19.91999999999996 L 392.09999999999997 19.74000000000001 L 392.03999999999996 19.980000000000018" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 380.16 55.74000000000001 L 380.1 55.98000000000002 L 379.62 55.80000000000001 L 379.68 55.56" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 392.52 20.159999999999968 L 392.03999999999996 19.980000000000018 L 379.68 55.559999999999945 L 380.15999999999997 55.73999999999995" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 411.90000000000003 55.19999999999999 L 411.42 55.19999999999999 L 411.48 56.27999999999997 L 411.96000000000004 56.27999999999997" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 411.48 55.80000000000001 L 412.98 55.139999999999986 L 413.94 54.660000000000025 L 413.70000000000005 55.74000000000001 L 412.56 61.19999999999999 L 412.20000000000005 62.94 L 411.6 61.31999999999999 L 409.68 56.10000000000002 L 409.32 55.079999999999984 L 410.28000000000003 55.379999999999995 L 410.64000000000004 55.68000000000001 L 412.56 60.900000000000034 L 411.6 61.31999999999999 L 411.6 61.02000000000004 L 412.74 55.56 L 413.70000000000005 55.74000000000001 L 413.46000000000004 56.10000000000002 L 411.96000000000004 56.75999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 410.28000000000003 55.379999999999995 L 411.84000000000003 55.80000000000001 L 411.96000000000004 56.75999999999999 L 411.78000000000003 56.81999999999999 L 411.6 56.75999999999999 L 410.04 56.339999999999975" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 411.72 56.28000000000003 L 413.22 55.620000000000005 L 412.08000000000004 61.08000000000004 L 410.16 55.860000000000014" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 409.32 19.440000000000055 L 409.32 19.200000000000045 L 408.84 19.260000000000105 L 408.84 19.5" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 411.90000000000003 55.19999999999999 L 411.90000000000003 55.44 L 411.42 55.5 L 411.42 55.25999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 409.32 19.440000000000055 L 408.84 19.5 L 411.42 55.26000000000005 L 411.9 55.200000000000045" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 388.26 60.48000000000002 L 388.14 60.960000000000036 L 389.15999999999997 61.25999999999999 L 389.28 60.78000000000003" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 388.68 61.08000000000004 L 388.62 59.460000000000036 L 388.56 58.440000000000055 L 389.46 58.98000000000002 L 394.14 61.98000000000002 L 395.64 62.940000000000055 L 393.90000000000003 62.940000000000055 L 388.32 62.88000000000005 L 387.24 62.82000000000005 L 387.84000000000003 62.04000000000002 L 388.26 61.860000000000014 L 393.84000000000003 61.920000000000016 L 393.90000000000003 62.940000000000055 L 393.6 62.82000000000005 L 388.92 59.82000000000005 L 389.46 58.98000000000002 L 389.64 59.400000000000034 L 389.7 61.02000000000004" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 387.84000000000003 62.04000000000002 L 388.8 60.72000000000003 L 389.70000000000005 61.02000000000004 L 389.70000000000005 61.26000000000005 L 389.64000000000004 61.31999999999999 L 388.68 62.64000000000004" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 389.22 61.02000000000004 L 389.16 59.400000000000034 L 393.84000000000003 62.400000000000034 L 388.26000000000005 62.34000000000003" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 249.48000000000002 19.200000000000045 L 249.24 19.1400000000001 L 249.12 19.620000000000005 L 249.36 19.680000000000064" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 388.26 60.48000000000002 L 388.5 60.54000000000002 L 388.38 61.02000000000004 L 388.14 60.960000000000036" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 249.48000000000002 19.200000000000045 L 249.36 19.680000000000064 L 388.14 60.960000000000036 L 388.26 60.48000000000002" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 351.42 60.18000000000001 L 351.3 60.660000000000025 L 352.26 61.01999999999998 L 352.38 60.54000000000002" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 351.78000000000003 60.78000000000003 L 351.78000000000003 58.14000000000004 L 352.62 58.74000000000001 L 357.18 61.920000000000016 L 358.68 62.940000000000055 L 356.88000000000005 62.88000000000005 L 351.3 62.58000000000004 L 350.28000000000003 62.52000000000004 L 350.88000000000005 61.74000000000001 L 351.36 61.56 L 356.94000000000005 61.860000000000014 L 356.88000000000005 62.88000000000005 L 356.64000000000004 62.76000000000005 L 352.08000000000004 59.58000000000004 L 352.62 58.74000000000001 L 352.8 59.22000000000003 L 352.8 60.84000000000003" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 350.88 61.74000000000001 L 351.9 60.48000000000002 L 352.8 60.84000000000003 L 352.8 61.01999999999998 L 352.74 61.079999999999984 L 351.71999999999997 62.34000000000003" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 352.32 60.78000000000003 L 352.32 59.160000000000025 L 356.88 62.34000000000003 L 351.3 62.04000000000002" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 229.74 19.200000000000045 L 229.5 19.1400000000001 L 229.32000000000002 19.620000000000005 L 229.56 19.680000000000064" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 351.48 60.18000000000001 L 351.72 60.24000000000001 L 351.54 60.72000000000003 L 351.3 60.660000000000025" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 229.74 19.200000000000045 L 229.56 19.680000000000064 L 351.3 60.660000000000025 L 351.48 60.180000000000064" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 315.42 60.960000000000036 L 315.3 61.440000000000055 L 316.32 61.74000000000001 L 316.44 61.26000000000005" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 315.84000000000003 61.56 L 315.78000000000003 59.94 L 315.66 58.860000000000014 L 316.62 59.45999999999998 L 321.3 62.45999999999998 L 322.74 63.420000000000016 L 321.06000000000006 63.420000000000016 L 315.48 63.360000000000014 L 314.40000000000003 63.30000000000001 L 315.00000000000006 62.51999999999998 L 315.42 62.339999999999975 L 321.00000000000006 62.39999999999998 L 321.06000000000006 63.420000000000016 L 320.76000000000005 63.30000000000001 L 316.08000000000004 60.30000000000001 L 316.62 59.45999999999998 L 316.86 59.81999999999999 L 316.92 61.44" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 315.0 62.52000000000004 L 315.96 61.200000000000045 L 316.92 61.440000000000055 L 316.92 61.680000000000064 L 316.8 61.80000000000001 L 315.84 63.12000000000006" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 316.38 61.5 L 316.32 59.879999999999995 L 321.0 62.879999999999995 L 315.42 62.81999999999999" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 178.68 19.200000000000045 L 178.44 19.1400000000001 L 178.32 19.620000000000005 L 178.56 19.680000000000064" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 315.42 60.960000000000036 L 315.66 61.02000000000004 L 315.54 61.50000000000006 L 315.3 61.440000000000055" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 178.68 19.200000000000045 L 178.56 19.680000000000064 L 315.3 61.440000000000055 L 315.42 60.960000000000036" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 279.6 60.18000000000001 L 279.48 60.660000000000025 L 280.5 61.01999999999998 L 280.62 60.54000000000002" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 280.02 60.78000000000003 L 279.96 59.10000000000002 L 279.96 58.08000000000004 L 280.79999999999995 58.68000000000001 L 285.41999999999996 61.920000000000016 L 286.91999999999996 62.940000000000055 L 285.12 62.88000000000005 L 279.53999999999996 62.58000000000004 L 278.52 62.52000000000004 L 279.12 61.74000000000001 L 279.59999999999997 61.56 L 285.18 61.860000000000014 L 285.12 62.88000000000005 L 284.88 62.76000000000005 L 280.26 59.52000000000004 L 280.79999999999995 58.68000000000001 L 281.03999999999996 59.10000000000002 L 281.09999999999997 60.78000000000003" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 279.12 61.74000000000001 L 280.14 60.48000000000002 L 281.1 60.78000000000003 L 281.1 60.960000000000036 L 280.98 61.079999999999984 L 279.96 62.34000000000003" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 280.56 60.78000000000003 L 280.5 59.10000000000002 L 285.12 62.34000000000003 L 279.54 62.04000000000002" style="fill: rgb(0%, 0%, 0%); fill-rule: evenodd"></path>
+<path d="M 157.14000000000001 18.600000000000023 L 156.9 18.540000000000077 L 156.72000000000003 19.019999999999982 L 156.96 19.08000000000004" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 279.66 60.18000000000001 L 279.90000000000003 60.24000000000001 L 279.72 60.72000000000003 L 279.48 60.660000000000025" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<path d="M 157.14000000000001 18.600000000000023 L 156.96 19.08000000000004 L 279.48 60.660000000000025 L 279.66 60.18000000000001" style="fill: rgb(0%, 0%, 0%); fill-rule: nonzero"></path>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 10.47779920000005pt; fill: #000" textLength="158.46232909999998" x="127.98122189999997" y="14.826892500000099">SRC Y7 Y6 Y5 Y4 Y3 Y2 Y1 Y0</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="134.46295879999997" x="314.340132" y="13.626644300000066">X7 X6 X5 X4 X3 X2 X1 X0</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 7.803183600000011pt; fill: #000" textLength="11.625065459999973" x="272.5195646100001" y="58.53476840999997">255</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 7.803183600000001pt; fill: #000" textLength="3.887607600000024" x="420.8996179200001" y="59.315086769999986">0</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 9.158485100000007pt; fill: #000" textLength="163.3825471" x="254.76083419999998" y="76.14663010000004">DEST Y7 X7 Y6 X6 Y3 X3 Y2 X2</text></g></svg>
+<figcaption><a href='/x86/punpckhbw:punpckhwd:punpckhdq:punpckhqdq#fig-4-21'>Figure 4-21</a>. 256-bit VPUNPCKHDQ Instruction Operation</figcaption></figure>
+<p>When the source data comes from a 64-bit memory operand, the full 64-bit operand is accessed from memory, but the instruction uses only the high-order 32 bits. When the source data comes from a 128-bit memory operand, an implementation may fetch only the appropriate 64 bits; however, alignment to a 16-byte boundary and normal segment checking will still be enforced.</p>
+<p>The (V)PUNPCKHBW instruction interleaves the high-order bytes of the source and destination operands, the (V)PUNPCKHWD instruction interleaves the high-order words of the source and destination operands, the (V)PUNPCKHDQ instruction interleaves the high-order doubleword (or doublewords) of the source and destination operands, and the (V)PUNPCKHQDQ instruction interleaves the high-order quadwords of the source and destination operands.</p>
+<p>These instructions can be used to convert bytes to words, words to doublewords, doublewords to quadwords, and quadwords to double quadwords, respectively, by placing all 0s in the source operand. Here, if the source operand contains all 0s, the result (stored in the destination operand) contains zero extensions of the high-order data elements from the original value in the destination operand. For example, with the (V)PUNPCKHBW instruction the high-order bytes are zero extended (that is, unpacked into unsigned word integers), and with the (V)PUNPCKHWD instruction, the high-order words are zero extended (unpacked into unsigned doubleword integers).</p>
+<p>In 64-bit mode and not encoded with VEX/EVEX, using a REX prefix in the form of REX.R permits this instruction to access additional registers (XMM8-XMM15).</p>
+<p>Legacy SSE versions 64-bit operand: The source operand can be an MMX technology register or a 64-bit memory location. The destination operand is an MMX technology register.</p>
+<p>128-bit Legacy SSE versions: The second source operand is an XMM register or a 128-bit memory location. The first source operand and destination operands are XMM registers. Bits (MAXVL-1:128) of the corresponding YMM destination register remain unchanged.</p>
+<p>VEX.128 encoded versions: The second source operand is an XMM register or a 128-bit memory location. The first source operand and destination operands are XMM registers. Bits (MAXVL-1:128) of the destination YMM register are zeroed.</p>
+<p>VEX.256 encoded version: The second source operand is an YMM register or an 256-bit memory location. The first source operand and destination operands are YMM registers.</p>
+<p>EVEX encoded VPUNPCKHDQ/QDQ: The second source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcasted from a 32/64-bit memory location. The first source operand and destination operands are ZMM/YMM/XMM registers. The destination is conditionally updated with writemask k1.</p>
+<p>EVEX encoded VPUNPCKHWD/BW: The second source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location. The first source operand and destination operands are ZMM/YMM/XMM registers. The destination is conditionally updated with writemask k1.</p>
+<h2 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h2>
+<h3 id="punpckhbw-instruction-with-64-bit-operands-">PUNPCKHBW Instruction With 64-bit Operands:<a class="anchor" href="#punpckhbw-instruction-with-64-bit-operands-">
+			¶
+		</a></h3>
+<pre>DEST[7:0] := DEST[39:32];
+DEST[15:8] := SRC[39:32];
+DEST[23:16] := DEST[47:40];
+DEST[31:24] := SRC[47:40];
+DEST[39:32] := DEST[55:48];
+DEST[47:40] := SRC[55:48];
+DEST[55:48] := DEST[63:56];
+DEST[63:56] := SRC[63:56];
+</pre>
+<h3 id="punpckhw-instruction-with-64-bit-operands-">PUNPCKHW Instruction With 64-bit Operands:<a class="anchor" href="#punpckhw-instruction-with-64-bit-operands-">
+			¶
+		</a></h3>
+<pre>DEST[15:0] := DEST[47:32];
+DEST[31:16] := SRC[47:32];
+DEST[47:32] := DEST[63:48];
+DEST[63:48] := SRC[63:48];
+</pre>
+<h3 id="punpckhdq-instruction-with-64-bit-operands-">PUNPCKHDQ Instruction With 64-bit Operands:<a class="anchor" href="#punpckhdq-instruction-with-64-bit-operands-">
+			¶
+		</a></h3>
+<pre>    DEST[31:0] := DEST[63:32];
+    DEST[63:32] := SRC[63:32];
+INTERLEAVE_HIGH_BYTES_512b (SRC1, SRC2)
+TMP_DEST[255:0] := INTERLEAVE_HIGH_BYTES_256b(SRC1[255:0], SRC[255:0])
+TMP_DEST[511:256] := INTERLEAVE_HIGH_BYTES_256b(SRC1[511:256], SRC[511:256])
+INTERLEAVE_HIGH_BYTES_256b (SRC1, SRC2)
+DEST[7:0] := SRC1[71:64]
+DEST[15:8] := SRC2[71:64]
+DEST[23:16] := SRC1[79:72]
+DEST[31:24] := SRC2[79:72]
+DEST[39:32] := SRC1[87:80]
+DEST[47:40] := SRC2[87:80]
+DEST[55:48] := SRC1[95:88]
+DEST[63:56] := SRC2[95:88]
+DEST[71:64] := SRC1[103:96]
+DEST[79:72] := SRC2[103:96]
+DEST[87:80] := SRC1[111:104]
+DEST[95:88] := SRC2[111:104]
+DEST[103:96] := SRC1[119:112]
+DEST[111:104] := SRC2[119:112]
+DEST[119:112] := SRC1[127:120]
+DEST[127:120] := SRC2[127:120]
+DEST[135:128] := SRC1[199:192]
+DEST[143:136] := SRC2[199:192]
+DEST[151:144] := SRC1[207:200]
+DEST[159:152] := SRC2[207:200]
+DEST[167:160] := SRC1[215:208]
+DEST[175:168] := SRC2[215:208]
+DEST[183:176] := SRC1[223:216]
+DEST[191:184] := SRC2[223:216]
+DEST[199:192] := SRC1[231:224]
+DEST[207:200] := SRC2[231:224]
+DEST[215:208] := SRC1[239:232]
+DEST[223:216] := SRC2[239:232]
+DEST[231:224] := SRC1[247:240]
+DEST[239:232] := SRC2[247:240]
+DEST[247:240] := SRC1[255:248]
+DEST[255:248] := SRC2[255:248]
+INTERLEAVE_HIGH_BYTES (SRC1, SRC2)
+DEST[7:0] := SRC1[71:64]
+DEST[15:8] := SRC2[71:64]
+DEST[23:16] := SRC1[79:72]
+DEST[31:24] := SRC2[79:72]
+DEST[39:32] := SRC1[87:80]
+DEST[47:40] := SRC2[87:80]
+DEST[55:48] := SRC1[95:88]
+DEST[63:56] := SRC2[95:88]
+DEST[71:64] := SRC1[103:96]
+DEST[79:72] := SRC2[103:96]
+DEST[87:80] := SRC1[111:104]
+DEST[95:88] := SRC2[111:104]
+DEST[103:96] := SRC1[119:112]
+DEST[111:104] := SRC2[119:112]
+DEST[119:112] := SRC1[127:120]
+DEST[127:120] := SRC2[127:120]
+INTERLEAVE_HIGH_WORDS_512b (SRC1, SRC2)
+TMP_DEST[255:0] := INTERLEAVE_HIGH_WORDS_256b(SRC1[255:0], SRC[255:0])
+TMP_DEST[511:256] := INTERLEAVE_HIGH_WORDS_256b(SRC1[511:256], SRC[511:256])
+INTERLEAVE_HIGH_WORDS_256b(SRC1, SRC2)
+DEST[15:0] := SRC1[79:64]
+DEST[31:16] := SRC2[79:64]
+DEST[47:32] := SRC1[95:80]
+DEST[63:48] := SRC2[95:80]
+DEST[79:64] := SRC1[111:96]
+DEST[95:80] := SRC2[111:96]
+DEST[111:96] := SRC1[127:112]
+DEST[127:112] := SRC2[127:112]
+DEST[143:128] := SRC1[207:192]
+DEST[159:144] := SRC2[207:192]
+DEST[175:160] := SRC1[223:208]
+DEST[191:176] := SRC2[223:208]
+DEST[207:192] := SRC1[239:224]
+DEST[223:208] := SRC2[239:224]
+DEST[239:224] := SRC1[255:240]
+DEST[255:240] := SRC2[255:240]
+INTERLEAVE_HIGH_WORDS (SRC1, SRC2)
+DEST[15:0] := SRC1[79:64]
+DEST[31:16] := SRC2[79:64]
+DEST[47:32] := SRC1[95:80]
+DEST[63:48] := SRC2[95:80]
+DEST[79:64] := SRC1[111:96]
+DEST[95:80] := SRC2[111:96]
+DEST[111:96] := SRC1[127:112]
+DEST[127:112] := SRC2[127:112]
+INTERLEAVE_HIGH_DWORDS_512b (SRC1, SRC2)
+TMP_DEST[255:0] := INTERLEAVE_HIGH_DWORDS_256b(SRC1[255:0], SRC2[255:0])
+TMP_DEST[511:256] := INTERLEAVE_HIGH_DWORDS_256b(SRC1[511:256], SRC2[511:256])
+INTERLEAVE_HIGH_DWORDS_256b(SRC1, SRC2)
+DEST[31:0] := SRC1[95:64]
+DEST[63:32] := SRC2[95:64]
+DEST[95:64] := SRC1[127:96]
+DEST[127:96] := SRC2[127:96]
+DEST[159:128] := SRC1[223:192]
+DEST[191:160] := SRC2[223:192]
+DEST[223:192] := SRC1[255:224]
+DEST[255:224] := SRC2[255:224]
+INTERLEAVE_HIGH_DWORDS(SRC1, SRC2)
+DEST[31:0] := SRC1[95:64]
+DEST[63:32] := SRC2[95:64]
+DEST[95:64] := SRC1[127:96]
+DEST[127:96] := SRC2[127:96]
+INTERLEAVE_HIGH_QWORDS_512b (SRC1, SRC2)
+TMP_DEST[255:0] := INTERLEAVE_HIGH_QWORDS_256b(SRC1[255:0], SRC2[255:0])
+TMP_DEST[511:256] := INTERLEAVE_HIGH_QWORDS_256b(SRC1[511:256], SRC2[511:256])
+INTERLEAVE_HIGH_QWORDS_256b(SRC1, SRC2)
+DEST[63:0] := SRC1[127:64]
+DEST[127:64] := SRC2[127:64]
+DEST[191:128] := SRC1[255:192]
+DEST[255:192] := SRC2[255:192]
+INTERLEAVE_HIGH_QWORDS(SRC1, SRC2)
+DEST[63:0] := SRC1[127:64]
+DEST[127:64] := SRC2[127:64]
+</pre>
+<h3 id="punpckhbw--128-bit-legacy-sse-version-">PUNPCKHBW (128-bit Legacy SSE Version)<a class="anchor" href="#punpckhbw--128-bit-legacy-sse-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_BYTES(DEST, SRC)
+DEST[255:127] (Unmodified)
+</pre>
+<h3 id="vpunpckhbw--vex-128-encoded-version-">VPUNPCKHBW (VEX.128 Encoded Version)<a class="anchor" href="#vpunpckhbw--vex-128-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_BYTES(SRC1, SRC2)
+DEST[MAXVL-1:127] := 0
+</pre>
+<h3 id="vpunpckhbw--vex-256-encoded-version-">VPUNPCKHBW (VEX.256 Encoded Version)<a class="anchor" href="#vpunpckhbw--vex-256-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[255:0] := INTERLEAVE_HIGH_BYTES_256b(SRC1, SRC2)
+DEST[MAXVL-1:256] := 0
+</pre>
+<h3 id="vpunpckhbw--evex-encoded-versions-">VPUNPCKHBW (EVEX Encoded Versions)<a class="anchor" href="#vpunpckhbw--evex-encoded-versions-">
+			¶
+		</a></h3>
+<pre>(KL, VL) = (16, 128), (32, 256), (64, 512)
+IF VL = 128
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_BYTES(SRC1[VL-1:0], SRC2[VL-1:0])
+FI;
+IF VL = 256
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_BYTES_256b(SRC1[VL-1:0], SRC2[VL-1:0])
+FI;
+IF VL = 512
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_BYTES_512b(SRC1[VL-1:0], SRC2[VL-1:0])
+FI;
+FOR j := 0 TO KL-1
+    i := j * 8
+    IF k1[j] OR *no writemask*
+        THEN DEST[i+7:i] := TMP_DEST[i+7:i]
+        ELSE
+            IF *merging-masking*
+                        ; merging-masking
+                THEN *DEST[i+7:i] remains unchanged*
+                ELSE *zeroing-masking*
+                            ; zeroing-masking
+                    DEST[i+7:i] := 0
+            FI
+    FI;
+ENDFOR
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="punpckhwd--128-bit-legacy-sse-version-">PUNPCKHWD (128-bit Legacy SSE Version)<a class="anchor" href="#punpckhwd--128-bit-legacy-sse-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_WORDS(DEST, SRC)
+DEST[255:127] (Unmodified)
+</pre>
+<h3 id="vpunpckhwd--vex-128-encoded-version-">VPUNPCKHWD (VEX.128 Encoded Version)<a class="anchor" href="#vpunpckhwd--vex-128-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_WORDS(SRC1, SRC2)
+DEST[MAXVL-1:127] := 0
+</pre>
+<h3 id="vpunpckhwd--vex-256-encoded-version-">VPUNPCKHWD (VEX.256 Encoded Version)<a class="anchor" href="#vpunpckhwd--vex-256-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[255:0] := INTERLEAVE_HIGH_WORDS_256b(SRC1, SRC2)
+DEST[MAXVL-1:256] := 0
+</pre>
+<h3 id="vpunpckhwd--evex-encoded-versions-">VPUNPCKHWD (EVEX Encoded Versions)<a class="anchor" href="#vpunpckhwd--evex-encoded-versions-">
+			¶
+		</a></h3>
+<pre>(KL, VL) = (8, 128), (16, 256), (32, 512)
+IF VL = 128
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_WORDS(SRC1[VL-1:0], SRC2[VL-1:0])
+FI;
+IF VL = 256
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_WORDS_256b(SRC1[VL-1:0], SRC2[VL-1:0])
+FI;
+IF VL = 512
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_WORDS_512b(SRC1[VL-1:0], SRC2[VL-1:0])
+FI;
+FOR j := 0 TO KL-1
+    i := j * 16
+    IF k1[j] OR *no writemask*
+        THEN DEST[i+15:i] := TMP_DEST[i+15:i]
+        ELSE
+            IF *merging-masking* ; merging-masking
+                THEN *DEST[i+15:i] remains unchanged*
+                ELSE *zeroing-masking*
+                        ; zeroing-masking
+                    DEST[i+15:i] := 0
+            FI
+    FI;
+ENDFOR
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="punpckhdq--128-bit-legacy-sse-version-">PUNPCKHDQ (128-bit Legacy SSE Version)<a class="anchor" href="#punpckhdq--128-bit-legacy-sse-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_DWORDS(DEST, SRC)
+DEST[255:127] (Unmodified)
+</pre>
+<h3 id="vpunpckhdq--vex-128-encoded-version-">VPUNPCKHDQ (VEX.128 Encoded Version)<a class="anchor" href="#vpunpckhdq--vex-128-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_DWORDS(SRC1, SRC2)
+DEST[MAXVL-1:127] := 0
+</pre>
+<h3 id="vpunpckhdq--vex-256-encoded-version-">VPUNPCKHDQ (VEX.256 Encoded Version)<a class="anchor" href="#vpunpckhdq--vex-256-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[255:0] := INTERLEAVE_HIGH_DWORDS_256b(SRC1, SRC2)
+DEST[MAXVL-1:256] := 0
+</pre>
+<h3 id="vpunpckhdq--evex-512-encoded-version-">VPUNPCKHDQ (EVEX.512 Encoded Version)<a class="anchor" href="#vpunpckhdq--evex-512-encoded-version-">
+			¶
+		</a></h3>
+<pre>(KL, VL) = (4, 128), (8, 256), (16, 512)
+FOR j := 0 TO KL-1
+    i := j * 32
+    IF (EVEX.b = 1) AND (SRC2 *is memory*)
+        THEN TMP_SRC2[i+31:i] := SRC2[31:0]
+        ELSE TMP_SRC2[i+31:i] := SRC2[i+31:i]
+    FI;
+ENDFOR;
+IF VL = 128
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_DWORDS(SRC1[VL-1:0], TMP_SRC2[VL-1:0])
+FI;
+IF VL = 256
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_DWORDS_256b(SRC1[VL-1:0], TMP_SRC2[VL-1:0])
+FI;
+IF VL = 512
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_DWORDS_512b(SRC1[VL-1:0], TMP_SRC2[VL-1:0])
+FI;
+FOR j := 0 TO KL-1
+    i := j * 32
+    IF k1[j] OR *no writemask*
+        THEN DEST[i+31:i] := TMP_DEST[i+31:i]
+        ELSE
+            IF *merging-masking*
+                THEN *DEST[i+31:i] remains unchanged*
+                ELSE *zeroing-masking* ; zeroing-masking
+                    DEST[i+31:i] := 0
+            FI
+    FI;
+ENDFOR
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="punpckhqdq--128-bit-legacy-sse-version-">PUNPCKHQDQ (128-bit Legacy SSE Version)<a class="anchor" href="#punpckhqdq--128-bit-legacy-sse-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_QWORDS(DEST, SRC)
+DEST[MAXVL-1:128] (Unmodified)
+</pre>
+<h3 id="vpunpckhqdq--vex-128-encoded-version-">VPUNPCKHQDQ (VEX.128 Encoded Version)<a class="anchor" href="#vpunpckhqdq--vex-128-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[127:0] := INTERLEAVE_HIGH_QWORDS(SRC1, SRC2)
+DEST[MAXVL-1:128] := 0
+</pre>
+<h3 id="vpunpckhqdq--vex-256-encoded-version-">VPUNPCKHQDQ (VEX.256 Encoded Version)<a class="anchor" href="#vpunpckhqdq--vex-256-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[255:0] := INTERLEAVE_HIGH_QWORDS_256b(SRC1, SRC2)
+DEST[MAXVL-1:256] := 0
+</pre>
+<h3 id="vpunpckhqdq--evex-encoded-versions-">VPUNPCKHQDQ (EVEX Encoded Versions)<a class="anchor" href="#vpunpckhqdq--evex-encoded-versions-">
+			¶
+		</a></h3>
+<pre>(KL, VL) = (2, 128), (4, 256), (8, 512)
+FOR j := 0 TO KL-1
+    i := j * 64
+    IF (EVEX.b = 1) AND (SRC2 *is memory*)
+        THEN TMP_SRC2[i+63:i] := SRC2[63:0]
+        ELSE TMP_SRC2[i+63:i] := SRC2[i+63:i]
+    FI;
+ENDFOR;
+IF VL = 128
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_QWORDS(SRC1[VL-1:0], TMP_SRC2[VL-1:0])
+FI;
+IF VL = 256
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_QWORDS_256b(SRC1[VL-1:0], TMP_SRC2[VL-1:0])
+FI;
+IF VL = 512
+    TMP_DEST[VL-1:0] := INTERLEAVE_HIGH_QWORDS_512b(SRC1[VL-1:0], TMP_SRC2[VL-1:0])
+FI;
+FOR j := 0 TO KL-1
+    i := j * 64
+    IF k1[j] OR *no writemask*
+        THEN DEST[i+63:i] := TMP_DEST[i+63:i]
+        ELSE
+            IF *merging-masking*
+                        ; merging-masking
+                THEN *DEST[i+63:i] remains unchanged*
+                ELSE *zeroing-masking*
+                            ; zeroing-masking
+                    DEST[i+63:i] := 0
+            FI
+    FI;
+ENDFOR
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h2 id="intel-c-c++-compiler-intrinsic-equivalents">Intel C/C++ Compiler Intrinsic Equivalents<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalents">
+			¶
+		</a></h2>
+<pre>VPUNPCKHBW __m512i _mm512_unpackhi_epi8(__m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHBW __m512i _mm512_mask_unpackhi_epi8(__m512i s, __mmask64 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHBW __m512i _mm512_maskz_unpackhi_epi8( __mmask64 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHBW __m256i _mm256_mask_unpackhi_epi8(__m256i s, __mmask32 k, __m256i a, __m256i b);
+</pre>
+<pre>VPUNPCKHBW __m256i _mm256_maskz_unpackhi_epi8( __mmask32 k, __m256i a, __m256i b);
+</pre>
+<pre>VPUNPCKHBW __m128i _mm_mask_unpackhi_epi8(v s, __mmask16 k, __m128i a, __m128i b);
+</pre>
+<pre>VPUNPCKHBW __m128i _mm_maskz_unpackhi_epi8( __mmask16 k, __m128i a, __m128i b);
+</pre>
+<pre>VPUNPCKHWD __m512i _mm512_unpackhi_epi16(__m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHWD __m512i _mm512_mask_unpackhi_epi16(__m512i s, __mmask32 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHWD __m512i _mm512_maskz_unpackhi_epi16( __mmask32 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHWD __m256i _mm256_mask_unpackhi_epi16(__m256i s, __mmask16 k, __m256i a, __m256i b);
+</pre>
+<pre>VPUNPCKHWD __m256i _mm256_maskz_unpackhi_epi16( __mmask16 k, __m256i a, __m256i b);
+</pre>
+<pre>VPUNPCKHWD __m128i _mm_mask_unpackhi_epi16(v s, __mmask8 k, __m128i a, __m128i b);
+</pre>
+<pre>VPUNPCKHWD __m128i _mm_maskz_unpackhi_epi16( __mmask8 k, __m128i a, __m128i b);
+</pre>
+<pre>VPUNPCKHDQ __m512i _mm512_unpackhi_epi32(__m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHDQ __m512i _mm512_mask_unpackhi_epi32(__m512i s, __mmask16 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHDQ __m512i _mm512_maskz_unpackhi_epi32( __mmask16 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHDQ __m256i _mm256_mask_unpackhi_epi32(__m512i s, __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHDQ __m256i _mm256_maskz_unpackhi_epi32( __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHDQ __m128i _mm_mask_unpackhi_epi32(__m512i s, __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHDQ __m128i _mm_maskz_unpackhi_epi32( __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHQDQ __m512i _mm512_unpackhi_epi64(__m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHQDQ __m512i _mm512_mask_unpackhi_epi64(__m512i s, __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHQDQ __m512i _mm512_maskz_unpackhi_epi64( __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHQDQ __m256i _mm256_mask_unpackhi_epi64(__m512i s, __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHQDQ __m256i _mm256_maskz_unpackhi_epi64( __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHQDQ __m128i _mm_mask_unpackhi_epi64(__m512i s, __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>VPUNPCKHQDQ __m128i _mm_maskz_unpackhi_epi64( __mmask8 k, __m512i a, __m512i b);
+</pre>
+<pre>PUNPCKHBW __m64 _mm_unpackhi_pi8(__m64 m1, __m64 m2)
+</pre>
+<pre>(V)PUNPCKHBW __m128i _mm_unpackhi_epi8(__m128i m1, __m128i m2)
+</pre>
+<pre>VPUNPCKHBW __m256i _mm256_unpackhi_epi8(__m256i m1, __m256i m2)
+</pre>
+<pre>PUNPCKHWD __m64 _mm_unpackhi_pi16(__m64 m1,__m64 m2)
+</pre>
+<pre>(V)PUNPCKHWD __m128i _mm_unpackhi_epi16(__m128i m1,__m128i m2)
+</pre>
+<pre>VPUNPCKHWD __m256i _mm256_unpackhi_epi16(__m256i m1,__m256i m2)
+</pre>
+<pre>PUNPCKHDQ __m64 _mm_unpackhi_pi32(__m64 m1, __m64 m2)
+</pre>
+<pre>(V)PUNPCKHDQ __m128i _mm_unpackhi_epi32(__m128i m1, __m128i m2)
+</pre>
+<pre>VPUNPCKHDQ __m256i _mm256_unpackhi_epi32(__m256i m1, __m256i m2)
+</pre>
+<pre>(V)PUNPCKHQDQ __m128i _mm_unpackhi_epi64 ( __m128i a, __m128i b)
+</pre>
+<pre>VPUNPCKHQDQ __m256i _mm256_unpackhi_epi64 ( __m256i a, __m256i b)
+</pre>
+<h2 id="flags-affected">Flags Affected<a class="anchor" href="#flags-affected">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="numeric-exceptions">Numeric Exceptions<a class="anchor" href="#numeric-exceptions">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h2>
+<p>Non-EVEX-encoded instruction, see <span class="not-imported">Table 2-21</span>, “Type 4 Class Exception Conditions.”</p>
+<p>EVEX-encoded VPUNPCKHQDQ/QDQ, see <span class="not-imported">Table 2-50</span>, “Type E4NF Class Exception Conditions.”</p>
+<p>EVEX-encoded VPUNPCKHBW/WD, see Exceptions Type E4NF.nb in <span class="not-imported">Table 2-50</span>, “Type E4NF Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

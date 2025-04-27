@@ -1,0 +1,57 @@
+  • Index
+  • December 2023
+
+EEXTEND — Extend Uninitialized Enclave Measurement by 256 Bytes
+
+   Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                               Description
+EAX = 06H ENCLS[EEXTEND] IR    V/V                    SGX1               This leaf function measures 256 bytes of an uninitialized enclave page.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX          EBX                                                  RCX
+IR    EEXTEND (In) Effective address of the SECS of the data chunk (In) Effective address of a 256-byte chunk in the EPC (In)
+
+Description ¶
+
+This leaf function updates the MRENCLAVE measurement register of an SECS with the measurement of an EXTEND string compromising of “EEXTEND” || ENCLAVEOFFSET || PADDING || 256 bytes of the enclave page. This instruction can only be executed when current
+privilege level is 0 and the enclave is uninitialized.
+
+RBX contains the effective address of the SECS of the region to be measured. The address must be the same as the one used to add the page into the enclave.
+
+RCX contains the effective address of the 256 byte region of an EPC page to be measured. The DS segment is used to create linear addresses. Segment override is not supported.
+
+EEXTEND Memory Parameter Semantics ¶
+
+EPC[RCX]
+Read access by Enclave
+
+The instruction faults if any of the following:
+
+EEXTEND Faulting Conditions ¶
+
+RBX points to an address not 4KBytes aligned.  RBX does not resolve to an SECS.
+RBX does not point to an SECS page.            RBX does not point to the SECS page of the data chunk.
+RCX points to an address not 256B aligned.     RCX points to an unused page or a SECS.
+RCX does not resolve in an EPC page.           If SECS is locked.
+If the SECS is already initialized.            May page fault.
+CPL > 0.
+
+Concurrency Restrictions ¶
+
+ Leaf      Parameter                   Base Concurrency Restrictions
+                           Access   On Conflict SGX_CONFLICT VM Exit Qualification
+EEXTEND Target [DS:RCX]  Shared     #GP
+        SECS [DS:RBX]    Concurrent
+
+
+Table 38-23. Base Concurrency Restrictions of EEXTEND
+
+                                                      Additional Concurrency Restrictions
+ Leaf      Parameter    vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                Access                On Conflict          Access    On Conflict    Access   On Conflict
+EEXTEND Target [DS:RCX] Concurrent                                       Concurrent               Concurrent
+        SECS [DS:RBX]   Concurrent                                       Exclusive  #GP           Concurrent
+
+
+Table 38-24. Additional Concurrency Restrictions of EEXTEND
+

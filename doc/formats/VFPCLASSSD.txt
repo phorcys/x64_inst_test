@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+VFPCLASSSD — Tests Type of a Scalar Float64 Value
+
+             Opcode/Instruction               Op/  64/32 Bit Mode  CPUID Feature                                                                                  Description
+                                               En      Support         Flag
+EVEX.LLIG.66.0F3A.W1 67 /r ib VFPCLASSSD k2   A    V/V             AVX512DQ      Tests the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite negative. The immediate field provides a mask bit for each of these
+{k1}, xmm2/m64, imm8                                                             category tests. The masked test results are OR-ed together to form a mask result.
+
+Instruction Operand Encoding ¶
+
+Op/En   Tuple Type     Operand 1      Operand 2    Operand 3 Operand 4
+A     Tuple1 Scalar  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+The FPCLASSSD instruction checks the low double precision floating-point value in the source operand for special categories, specified by the set bits in the imm8 byte. Each set bit in imm8 specifies a category of floating-point values that the input
+data element is classified against. The classified results of all specified categories of an input value are ORed together to form the final boolean result for the input element. The result is written to the low bit in a mask register k2 according to the
+writemask k1. Bits MAX_KL-1: 1 of the destination are cleared.
+
+The classification categories specified by imm8 are shown in Figure 5-13. The classification test for each category is listed in Table 5-14.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

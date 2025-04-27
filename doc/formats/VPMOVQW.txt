@@ -1,0 +1,38 @@
+  • Index
+  • December 2023
+
+VPMOVQW/VPMOVSQW/VPMOVUSQW — Down Convert QWord to Word
+
+                   Opcode/Instruction                     Op / En    64/32 bit Mode     CPUID Feature Flag                                                                     Description
+                                                                         Support
+EVEX.128.F3.0F38.W0 34 /r VPMOVQW xmm1/m32 {k1}{z}, xmm2  A       V/V                   AVX512VL AVX512F   Converts 2 packed quad-word integers from xmm2 into 2 packed word integers in xmm1/m32 with truncation under writemask k1.
+EVEX.128.F3.0F38.W0 24 /r VPMOVSQW xmm1/m32 {k1}{z}, xmm2 A       V/V                   AVX512VL AVX512F   Converts 8 packed signed quad-word integers from zmm2 into 8 packed signed word integers in xmm1/m32 using signed saturation under writemask k1.
+EVEX.128.F3.0F38.W0 14 /r VPMOVUSQW xmm1/m32 {k1}{z},     A       V/V                   AVX512VL AVX512F   Converts 2 packed unsigned quad-word integers from xmm2 into 2 packed unsigned word integers in xmm1/m32 using unsigned saturation under writemask
+xmm2                                                                                                       k1.
+EVEX.256.F3.0F38.W0 34 /r VPMOVQW xmm1/m64 {k1}{z}, ymm2  A       V/V                   AVX512VL AVX512F   Converts 4 packed quad-word integers from ymm2 into 4 packed word integers in xmm1/m64 with truncation under writemask k1.
+EVEX.256.F3.0F38.W0 24 /r VPMOVSQW xmm1/m64 {k1}{z}, ymm2 A       V/V                   AVX512VL AVX512F   Converts 4 packed signed quad-word integers from ymm2 into 4 packed signed word integers in xmm1/m64 using signed saturation under writemask k1.
+EVEX.256.F3.0F38.W0 14 /r VPMOVUSQW xmm1/m64 {k1}{z},     A       V/V                   AVX512VL AVX512F   Converts 4 packed unsigned quad-word integers from ymm2 into 4 packed unsigned word integers in xmm1/m64 using unsigned saturation under writemask
+ymm2                                                                                                       k1.
+EVEX.512.F3.0F38.W0 34 /r VPMOVQW xmm1/m128 {k1}{z}, zmm2 A       V/V                   AVX512F            Converts 8 packed quad-word integers from zmm2 into 8 packed word integers in xmm1/m128 with truncation under writemask k1.
+EVEX.512.F3.0F38.W0 24 /r VPMOVSQW xmm1/m128 {k1}{z},     A       V/V                   AVX512F            Converts 8 packed signed quad-word integers from zmm2 into 8 packed signed word integers in xmm1/m128 using signed saturation under writemask k1.
+zmm2
+EVEX.512.F3.0F38.W0 14 /r VPMOVUSQW xmm1/m128 {k1}{z},    A       V/V                   AVX512F            Converts 8 packed unsigned quad-word integers from zmm2 into 8 packed unsigned word integers in xmm1/m128 using unsigned saturation under writemask
+zmm2                                                                                                       k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type    Operand 1      Operand 2    Operand 3 Operand 4
+A     Quarter Mem ModRM:r/m (w)  ModRM:reg (r)  N/A       N/A
+
+Description ¶
+
+VPMOVQW down converts 64-bit integer elements in the source operand (the second operand) into packed words using truncation. VPMOVSQW converts signed 64-bit integers into packed signed words using signed saturation. VPMOVUSQW convert unsigned quad-word
+values into unsigned word values using unsigned saturation.
+
+The source operand is a ZMM/YMM/XMM register. The destination operand is a XMM register or a 128/64/32-bit memory location.
+
+Down-converted word elements are written to the destination operand (the first operand) from the least-significant word. Word elements of the destination operand are updated according to the writemask. Bits (MAXVL-1:128/64/32) of the register destination
+are zeroed.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

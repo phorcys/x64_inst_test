@@ -1,0 +1,26 @@
+  • Index
+  • December 2023
+
+NOP — No Operation
+
+  Opcode    Instruction Op/En 64-Bit Mode Compat/Leg Mode               Description
+NP 90       NOP         ZO    Valid       Valid            One byte no-operation instruction.
+NP 0F 1F /0 NOP r/m16   M     Valid       Valid            Multi-byte no-operation instruction.
+NP 0F 1F /0 NOP r/m32   M     Valid       Valid            Multi-byte no-operation instruction.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1    Operand 2 Operand 3 Operand 4
+ZO    N/A            N/A       N/A       N/A
+M     ModRM:r/m (r)  N/A       N/A       N/A
+
+Description ¶
+
+This instruction performs no operation. It is a one-byte or multi-byte NOP that takes up space in the instruction stream but does not impact machine context, except for the EIP register.
+
+The multi-byte form of NOP is available on processors with model encoding:
+
+  • CPUID.01H.EAX[Bytes 11:8] = 0110B or 1111B
+
+The multi-byte NOP instruction does not alter the content of a register and will not issue a memory operation. The instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

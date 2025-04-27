@@ -1,0 +1,40 @@
+  • Index
+  • December 2023
+
+FSAVE/FNSAVE — Store x87 FPU State
+
+ Opcode      Instruction      64-Bit Mode Compat/Leg Mode                                                                Description
+9B DD /6 FSAVE m94/108byte    Valid       Valid           Store FPU state to m94byte or m108byte after checking for pending unmasked floating-point exceptions. Then re-initialize the FPU.
+DD /6    FNSAVE^1 m94/108byte Valid       Valid           Store FPU environment to m94byte or m108byte without checking for pending unmasked floating-point exceptions. Then re-initialize the FPU.
+
+    1. See IA-32 Architecture Compatibility section below.
+
+Description ¶
+
+Stores the current FPU state (operating environment and register stack) at the specified destination in memory, and then re-initializes the FPU. The FSAVE instruction checks for and handles pending unmasked floating-point exceptions before storing the
+FPU state; the FNSAVE instruction does not.
+
+The FPU operating environment consists of the FPU control word, status word, tag word, instruction pointer, data pointer, and last opcode. Figures 8-9 through 8-12 in the Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1, show the
+layout in memory of the stored environment, depending on the operating mode of the processor (protected or real) and the current operand-size attribute (16-bit or 32-bit). In virtual-8086 mode, the real mode layouts are used. The contents of the FPU
+register stack are stored in the 80 bytes immediately follow the operating environment image.
+
+The saved image reflects the state of the FPU after all floating-point instructions preceding the FSAVE/FNSAVE instruction in the instruction stream have been executed.
+
+After the FPU state has been saved, the FPU is reset to the same default values it is set to with the FINIT/FNINIT instructions (see “FINIT/FNINIT—Initialize Floating-Point Unit” in this chapter).
+
+The FSAVE/FNSAVE instructions are typically used when the operating system needs to perform a context switch, an exception handler needs to use the FPU, or an application program needs to pass a “clean” FPU to a procedure.
+
+The assembler issues two instructions for the FSAVE instruction (an FWAIT instruction followed by an FNSAVE instruction), and the processor executes each of these instructions separately. If an exception is generated for either of these instructions, the
+save EIP points to the instruction that caused the exception.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+
+IA-32 Architecture Compatibility ¶
+
+For Intel math coprocessors and FPUs prior to the Intel Pentium processor, an FWAIT instruction should be executed before attempting to read from the memory image stored with a prior FSAVE/FNSAVE instruction. This FWAIT instruction helps ensure that the
+storage operation has been completed.
+
+When operating a Pentium or Intel486 processor in MS-DOS compatibility mode, it is possible (under unusual circumstances) for an FNSAVE instruction to be interrupted prior to being executed to handle a pending FPU exception. See the section titled
+“No-Wait FPU Instructions Can Get FPU Interrupt in Window” in Appendix D of the Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1, for a description of these circumstances. An FNSAVE instruction cannot be interrupted in this way on
+later Intel processors, except for the Intel Quark^TM X1000 processor.
+

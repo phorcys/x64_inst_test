@@ -1,0 +1,30 @@
+  • Index
+  • December 2023
+
+VCVTTPD2QQ — Convert With Truncation Packed Double Precision Floating-Point Values toPacked Quadword Integers
+
+                       Opcode/Instruction                         Op/En    64/32 Bit Mode     CPUID Feature                                                                     Description
+                                                                              Support              Flag
+EVEX.128.66.0F.W1 7A /r VCVTTPD2QQ xmm1 {k1}{z}, xmm2/m128/       A     V/V                  AVX512VL         Convert two packed double precision floating-point values from zmm2/m128/m64bcst to two packed quadword integers in zmm1 using truncation with
+m64bcst                                                                                      AVX512DQ         writemask k1.
+EVEX.256.66.0F.W1 7A /r VCVTTPD2QQ ymm1 {k1}{z}, ymm2/m256/       A     V/V                  AVX512VL         Convert four packed double precision floating-point values from ymm2/m256/m64bcst to four packed quadword integers in ymm1 using truncation with
+m64bcst                                                                                      AVX512DQ         writemask k1.
+EVEX.512.66.0F.W1 7A /r VCVTTPD2QQ zmm1 {k1}{z}, zmm2/m512/       A     V/V                  AVX512DQ         Convert eight packed double precision floating-point values from zmm2/m512 to eight packed quadword integers in zmm1 using truncation with
+m64bcst{sae}                                                                                                  writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Converts with truncation packed double precision floating-point values in the source operand (second operand) to packed quadword integers in the destination operand (first operand).
+
+EVEX encoded versions: The source operand is a ZMM/YMM/XMM register or a 512/256/128-bit memory location. The destination operand is a ZMM/YMM/XMM register conditionally updated with writemask k1.
+
+When a conversion is inexact, a truncated (round toward zero) value is returned. If a converted result cannot be represented in the destination format, the floating-point invalid exception is raised, and if this exception is masked, the indefinite
+integer value (2^w-1, where w represents the number of bits in the destination format) is returned.
+
+Note: EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.
+

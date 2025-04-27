@@ -1,0 +1,33 @@
+  • Index
+  • December 2023
+
+XADD — Exchange and Add
+
+     Opcode        Instruction   Op/En 64-Bit Mode Compat/Leg Mode                  Description
+0F C0 /r         XADD r/m8, r8   MR    Valid       Valid           Exchange r8 and r/m8; load sum into r/m8.
+REX + 0F C0 /r   XADD r/m8*, r8* MR    Valid       N.E.            Exchange r8 and r/m8; load sum into r/m8.
+0F C1 /r         XADD r/m16, r16 MR    Valid       Valid           Exchange r16 and r/m16; load sum into r/m16.
+0F C1 /r         XADD r/m32, r32 MR    Valid       Valid           Exchange r32 and r/m32; load sum into r/m32.
+REX.W + 0F C1 /r XADD r/m64, r64 MR    Valid       N.E.            Exchange r64 and r/m64; load sum into r/m64.
+
+    * In64-bitmode,r/m8cannotbeencodedtoaccessthefollowingbyteregistersifaREXprefixisused:AH,BH,CH,DH.
+
+Instruction Operand Encoding ¶
+
+Op/En     Operand 1         Operand 2     Operand 3 Operand 4
+MR    ModRM:r/m (r, w)  ModRM:reg (r, w)  N/A       N/A
+
+Description ¶
+
+Exchanges the first operand (destination operand) with the second operand (source operand), then loads the sum of the two values into the destination operand. The destination operand can be a register or a memory location; the source operand is a
+register.
+
+In 64-bit mode, the instruction’s default operation size is 32 bits. Using a REX prefix in the form of REX.R permits access to additional registers (R8-R15). Using a REX prefix in the form of REX.W promotes operation to 64 bits. See the summary chart at
+the beginning of this section for encoding data and limits.
+
+This instruction can be used with a LOCK prefix to allow the instruction to be executed atomically.
+
+IA-32 Architecture Compatibility ¶
+
+IA-32 processors earlier than the Intel486 processor do not recognize this instruction. If this instruction is used, you should provide an equivalent code sequence that runs on earlier processors.
+

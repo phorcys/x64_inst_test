@@ -1,0 +1,27 @@
+  • Index
+  • December 2023
+
+BNDMOV — Move Bounds
+
+        Opcode/Instruction         Op/En 64/32 bit Mode Support CPUID Feature Flag                            Description
+66 0F 1A /r BNDMOV bnd1, bnd2/m64  RM    N.E./V                 MPX                Move lower and upper bound from bnd2/m64 to bound register bnd1.
+66 0F 1A /r BNDMOV bnd1, bnd2/m128 RM    V/N.E.                 MPX                Move lower and upper bound from bnd2/m128 to bound register bnd1.
+66 0F 1B /r BNDMOV bnd1/m64, bnd2  MR    N.E./V                 MPX                Move lower and upper bound from bnd2 to bnd1/m64.
+66 0F 1B /r BNDMOV bnd1/m128, bnd2 MR    V/N.E.                 MPX                Move lower and upper bound from bnd2 to bound register bnd1/m128.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A
+MR    ModRM:r/m (w)  ModRM:reg (r)  N/A
+
+Description ¶
+
+BNDMOV moves a pair of lower and upper bound values from the source operand (the second operand) to the destination (the first operand). Each operation is 128-bit move. The exceptions are same as the MOV instruction. The memory format for loading/store
+bounds in 64-bit mode is shown in Figure 3-5.
+
+BNDMOV to memory in 64-bit mode Upper Bound (UB) Lower Bound (LB) 0 Byteoffset 16 8 BNDMOV to memory in 32-bit mode Upper Bound (UB) Lower Bound (LB) 0 Byteoffset 16 8 4
+Figure 3-5. Memory Layout of BNDMOV to/from Memory
+
+This instruction does not change flags.
+

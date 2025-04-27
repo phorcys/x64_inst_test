@@ -1,0 +1,37 @@
+  • Index
+  • December 2023
+
+VFCMADDCPH/VFMADDCPH — Complex Multiply and Accumulate FP16 Values
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit
+Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag    Support                                             Description
+                                                                  Op/ 64/32 CPUID Feature
+                                                                                                                                                                      AVX512-FP16 Complex multiply a pair of FP16 values from xmm2 and complex conjugate of
+EVEX.128.F2.MAP6.W0 56 /r VFCMADDCPH xmm1{k1}{z}, xmm2, xmm3/m128/m32bcst                                                                                   A V/V     AVX512VL    xmm3/m128/m32bcst, add to xmm1 and store the result in xmm1 subject to
+                                                                                                                                                                                  writemask k1.
+                                                                                                                                                                      AVX512-FP16 Complex multiply a pair of FP16 values from ymm2 and complex conjugate of
+EVEX.256.F2.MAP6.W0 56 /r VFCMADDCPH ymm1{k1}{z}, ymm2, ymm3/m256/m32bcst                                                                                   A V/V     AVX512VL    ymm3/m256/m32bcst, add to ymm1 and store the result in ymm1 subject to
+                                                                                                                                                                                  writemask k1.
+                                                                                                                                                                                  Complex multiply a pair of FP16 values from zmm2 and complex conjugate of
+EVEX.512.F2.MAP6.W0 56 /r VFCMADDCPH zmm1{k1}{z}, zmm2, zmm3/m512/m32bcst {er}                                                                              A V/V     AVX512-FP16 zmm3/m512/m32bcst, add to zmm1 and store the result in zmm1 subject to
+                                                                                                                                                                                  writemask k1.
+EVEX.128.F3.MAP6.W0 56 /r VFMADDCPH xmm1{k1}{z}, xmm2, xmm3/m128/m32bcst                                                                                    A V/V     AVX512-FP16 Complex multiply a pair of FP16 values from xmm2 and xmm3/m128/m32bcst, add
+                                                                                                                                                                      AVX512VL    to xmm1 and store the result in xmm1 subject to writemask k1.
+EVEX.256.F3.MAP6.W0 56 /r VFMADDCPH ymm1{k1}{z}, ymm2, ymm3/m256/m32bcst                                                                                    A V/V     AVX512-FP16 Complex multiply a pair of FP16 values from ymm2 and ymm3/m256/m32bcst, add
+                                                                                                                                                                      AVX512VL    to ymm1 and store the result in ymm1 subject to writemask k1.
+EVEX.512.F3.MAP6.W0 56 /r VFMADDCPH zmm1{k1}{z}, zmm2, zmm3/m512/m32bcst {er}                                                                               A V/V     AVX512-FP16 Complex multiply a pair of FP16 values from zmm2 and zmm3/m512/m32bcst, add
+                                                                                                                                                                                  to zmm1 and store the result in zmm1 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1      Operand 2     Operand 3    Operand 4
+A     Full  ModRM:reg (r, w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction performs a complex multiply and accumulate operation. There are normal and complex conjugate forms of the operation.
+
+The broadcasting and masking for this operation is done on 32-bit quantities representing a pair of FP16 values.
+
+Rounding is performed at every FMA (fused multiply and add) boundary. Execution occurs as if all MXCSR exceptions are masked. MXCSR status bits are updated to reflect exceptional conditions.
+

@@ -1,0 +1,41 @@
+  • Index
+  • December 2023
+
+VFMADD132SS/VFMADD213SS/VFMADD231SS — Fused Multiply-Add of Scalar Single PrecisionFloating-Point Values
+
+                          Opcode/Instruction                            Op/En 64/32 Bit Mode Support CPUID Feature Flag                                                    Description
+VEX.LIG.66.0F38.W0 99 /r VFMADD132SS xmm1, xmm2, xmm3/m32               A     V/V                    FMA                Multiply scalar single precision floating-point value from xmm1 and xmm3/m32, add to xmm2 and put result in xmm1.
+VEX.LIG.66.0F38.W0 A9 /r VFMADD213SS xmm1, xmm2, xmm3/m32               A     V/V                    FMA                Multiply scalar single precision floating-point value from xmm1 and xmm2, add to xmm3/m32 and put result in xmm1.
+VEX.LIG.66.0F38.W0 B9 /r VFMADD231SS xmm1, xmm2, xmm3/m32               A     V/V                    FMA                Multiply scalar single precision floating-point value from xmm2 and xmm3/m32, add to xmm1 and put result in xmm1.
+EVEX.LLIG.66.0F38.W0 99 /r VFMADD132SS xmm1 {k1}{z}, xmm2, xmm3/m32{er} B     V/V                    AVX512F            Multiply scalar single precision floating-point value from xmm1 and xmm3/m32, add to xmm2 and put result in xmm1.
+EVEX.LLIG.66.0F38.W0 A9 /r VFMADD213SS xmm1 {k1}{z}, xmm2, xmm3/m32{er} B     V/V                    AVX512F            Multiply scalar single precision floating-point value from xmm1 and xmm2, add to xmm3/m32 and put result in xmm1.
+EVEX.LLIG.66.0F38.W0 B9 /r VFMADD231SS xmm1 {k1}{z}, xmm2, xmm3/m32{er} B     V/V                    AVX512F            Multiply scalar single precision floating-point value from xmm2 and xmm3/m32, add to xmm1 and put result in xmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple Type       Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A           ModRM:reg (r, w)  VEX.vvvv (r)  ModRM:r/m (r) N/A
+B     Tuple1 Scalar ModRM:reg (r, w)  EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Performs a SIMD multiply-add computation on single precision floating-point values using three source operands and writes the multiply-add results in the destination operand. The destination operand is also the first source operand. The first and second
+operands are XMM registers. The third source operand can be a XMM register or a 32-bit memory location.
+
+VFMADD132SS: Multiplies the low single precision floating-point value from the first source operand to the low single precision floating-point value in the third source operand, adds the infinite precision intermediate result to the low single precision
+floating-point value in the second source operand, performs rounding and stores the resulting single precision floating-point value to the destination operand (first source operand).
+
+VFMADD213SS: Multiplies the low single precision floating-point value from the second source operand to the low single precision floating-point value in the first source operand, adds the infinite precision intermediate result to the low single precision
+floating-point value in the third source operand, performs rounding and stores the resulting single precision floating-point value to the destination operand (first source operand).
+
+VFMADD231SS: Multiplies the low single precision floating-point value from the second source operand to the low single precision floating-point value in the third source operand, adds the infinite precision intermediate result to the low single precision
+floating-point value in the first source operand, performs rounding and stores the resulting single precision floating-point value to the destination operand (first source operand).
+
+VEX.128 and EVEX encoded version: The destination operand (also first source operand) is encoded in reg_field. The second source operand is encoded in VEX.vvvv/EVEX.vvvv. The third source operand is encoded in rm_field. Bits 127:32 of the destination are
+unchanged. Bits MAXVL-1:128 of the destination register are zeroed.
+
+EVEX encoded version: The low doubleword element of the destination is updated according to the writemask.
+
+Compiler tools may optionally support a complementary mnemonic for each instruction mnemonic listed in the opcode/instruction column of the summary table. The behavior of the complementary mnemonic in situations involving NANs are governed by the
+definition of the instruction mnemonic defined in the opcode/instruction column.
+

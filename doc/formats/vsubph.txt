@@ -1,0 +1,24 @@
+  • Index
+  • December 2023
+
+VSUBPH — Subtract Packed FP16 Values
+
+ Instruction En bit Mode Flag Support Instruction En bit Mode Flag Support 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/    Support                                     Description
+   64/32 CPUID Feature Instruction En bit Mode Flag 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64/32 CPUID Feature
+EVEX.128.NP.MAP5.W0 5C /r VSUBPH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                                       A V/V     AVX512-FP16 Subtract packed FP16 values from xmm3/m128/m16bcst to xmm2,
+                                                                                                                                                                                      AVX512VL    and store the result in xmm1 subject to writemask k1.
+EVEX.256.NP.MAP5.W0 5C /r VSUBPH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                                       A V/V     AVX512-FP16 Subtract packed FP16 values from ymm3/m256/m16bcst to ymm2,
+                                                                                                                                                                                      AVX512VL    and store the result in ymm1 subject to writemask k1.
+EVEX.512.NP.MAP5.W0 5C /r VSUBPH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                                  A V/V     AVX512-FP16 Subtract packed FP16 values from zmm3/m512/m16bcst to zmm2,
+                                                                                                                                                                                                  and store the result in zmm1 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1     Operand 2     Operand 3    Operand 4
+A     Full  ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction subtracts packed FP16 values from second source operand from the corresponding elements in the first source operand, storing the packed FP16 result in the destination operand. The destination elements are updated according to the
+writemask.
+

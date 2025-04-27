@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+VFPCLASSPS — Tests Types of Packed Float32 Values
+
+                Opcode/Instruction                 Op/ 64/32 Bit Mode     CPUID                                                                                    Description
+                                                   En      Support     Feature Flag
+EVEX.128.66.0F3A.W0 66 /r ib VFPCLASSPS k2 {k1},   A   V/V             AVX512VL     Tests the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite negative. The immediate field provides a mask bit for each of these
+xmm2/m128/m32bcst, imm8                                                AVX512DQ     category tests. The masked test results are OR-ed together to form a mask result.
+EVEX.256.66.0F3A.W0 66 /r ib VFPCLASSPS k2 {k1},   A   V/V             AVX512VL     Tests the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite negative. The immediate field provides a mask bit for each of these
+ymm2/m256/m32bcst, imm8                                                AVX512DQ     category tests. The masked test results are OR-ed together to form a mask result.
+EVEX.512.66.0F3A.W0 66 /r ib VFPCLASSPS k2 {k1},   A   V/V             AVX512DQ     Tests the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite negative. The immediate field provides a mask bit for each of these
+zmm2/m512/m32bcst, imm8                                                             category tests. The masked test results are OR-ed together to form a mask result.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+The FPCLASSPS instruction checks the packed single-precision floating-point values for special categories, specified by the set bits in the imm8 byte. Each set bit in imm8 specifies a category of floating-point values that the input data element is
+classified against. The classified results of all specified categories of an input value are ORed together to form the final boolean result for the input element. The result of each element is written to the corresponding bit in a mask register k2
+according to the writemask k1. Bits [MAX_KL-1:16/8/4] of the destination are cleared.
+
+The classification categories specified by imm8 are shown in Figure 5-13. The classification test for each category is listed in Table 5-14.
+
+The source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location, or a 512/256/128-bit vector broadcasted from a 32-bit memory location.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

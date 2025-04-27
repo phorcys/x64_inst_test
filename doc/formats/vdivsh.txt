@@ -1,0 +1,22 @@
+  • Index
+  • December 2023
+
+VDIVSH — Divide Scalar FP16 Values
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En
+Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode    Support                                              Description
+                                                               Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                                 Divide low FP16 value in xmm2 by low FP16 value in xmm3/m16, and store the
+EVEX.LLIG.F3.MAP5.W0 5E /r VDIVSH xmm1{k1}{z}, xmm2, xmm3/m16 {er}                                                                                         A V/V     AVX512-FP16 result in xmm1 subject to writemask k1. Bits 127:16 of xmm2 are copied to
+                                                                                                                                                                                 xmm1[127:16].
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1     Operand 2     Operand 3    Operand 4
+A     Scalar ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction divides the low FP16 value from the first source operand by the corresponding value in the second source operand, storing the FP16 result in the destination operand. Bits 127:16 of the destination operand are copied from the
+corresponding bits of the first source operand. Bits MAXVL-1:128 of the destination operand are zeroed. The low FP16 element of the destination is updated according to the writemask.
+

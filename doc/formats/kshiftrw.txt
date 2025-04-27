@@ -1,0 +1,21 @@
+  • Index
+  • December 2023
+
+KSHIFTRW/KSHIFTRB/KSHIFTRQ/KSHIFTRD — Shift Right Mask Registers
+
+             Opcode/Instruction               Op/En 64/32 bit Mode Support CPUID Feature Flag                           Description
+VEX.L0.66.0F3A.W1 30 /r KSHIFTRW k1, k2, imm8 RRI   V/V                    AVX512F            Shift right 16 bits in k2 by immediate and write result in k1.
+VEX.L0.66.0F3A.W0 30 /r KSHIFTRB k1, k2, imm8 RRI   V/V                    AVX512DQ           Shift right 8 bits in k2 by immediate and write result in k1.
+VEX.L0.66.0F3A.W1 31 /r KSHIFTRQ k1, k2, imm8 RRI   V/V                    AVX512BW           Shift right 64 bits in k2 by immediate and write result in k1.
+VEX.L0.66.0F3A.W0 31 /r KSHIFTRD k1, k2, imm8 RRI   V/V                    AVX512BW           Shift right 32 bits in k2 by immediate and write result in k1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1                   Operand 2                Operand 3
+RRI   ModRM:reg (w)  ModRM:r/m (r, ModRM:[7:6] must be 11b)  imm8
+
+Description ¶
+
+Shifts 8/16/32/64 bits in the second operand (source operand) right by the count specified in immediate and place the least significant 8/16/32/64 bits of the result in the destination operand. The higher bits of the destination are zero-extended. The
+destination is set to zero if the count value is greater than 7 (for byte shift), 15 (for word shift), 31 (for doubleword shift) or 63 (for quadword shift).
+

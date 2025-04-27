@@ -1,0 +1,65 @@
+  • Index
+  • December 2023
+
+EREMOVE — Remove a page from the EPC
+
+   Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                   Description
+EAX = 03H ENCLS[EREMOVE] IR    V/V                    SGX1               This leaf function removes a page from the EPC.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                   RCX
+IR    EREMOVE (In) Return error code (Out)  Effective address of the EPC page (In)
+
+Description ¶
+
+This leaf function causes an EPC page to be un-associated with its SECS and be marked as unused. This instruction leaf can only be executed when the current privilege level is 0.
+
+The content of RCX is an effective address of an EPC page. The DS segment is used to create linear address. Segment override is not supported.
+
+The instruction fails if the operand is not properly aligned or does not refer to an EPC page or the page is in use by another thread, or other threads are running in the enclave to which the page belongs. In addition the instruction fails if the operand
+refers to an SECS with associations.
+
+EREMOVE Memory Parameter Semantics ¶
+
+EPCPAGE
+Write access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EREMOVE Faulting Conditions ¶
+
+The memory operand is not properly aligned.              The memory operand does not resolve in an EPC page.
+Refers to an invalid SECS.                               Refers to an EPC page that is locked by another thread.
+Another Intel SGX instruction is accessing the EPC page. RCX does not contain an effective address of an EPC page.
+the EPC page refers to an SECS with associations.
+
+The error codes are:
+
+Error Code (see Table 38-4)                              Description
+No Error                     EREMOVE successful.
+SGX_CHILD_PRESENT            If the SECS still have enclave pages loaded into EPC.
+SGX_ENCLAVE_ACT              If there are still logical processors executing inside the enclave.
+
+
+Table 38-42. EREMOVE Return Value in RAX
+
+Concurrency Restrictions ¶
+
+                                 Leaf                                     Parameter    Base Concurrency Restrictions
+                                                                                                On Conflict
+EREMOVE EREMOVE Target [DS:RCX] Exclusive #GP EREMOVE Target [DS:RCX]  Target [DS:RCX]
+
+
+Table 38-43. Base Concurrency Restrictions of EREMOVE
+
+                                                                                                                        Additional Concurrency Restrictions
+ Leaf    Parameter     vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On     vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                    Conflict EMODPE, EMODPR, EMODT                                                                                      ETRACK, ETRACKC                           ETRACKC
+                                                          Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EREMOVE Target       Concurrent                                                                                                                                                    Concurrent                                                 Concurrent
+        [DS:RCX]
+
+
+Table 38-44. Additional Concurrency Restrictions of EREMOVE
+

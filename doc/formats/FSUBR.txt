@@ -1,0 +1,58 @@
+  • Index
+  • December 2023
+
+FSUBR/FSUBRP/FISUBR — Reverse Subtract
+
+Opcode      Instruction     64-Bit Mode Compat/Leg Mode                                Description
+D8 /5   FSUBR m32fp         Valid       Valid           Subtract ST(0) from m32fp and store result in ST(0).
+DC /5   FSUBR m64fp         Valid       Valid           Subtract ST(0) from m64fp and store result in ST(0).
+D8 E8+i FSUBR ST(0), ST(i)  Valid       Valid           Subtract ST(0) from ST(i) and store result in ST(0).
+DC E0+i FSUBR ST(i), ST(0)  Valid       Valid           Subtract ST(i) from ST(0) and store result in ST(i).
+DE E0+i FSUBRP ST(i), ST(0) Valid       Valid           Subtract ST(i) from ST(0), store result in ST(i), and pop register stack.
+DE E1   FSUBRP              Valid       Valid           Subtract ST(1) from ST(0), store result in ST(1), and pop register stack.
+DA /5   FISUBR m32int       Valid       Valid           Subtract ST(0) from m32int and store result in ST(0).
+DE /5   FISUBR m16int       Valid       Valid           Subtract ST(0) from m16int and store result in ST(0).
+
+Description ¶
+
+Subtracts the destination operand from the source operand and stores the difference in the destination location. The destination operand is always an FPU register; the source operand can be a register or a memory location. Source operands in memory can
+be in single precision or double precision floating-point format or in word or doubleword integer format.
+
+These instructions perform the reverse operations of the FSUB, FSUBP, and FISUB instructions. They are provided to support more efficient coding.
+
+The no-operand version of the instruction subtracts the contents of the ST(1) register from the ST(0) register and stores the result in ST(1). The one-operand version subtracts the contents of the ST(0) register from the contents of a memory location
+(either a floating-point or an integer value) and stores the result in ST(0). The two-operand version, subtracts the contents of the ST(i) register from the ST(0) register or vice versa.
+
+The FSUBRP instructions perform the additional operation of popping the FPU register stack following the subtraction. To pop the register stack, the processor marks the ST(0) register as empty and increments the stack pointer (TOP) by 1. The no-operand
+version of the floating-point reverse subtract instructions always results in the register stack being popped. In some assemblers, the mnemonic for this instruction is FSUBR rather than FSUBRP.
+
+The FISUBR instructions convert an integer source operand to double extended-precision floating-point format before performing the subtraction.
+
+The following table shows the results obtained when subtracting various classes of numbers from one another, assuming that neither overflow nor underflow occurs. Here, the DEST value is subtracted from the SRC value (SRC − DEST = result).
+
+When the difference between two operands of like sign is 0, the result is +0, except for the round toward −∞ mode, in which case the result is −0. This instruction also guarantees that +0 − (−0) = +0, and that −0 − (+0) = −0. When the source operand is
+an integer 0, it is treated as a +0.
+
+When one operand is ∞, the result is ∞ of the expected sign. If both operands are ∞ of the same sign, an invalidoperation exception is generated.
+
+                        SRC
+         −∞  −F or −I  −0    +0    +F or +I  +∞  NaN
+     −∞  *   +∞        +∞    +∞    +∞        +∞  NaN
+     −F  −∞  ±F or ±0  −DEST −DEST +F        +∞  NaN
+DEST −0  −∞  SRC       ±0    +0    SRC       +∞  NaN
+     +0  −∞  SRC       −0    ±0    SRC       +∞  NaN
+     +F  −∞  −F        −DEST −DEST ±F or ±0  +∞  NaN
+     +∞  −∞  −∞        −∞    −∞    −∞        *   NaN
+     NaN NaN NaN       NaN   NaN   NaN       NaN NaN
+
+
+Table 3-39. FSUBR/FSUBRP/FISUBR Results
+
+    F Meansfinitefloating-pointvalue.
+
+    I Means integer.
+
+    * Indicatesfloating-pointinvalid-arithmetic-operand(#IA)exception.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

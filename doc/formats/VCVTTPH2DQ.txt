@@ -1,0 +1,32 @@
+  • Index
+  • December 2023
+
+VCVTTPH2DQ — Convert with Truncation Packed FP16 Values to Signed Doubleword Integers
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En
+Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode   Support                                              Description
+                                                              Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                    AVX512-FP16 Convert four packed FP16 values in xmm2/m64/m16bcst to four signed doubleword
+EVEX.128.F3.MAP5.W0 5B /r VCVTTPH2DQ xmm1{k1}{z}, xmm2/m64/m16bcst                                                                                        A V/V     AVX512VL    integers, and store the result in xmm1 using truncation subject to writemask
+                                                                                                                                                                                k1.
+                                                                                                                                                                    AVX512-FP16 Convert eight packed FP16 values in xmm2/m128/m16bcst to eight signed
+EVEX.256.F3.MAP5.W0 5B /r VCVTTPH2DQ ymm1{k1}{z}, xmm2/m128/m16bcst                                                                                       A V/V     AVX512VL    doubleword integers, and store the result in ymm1 using truncation subject to
+                                                                                                                                                                                writemask k1.
+                                                                                                                                                                                Convert sixteen packed FP16 values in ymm2/m256/m16bcst to sixteen signed
+EVEX.512.F3.MAP5.W0 5B /r VCVTTPH2DQ zmm1{k1}{z}, ymm2/m256/m16bcst {sae}                                                                                 A V/V     AVX512-FP16 doubleword integers, and store the result in zmm1 using truncation subject to
+                                                                                                                                                                                writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Half  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts packed FP16 values in the source operand to signed doubleword integers in destination operand.
+
+When a conversion is inexact, a truncated (round toward zero) value is returned. If a converted result is larger than the maximum signed doubleword integer, the floating-point invalid exception is raised, and if this exception is masked, the indefinite
+integer value is returned.
+
+The destination elements are updated according to the writemask.
+

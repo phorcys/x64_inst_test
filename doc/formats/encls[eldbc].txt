@@ -1,0 +1,69 @@
+  • Index
+  • December 2023
+
+ELDB/ELDU/ELDBC/ELDUC — Load an EPC Page and Mark its State
+
+  Opcode/Instruction   Op/En 64/32 bit Mode Support CPUID Feature Flag                                           Description
+EAX = 07H ENCLS[ELDB]  IR    V/V                    SGX1               This leaf function loads, verifies an EPC page and marks the page as blocked.
+EAX = 08H ENCLS[ELDU]  IR    V/V                    SGX1               This leaf function loads, verifies an EPC page and marks the page as unblocked.
+EAX = 12H ENCLS[ELDBC] IR    V/V                    EAX[6]             This leaf function behaves lie ELDB but with improved conflict handling for oversubscription.
+EAX = 13H ENCLS[ELDUC] IR    V/V                    EAX[6]             This leaf function behaves like ELDU but with improved conflict handling for oversubscription.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                         RBX                          RCX                          RDX
+IR    (In) r (In) LDU Return error Return error   Address of the PAGEINFO (In) Address of the EPC page (In) Address of the version-array slot (In)
+
+Description ¶
+
+This leaf function copies a page from regular main memory to the EPC. As part of the copying process, the page is cryptographically authenticated and decrypted. This instruction can only be executed when current privilege level is 0.
+
+The ELDB leaf function sets the BLOCK bit in the EPCM entry for the destination page in the EPC after copying. The ELDU leaf function clears the BLOCK bit in the EPCM entry for the destination page in the EPC after copying.
+
+RBX contains the effective address of a PAGEINFO structure; RCX contains the effective address of the destination EPC page; RDX holds the effective address of the version array slot that holds the version of the page.
+
+The ELDBC/ELDUC leafs are very similar to ELDB and ELDU. They provide an error code on the concurrency conflict for any of the pages which need to acquire a lock. These include the destination, SECS, and VA slot.
+
+The table below provides additional information on the memory parameter of ELDB/ELDU leaf functions.
+
+ELDB/ELDU/ELDBC/ELBUC Memory Parameter Semantics ¶
+
+PAGEINFO                PAGEINFO.SRCPGE         PAGEINFO.PCMD           PAGEINFO.SECS             EPCPAGE                                Version-Array Slot
+Non-enclave read access Non-enclave read access Non-enclave read access Enclave read/write access Read/Write access permitted by Enclave Read/Write access permitted by Enclave
+
+The error codes are:
+
+Error Code (see Table 38-4)        Description
+No Error                     ELDB/ELDU successful.
+SGX_MAC_COMPARE_FAIL         If the MAC check fails.
+
+
+Table 38-28. ELDB/ELDU/ELDBC/ELBUC Return Value in RAX
+
+Concurrency Restrictions ¶
+
+   Leaf              Parameter                             Base Concurrency Restrictions
+                                         Access        On Conflict       SGX_CONFLICT VM Exit Qualification
+            Target [DS:RCX]             Exclusive #GP                    EPC_PAGE_CONFLICT_EXCEPTION
+ELDB/ELDU   VA [DS:RDX]                 Shared    #GP
+            SECS [DS:RBX]PAGEINFO.SECS  Shared    #GP
+            Target [DS:RCX]             Exclusive SGX_EPC_PAGE_ CONFLICT EPC_PAGE_CONFLICT_ERROR
+ELDBC/ELBUC VA [DS:RDX]                 Shared    SGX_EPC_PAGE_ CONFLICT
+            SECS [DS:RBX]PAGEINFO.SECS  Shared    SGX_EPC_PAGE_ CONFLICT
+
+
+Table 38-29. Base Concurrency Restrictions of ELDB/ELDU/ELDBC/ELBUC
+
+                                                                     Additional Concurrency Restrictions
+   Leaf             Parameter          vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                               Access                On Conflict          Access    On Conflict    Access   On Conflict
+            Target [DS:RCX]            Concurrent                                       Concurrent               Concurrent
+ELDB/ELDU   VA [DS:RDX]                Concurrent                                       Concurrent               Concurrent
+            SECS [DS:RBX]PAGEINFO.SECS Concurrent                                       Concurrent               Concurrent
+            Target [DS:RCX]            Concurrent                                       Concurrent               Concurrent
+ELDBC/ELBUC VA [DS:RDX]                Concurrent                                       Concurrent               Concurrent
+            SECS [DS:RBX]PAGEINFO.SECS Concurrent                                       Concurrent               Concurrent
+
+
+Table 38-30. Additional Concurrency Restrictions of ELDB/ELDU/ELDBC/ELBUC
+

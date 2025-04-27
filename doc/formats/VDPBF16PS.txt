@@ -1,0 +1,36 @@
+  • Index
+  • December 2023
+
+VDPBF16PS — Dot Product of BF16 Pairs Accumulated Into Packed Single Precision
+
+                           Opcode/Instruction                            Op/En 64/32 Bit Mode Support  CPUID Feature Flag                                                              Description
+EVEX.128.F3.0F38.W0 52 /r VDPBF16PS xmm1{k1}{z}, xmm2, xmm3/m128/m32bcst A     V/V                    AVX512VL AVX512_BF16 Multiply BF16 pairs from xmm2 and xmm3/m128, and accumulate the resulting packed single precision results in xmm1 with writemask
+                                                                                                                           k1.
+EVEX.256.F3.0F38.W0 52 /r VDPBF16PS ymm1{k1}{z}, ymm2, ymm3/m256/m32bcst A     V/V                    AVX512VL AVX512_BF16 Multiply BF16 pairs from ymm2 and ymm3/m256, and accumulate the resulting packed single precision results in ymm1 with writemask
+                                                                                                                           k1.
+EVEX.512.F3.0F38.W0 52 /r VDPBF16PS zmm1{k1}{z}, zmm2, zmm3/m512/m32bcst A     V/V                    AVX512F AVX512_BF16  Multiply BF16 pairs from zmm2 and zmm3/m512, and accumulate the resulting packed single precision results in zmm1 with writemask
+                                                                                                                           k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2      Operand 3    Operand 4
+A     Full  ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction performs a SIMD dot-product of two BF16 pairs and accumulates into a packed single precision register.
+
+“Round to nearest even” rounding mode is used when doing each accumulation of the FMA. Output denormals are always flushed to zero and input denormals are always treated as zero. MXCSR is not consulted nor updated.
+
+NaN propagation priorities are described in Table 5-1.
+
+NaN Priority    Description                                      Comments
+1            src1 low is NaN   Lower part has priority over upper part, i.e., it overrides the upper part.
+2            src2 low is NaN
+3            src1 high is NaN  Upper part may be overridden if lower has NaN.
+4            src2 high is NaN
+5            srcdest is NaN    Dest is propagated if no NaN is encountered by src2.
+
+
+Table 5-1. NaN Propagation Priorities
+

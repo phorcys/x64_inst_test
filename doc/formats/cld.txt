@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+CLD — Clear Direction Flag
+
+Opcode Instruction Op/En 64-bit Mode Compat/Leg Mode    Description
+FC     CLD         ZO    Valid       Valid            Clear DF flag.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+Clears the DF flag in the EFLAGS register. When the DF flag is set to 0, string operations increment the index registers (ESI and/or EDI). Operation is the same in all modes.
+

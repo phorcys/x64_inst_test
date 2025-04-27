@@ -1,0 +1,24 @@
+  • Index
+  • December 2023
+
+TDPBSSD/TDPBSUD/TDPBUSD/TDPBUUD — Dot Product of Signed/Unsigned Bytes with DwordAccumulation
+
+                   Opcode/Instruction                     Op/En 64/32 bit Mode Support CPUID Feature Flag                                                           Description
+VEX.128.F2.0F38.W0 5E 11:rrr:bbb TDPBSSD tmm1, tmm2, tmm3 A     V/N.E.                 AMX-INT8           Matrix multiply signed byte elements from tmm2 by signed byte elements from tmm3 and accumulate the dword elements in tmm1.
+VEX.128.F3.0F38.W0 5E 11:rrr:bbb TDPBSUD tmm1, tmm2, tmm3 A     V/N.E.                 AMX-INT8           Matrix multiply signed byte elements from tmm2 by unsigned byte elements from tmm3 and accumulate the dword elements in tmm1.
+VEX.128.66.0F38.W0 5E 11:rrr:bbb TDPBUSD tmm1, tmm2, tmm3 A     V/N.E.                 AMX-INT8           Matrix multiply unsigned byte elements from tmm2 by signed byte elements from tmm3 and accumulate the dword elements in tmm1.
+VEX.128.NP.0F38.W0 5E 11:rrr:bbb TDPBUUD tmm1, tmm2, tmm3 A     V/N.E.                 AMX-INT8           Matrix multiply unsigned byte elements from tmm2 by unsigned byte elements from tmm3 and accumulate the dword elements in tmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A   ModRM:reg (r, w)  ModRM:r/m (r)  VEX.vvvv (r) N/A
+
+Description ¶
+
+For each possible combination of (row of tmm2, column of tmm3), the instruction performs a set of SIMD dot-products on all corresponding four byte elements, one from tmm2 and one from tmm3, adds the results of those dot-products, and then accumulates the
+result into the corresponding row and column of tmm1. Each dword in input tiles tmm2 and tmm3 is interpreted as four byte elements. These may be signed or unsigned. Each letter in the two-letter pattern SU, US, SS, UU indicates the signed/unsigned nature
+of the values in tmm2 and tmm3, respectively.
+
+Any attempt to execute the TDPBSSD/TDPBSUD/TDPBUSD/TDPBUUD instructions inside an Intel TSX transaction will result in a transaction abort.
+

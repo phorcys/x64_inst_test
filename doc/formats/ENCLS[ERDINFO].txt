@@ -1,0 +1,68 @@
+  • Index
+  • December 2023
+
+ERDINFO — Read Type and Status Information About an EPC Page
+
+   Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                                Description
+EAX = 10H ENCLS[ERDINFO] IR    V/V                    EAX[6]             This leaf function returns type and status information about an EPC page.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                  RBX                                RCX
+IR    ERDINFO (In) Return error code (Out) Address of a RDINFO structure (In) Address of the destination EPC page (In)
+
+Description ¶
+
+This instruction reads type and status information about an EPC page and returns it in a RDINFO structure. The STATUS field of the structure describes the status of the page and determines the validity of the remaining fields. The FLAGS field returns the
+EPCM permissions of the page; the page type; and the BLOCKED, PENDING, MODIFIED, and PR status of the page. For enclave pages, the ENCLAVECONTEXT field of the structure returns the value of SECS.ENCLAVECONTEXT. For non-enclave pages (e.g., VA)
+ENCLAVECONTEXT returns 0.
+
+For invalid or non-EPC pages, the instruction returns an information code indicating the page's status, in addition to populating the STATUS field.
+
+ERDINFO returns an error code if the destination EPC page is being modified by a concurrent SGX instruction.
+
+RBX contains the effective address of a RDINFO structure while RCX contains the effective address of an EPC page. The table below provides additional information on the memory parameter of ERDINFO leaf function.
+
+ERDINFO Memory Parameter Semantics ¶
+
+RDINFO                                      EPCPAGE
+Read/Write access permitted by Non Enclave  Read access permitted by Enclave
+
+The instruction faults if any of the following:
+
+ERDINFO Faulting Conditions ¶
+
+A memory operand effective address is outside the DS segment limit (32b mode).  A memory operand is not properly aligned.
+DS segment is unusable (32b mode).                                              A page fault occurs in accessing memory operands.
+A memory address is in a non-canonical form (64b mode).
+
+The error codes are:
+
+      Error Code       Value                           Description
+No Error               0     ERDINFO successful.
+SGX_EPC_PAGE_CONFLICT        Failure due to concurrent operation of another SGX instruction.
+SGX_PG_INVLD                 Target page is not a valid EPC page.
+SGX_PG_NONEPC                Page is not an EPC page.
+
+
+Table 38-39. ERDINFO Return Value in RAX
+
+Concurrency Restrictions ¶
+
+ Leaf      Parameter                      Base Concurrency Restrictions
+                        Access       On Conflict       SGX_CONFLICT VM Exit Qualification
+ERDINFO Target [DS:RCX] Shared SGX_EPC_PAGE_ CONFLICT
+
+
+Table 38-40. Base Concurrency Restrictions of ERDINFO
+
+                                                                                                                        Additional Concurrency Restrictions
+ Leaf    Parameter     vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On     vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                    Conflict EMODPE, EMODPR, EMODT                                                                                      ETRACK, ETRACKC                           ETRACKC
+                                                          Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+ERDINFO Target       Concurrent                                                                                                                                                    Concurrent                                                 Concurrent
+        [DS:RCX]
+
+
+Table 38-41. Additional Concurrency Restrictions of ERDINFO
+

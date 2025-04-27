@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>PCONFIG
+		— Platform Configuration</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>PCONFIG
+		— Platform Configuration</h1>
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>NP 0F 01 C5 PCONFIG</td>
+<td>A</td>
+<td>V/V</td>
+<td>PCONFIG</td>
+<td>This instruction is used to execute functions for configuring platform features.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td></tr></table>
+<h2 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h2>
+<p>The PCONFIG instruction allows software to configure certain platform features. It supports these features with multiple leaf functions, selecting a leaf function using the value in EAX.</p>
+<p>Depending on the leaf function, the registers RBX, RCX, and RDX may be used to provide input information or for the instruction to report output information. Addresses and operands are 32 bits outside 64-bit mode and are 64 bits in 64-bit mode. The value of CS.D does not affect operand size or address size.</p>
+<p>Executions of PCONFIG may fail for platform-specific reasons. An execution reports failure by setting the ZF flag and loading EAX with a non-zero failure reason; a successful execution clears ZF and EAX.</p>
+<p>Each PCONFIG leaf function applies to a specific hardware block called a PCONFIG target. The leaf function is supported only if the processor supports that target. Each target is associated with a numerical target identifier, and CPUID leaf 1BH (PCONFIG information) enumerates the identifiers of the supported targets. An attempt to execute an undefined leaf function, or a leaf function that applies to an unsupported target identifier, results in a general-protection exception (#GP).</p>
+<h2 id="leaf-function-mktme_key_program">Leaf Function MKTME_KEY_PROGRAM<a class="anchor" href="#leaf-function-mktme_key_program">
+			¶
+		</a></h2>
+<p>As of this writing, the only defined PCONFIG leaf function is used for key programming for total memory encryption-multi-key (TME-MK).<sup>1</sup> This leaf function is called MKTME_KEY_PROGRAM and it pertains to the TME-MK target, which has target identifier 1. The leaf function is selected by loading EAX with value 0. The MKTME_KEY_PROGRAM leaf function uses the EBX (or RBX) register for additional input information.</p>
+<p>Software uses the MKTME_KEY_PROGRAM leaf function to manage the encryption key associated with a particular key identifier (KeyID). The leaf function uses a data structure called the <strong>TME-MK key programming structure</strong> (MKTME_KEY_PROGRAM_STRUCT). Software provides the address of the structure (as an offset in the DS segment) in EBX (or RBX). The format of the structure is given in <a href='/x86/pconfig#tbl-4-15'>Table 4-15</a>.</p>
+<figure id="tbl-4-15">
+<table>
+<tr>
+<th>Field</th>
+<th>Offset (bytes)</th>
+<th>Size (bytes)</th>
+<th>Comments</th></tr>
+<tr>
+<td>KEYID</td>
+<td>0</td>
+<td>2</td>
+<td>Key Identifier.</td></tr>
+<tr>
+<td>KEYID_CTRL</td>
+<td>2</td>
+<td>4</td>
+<td>KeyID control: • Bits 7:0: key-programming command (COMMAND) • Bits 23:8: encryption algorithm (ENC_ALG) • Bits 31:24: Reserved, must be zero (RSVD)</td></tr>
+<tr>
+<td>Ignored</td>
+<td>6</td>
+<td>58</td>
+<td>Not used.</td></tr>
+<tr>
+<td>KEY_FIELD_1</td>
+<td>64</td>
+<td>64</td>
+<td>Software supplied data key or entropy for data key.</td></tr>
+<tr>
+<td>KEY_FIELD_2</td>
+<td>128</td>
+<td>64</td>
+<td>Software supplied tweak key or entropy for tweak key.</td></tr></table>
+<figcaption><a href='/x86/pconfig#tbl-4-15'>Table 4-15</a>. MKTME_KEY_PROGRAM_STRUCT Format</figcaption></figure>
+<p>1. Further details on TME-MK can be found here:</p>
+<h3 id="https---software-intel-com-sites-default-files-managed-a5-16-multi-key-total-memory-encryption-spec-pdf">https://software.intel.com/sites/default/files/managed/a5/16/Multi-Key-Total-Memory-Encryption-Spec.pdf<a class="anchor" href="#https---software-intel-com-sites-default-files-managed-a5-16-multi-key-total-memory-encryption-spec-pdf">
+			¶
+		</a></h3>
+<p>A description of each of the fields in MKTME_KEY_PROGRAM_STRUCT is provided below:</p>
+<ul>
+<li><strong>KEYID: </strong>The key identifier (KeyID) being programmed to the MKTME engine. PCONFIG causes a general-protection exception (#GP) if the KeyID is zero. KeyID zero always uses the current behavior configured for TME (total memory encryption), either to encrypt with platform TME key or to bypass TME encryption. PCONFIG also causes a #GP if the KeyID exceeds the maximum enumerated in IA32_TME_CAPABILITY.MK_TME_MAX-_KEYS[bits 50:36] or configured by the setting of IA32_TME_ACTIVATE.MK_TME_KEYID_BITS[bits 35:32].</li>
+<li><strong>KEYID_CTRL: </strong>The KEYID_CTRL field comprises two sub-fields used by software to control the encryption performed for the selected KeyID:
+<ul>
+<li>Key-programming command (COMMAND; bits 7:0). This 8-bit field should contain one of the following values:</li>
+<li>Key-programming command (COMMAND; bits 7:0). This 8-bit field should contain one of the following values:</li></ul></li>
+<li>KEYID_SET_KEY_DIRECT (value 0). With this command, software programs directly the encryption key to be used for the selected KeyID.</li>
+<li>KEYID_SET_KEY_RANDOM (value 1). With this command, software has the CPU generate and assign an encryption key to be used for the selected KeyID using a hardware random-number generator.</li></ul>
+<p>If this command is used and there is insufficient entropy for the random-number generator, PCONFIG will fail and report the failure by loading EAX with value 2 (ENTROPY_ERROR).</p>
+<p>Because the keys programed by PCONFIG are discarded on reset and software cannot read the programmed keys, the keys programmed with this command are ephemeral.</p>
+<ul>
+<li>KEYID_CLEAR_KEY (value 2). With this command, software indicates that the selected KeyID should use the current behavior configured for TME (see above).</li>
+<li>KEYID_NO_ENCRYPT (value 3). With this command, software indicates that no encryption should be used for the selected KeyID.</li></ul>
+<p>If any other value is used, PCONFIG causes a #GP.</p>
+<p>— Encryption algorithm (ENC_ALG, bits 23:8). Bits 63:48 of the IA32_TME_ACTIVATE MSR (MSR index 982H) indicate which encryption algorithms are supported by the platform. The 16-bit ENC_ALG field should specify one of the algorithms indicated in IA32_TME_ACTIVATE. PCONFIG causes a #GP if ENC_ALG does not set exactly one bit or if it sets a bit whose corresponding bit is not set in IA32_TME_ACTIVATE[63:48].</p>
+<ul>
+<li><strong>KEY_FIELD_1: </strong>Use of this field depends upon selected key-programming command:
+<ul>
+<li>If the direct key-programming command is used (KEYID_SET_KEY_DIRECT), this field carries the software supplied data key to be used for the KeyID.</li>
+<li>If the direct key-programming command is used (KEYID_SET_KEY_DIRECT), this field carries the software supplied data key to be used for the KeyID.</li>
+<li>If the random key-programming command is used (KEYID_SET_KEY_RANDOM), this field carries the software supplied entropy to be mixed in the CPU generated random data key.</li>
+<li>If the random key-programming command is used (KEYID_SET_KEY_RANDOM), this field carries the software supplied entropy to be mixed in the CPU generated random data key.</li>
+<li>This field is ignored when one of the other key-programming commands is used.</li>
+<li>This field is ignored when one of the other key-programming commands is used.</li></ul></li></ul>
+<p>It is software’s responsibility to ensure that the key supplied for the direct key-programming option or the entropy supplied for the random key-programming option does not result in weak keys. There are no explicit checks in the instruction to detect or prevent weak keys.</p>
+<ul>
+<li><strong>KEY_FIELD_2: </strong>Use of this field depends upon selected key-programming command:
+<ul>
+<li>If the direct key-programming command is used (KEYID_SET_KEY_DIRECT), this field carries the software supplied tweak key to be used for the KeyID.</li>
+<li>If the direct key-programming command is used (KEYID_SET_KEY_DIRECT), this field carries the software supplied tweak key to be used for the KeyID.</li>
+<li>If the random key-programming command is used (KEYID_SET_KEY_RANDOM), this field carries the software supplied entropy to be mixed in the CPU generated random tweak key.</li>
+<li>If the random key-programming command is used (KEYID_SET_KEY_RANDOM), this field carries the software supplied entropy to be mixed in the CPU generated random tweak key.</li>
+<li>This field is ignored when one of the other key-programming commands is used.</li>
+<li>This field is ignored when one of the other key-programming commands is used.</li></ul></li></ul>
+<p>It is software’s responsibility to ensure that the key supplied for the direct key-programming option or the entropy supplied for the random key-programming option does not result in weak keys. There are no explicit checks in the instruction to detect or prevent weak keys.</p>
+<p>All KeyIDs default to TME behavior (encrypt with TME key or bypass encryption) on activation of TME-MK. Software can at any point decide to change the key for a KeyID using the MKTME_KEY_PROGRAM leaf function of the PCONFIG instruction. Changing the key for a KeyID does <strong>not</strong> change the state of the TLB caches or memory pipeline. Software is responsible for taking appropriate actions to ensure correct behavior.</p>
+<p>The key table used by TME-MK is shared by all logical processors in a platform. For this reason, execution of the MKTME_KEY_PROGRAM leaf function must gain exclusive access to the key table before updating it. The leaf function does this by acquiring lock (implemented in the platform) and retaining that lock until the execution completes. An execution of the leaf function may fail to acquire the lock if it is already in use. In this situation, the leaf function will load EAX with failure reason 5 (DEVICE_BUSY) indicating that software must retry. When this happens, the key table is not updated, and software should retry execution of PCONFIG.</p>
+<blockquote>
+<p>Earlier versions of this manual specified that bytes 63:6 of MKTME_KEY_PROGRAM_STRUCT were reserved and that PCONFIG would cause a #GP if they were not all zero. This is not the case. As indicated in <a href='/x86/pconfig#tbl-4-15'>Table 4-15</a>, PCONFIG ignores those bytes.</p>
+<p>They also specified that PCONFIG would cause a #GP if the upper 48 bytes of each of the 64-byte key fields were not all 0. This is not the case. From each of these fields, PCONFIG uses the number of bytes required by the selected encryption algorithm (e.g., 32 bytes for AES-XTS 256) and ignores the upper bytes.</p>
+<p>They also specified that PCONFIG would complete and report a failure reason in EAX if the structure specified an incorrect KeyID, and unsupported key-programming command, or an incorrect selection of an encryption algorithm. This is not the case. As indicated above (and in the Operation section), those conditions cause #GP.</p></blockquote>
+<h2 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h2>
+<pre>(* #UD if PCONFIG is not enumerated or CPL &gt; 0 *)
+IF CPUID.7.0:EDX[18] = 0 OR CPL &gt; 0
+    THEN #UD; FI;
+(* #GP(0) for an unsupported leaf function *)
+IF EAX != 0
+    THEN #GP(0); FI;
+CASE (EAX) (* operation based on selected leaf function *)
+    0 (MKTME_KEY_PROGRAM):
+    (* Confirm that TME-MK is properly enabled by the IA32_TME_ACTIVATE MSR *)
+    (* The MSR must be locked, encryption enabled, and a non-zero number of KeyID bits specified *)
+    IF IA32_TME_ACTIVATE[0] = 0 OR IA32_TME_ACTIVATE[1] = 0 OR IA32_TME_ACTIVATE[35:32] = 0
+            THEN #GP(0); FI;
+    IF DS:RBX is not 256-byte aligned
+        THEN #GP(0); FI;
+    Load TMP_KEY_PROGRAM_STRUCT from 192 bytes at linear address DS:RBX;
+    IF TMP_KEY_PROGRAM_STRUCT.KEYID_CTRL sets any reserved bits
+        THEN #GP(0); FI;
+    (* Check for a valid command *)
+    IF TMP_KEY_PROGRAM_STRUCT. KEYID_CTRL.COMMAND &gt; 3
+        THEN #GP(0); FI;
+    (* Check that the KEYID being operated upon is a valid KEYID *)
+    IF TMP_KEY_PROGRAM_STRUCT.KEYID = 0 OR
+        TMP_KEY_PROGRAM_STRUCT.KEYID &gt; 2^IA32_TME_ACTIVATE.MK_TME_KEYID_BITS – 1 OR
+        TMP_KEY_PROGRAM_STRUCT.KEYID &gt; IA32_TME_CAPABILITY.MK_TME_MAX_KEYS
+            THEN #GP(0); FI;
+    (* Check that only one encryption algorithm is requested for the KeyID and it is one of the activated algorithms *)
+    IF TMP_KEY_PROGRAM_STRUCT.KEYID_CTRL.ENC_ALG does not set exactly one bit OR
+        (TMP_KEY_PROGRAM_STRUCT.KEYID_CTRL.ENC_ALG &amp; IA32_TME_ACTIVATE[63:48]) = 0
+            THEN #GP(0); FI:
+    Attempt to acquire lock to gain exclusive access to platform key table;
+    IF attempt is unsuccessful
+        THEN (* PCONFIG failure *)
+            RFLAGS.ZF := 1;
+            RAX := DEVICE_BUSY;
+                    (* failure reason 5 *)
+            GOTO EXIT;
+    FI;
+    CASE (TMP_KEY_PROGRAM_STRUCT.KEYID_CTRL.COMMAND) OF
+        0 (KEYID_SET_KEY_DIRECT):
+        Update TME-MK table for TMP_KEY_PROGRAM_STRUCT.KEYID as follows:
+            Encrypt with the selected key
+            Use the encryption algorithm selected by TMP_KEY_PROGRAM_STRUCT.KEYID_CTRL.ENC_ALG
+            (* The number of bytes used by the next two lines depends on selected encryption algorithm *)
+            DATA_KEY is TMP_KEY_PROGRAM_STRUCT.KEY_FIELD_1
+            TWEAK_KEY is TMP_KEY_PROGRAM_STRUCT.KEY_FIELD_2
+        BREAK;
+        1 (KEYID_SET_KEY_RANDOM):
+        Load TMP_RND_DATA_KEY with a random key using hardware RNG; (* key size depends on selected encryption algorithm *)
+        IF there was insufficient entropy
+            THEN (* PCONFIG failure *)
+                RFLAGS.ZF := 1;
+                RAX := ENTROPY_ERROR; (* failure reason 2 *)
+                Release lock on platform key table;
+                GOTO EXIT;
+        FI;
+        Load TMP_RND_TWEAK_KEY with a random key using hardware RNG; (* key size depends on selected encryption algorithm *)
+        IF there was insufficient entropy
+            THEN (* PCONFIG failure *)
+                RFLAGS.ZF := 1;
+                RAX := ENTROPY_ERROR; (* failure reason 2 *)
+                Release lock on platform key table;
+                GOTO EXIT;
+        FI;
+        (* Combine software-supplied entropy to the data key and tweak key *)
+        (* The number of bytes used by the next two lines depends on selected encryption algorithm *)
+        TMP_RND_DATA_KEY := TMP_RND_KEY XOR TMP_KEY_PROGRAM_STRUCT.KEY_FIELD_1;
+        TMP_RND_TWEAK_KEY := TMP_RND_TWEAK_KEY XOR TMP_KEY_PROGRAM_STRUCT.KEY_FIELD_2;
+        Update TME-MK table for TMP_KEY_PROGRAM_STRUCT.KEYID as follows:
+            Encrypt with the selected key
+            Use the encryption algorithm selected by TMP_KEY_PROGRAM_STRUCT.KEYID_CTRL.ENC_ALG
+            (* The number of bytes used by the next two lines depends on selected encryption algorithm *)
+            DATA_KEY is TMP_RND_DATA_KEY
+            TWEAK_KEY is TMP_RND_TWEAK_KEY
+        BREAK;
+        2 (KEYID_CLEAR_KEY):
+        Update TME-MK table for TMP_KEY_PROGRAM_STRUCT.KEYID as follows:
+            Encrypt (or not) using the current configuration for TME
+            The specified encryption algorithm and key values are not used.
+        BREAK;
+        3 (KEYID_NO_ENCRYPT):
+        Update TME-MK table for TMP_KEY_PROGRAM_STRUCT.KEYID as follows:
+            Do not encrypt
+            The specified encryption algorithm and key values are not used.
+        BREAK;
+    ESAC;
+    Release lock on platform key table;
+ESAC;
+RAX := 0;
+RFLAGS.ZF := 0;
+EXIT:
+RFLAGS.CF := 0;
+RFLAGS.PF := 0;
+RFLAGS.AF := 0;
+RFLAGS.OF := 0;
+RFLAGS.SF := 0;
+</pre>
+<h2 class="exceptions" id="protected-mode-exceptions">Protected Mode Exceptions<a class="anchor" href="#protected-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td rowspan="7">#GP(0)</td>
+<td>If input value in EAX encodes an unsupported leaf function.</td></tr>
+<tr>
+<td>If a memory operand effective address is outside the relevant segment limit.</td></tr>
+<tr>
+<td>MKTME_KEY_PROGRAM leaf function:</td></tr>
+<tr>
+<td>If IA32_TME_ACTIVATE MSR is not locked.</td></tr>
+<tr>
+<td>If hardware encryption and TME-MK capability are not enabled in IA32_TME_ACTIVATE MSR.</td></tr>
+<tr>
+<td>If the memory operand is not 256B aligned.</td></tr>
+<tr>
+<td>If any of the reserved bits in the KEYID_CTRL field of the MKTME_KEY_PROGRAM_STRUCT are set or that field indicates an unsupported KeyID, key-programming command, or encryption algorithm.</td></tr>
+<tr>
+<td>#PF(fault-code)</td>
+<td>If a page fault occurs in accessing memory operands.</td></tr>
+<tr>
+<td rowspan="3">#UD</td>
+<td>If any of the LOCK/REP/Operand Size/VEX prefixes are used.</td></tr>
+<tr>
+<td>If current privilege level is not 0.</td></tr>
+<tr>
+<td>If CPUID.7.0:EDX[bit 18] = 0</td></tr></table>
+<h2 class="exceptions" id="real-address-mode-exceptions">Real-Address Mode Exceptions<a class="anchor" href="#real-address-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td rowspan="6">#GP</td>
+<td>If input value in EAX encodes an unsupported leaf function.</td></tr>
+<tr>
+<td>MKTME_KEY_PROGRAM leaf function:</td></tr>
+<tr>
+<td>If IA32_TME_ACTIVATE MSR is not locked.</td></tr>
+<tr>
+<td>If hardware encryption and TME-MK capability are not enabled in IA32_TME_ACTIVATE MSR.</td></tr>
+<tr>
+<td>If a memory operand is not 256B aligned.</td></tr>
+<tr>
+<td>If any of the reserved bits in the KEYID_CTRL field of the MKTME_KEY_PROGRAM_STRUCT are set or that field indicates an unsupported KeyID, key-programming command, or encryption algorithm.</td></tr>
+<tr>
+<td rowspan="3">#UD</td>
+<td>If any of the LOCK/REP/Operand Size/VEX prefixes are used.</td></tr>
+<tr>
+<td>If current privilege level is not 0.</td></tr>
+<tr>
+<td>If CPUID.7.0:EDX.PCONFIG[bit 18] = 0</td></tr></table>
+<h2 class="exceptions" id="virtual-8086-mode-exceptions">Virtual-8086 Mode Exceptions<a class="anchor" href="#virtual-8086-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>#UD</td>
+<td>PCONFIG instruction is not recognized in virtual-8086 mode.</td></tr></table>
+<h2 class="exceptions" id="compatibility-mode-exceptions">Compatibility Mode Exceptions<a class="anchor" href="#compatibility-mode-exceptions">
+			¶
+		</a></h2>
+<p>Same exceptions as in protected mode.</p>
+<h2 class="exceptions" id="64-bit-mode-exceptions">64-Bit Mode Exceptions<a class="anchor" href="#64-bit-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td rowspan="7">#GP(0)</td>
+<td>If input value in EAX encodes an unsupported leaf function.</td></tr>
+<tr>
+<td>If a memory operand is non-canonical form.</td></tr>
+<tr>
+<td>MKTME_KEY_PROGRAM leaf function:</td></tr>
+<tr>
+<td>If IA32_TME_ACTIVATE MSR is not locked.</td></tr>
+<tr>
+<td>If hardware encryption and TME-MK capability are not enabled in IA32_TME_ACTIVATE MSR.</td></tr>
+<tr>
+<td>If a memory operand is not 256B aligned.</td></tr>
+<tr>
+<td>If any of the reserved bits in the KEYID_CTRL field of the MKTME_KEY_PROGRAM_STRUCT are set or that field indicates an unsupported KeyID, key-programming command, or encryption algorithm.</td></tr>
+<tr>
+<td>#PF(fault-code)</td>
+<td>If a page fault occurs in accessing memory operands.</td></tr>
+<tr>
+<td rowspan="3">#UD</td>
+<td>If any of the LOCK/REP/Operand Size/VEX prefixes are used.</td></tr>
+<tr>
+<td>If the current privilege level is not 0.</td></tr>
+<tr>
+<td>If CPUID.7.0:EDX.PCONFIG[bit 18] = 0.</td></tr></table><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

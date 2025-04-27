@@ -1,0 +1,66 @@
+  • Index
+  • December 2023
+
+PMOVSX — Packed Move With Sign Extend
+
+                     Opcode/Instruction                      Op / En 64/32 bit Mode Support CPUID Feature Flag                                                             Description
+66 0f 38 20 /r PMOVSXBW xmm1, xmm2/m64                       A       V/V                    SSE4_1             Sign extend 8 packed 8-bit integers in the low 8 bytes of xmm2/m64 to 8 packed 16-bit integers in xmm1.
+66 0f 38 21 /r PMOVSXBD xmm1, xmm2/m32                       A       V/V                    SSE4_1             Sign extend 4 packed 8-bit integers in the low 4 bytes of xmm2/m32 to 4 packed 32-bit integers in xmm1.
+66 0f 38 22 /r PMOVSXBQ xmm1, xmm2/m16                       A       V/V                    SSE4_1             Sign extend 2 packed 8-bit integers in the low 2 bytes of xmm2/m16 to 2 packed 64-bit integers in xmm1.
+66 0f 38 23/r PMOVSXWD xmm1, xmm2/m64                        A       V/V                    SSE4_1             Sign extend 4 packed 16-bit integers in the low 8 bytes of xmm2/m64 to 4 packed 32-bit integers in xmm1.
+66 0f 38 24 /r PMOVSXWQ xmm1, xmm2/m32                       A       V/V                    SSE4_1             Sign extend 2 packed 16-bit integers in the low 4 bytes of xmm2/m32 to 2 packed 64-bit integers in xmm1.
+66 0f 38 25 /r PMOVSXDQ xmm1, xmm2/m64                       A       V/V                    SSE4_1             Sign extend 2 packed 32-bit integers in the low 8 bytes of xmm2/m64 to 2 packed 64-bit integers in xmm1.
+VEX.128.66.0F38.WIG 20 /r VPMOVSXBW xmm1, xmm2/m64           A       V/V                    AVX                Sign extend 8 packed 8-bit integers in the low 8 bytes of xmm2/m64 to 8 packed 16-bit integers in xmm1.
+VEX.128.66.0F38.WIG 21 /r VPMOVSXBD xmm1, xmm2/m32           A       V/V                    AVX                Sign extend 4 packed 8-bit integers in the low 4 bytes of xmm2/m32 to 4 packed 32-bit integers in xmm1.
+VEX.128.66.0F38.WIG 22 /r VPMOVSXBQ xmm1, xmm2/m16           A       V/V                    AVX                Sign extend 2 packed 8-bit integers in the low 2 bytes of xmm2/m16 to 2 packed 64-bit integers in xmm1.
+VEX.128.66.0F38.WIG 23 /r VPMOVSXWD xmm1, xmm2/m64           A       V/V                    AVX                Sign extend 4 packed 16-bit integers in the low 8 bytes of xmm2/m64 to 4 packed 32-bit integers in xmm1.
+VEX.128.66.0F38.WIG 24 /r VPMOVSXWQ xmm1, xmm2/m32           A       V/V                    AVX                Sign extend 2 packed 16-bit integers in the low 4 bytes of xmm2/m32 to 2 packed 64-bit integers in xmm1.
+VEX.128.66.0F38.WIG 25 /r VPMOVSXDQ xmm1, xmm2/m64           A       V/V                    AVX                Sign extend 2 packed 32-bit integers in the low 8 bytes of xmm2/m64 to 2 packed 64-bit integers in xmm1.
+VEX.256.66.0F38.WIG 20 /r VPMOVSXBW ymm1, xmm2/m128          A       V/V                    AVX2               Sign extend 16 packed 8-bit integers in xmm2/m128 to 16 packed 16-bit integers in ymm1.
+VEX.256.66.0F38.WIG 21 /r VPMOVSXBD ymm1, xmm2/m64           A       V/V                    AVX2               Sign extend 8 packed 8-bit integers in the low 8 bytes of xmm2/m64 to 8 packed 32-bit integers in ymm1.
+VEX.256.66.0F38.WIG 22 /r VPMOVSXBQ ymm1, xmm2/m32           A       V/V                    AVX2               Sign extend 4 packed 8-bit integers in the low 4 bytes of xmm2/m32 to 4 packed 64-bit integers in ymm1.
+VEX.256.66.0F38.WIG 23 /r VPMOVSXWD ymm1, xmm2/m128          A       V/V                    AVX2               Sign extend 8 packed 16-bit integers in the low 16 bytes of xmm2/m128 to 8 packed 32-bit integers in ymm1.
+VEX.256.66.0F38.WIG 24 /r VPMOVSXWQ ymm1, xmm2/m64           A       V/V                    AVX2               Sign extend 4 packed 16-bit integers in the low 8 bytes of xmm2/m64 to 4 packed 64-bit integers in ymm1.
+VEX.256.66.0F38.WIG 25 /r VPMOVSXDQ ymm1, xmm2/m128          A       V/V                    AVX2               Sign extend 4 packed 32-bit integers in the low 16 bytes of xmm2/m128 to 4 packed 64-bit integers in ymm1.
+EVEX.128.66.0F38.WIG 20 /r VPMOVSXBW xmm1 {k1}{z}, xmm2/m64  B       V/V                    AVX512VL AVX512BW  Sign extend 8 packed 8-bit integers in xmm2/m64 to 8 packed 16-bit integers in zmm1.
+EVEX.256.66.0F38.WIG 20 /r VPMOVSXBW ymm1 {k1}{z}, xmm2/m128 B       V/V                    AVX512VL AVX512BW  Sign extend 16 packed 8-bit integers in xmm2/m128 to 16 packed 16-bit integers in ymm1.
+EVEX.512.66.0F38.WIG 20 /r VPMOVSXBW zmm1 {k1}{z}, ymm2/m256 B       V/V                    AVX512BW           Sign extend 32 packed 8-bit integers in ymm2/m256 to 32 packed 16-bit integers in zmm1.
+EVEX.128.66.0F38.WIG 21 /r VPMOVSXBD xmm1 {k1}{z}, xmm2/m32  C       V/V                    AVX512VL AVX512F   Sign extend 4 packed 8-bit integers in the low 4 bytes of xmm2/m32 to 4 packed 32-bit integers in xmm1 subject to writemask k1.
+EVEX.256.66.0F38.WIG 21 /r VPMOVSXBD ymm1 {k1}{z}, xmm2/m64  C       V/V                    AVX512VL AVX512F   Sign extend 8 packed 8-bit integers in the low 8 bytes of xmm2/m64 to 8 packed 32-bit integers in ymm1 subject to writemask k1.
+EVEX.512.66.0F38.WIG 21 /r VPMOVSXBD zmm1 {k1}{z}, xmm2/m128 C       V/V                    AVX512F            Sign extend 16 packed 8-bit integers in the low 16 bytes of xmm2/m128 to 16 packed 32-bit integers in zmm1 subject to writemask k1.
+EVEX.128.66.0F38.WIG 22 /r VPMOVSXBQ xmm1 {k1}{z}, xmm2/m16  D       V/V                    AVX512VL AVX512F   Sign extend 2 packed 8-bit integers in the low 2 bytes of xmm2/m16 to 2 packed 64-bit integers in xmm1 subject to writemask k1.
+EVEX.256.66.0F38.WIG 22 /r VPMOVSXBQ ymm1 {k1}{z}, xmm2/m32  D       V/V                    AVX512VL AVX512F   Sign extend 4 packed 8-bit integers in the low 4 bytes of xmm2/m32 to 4 packed 64-bit integers in ymm1 subject to writemask k1.
+EVEX.512.66.0F38.WIG 22 /r VPMOVSXBQ zmm1 {k1}{z}, xmm2/m64  D       V/V                    AVX512F            Sign extend 8 packed 8-bit integers in the low 8 bytes of xmm2/m64 to 8 packed 64-bit integers in zmm1 subject to writemask k1.
+EVEX.128.66.0F38.WIG 23 /r VPMOVSXWD xmm1 {k1}{z}, xmm2/m64  B       V/V                    AVX512VL AVX512F   Sign extend 4 packed 16-bit integers in the low 8 bytes of ymm2/mem to 4 packed 32-bit integers in xmm1 subject to writemask k1.
+EVEX.256.66.0F38.WIG 23 /r VPMOVSXWD ymm1 {k1}{z}, xmm2/m128 B       V/V                    AVX512VL AVX512F   Sign extend 8 packed 16-bit integers in the low 16 bytes of ymm2/m128 to 8 packed 32-bit integers in ymm1 subject to writemask k1.
+EVEX.512.66.0F38.WIG 23 /r VPMOVSXWD zmm1 {k1}{z}, ymm2/m256 B       V/V                    AVX512F            Sign extend 16 packed 16-bit integers in the low 32 bytes of ymm2/m256 to 16 packed 32-bit integers in zmm1 subject to writemask k1.
+EVEX.128.66.0F38.WIG 24 /r VPMOVSXWQ xmm1 {k1}{z}, xmm2/m32  C       V/V                    AVX512VL AVX512F   Sign extend 2 packed 16-bit integers in the low 4 bytes of xmm2/m32 to 2 packed 64-bit integers in xmm1 subject to writemask k1.
+EVEX.256.66.0F38.WIG 24 /r VPMOVSXWQ ymm1 {k1}{z}, xmm2/m64  C       V/V                    AVX512VL AVX512F   Sign extend 4 packed 16-bit integers in the low 8 bytes of xmm2/m64 to 4 packed 64-bit integers in ymm1 subject to writemask k1.
+EVEX.512.66.0F38.WIG 24 /r VPMOVSXWQ zmm1 {k1}{z}, xmm2/m128 C       V/V                    AVX512F            Sign extend 8 packed 16-bit integers in the low 16 bytes of xmm2/m128 to 8 packed 64-bit integers in zmm1 subject to writemask k1.
+EVEX.128.66.0F38.W0 25 /r VPMOVSXDQ xmm1 {k1}{z}, xmm2/m64   B       V/V                    AVX512VL AVX512F   Sign extend 2 packed 32-bit integers in the low 8 bytes of xmm2/m64 to 2 packed 64-bit integers in zmm1 using writemask k1.
+EVEX.256.66.0F38.W0 25 /r VPMOVSXDQ ymm1 {k1}{z}, xmm2/m128  B       V/V                    AVX512VL AVX512F   Sign extend 4 packed 32-bit integers in the low 16 bytes of xmm2/m128 to 4 packed 64-bit integers in zmm1 using writemask k1.
+EVEX.512.66.0F38.W0 25 /r VPMOVSXDQ zmm1 {k1}{z}, ymm2/m256  B       V/V                    AVX512F            Sign extend 8 packed 32-bit integers in the low 32 bytes of ymm2/m256 to 8 packed 64-bit integers in zmm1 using writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type    Operand 1      Operand 2    Operand 3 Operand 4
+A     N/A         ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+B     Half Mem    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+C     Quarter Mem ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+D     Eighth Mem  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Legacy and VEX encoded versions: Packed byte, word, or dword integers in the low bytes of the source operand (second operand) are sign extended to word, dword, or quadword integers and stored in packed signed bytes the destination operand.
+
+128-bit Legacy SSE version: Bits (MAXVL-1:128) of the corresponding destination register remain unchanged.
+
+VEX.128 and EVEX.128 encoded versions: Bits (MAXVL-1:128) of the corresponding destination register are zeroed.
+
+VEX.256 and EVEX.256 encoded versions: Bits (MAXVL-1:256) of the corresponding destination register are zeroed.
+
+EVEX encoded versions: Packed byte, word or dword integers starting from the low bytes of the source operand (second operand) are sign extended to word, dword or quadword integers and stored to the destination operand under the writemask. The destination
+register is XMM, YMM or ZMM Register.
+
+Note: VEX.vvvv and EVEX.vvvv are reserved and must be 1111b otherwise instructions will #UD.
+

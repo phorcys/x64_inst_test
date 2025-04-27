@@ -1,0 +1,42 @@
+  • Index
+  • December 2023
+
+VFPCLASSPH — Test Types of Packed FP16 Values
+
+  Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID
+Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode   Support                                                        Description
+                               Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                AVX512-FP16 Test the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite
+EVEX.128.NP.0F3A.W0 66 /r /ib VFPCLASSPH k1{k2}, xmm1/m128/m16bcst, imm8                                                              A V/V     AVX512VL    negative. The immediate field provides a mask bitforeachofthesecategorytests. Themasked test
+                                                                                                                                                            results are OR-ed together to form a mask result.
+                                                                                                                                                AVX512-FP16 Test the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite
+EVEX.256.NP.0F3A.W0 66 /r /ib VFPCLASSPH k1{k2}, ymm1/m256/m16bcst, imm8                                                              A V/V     AVX512VL    negative. The immediate field provides a mask bitforeachofthesecategorytests. Themasked test
+                                                                                                                                                            results are OR-ed together to form a mask result.
+                                                                                                                                                            Test the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite
+EVEX.512.NP.0F3A.W0 66 /r /ib VFPCLASSPH k1{k2}, zmm1/m512/m16bcst, imm8                                                              A V/V     AVX512-FP16 negative. The immediate field provides a mask bitforeachofthesecategorytests. Themasked test
+                                                                                                                                                            results are OR-ed together to form a mask result.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  imm8 (r)  N/A
+
+Description ¶
+
+This instruction checks the packed FP16 values in the source operand for special categories, specified by the set bits in the imm8 byte. Each set bit in imm8 specifies a category of floating-point values that the input data element is classified against;
+see Table 5-9 for the categories. The classified results of all specified categories of an input value are ORed together to form the final boolean result for the input element. The result is written to the corresponding bits in the destination mask
+register according to the writemask.
+
+ Bits   Category          Classifier
+imm8[0] QNAN      Checks for QNAN
+imm8[1] PosZero   Checks +0
+imm8[2] NegZero   Checks for -0
+imm8[3] PosINF    Checks for +∞
+imm8[4] NegINF    Checks for −∞
+imm8[5] Denormal  Checks for Denormal
+imm8[6] Negative  Checks for Negative finite
+imm8[7] SNAN      Checks for SNAN
+
+
+Table 5-9. Classifier Operations for VFPCLASSPH/VFPCLASSSH
+

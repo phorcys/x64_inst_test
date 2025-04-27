@@ -1,0 +1,43 @@
+  • Index
+  • December 2023
+
+EPA — Add Version Array
+
+ Opcode/Instruction  Op/En 64/32 bit Mode Support CPUID Feature Flag                     Description
+EAX = 0AH ENCLS[EPA] IR    V/V                    SGX1               This leaf function adds a Version Array to the EPC.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX      RBX                   RCX
+IR    EPA (In) PT_VA (In, Constant)  Effective address of the EPC page (In)
+
+Description ¶
+
+This leaf function creates an empty version array in the EPC page whose logical address is given by DS:RCX, and sets up EPCM attributes for that page. At the time of execution of this instruction, the register RBX must be set to PT_VA.
+
+The table below provides additional information on the memory parameter of EPA leaf function.
+
+EPA Memory Parameter Semantics ¶
+
+EPCPAGE
+Write access permitted by Enclave
+
+Concurrency Restrictions ¶
+
+                       Leaf                         Parameter  Base Concurrency Restrictions
+                                                                        On Conflict
+EPA EPA VA [DS:RCX] Exclusive #GP EPA VA [DS:RCX]  VA [DS:RCX]
+
+
+Table 38-37. Base Concurrency Restrictions of EPA
+
+                                                                                     Additional Concurrency Restrictions
+Leaf Access On Conflict Access On Conflict EPA VA [DS:RCX] Concurrent      Parameter vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On       vs. EADD, EEXTEND, EINIT vs. EADD,         vs. ETRACK,
+Access On Conflict Access On Conflict EPA VA [DS:RCX]                                Conflict Access vs. ETRACK, ETRACKC Access On Conflict EMODPE, EMODPR, EMODT                                      EEXTEND, EINIT vs. ETRACK, ETRACKC         ETRACKC
+                                                                                     Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EPA                                                                        VA                                                                                                                          Concurrent                                 Concurrent
+                                                                           [DS:RCX]
+
+
+Table 38-38. Additional Concurrency Restrictions of EPA
+

@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VMOVW — Move Word
+
+ Instruction En bit Mode Flag Support Instruction En bit Mode Flag Support 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64/32 CPUID Feature Instruction En bit     Support                 Description
+                                           Mode Flag 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64/32 CPUID Feature
+EVEX.128.66.MAP5.WIG 6E /r VMOVW xmm1, reg/m16                                                                                                                                                                      A V/V     AVX512-FP16 Copy word from reg/
+                                                                                                                                                                                                                                          m16 to xmm1.
+EVEX.128.66.MAP5.WIG 7E /r VMOVW reg/m16, xmm1                                                                                                                                                                      B V/V     AVX512-FP16 Copy word from xmm1
+                                                                                                                                                                                                                                          to reg/m16.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1      Operand 2    Operand 3 Operand 4
+A     Scalar ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+B     Scalar ModRM:r/m (w)  ModRM:reg (r)  N/A       N/A
+
+Description ¶
+
+This instruction either (a) copies one word element from an XMM register to a general-purpose register or memory location or (b) copies one word element from a general-purpose register or memory location to an XMM register. When writing a general-purpose
+register, the lower 16-bits of the register will contain the word value. The upper bits of the general-purpose register are written with zeros.
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>PINSRW
+		— Insert Word</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>PINSRW
+		— Insert Word</h1>
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/ En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>NP 0F C4 /<em>r</em> ib<sup>1</sup> PINSRW mm, r32/m16, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>SSE</td>
+<td>Insert the low word from r32 or from m16 into mm at the word position specified by imm8.</td></tr>
+<tr>
+<td>66 0F C4 /<em>r</em> ib PINSRW xmm, r32/m16, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>SSE2</td>
+<td>Move the low word of r32 or from m16 into xmm at the word position specified by imm8.</td></tr>
+<tr>
+<td>VEX.128.66.0F.W0 C4 /r ib VPINSRW xmm1, xmm2, r32/m16, imm8</td>
+<td>B</td>
+<td>V<sup>2</sup>/V</td>
+<td>AVX</td>
+<td>Insert the word from r32/m16 at the offset indicated by imm8 into the value from xmm2 and store result in xmm1.</td></tr>
+<tr>
+<td>EVEX.128.66.0F.WIG C4 /r ib VPINSRW xmm1, xmm2, r32/m16, imm8</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512BW</td>
+<td>Insert the word from r32/m16 at the offset indicated by imm8 into the value from xmm2 and store result in xmm1.</td></tr></table>
+<blockquote>
+<p>1. See note in Section 2.5, “Intel® AVX and Intel® SSE Instruction Exception Classification,” in the Intel<sup>®</sup> 64 and IA-32 Architectures Software Developer’s Manual, Volume 2A, and Section 23.25.3, “Exception Conditions of Legacy SIMD Instructions Operating on MMX Registers,” in the Intel<sup>®</sup> 64 and IA-32 Architectures Software Developer’s Manual, Volume 3B.</p>
+<p>2. In 64-bit mode, VEX.W1 is ignored for VPINSRW (similar to legacy REX.W=1 prefix in PINSRW).</p></blockquote>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple Type</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>N/A</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td>
+<td>N/A</td></tr>
+<tr>
+<td>B</td>
+<td>N/A</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td></tr>
+<tr>
+<td>C</td>
+<td>Tuple1 Scalar</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td></tr></table>
+<h2 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h2>
+<p>Three operand MMX and SSE instructions:</p>
+<p>Copies a word from the source operand and inserts it in the destination operand at the location specified with the count operand. (The other words in the destination register are left untouched.) The source operand can be a general-purpose register or a 16-bit memory location. (When the source operand is a general-purpose register, the low word of the register is copied.) The destination operand can be an MMX technology register or an XMM register. The count operand is an 8-bit immediate. When specifying a word location in an MMX technology register, the 2 least-significant bits of the count operand specify the location; for an XMM register, the 3 least-significant bits specify the location.</p>
+<p>Bits (MAXVL-1:128) of the corresponding YMM destination register remain unchanged.</p>
+<p>Four operand AVX and AVX-512 instructions:</p>
+<p>Combines a word from the first source operand with the second source operand, and inserts it in the destination operand at the location specified with the count operand. The second source operand can be a general-purpose register or a 16-bit memory location. (When the source operand is a general-purpose register, the low word of the register is copied.) The first source and destination operands are XMM registers. The count operand is an 8-bit immediate. When specifying a word location, the 3 least-significant bits specify the location.</p>
+<p>Bits (MAXVL-1:128) of the destination YMM register are zeroed. VEX.L/EVEX.L’L must be 0, otherwise the instruction will #UD.</p>
+<h2 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h2>
+<h3 id="pinsrw-dest--src--imm8--mmx-">PINSRW dest, src, imm8 (MMX)<a class="anchor" href="#pinsrw-dest--src--imm8--mmx-">
+			¶
+		</a></h3>
+<pre>SEL := imm8[1:0]
+DEST.word[SEL] := src.word[0]
+</pre>
+<h3 id="pinsrw-dest--src--imm8--sse-">PINSRW dest, src, imm8 (SSE)<a class="anchor" href="#pinsrw-dest--src--imm8--sse-">
+			¶
+		</a></h3>
+<pre>SEL := imm8[2:0]
+DEST.word[SEL] := src.word[0]
+</pre>
+<h3 id="vpinsrw-dest--src1--src2--imm8--avx-avx512-">VPINSRW dest, src1, src2, imm8 (AVX/AVX512)<a class="anchor" href="#vpinsrw-dest--src1--src2--imm8--avx-avx512-">
+			¶
+		</a></h3>
+<pre>SEL := imm8[2:0]
+DEST := src1
+DEST.word[SEL] := src2.word[0]
+DEST[MAXVL-1:128] := 0
+</pre>
+<h2 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h2>
+<pre>PINSRW __m64 _mm_insert_pi16 (__m64 a, int d, int n)
+</pre>
+<pre>PINSRW __m128i _mm_insert_epi16 ( __m128i a, int b, int imm)
+</pre>
+<h2 id="flags-affected">Flags Affected<a class="anchor" href="#flags-affected">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="numeric-exceptions">Numeric Exceptions<a class="anchor" href="#numeric-exceptions">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h2>
+<p>EVEX-encoded instruction, see <span class="not-imported">Table 2-22</span>, “Type 5 Class Exception Conditions.”</p>
+<p>EVEX-encoded instruction, see <span class="not-imported">Table 2-57</span>, “Type E9NF Class Exception Conditions.”</p>
+<p>Additionally:</p>
+<table>
+<tr>
+<td>#UD</td>
+<td>If VEX.L = 1 or EVEX.L’L &gt; 0.</td></tr></table><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

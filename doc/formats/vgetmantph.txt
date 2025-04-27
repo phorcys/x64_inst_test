@@ -1,0 +1,67 @@
+  • Index
+  • December 2023
+
+VGETMANTPH — Extract FP16 Vector of Normalized Mantissas from FP16 Vector
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction
+ En Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En    Support                                                Description
+                                                        Bit Mode Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                AVX512-FP16 Get normalized mantissa from FP16 vector xmm2/m128/m16bcst and store the result in
+EVEX.128.NP.0F3A.W0 26 /r /ib VGETMANTPH xmm1{k1}{z}, xmm2/m128/m16bcst, imm8                                                                         A V/V     AVX512VL    xmm1, using imm8 for sign control and mantissa interval normalization, subject to
+                                                                                                                                                                            writemask k1.
+                                                                                                                                                                AVX512-FP16 Get normalized mantissa from FP16 vector ymm2/m256/m16bcst and store the result in
+EVEX.256.NP.0F3A.W0 26 /r /ib VGETMANTPH ymm1{k1}{z}, ymm2/m256/m16bcst, imm8                                                                         A V/V     AVX512VL    ymm1, using imm8 for sign control and mantissa interval normalization, subject to
+                                                                                                                                                                            writemask k1.
+                                                                                                                                                                            Get normalized mantissa from FP16 vector zmm2/m512/m16bcst and store the result in
+EVEX.512.NP.0F3A.W0 26 /r /ib VGETMANTPH zmm1{k1}{z}, zmm2/m512/m16bcst {sae}, imm8                                                                   A V/V     AVX512-FP16 zmm1, using imm8 for sign control and mantissa interval normalization, subject to
+                                                                                                                                                                            writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  imm8 (r)  N/A
+
+Description ¶
+
+This instruction converts the FP16 values in the source operand (the second operand) to FP16 values with the mantissa normalization and sign control specified by the imm8 byte, see Table 5-19. The converted results are written to the destination operand
+(the first operand) using writemask k1. The normalized mantissa is specified by interv (imm8[1:0]) and the sign control (SC) is specified by bits 3:2 of the immediate byte.
+
+The destination elements are updated according to the writemask.
+
+imm8 Bits                                                     Definition
+imm8[7:4] Must be zero.
+imm8[3:2] Sign Control (SC) 0b00: Sign(SRC) 0b01: 0 0b1x: QNaN_Indefinite if sign(SRC)!=0
+imm8[1:0] Interv 0b00: Interval is [1, 2) 0b01: Interval is [1/2, 2) 0b10: Interval is [1/2, 1) 0b11: Interval is [3/4, 3/2)
+
+
+Table 5-19. imm8 Controls for VGETMANTPH/VGETMANTSH
+
+For each input FP16 value x, The conversion operation is:
+
+GetMant(x) = ±2^k|x.significand|
+
+where:
+
+1 ≤ |x.significand| < 2
+
+Unbiased exponent k depends on the interval range defined by interv and whether the exponent of the source is even or odd. The sign of the final result is determined by the sign control and the source sign and the leading fraction bit.
+
+The encoded value of imm8[1:0] and sign control are shown in Table 5-19.
+
+Each converted FP16 result is encoded according to the sign control, the unbiased exponent k (adding bias) and a mantissa normalized to the range specified by interv.
+
+The GetMant() function follows Table 5-20 when dealing with floating-point special numbers.
+
+ Input                                    Result                                            Exceptions / Comments
+NaN      QNaN(SRC)                                                                Ignore interv. If (SRC = SNaN), then #IE.
++∞       1.0                                                                      Ignore interv.
++0       1.0                                                                      Ignore interv.
+-0       IF (SC[0]) THEN +1.0 ELSE -1.0                                           Ignore interv.
+-∞       IF (SC[1]) THEN {QNaN_Indefinite} ELSE { IF (SC[0]) THEN +1.0 ELSE -1.0  Ignore interv. If (SC[1]), then #IE.
+negative SC[1] ? QNaN_Indefinite : Getmant(SRC)^1                                 If (SC[1]), then #IE.
+
+
+Table 5-20. GetMant() Special Float Values Behavior
+
+    1. In case SC[1]==0, the sign of Getmant(SRC) is declared according to SC[0].
+

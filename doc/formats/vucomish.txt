@@ -1,0 +1,30 @@
+  • Index
+  • December 2023
+
+VUCOMISH — Unordered Compare Scalar FP16 Values and Set EFLAGS
+
+Instruction En bit Mode Flag Support Instruction En bit Mode Flag Support 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64/32 CPUID Feature Instruction En bit
+Mode Flag 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag p/ 64/32 CPUID Feature Instruction En bit Mode Flag Support Description EVEX.LLIG.NP.MAP5.W0 2E /r A V/V    Support  Description
+AVX512-FP16 Description EVEX.LLIG.NP.MAP5.W0 2E /r A V/V AVX512-FP16 VUCOMISH xmm1, xmm2/m16 {sae} Description EVEX.LLIG.NP.MAP5.W0 2E /r A V/V AVX512-FP16 Description EVEX.LLIG.NP.MAP5.W0 2E /r A V/V
+AVX512-FP16 Op/ 64/32 CPUID Feature
+                                                                                                                                                                                                                           Compare low FP16 values in xmm1 and
+VUCOMISH xmm1, xmm2/m16 {sae}                                                                                                                                                                                              xmm2/m16 and set the EFLAGS flags
+                                                                                                                                                                                                                           accordingly.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1      Operand 2    Operand 3 Operand 4
+A     Scalar ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction compares the FP16 values in the low word of operand 1 (first operand) and operand 2 (second operand), and sets the ZF, PF, and CF flags in the EFLAGS register according to the result (unordered, greater than, less than, or equal). The
+OF, SF and AF flags in the EFLAGS register are set to 0. The unordered result is returned if either source operand is a NaN (QNaN or SNaN).
+
+Operand 1 is an XMM register; operand 2 can be an XMM register or a 16-bit memory location.
+
+The VUCOMISH instruction differs from the VCOMISH instruction in that it signals a SIMD floating-point invalid operation exception (#I) only if a source operand is an SNaN. The COMISS instruction signals an invalid numeric exception when a source operand
+is either a QNaN or SNaN.
+
+The EFLAGS register is not updated if an unmasked SIMD floating-point exception is generated. EVEX.vvvv are reserved and must be 1111b, otherwise instructions will #UD.
+

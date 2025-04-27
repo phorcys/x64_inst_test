@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VCVTSH2SD
+		— Convert Low FP16 Value to an FP64 Value</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VCVTSH2SD
+		— Convert Low FP16 Value to an FP64 Value</h1>
+
+<table>
+<tr>
+<th> Instruction En Bit Mode Flag
+Support  Instruction En Bit Mode Flag
+Support  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature </th>
+<th></th>
+<th>Support</th>
+<th></th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.LLIG.F3.MAP5.W0 5A /r VCVTSH2SD xmm1{k1}{z}, xmm2, xmm3/m16 {sae}</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Convert the low FP16 value in xmm3/m16 to an FP64 value and store the result in the low element of xmm1 subject to writemask k1. Bits 127:64 of xmm2 are copied to xmm1[127:64].</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Scalar</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction converts the low FP16 element in the second source operand to a FP64 element in the low element of the destination operand.</p>
+<p>Bits 127:64 of the destination operand are copied from the corresponding bits of the first source operand. Bits MAXVL-1:128 of the destination operand are zeroed. The low FP64 element of the destination is updated according to the writemask.</p>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<h4 id="vcvtsh2sd-dest--src1--src2">VCVTSH2SD dest, src1, src2<a class="anchor" href="#vcvtsh2sd-dest--src1--src2">
+			¶
+		</a></h4>
+<pre>IF k1[0] OR *no writemask*:
+    DEST.fp64[0] := Convert_fp16_to_fp64(SRC2.fp16[0])
+ELSE IF *zeroing*:
+    DEST.fp64[0] := 0
+// else dest.fp64[0] remains unchanged
+DEST[127:64] := SRC1[127:64]
+DEST[MAXVL-1:128] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VCVTSH2SD __m128d _mm_cvt_roundsh_sd (__m128d a, __m128h b, const int sae);
+</pre>
+<pre>VCVTSH2SD __m128d _mm_mask_cvt_roundsh_sd (__m128d src, __mmask8 k, __m128d a, __m128h b, const int sae);
+</pre>
+<pre>VCVTSH2SD __m128d _mm_maskz_cvt_roundsh_sd (__mmask8 k, __m128d a, __m128h b, const int sae);
+</pre>
+<pre>VCVTSH2SD __m128d _mm_cvtsh_sd (__m128d a, __m128h b);
+</pre>
+<pre>VCVTSH2SD __m128d _mm_mask_cvtsh_sd (__m128d src, __mmask8 k, __m128d a, __m128h b);
+</pre>
+<pre>VCVTSH2SD __m128d _mm_maskz_cvtsh_sd (__mmask8 k, __m128d a, __m128h b);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Invalid, Denormal.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>EVEX-encoded instructions, see <span class="not-imported">Table 2-47</span>, “Type E3 Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

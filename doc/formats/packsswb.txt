@@ -1,0 +1,67 @@
+  • Index
+  • December 2023
+
+PACKSSWB/PACKSSDW — Pack With Signed Saturation
+
+                      Opcode/Instruction                        Op/En    64/32 bit Mode     CPUID Feature                                                                      Description
+                                                                            Support              Flag
+NP 0F 63 /r^1 PACKSSWB mm1, mm2/m64                             A     V/V                  MMX              Converts 4 packed signed word integers from mm1 and from mm2/m64 into 8 packed signed byte integers in mm1 using signed saturation.
+66 0F 63 /r PACKSSWB xmm1, xmm2/m128                            A     V/V                  SSE2             Converts 8 packed signed word integers from xmm1 and from xmm2/m128 into 16 packed signed byte integers in xmm1 using signed saturation.
+NP 0F 6B /r^1 PACKSSDW mm1, mm2/m64                             A     V/V                  MMX              Converts 2 packed signed doubleword integers from mm1 and from mm2/m64 into 4 packed signed word integers in mm1 using signed saturation.
+66 0F 6B /r PACKSSDW xmm1, xmm2/m128                            A     V/V                  SSE2             Converts 4 packed signed doubleword integers from xmm1 and from xmm2/m128 into 8 packed signed word integers in xmm1 using signed saturation.
+VEX.128.66.0F.WIG 63 /r VPACKSSWB xmm1,xmm2, xmm3/m128          B     V/V                  AVX              Converts 8 packed signed word integers from xmm2 and from xmm3/m128 into 16 packed signed byte integers in xmm1 using signed saturation.
+VEX.128.66.0F.WIG 6B /r VPACKSSDW xmm1,xmm2, xmm3/m128          B     V/V                  AVX              Converts 4 packed signed doubleword integers from xmm2 and from xmm3/m128 into 8 packed signed word integers in xmm1 using signed saturation.
+VEX.256.66.0F.WIG 63 /r VPACKSSWB ymm1, ymm2, ymm3/m256         B     V/V                  AVX2             Converts 16 packed signed word integers from ymm2 and from ymm3/m256 into 32 packed signed byte integers in ymm1 using signed saturation.
+VEX.256.66.0F.WIG 6B /r VPACKSSDW ymm1, ymm2, ymm3/m256         B     V/V                  AVX2             Converts 8 packed signed doubleword integers from ymm2 and from ymm3/m256 into 16 packed signed word integers in ymm1using signed saturation.
+EVEX.128.66.0F.WIG 63 /r VPACKSSWB xmm1 {k1}{z}, xmm2, xmm3/    C     V/V                  AVX512VL         Converts packed signed word integers from xmm2 and from xmm3/m128 into packed signed byte integers in xmm1 using signed saturation under writemask
+m128                                                                                       AVX512BW         k1.
+EVEX.256.66.0F.WIG 63 /r VPACKSSWB ymm1 {k1}{z}, ymm2, ymm3/    C     V/V                  AVX512VL         Converts packed signed word integers from ymm2 and from ymm3/m256 into packed signed byte integers in ymm1 using signed saturation under writemask
+m256                                                                                       AVX512BW         k1.
+EVEX.512.66.0F.WIG 63 /r VPACKSSWB zmm1 {k1}{z}, zmm2, zmm3/    C     V/V                  AVX512BW         Converts packed signed word integers from zmm2 and from zmm3/m512 into packed signed byte integers in zmm1 using signed saturation under writemask
+m512                                                                                                        k1.
+EVEX.128.66.0F.W0 6B /r VPACKSSDW xmm1 {k1}{z}, xmm2, xmm3/m128 D     V/V                  AVX512VL         Converts packed signed doubleword integers from xmm2 and from xmm3/m128/m32bcst into packed signed word integers in xmm1 using signed saturation
+/m32bcst                                                                                   AVX512BW         under writemask k1.
+EVEX.256.66.0F.W0 6B /r VPACKSSDW ymm1 {k1}{z}, ymm2, ymm3/m256 D     V/V                  AVX512VL         Converts packed signed doubleword integers from ymm2 and from ymm3/m256/m32bcst into packed signed word integers in ymm1 using signed saturation
+/m32bcst                                                                                   AVX512BW         under writemask k1.
+EVEX.512.66.0F.W0 6B /r VPACKSSDW zmm1 {k1}{z}, zmm2, zmm3/m512 D     V/V                  AVX512BW         Converts packed signed doubleword integers from zmm2 and from zmm3/m512/m32bcst into packed signed word integers in zmm1 using signed saturation
+/m32bcst                                                                                                    under writemask k1.
+
+    1. See note in Section 2.5, “Intel® AVX and Intel® SSE Instruction Exception Classification,” in the Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 2A, and Section 23.25.3, “Exception Conditions of Legacy SIMD Instructions
+    Operating on MMX Registers,” in the Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 3B.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A        ModRM:reg (r, w)  ModRM:r/m (r) N/A           N/A
+B     N/A        ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) N/A
+C     Full Mem   ModRM:reg (w)     EVEX.vvvv (r) ModRM:r/m (r) N/A
+D     Full       ModRM:reg (w)     EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Converts packed signed word integers into packed signed byte integers (PACKSSWB) or converts packed signed doubleword integers into packed signed word integers (PACKSSDW), using saturation to handle overflow conditions. See Figure 4-6 for an example of
+the packing operation.
+
+64-Bit SRC 64-Bit DEST C B A D’ C’ B’ A’ 64-Bit DEST
+Figure 4-6. Operation of the PACKSSDW Instruction Using 64-Bit Operands
+
+PACKSSWB converts packed signed word integers in the first and second source operands into packed signed byte integers using signed saturation to handle overflow conditions beyond the range of signed byte integers. If the signed word value is beyond the
+range of a signed byte value (i.e., greater than 7FH or less than 80H), the saturated signed byte integer value of 7FH or 80H, respectively, is stored in the destination. PACKSSDW converts packed signed doubleword integers in the first and second source
+operands into packed signed word integers using signed saturation to handle overflow conditions beyond 7FFFH and 8000H.
+
+EVEX encoded PACKSSWB: The first source operand is a ZMM/YMM/XMM register. The second source operand is a ZMM/YMM/XMM register or a 512/256/128-bit memory location. The destination operand is a ZMM/YMM/XMM register, updated conditional under the
+writemask k1.
+
+EVEX encoded PACKSSDW: The first source operand is a ZMM/YMM/XMM register. The second source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location, or a 512/256/128-bit vector broadcasted from a 32-
+
+bit memory location. The destination operand is a ZMM/YMM/XMM register, updated conditional under the write-mask k1.
+
+VEX.256 encoded version: The first source operand is a YMM register. The second source operand is a YMM register or a 256-bit memory location. The destination operand is a YMM register. The upper bits (MAXVL-1:256) of the corresponding ZMM register
+destination are zeroed.
+
+VEX.128 encoded version: The first source operand is an XMM register. The second source operand is an XMM register or 128-bit memory location. The destination operand is an XMM register. The upper bits (MAXVL-1:128) of the corresponding ZMM register
+destination are zeroed.
+
+128-bit Legacy SSE version: The first source operand is an XMM register. The second operand can be an XMM register or an 128-bit memory location. The destination is not distinct from the first source XMM register and the upper bits (MAXVL-1:128) of the
+corresponding ZMM destination register destination are unmodified.
+

@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+RSTORSSP — Restore Saved Shadow Stack Pointer
+
+                 Opcode/Instruction                  Op/En 64/32 bit Mode Support CPUID Feature Flag Description
+F3 0F 01 /5 (mod!=11, /5, memory only) RSTORSSP m64  M     V/V                    CET_SS             Restore SSP.
+
+Instruction Operand Encoding ¶
+
+Op/En     Operand 1     Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (r, w)  N/A       N/A       N/A
+
+Description ¶
+
+Restores SSP from the shadow-stack-restore token pointed to by m64. If the SSP restore was successful then the instruction replaces the shadow-stack-restore token with a previous-ssp token. The instruction sets the CF flag to indicate whether the SSP
+address recorded in the shadow-stack-restore token that was processed was 4 byte aligned, i.e., whether an alignment hole was created when the restore-shadow-stack token was pushed on this shadow stack.
+
+Following RSTORSSP if a restore-shadow-stack token needs to be saved on the previous shadow stack, use the SAVEPREVSSP instruction.
+
+If pushing a restore-shadow-stack token on the previous shadow stack is not required, the previous-ssp token can be popped using the INCSSPQ instruction. If the CF flag was set to indicate presence of an alignment hole, an additional INCSSPD instruction
+is needed to advance the SSP past the alignment hole.
+

@@ -1,0 +1,46 @@
+  • Index
+  • December 2023
+
+VPMASKMOV — Conditional SIMD Integer Packed Loads and Stores
+
+                 Opcode/Instruction                  Op/En 64/32 -bit Mode CPUID Feature Flag                                   Description
+VEX.128.66.0F38.W0 8C /r VPMASKMOVD xmm1, xmm2, m128 RVM   V/V             AVX2               Conditionally load dword values from m128 using mask in xmm2 and store in xmm1.
+VEX.256.66.0F38.W0 8C /r VPMASKMOVD ymm1, ymm2, m256 RVM   V/V             AVX2               Conditionally load dword values from m256 using mask in ymm2 and store in ymm1.
+VEX.128.66.0F38.W1 8C /r VPMASKMOVQ xmm1, xmm2, m128 RVM   V/V             AVX2               Conditionally load qword values from m128 using mask in xmm2 and store in xmm1.
+VEX.256.66.0F38.W1 8C /r VPMASKMOVQ ymm1, ymm2, m256 RVM   V/V             AVX2               Conditionally load qword values from m256 using mask in ymm2 and store in ymm1.
+VEX.128.66.0F38.W0 8E /r VPMASKMOVD m128, xmm1, xmm2 MVR   V/V             AVX2               Conditionally store dword values from xmm2 using mask in xmm1.
+VEX.256.66.0F38.W0 8E /r VPMASKMOVD m256, ymm1, ymm2 MVR   V/V             AVX2               Conditionally store dword values from ymm2 using mask in ymm1.
+VEX.128.66.0F38.W1 8E /r VPMASKMOVQ m128, xmm1, xmm2 MVR   V/V             AVX2               Conditionally store qword values from xmm2 using mask in xmm1.
+VEX.256.66.0F38.W1 8E /r VPMASKMOVQ m256, ymm1, ymm2 MVR   V/V             AVX2               Conditionally store qword values from ymm2 using mask in ymm1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1     Operand 2     Operand 3    Operand 4
+RVM   ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+MVR   ModRM:r/m (w)  VEX.vvvv (r) ModRM:reg (r)  N/A
+
+Description ¶
+
+Conditionally moves packed data elements from the second source operand into the corresponding data element of the destination operand, depending on the mask bits associated with each data element. The mask bits are specified in the first source operand.
+
+The mask bit for each data element is the most significant bit of that element in the first source operand. If a mask is 1, the corresponding data element is copied from the second source operand to the destination operand. If the mask is 0, the
+corresponding data element is set to zero in the load form of these instructions, and unmodified in the store form.
+
+The second source operand is a memory address for the load form of these instructions. The destination operand is a memory address for the store form of these instructions. The other operands are either XMM registers (for VEX.128 version) or YMM
+registers (for VEX.256 version).
+
+Faults occur only due to mask-bit required memory accesses that caused the faults. Faults will not occur due to referencing any memory location if the corresponding mask bit for that memory location is 0. For example, no faults will be detected if the
+mask bits are all zero.
+
+Unlike previous MASKMOV instructions (MASKMOVQ and MASKMOVDQU), a nontemporal hint is not applied to these instructions.
+
+Instruction behavior on alignment check reporting with mask bits of less than all 1s are the same as with mask bits of all 1s.
+
+VMASKMOV should not be used to access memory mapped I/O as the ordering of the individual loads or stores it does is implementation specific.
+
+In cases where mask bits indicate data should not be loaded or stored paging A and D bits will be set in an implementation dependent way. However, A and D bits are always set for pages where data is actually loaded/stored.
+
+Note: for load forms, the first source (the mask) is encoded in VEX.vvvv; the second source is encoded in rm_field, and the destination register is encoded in reg_field.
+
+Note: for store forms, the first source (the mask) is encoded in VEX.vvvv; the second source register is encoded in reg_field, and the destination memory location is encoded in rm_field.
+

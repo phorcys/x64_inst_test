@@ -1,0 +1,21 @@
+  • Index
+  • December 2023
+
+RDPKRU — Read Protection Key Rights for User Pages
+
+  Opcode*   Instruction Op/En 64/32bit Mode Support  CPUID Feature Flag      Description
+NP 0F 01 EE RDPKRU      ZO    V/V                    OSPKE              Reads PKRU into EAX.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+Reads the value of PKRU into EAX and clears EDX. ECX must be 0 when RDPKRU is executed; otherwise, a general-protection exception (#GP) occurs.
+
+RDPKRU can be executed only if CR4.PKE = 1; otherwise, an invalid-opcode exception (#UD) occurs. Software can discover the value of CR4.PKE by examining CPUID.(EAX=07H,ECX=0H):ECX.OSPKE [bit 4].
+
+On processors that support the Intel 64 Architecture, the high-order 32-bits of RCX are ignored and the high-order 32-bits of RDX and RAX are cleared.
+

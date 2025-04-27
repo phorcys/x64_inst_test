@@ -1,0 +1,22 @@
+  • Index
+  • December 2023
+
+FLD — Load Floating-Point Value
+
+Opcode  Instruction 64-Bit Mode Compat/Leg Mode                Description
+D9 /0   FLD m32fp   Valid       Valid            Push m32fp onto the FPU register stack.
+DD /0   FLD m64fp   Valid       Valid            Push m64fp onto the FPU register stack.
+DB /5   FLD m80fp   Valid       Valid            Push m80fp onto the FPU register stack.
+D9 C0+i FLD ST(i)   Valid       Valid            Push ST(i) onto the FPU register stack.
+
+Description ¶
+
+Pushes the source operand onto the FPU register stack. The source operand can be in single precision, double precision, or double extended-precision floating-point format. If the source operand is in single precision or double precision floating-point
+format, it is automatically converted to the double extended-precision floating-point format before being pushed on the stack.
+
+The FLD instruction can also push the value in a selected FPU register [ST(i)] onto the stack. Here, pushing register ST(0) duplicates the stack top.
+
+    When the FLD instruction loads a denormal value and the DM bit in the CW is not masked, an exception is flagged but the value is still pushed onto the x87 stack.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

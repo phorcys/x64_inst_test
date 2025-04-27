@@ -1,0 +1,20 @@
+  • Index
+  • December 2023
+
+KXNORW/KXNORB/KXNORQ/KXNORD — Bitwise Logical XNOR Masks
+
+          Opcode/Instruction            Op/En 64/32 bit Mode Support CPUID Feature Flag                         Description
+VEX.L1.0F.W0 46 /r KXNORW k1, k2, k3    RVR   V/V                    AVX512F            Bitwise XNOR 16-bit masks k2 and k3 and place result in k1.
+VEX.L1.66.0F.W0 46 /r KXNORB k1, k2, k3 RVR   V/V                    AVX512DQ           Bitwise XNOR 8-bit masks k2 and k3 and place result in k1.
+VEX.L1.0F.W1 46 /r KXNORQ k1, k2, k3    RVR   V/V                    AVX512BW           Bitwise XNOR 64-bit masks k2 and k3 and place result in k1.
+VEX.L1.66.0F.W1 46 /r KXNORD k1, k2, k3 RVR   V/V                    AVX512BW           Bitwise XNOR 32-bit masks k2 and k3 and place result in k1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1     Operand 2                  Operand 3
+RVR   ModRM:reg (w)  VEX.1vvv (r) ModRM:r/m (r, ModRM:[7:6] must be 11b)
+
+Description ¶
+
+Performs a bitwise XNOR between the vector mask k2 and the vector mask k3, and writes the result into vector mask k1 (three-operand form).
+

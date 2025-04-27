@@ -1,0 +1,53 @@
+  • Index
+  • December 2023
+
+EMODPE — Extend an EPC Page Permissions
+
+  Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                              Description
+EAX = 06H ENCLU[EMODPE] IR    V/V                    SGX2               This leaf function extends the access rights of an existing EPC page.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX         RBX                        RCX
+IR    EMODPE (In) Address of a SECINFO (In)  Address of the destination EPC page (In)
+
+Description ¶
+
+This leaf function extends the access rights associated with an existing EPC page in the running enclave. THE RWX bits of the SECINFO parameter are treated as a permissions mask; supplying a value that does not extend the page permissions will have no
+effect. This instruction leaf can only be executed when inside the enclave.
+
+RBX contains the effective address of a SECINFO structure while RCX contains the effective address of an EPC page. The table below provides additional information on the memory parameter of the EMODPE leaf function.
+
+EMODPE Memory Parameter Semantics ¶
+
+SECINFO                               EPCPAGE
+Read access permitted by Non Enclave  Read access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EMODPE Faulting Conditions ¶
+
+The operands are not properly aligned.    If security attributes of the SECINFO page make the page inaccessible.
+The EPC page is locked by another thread. RBX does not contain an effective address in an EPC page in the running enclave.
+The EPC page is not valid.                RCX does not contain an effective address of an EPC page in the running enclave.
+SECINFO contains an invalid request.
+
+Concurrency Restrictions ¶
+
+ Leaf      Parameter                   Base Concurrency Restrictions
+                           Access   On Conflict SGX_CONFLICT VM Exit Qualification
+EMODPE Target [DS:RCX]   Concurrent
+       SECINFO [DS:RBX]  Concurrent
+
+
+Table 38-70. Base Concurrency Restrictions of EMODPE
+
+                                                      Additional Concurrency Restrictions
+ Leaf     Parameter     vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                Access                On Conflict          Access    On Conflict    Access   On Conflict
+EMODPE Target [DS:RCX]  Exclusive              #GP                       Concurrent               Concurrent
+       SECINFO [DS:RBX] Concurrent                                       Concurrent               Concurrent
+
+
+Table 38-71. Additional Concurrency Restrictions of EMODPE
+

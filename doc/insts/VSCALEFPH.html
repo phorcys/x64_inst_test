@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VSCALEFPH
+		— Scale Packed FP16 Values with FP16 Values</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VSCALEFPH
+		— Scale Packed FP16 Values with FP16 Values</h1>
+
+<table>
+<tr>
+<th> Instruction En bit Mode Flag
+Support  Instruction En bit Mode Flag
+Support  64/32 CPUID Feature Instruction En bit Mode Flag  CPUID Feature Instruction En bit Mode Flag  Op/ 64/32 CPUID Feature Instruction En bit Mode Flag  64/32 CPUID Feature Instruction En bit Mode Flag  CPUID Feature Instruction En bit Mode Flag  Op/ 64/32 CPUID Feature </th>
+<th></th>
+<th>Support</th>
+<th></th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.128.66.MAP6.W0 2C /r VSCALEFPH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Scale the packed FP16 values in xmm2 using values from xmm3/m128/m16bcst, and store the result in xmm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.66.MAP6.W0 2C /r VSCALEFPH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Scale the packed FP16 values in ymm2 using values from ymm3/m256/m16bcst, and store the result in ymm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.66.MAP6.W0 2C /r VSCALEFPH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Scale the packed FP16 values in zmm2 using values from zmm3/m512/m16bcst, and store the result in zmm1 subject to writemask k1.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Full</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction performs a floating-point scale of the packed FP16 values in the first source operand by multiplying it by 2 to the power of the FP16 values in second source operand. The destination elements are updated according to the writemask.</p>
+<p>The equation of this operation is given by:</p>
+<p>zmm1 := zmm2 * 2<sup>floor(zmm3)</sup>.</p>
+<p>Floor(zmm3) means maximum integer value ≤ zmm3.</p>
+<p>If the result cannot be represented in FP16, then the proper overflow response (for positive scaling operand), or the proper underflow response (for negative scaling operand), is issued. The overflow and underflow responses are dependent on the rounding mode (for IEEE-compliant rounding), as well as on other settings in MXCSR (exception mask bits), and on the SAE bit.</p>
+<p>Handling of special-case input values are listed in <a href='/x86/vscalefph#tbl-5-41'>Table 5-41</a> and <a href='/x86/vscalefph#tbl-5-42'>Table 5-42</a>.</p>
+<figure id="tbl-5-41">
+<table>
+<tr>
+<th rowspan="2">Src1</th>
+<th colspan="4">Src2</th>
+<th rowspan="2">Set IE</th></tr>
+<tr>
+<th>±NaN</th>
+<th>+INF</th>
+<th>−INF</th>
+<th>0/Denorm/Norm</th></tr>
+<tr>
+<td>±QNaN</td>
+<td>QNaN(Src1)</td>
+<td>+INF</td>
+<td>+0</td>
+<td>QNaN(Src1)</td>
+<td>IF either source is SNaN</td></tr>
+<tr>
+<td>±SNaN</td>
+<td>QNaN(Src1)</td>
+<td>QNaN(Src1)</td>
+<td>QNaN(Src1)</td>
+<td>QNaN(Src1)</td>
+<td>YES</td></tr>
+<tr>
+<td>±INF</td>
+<td>QNaN(Src2)</td>
+<td>Src1</td>
+<td>QNaN_Indefinite</td>
+<td>Src1</td>
+<td>IF Src2 is SNaN or −INF</td></tr>
+<tr>
+<td>±0</td>
+<td>QNaN(Src2)</td>
+<td>QNaN_Indefinite</td>
+<td>Src1</td>
+<td>Src1</td>
+<td>IF Src2 is SNaN or +INF</td></tr>
+<tr>
+<td>Denorm/Norm</td>
+<td>QNaN(Src2)</td>
+<td>±INF (Src1 sign)</td>
+<td>±0 (Src1 sign)</td>
+<td>Compute Result</td>
+<td>IF Src2 is SNaN</td></tr></table>
+<figcaption><a href='/x86/vscalefph#tbl-5-41'>Table 5-41</a>. VSCALEFPH/VSCALEFSH Special Cases</figcaption></figure>
+<figure id="tbl-5-42">
+<table>
+<tr>
+<th>Special Case</th>
+<th>Returned Value</th>
+<th>Faults</th></tr>
+<tr>
+<td>|result| &lt; 2<sup>-24</sup></td>
+<td>±0 or ±Min-Denormal (Src1 sign)</td>
+<td>Underflow</td></tr>
+<tr>
+<td>|result| ≥ 2<sup>16</sup></td>
+<td>±INF (Src1 sign) or ±Max-Denormal (Src1 sign)</td>
+<td>Overflow</td></tr></table>
+<figcaption><a href='/x86/vscalefph#tbl-5-42'>Table 5-42</a>. Additional VSCALEFPH/VSCALEFSH Special Cases</figcaption></figure>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<pre>def scale_fp16(src1,src2):
+    tmp1 := src1
+    tmp2 := src2
+    return tmp1 * POW(2, FLOOR(tmp2))
+</pre>
+<h4 id="vscalefph-dest-k1---src1--src2">VSCALEFPH dest{k1}, src1, src2<a class="anchor" href="#vscalefph-dest-k1---src1--src2">
+			¶
+		</a></h4>
+<pre>VL = 128, 256, or 512
+KL := VL / 16
+IF (VL = 512) AND (EVEX.b = 1) and no memory operand:
+    SET_RM(EVEX.RC)
+ELSE
+    SET_RM(MXCSR.RC)
+FOR i := 0 to KL-1:
+    IF k1[i] or *no writemask*:
+        IF SRC2 is memory and (EVEX.b = 1):
+            tsrc := src2.fp16[0]
+        ELSE:
+            tsrc := src2.fp16[i]
+        dest.fp16[i] := scale_fp16(src1.fp16[i],tsrc)
+    ELSE IF *zeroing*:
+        dest.fp16[i] := 0
+    //else dest.fp16[i] remains unchanged
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VSCALEFPH __m128h _mm_mask_scalef_ph (__m128h src, __mmask8 k, __m128h a, __m128h b);
+</pre>
+<pre>VSCALEFPH __m128h _mm_maskz_scalef_ph (__mmask8 k, __m128h a, __m128h b);
+</pre>
+<pre>VSCALEFPH __m128h _mm_scalef_ph (__m128h a, __m128h b);
+</pre>
+<pre>VSCALEFPH __m256h _mm256_mask_scalef_ph (__m256h src, __mmask16 k, __m256h a, __m256h b);
+</pre>
+<pre>VSCALEFPH __m256h _mm256_maskz_scalef_ph (__mmask16 k, __m256h a, __m256h b);
+</pre>
+<pre>VSCALEFPH __m256h _mm256_scalef_ph (__m256h a, __m256h b);
+</pre>
+<pre>VSCALEFPH __m512h _mm512_mask_scalef_ph (__m512h src, __mmask32 k, __m512h a, __m512h b);
+</pre>
+<pre>VSCALEFPH __m512h _mm512_maskz_scalef_ph (__mmask32 k, __m512h a, __m512h b);
+</pre>
+<pre>VSCALEFPH __m512h _mm512_scalef_ph (__m512h a, __m512h b);
+</pre>
+<pre>VSCALEFPH __m512h _mm512_mask_scalef_round_ph (__m512h src, __mmask32 k, __m512h a, __m512h b, const int rounding);
+</pre>
+<pre>VSCALEFPH __m512h _mm512_maskz_scalef_round_ph (__mmask32 k, __m512h a, __m512h b, const int;
+</pre>
+<pre>VSCALEFPH __m512h _mm512_scalef_round_ph (__m512h a, __m512h b, const int rounding);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Invalid, Underflow, Overflow, Precision, Denormal.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>EVEX-encoded instruction, see <span class="not-imported">Table 2-46</span>, “Type E2 Class Exception Conditions”.</p>
+<p>Denormal-operand exception (#D) is checked and signaled for src1 operand, but not for src2 operand. The denormal-operand exception is checked for src1 operand only if the src2 operand is not NaN. If the src2 operand is NaN, the processor generates NaN and does not signal denormal-operand exception, even if src1 operand is denormal.</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

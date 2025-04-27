@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+VCVTSD2SH — Convert Low FP64 Value to an FP16 Value
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction
+ En Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En    Support                                                Description
+                                                        Bit Mode Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                            Convert the low FP64 value in xmm3/m64 to an FP16 value and store the result in
+EVEX.LLIG.F2.MAP5.W1 5A /r VCVTSD2SH xmm1{k1}{z}, xmm2, xmm3/m64 {er}                                                                                 A V/V     AVX512-FP16 the low element of xmm1 subject to writemask k1. Bits 127:16 of xmm2 are copied to
+                                                                                                                                                                            xmm1[127:16].
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1     Operand 2     Operand 3    Operand 4
+A     Scalar ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction converts the low FP64 value in the second source operand to an FP16 value, and stores the result in the low element of the destination operand.
+
+When the conversion is inexact, the value returned is rounded according to the rounding control bits in the MXCSR register.
+
+Bits 127:16 of the destination operand are copied from the corresponding bits of the first source operand. Bits MAXVL-1:128 of the destination operand are zeroed. The low FP16 element of the destination is updated according to the writemask.
+

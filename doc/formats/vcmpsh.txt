@@ -1,0 +1,22 @@
+  • Index
+  • December 2023
+
+VCMPSH — Compare Scalar FP16 Values
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En
+Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode    Support                                              Description
+                                                               Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                                 Compare low FP16 values in xmm3/m16 and xmm2 using bits 4:0 of imm8 as a
+EVEX.LLIG.F3.0F3A.W0 C2 /r /ib VCMPSH k1{k2}, xmm2, xmm3/m16 {sae}, imm8                                                                                   A V/V     AVX512-FP16 comparison predicate subject to writemask k2, and store the result in mask
+                                                                                                                                                                                 register k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1     Operand 2     Operand 3    Operand 4
+A     Scalar ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  imm8 (r)
+
+Description ¶
+
+This instruction compares the FP16 values from the lowest element of the source operands and stores the result in the destination mask operand. The comparison predicate operand (immediate byte bits 4:0) specifies the type of comparison performed on the
+pair of packed FP16 values. The low destination bit is updated according to the writemask. Bits MAXKL-1:1 of the destination operand are zeroed.
+

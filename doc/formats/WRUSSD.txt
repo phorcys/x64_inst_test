@@ -1,0 +1,18 @@
+  • Index
+  • December 2023
+
+WRUSSD/WRUSSQ — Write to User Shadow Stack
+
+               Opcode/Instruction                Op/En 64/32 bit Mode Support CPUID Feature Flag          Description
+66 0F 38 F5 !(11):rrr:bbb WRUSSD m32, r32        MR    V/V                    CET_SS             Write 4 bytes to shadow stack.
+66 REX.W 0F 38 F5 !(11):rrr:bbb WRUSSQ m64, r64  MR    V/N.E.                 CET_SS             Write 8 bytes to shadow stack.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+MR    ModRM:r/m (w)  ModRM:reg (r)  N/A       N/A
+
+Description ¶
+
+Writes bytes in register source to a user shadow stack page. The WRUSS instruction can be executed only if CPL = 0, however the processor treats its shadow-stack accesses as user accesses.
+

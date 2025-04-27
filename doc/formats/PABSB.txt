@@ -1,0 +1,59 @@
+  • Index
+  • December 2023
+
+PABSB/PABSW/PABSD/PABSQ — Packed Absolute Value
+
+                       Opcode/Instruction                        Op/En 64/32 bit Mode Support CPUID Feature Flag                                                       Description
+NP 0F 38 1C /r^1 PABSB mm1, mm2/m64                              A     V/V                    SSSE3              Compute the absolute value of bytes in mm2/m64 and store UNSIGNED result in mm1.
+66 0F 38 1C /r PABSB xmm1, xmm2/m128                             A     V/V                    SSSE3              Compute the absolute value of bytes in xmm2/m128 and store UNSIGNED result in xmm1.
+NP 0F 38 1D /r^1 PABSW mm1, mm2/m64                              A     V/V                    SSSE3              Compute the absolute value of 16-bit integers in mm2/m64 and store UNSIGNED result in mm1.
+66 0F 38 1D /r PABSW xmm1, xmm2/m128                             A     V/V                    SSSE3              Compute the absolute value of 16-bit integers in xmm2/m128 and store UNSIGNED result in xmm1.
+NP 0F 38 1E /r^1 PABSD mm1, mm2/m64                              A     V/V                    SSSE3              Compute the absolute value of 32-bit integers in mm2/m64 and store UNSIGNED result in mm1.
+66 0F 38 1E /r PABSD xmm1, xmm2/m128                             A     V/V                    SSSE3              Compute the absolute value of 32-bit integers in xmm2/m128 and store UNSIGNED result in xmm1.
+VEX.128.66.0F38.WIG 1C /r VPABSB xmm1, xmm2/m128                 A     V/V                    AVX                Compute the absolute value of bytes in xmm2/m128 and store UNSIGNED result in xmm1.
+VEX.128.66.0F38.WIG 1D /r VPABSW xmm1, xmm2/m128                 A     V/V                    AVX                Compute the absolute value of 16- bit integers in xmm2/m128 and store UNSIGNED result in xmm1.
+VEX.128.66.0F38.WIG 1E /r VPABSD xmm1, xmm2/m128                 A     V/V                    AVX                Compute the absolute value of 32- bit integers in xmm2/m128 and store UNSIGNED result in xmm1.
+VEX.256.66.0F38.WIG 1C /r VPABSB ymm1, ymm2/m256                 A     V/V                    AVX2               Compute the absolute value of bytes in ymm2/m256 and store UNSIGNED result in ymm1.
+VEX.256.66.0F38.WIG 1D /r VPABSW ymm1, ymm2/m256                 A     V/V                    AVX2               Compute the absolute value of 16-bit integers in ymm2/m256 and store UNSIGNED result in ymm1.
+VEX.256.66.0F38.WIG 1E /r VPABSD ymm1, ymm2/m256                 A     V/V                    AVX2               Compute the absolute value of 32-bit integers in ymm2/m256 and store UNSIGNED result in ymm1.
+EVEX.128.66.0F38.WIG 1C /r VPABSB xmm1 {k1}{z}, xmm2/m128        B     V/V                    AVX512VL AVX512BW  Compute the absolute value of bytes in xmm2/m128 and store UNSIGNED result in xmm1 using writemask k1.
+EVEX.256.66.0F38.WIG 1C /r VPABSB ymm1 {k1}{z}, ymm2/m256        B     V/V                    AVX512VL AVX512BW  Compute the absolute value of bytes in ymm2/m256 and store UNSIGNED result in ymm1 using writemask k1.
+EVEX.512.66.0F38.WIG 1C /r VPABSB zmm1 {k1}{z}, zmm2/m512        B     V/V                    AVX512BW           Compute the absolute value of bytes in zmm2/m512 and store UNSIGNED result in zmm1 using writemask k1.
+EVEX.128.66.0F38.WIG 1D /r VPABSW xmm1 {k1}{z}, xmm2/m128        B     V/V                    AVX512VL AVX512BW  Compute the absolute value of 16-bit integers in xmm2/m128 and store UNSIGNED result in xmm1 using writemask k1.
+EVEX.256.66.0F38.WIG 1D /r VPABSW ymm1 {k1}{z}, ymm2/m256        B     V/V                    AVX512VL AVX512BW  Compute the absolute value of 16-bit integers in ymm2/m256 and store UNSIGNED result in ymm1 using writemask k1.
+EVEX.512.66.0F38.WIG 1D /r VPABSW zmm1 {k1}{z}, zmm2/m512        B     V/V                    AVX512BW           Compute the absolute value of 16-bit integers in zmm2/m512 and store UNSIGNED result in zmm1 using writemask k1.
+EVEX.128.66.0F38.W0 1E /r VPABSD xmm1 {k1}{z}, xmm2/m128/m32bcst C     V/V                    AVX512VL AVX512F   Compute the absolute value of 32-bit integers in xmm2/m128/m32bcst and store UNSIGNED result in xmm1 using writemask k1.
+EVEX.256.66.0F38.W0 1E /r VPABSD ymm1 {k1}{z}, ymm2/m256/m32bcst C     V/V                    AVX512VL AVX512F   Compute the absolute value of 32-bit integers in ymm2/m256/m32bcst and store UNSIGNED result in ymm1 using writemask k1.
+EVEX.512.66.0F38.W0 1E /r VPABSD zmm1 {k1}{z}, zmm2/m512/m32bcst C     V/V                    AVX512F            Compute the absolute value of 32-bit integers in zmm2/m512/m32bcst and store UNSIGNED result in zmm1 using writemask k1.
+EVEX.128.66.0F38.W1 1F /r VPABSQ xmm1 {k1}{z}, xmm2/m128/m64bcst C     V/V                    AVX512VL AVX512F   Compute the absolute value of 64-bit integers in xmm2/m128/m64bcst and store UNSIGNED result in xmm1 using writemask k1.
+EVEX.256.66.0F38.W1 1F /r VPABSQ ymm1 {k1}{z}, ymm2/m256/m64bcst C     V/V                    AVX512VL AVX512F   Compute the absolute value of 64-bit integers in ymm2/m256/m64bcst and store UNSIGNED result in ymm1 using writemask k1.
+EVEX.512.66.0F38.W1 1F /r VPABSQ zmm1 {k1}{z}, zmm2/m512/m64bcst C     V/V                    AVX512F            Compute the absolute value of 64-bit integers in zmm2/m512/m64bcst and store UNSIGNED result in zmm1 using writemask k1.
+
+    1. See note in Section 2.5, “Intel® AVX and Intel® SSE Instruction Exception Classification,” in the Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 2A, and Section 23.25.3, “Exception Conditions of Legacy SIMD Instructions
+    Operating on MMX Registers,” in the Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 3B.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     N/A        ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+B     Full Mem   ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+C     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+PABSB/W/D computes the absolute value of each data element of the source operand (the second operand) and stores the UNSIGNED results in the destination operand (the first operand). PABSB operates on signed bytes, PABSW operates on signed 16-bit words,
+and PABSD operates on signed 32-bit integers.
+
+EVEX encoded VPABSD/Q: The source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location, or a 512/256/128-bit vector broadcasted from a 32/64-bit memory location. The destination operand is a ZMM/YMM/XMM register updated according to the
+writemask.
+
+EVEX encoded VPABSB/W: The source operand is a ZMM/YMM/XMM register, or a 512/256/128-bit memory location. The destination operand is a ZMM/YMM/XMM register updated according to the writemask.
+
+VEX.256 encoded versions: The source operand is a YMM register or a 256-bit memory location. The destination operand is a YMM register. The upper bits (MAXVL-1:256) of the corresponding register destination are zeroed.
+
+VEX.128 encoded versions: The source operand is an XMM register or 128-bit memory location. The destination operand is an XMM register. The upper bits (MAXVL-1:128) of the corresponding register destination are zeroed.
+
+128-bit Legacy SSE version: The source operand can be an XMM register or an 128-bit memory location. The destination is an XMM register. The upper bits (VL_MAX-1:128) of the corresponding register destination are unmodified.
+
+VEX.vvvv and EVEX.vvvv are reserved and must be 1111b otherwise instructions will #UD.
+

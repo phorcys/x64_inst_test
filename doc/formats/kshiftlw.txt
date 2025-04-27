@@ -1,0 +1,21 @@
+  • Index
+  • December 2023
+
+KSHIFTLW/KSHIFTLB/KSHIFTLQ/KSHIFTLD — Shift Left Mask Registers
+
+             Opcode/Instruction               Op/En 64/32 bit Mode Support CPUID Feature Flag                          Description
+VEX.L0.66.0F3A.W1 32 /r KSHIFTLW k1, k2, imm8 RRI   V/V                    AVX512F            Shift left 16 bits in k2 by immediate and write result in k1.
+VEX.L0.66.0F3A.W0 32 /r KSHIFTLB k1, k2, imm8 RRI   V/V                    AVX512DQ           Shift left 8 bits in k2 by immediate and write result in k1.
+VEX.L0.66.0F3A.W1 33 /r KSHIFTLQ k1, k2, imm8 RRI   V/V                    AVX512BW           Shift left 64 bits in k2 by immediate and write result in k1.
+VEX.L0.66.0F3A.W0 33 /r KSHIFTLD k1, k2, imm8 RRI   V/V                    AVX512BW           Shift left 32 bits in k2 by immediate and write result in k1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1                   Operand 2                Operand 3
+RRI   ModRM:reg (w)  ModRM:r/m (r, ModRM:[7:6] must be 11b)  imm8
+
+Description ¶
+
+Shifts 8/16/32/64 bits in the second operand (source operand) left by the count specified in immediate byte and place the least significant 8/16/32/64 bits of the result in the destination operand. The higher bits of the destination are zero-extended.
+The destination is set to zero if the count value is greater than 7 (for byte shift), 15 (for word shift), 31 (for doubleword shift) or 63 (for quadword shift).
+

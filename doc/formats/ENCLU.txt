@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+ENCLU — Execute an Enclave User Function of Specified Leaf Number
+
+Opcode/Instruction Op/En 64/32 bit Mode Support CPUID Feature Flag                                  Description
+NP 0F 01 D7 ENCLU  ZO    V/V                    NA                 This instruction is used to execute non-privileged Intel SGX leaf functions.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1 Operand 2 Operand 3 Implicit Register Operands
+ZO    NA        NA        NA        See Section 38.4
+
+Description ¶
+
+The ENCLU instruction invokes the specified non-privileged Intel SGX leaf functions. Software specifies the leaf function by setting the appropriate value in the register EAX as input. The registers RBX, RCX, and RDX have leaf-specific purpose, and may
+act as input, as output, or may be unused. In 64-bit mode, the instruction ignores upper 32 bits of the RAX register.
+
+The ENCLU instruction produces an invalid-opcode exception (#UD) if CR0.PE = 0 or RFLAGS.VM = 1, or if it is executed in system-management mode (SMM). Additionally, any attempt to execute this instruction when CPL < 3 results in #UD. The instruction
+produces a general-protection exception (#GP) if either CR0.PG or CR0.NE is 0, or if an attempt is made to invoke an undefined leaf function. The ENCLU instruction produces a device not available exception (#NM) if CR0.TS = 1.
+
+Addresses and operands are 32 bits outside 64-bit mode (IA32_EFER.LMA = 0 or CS.L = 0) and are 64 bits in 64-bit mode (IA32_EFER.LMA = 1 and CS.L = 1). CS.D value has no impact on address calculation. The DS segment is used to create linear addresses.
+
+Segment override prefixes and address-size override prefixes are ignored, as is the REX prefix in 64-bit mode.
+

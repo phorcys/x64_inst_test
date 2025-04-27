@@ -1,0 +1,32 @@
+  • Index
+  • December 2023
+
+VPBROADCASTB/VPBROADCASTW/VPBROADCASTD/VPBROADCASTQ — Load With Broadcast Integer Data From General Purpose Register
+
+                   Opcode/Instruction                    Op/En 64/32 bit Mode Support CPUID Feature Flag                                                Description
+EVEX.128.66.0F38.W0 7A /r VPBROADCASTB xmm1 {k1}{z}, reg A     V/V                    AVX512VL AVX512BW  Broadcast an 8-bit value from a GPR to all bytes in the 128-bit destination subject to writemask k1.
+EVEX.256.66.0F38.W0 7A /r VPBROADCASTB ymm1 {k1}{z}, reg A     V/V                    AVX512VL AVX512BW  Broadcast an 8-bit value from a GPR to all bytes in the 256-bit destination subject to writemask k1.
+EVEX.512.66.0F38.W0 7A /r VPBROADCASTB zmm1 {k1}{z}, reg A     V/V                    AVX512BW           Broadcast an 8-bit value from a GPR to all bytes in the 512-bit destination subject to writemask k1.
+EVEX.128.66.0F38.W0 7B /r VPBROADCASTW xmm1 {k1}{z}, reg A     V/V                    AVX512VL AVX512BW  Broadcast a 16-bit value from a GPR to all words in the 128-bit destination subject to writemask k1.
+EVEX.256.66.0F38.W0 7B /r VPBROADCASTW ymm1 {k1}{z}, reg A     V/V                    AVX512VL AVX512BW  Broadcast a 16-bit value from a GPR to all words in the 256-bit destination subject to writemask k1.
+EVEX.512.66.0F38.W0 7B /r VPBROADCASTW zmm1 {k1}{z}, reg A     V/V                    AVX512BW           Broadcast a 16-bit value from a GPR to all words in the 512-bit destination subject to writemask k1.
+EVEX.128.66.0F38.W0 7C /r VPBROADCASTD xmm1 {k1}{z}, r32 A     V/V                    AVX512VL AVX512F   Broadcast a 32-bit value from a GPR to all doublewords in the 128-bit destination subject to writemask k1.
+EVEX.256.66.0F38.W0 7C /r VPBROADCASTD ymm1 {k1}{z}, r32 A     V/V                    AVX512VL AVX512F   Broadcast a 32-bit value from a GPR to all doublewords in the 256-bit destination subject to writemask k1.
+EVEX.512.66.0F38.W0 7C /r VPBROADCASTD zmm1 {k1}{z}, r32 A     V/V                    AVX512F            Broadcast a 32-bit value from a GPR to all doublewords in the 512-bit destination subject to writemask k1.
+EVEX.128.66.0F38.W1 7C /r VPBROADCASTQ xmm1 {k1}{z}, r64 A     V/N.E.^1               AVX512VL AVX512F   Broadcast a 64-bit value from a GPR to all quadwords in the 128-bit destination subject to writemask k1.
+EVEX.256.66.0F38.W1 7C /r VPBROADCASTQ ymm1 {k1}{z}, r64 A     V/N.E.^1               AVX512VL AVX512F   Broadcast a 64-bit value from a GPR to all quadwords in the 256-bit destination subject to writemask k1.
+EVEX.512.66.0F38.W1 7C /r VPBROADCASTQ zmm1 {k1}{z}, r64 A     V/N.E.^1               AVX512F            Broadcast a 64-bit value from a GPR to all quadwords in the 512-bit destination subject to writemask k1.
+
+    1. EVEX.W in non-64 bit is ignored; the instruction behaves as if the W0 version is used.
+
+Instruction Operand Encoding ¶
+
+Op/En   Tuple Type     Operand 1      Operand 2    Operand 3 Operand 4
+A     Tuple1 Scalar  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Broadcasts a 8-bit, 16-bit, 32-bit or 64-bit value from a general-purpose register (the second operand) to all the locations in the destination vector register (the first operand) using the writemask k1.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

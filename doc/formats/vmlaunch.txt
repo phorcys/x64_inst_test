@@ -1,0 +1,26 @@
+  • Index
+  • December 2023
+
+VMLAUNCH/VMRESUME — Launch/Resume Virtual Machine
+
+Opcode/Instruction  Op/En                   Description
+0F 01 C2 VMLAUNCH   ZO    Launch virtual machine managed by current VMCS.
+0F 01 C3 VMRESUME   ZO    Resume virtual machine managed by current VMCS.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    NA         NA         NA         NA
+
+Description ¶
+
+Effects a VM entry managed by the current VMCS.
+
+  • VMLAUNCH fails if the launch state of current VMCS is not “clear”. If the instruction is successful, it sets the launch state to “launched.”
+  • VMRESUME fails if the launch state of the current VMCS is not “launched.”
+
+If VM entry is attempted, the logical processor performs a series of consistency checks as detailed in Chapter 27, “VM Entries.” Failure to pass checks on the VMX controls or on the host-state area passes control to the instruction following the VMLAUNCH
+or VMRESUME instruction. If these pass but checks on the guest-state area fail, the logical processor loads state from the host-state area of the VMCS, passing control to the instruction referenced by the RIP field in the host-state area.
+
+VM entry is not allowed when events are blocked by MOV SS or POP SS. Neither VMLAUNCH nor VMRESUME should be used immediately after either MOV to SS or POP to SS.
+

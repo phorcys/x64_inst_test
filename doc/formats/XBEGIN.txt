@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+XBEGIN — Transactional Begin
+
+Opcode/Instruction Op/En 64/32bit Mode Support CPUID Feature Flag                                                                                      Description
+C7 F8 XBEGIN rel16 A     V/V                   RTM                Specifies the start of an RTM region. Provides a 16-bit relative offset to compute the address of the fallback instruction address at which execution resumes following an RTM abort.
+C7 F8 XBEGIN rel32 A     V/V                   RTM                Specifies the start of an RTM region. Provides a 32-bit relative offset to compute the address of the fallback instruction address at which execution resumes following an RTM abort.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand2 Operand3 Operand4
+A     Offset     N/A      N/A      N/A
+
+Description ¶
+
+The XBEGIN instruction specifies the start of an RTM code region. If the logical processor was not already in transactional execution, then the XBEGIN instruction causes the logical processor to transition into transactional execution. The XBEGIN
+instruction that transitions the logical processor into transactional execution is referred to as the outermost XBEGIN instruction. The instruction also specifies a relative offset to compute the address of the fallback code path following a
+transactional abort. (Use of the 16-bit operand size does not cause this address to be truncated to 16 bits, unlike a near jump to a relative offset.)
+
+On an RTM abort, the logical processor discards all architectural register and memory updates performed during the RTM execution and restores architectural state to that corresponding to the outermost XBEGIN instruction. The fallback address following an
+abort is computed from the outermost XBEGIN instruction.
+
+Execution of XBEGIN while in a suspend read address tracking region causes a transactional abort.
+

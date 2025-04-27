@@ -1,0 +1,52 @@
+  • Index
+  • December 2023
+
+ETRACK — Activates EBLOCK Checks
+
+  Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                 Description
+EAX = 0CH ENCLS[ETRACK] IR    V/V                    SGX1               This leaf function activates EBLOCK checks.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                  RCX
+IR    ETRACK (In) Return error code (Out)  Pointer to the SECS of the EPC page (In)
+
+Description ¶
+
+This leaf function provides the mechanism for hardware to track that software has completed the required TLB address clears successfully. The instruction can only be executed when the current privilege level is 0.
+
+The content of RCX is an effective address of an EPC page.
+
+The table below provides additional information on the memory parameter of ETRACK leaf function.
+
+ETRACK Memory Parameter Semantics ¶
+
+EPCPAGE
+Read/Write access permitted by Enclave
+
+The error codes are:
+
+Error Code (see Table 38-4)                             Description
+No Error                     ETRACK successful.
+SGX_PREV_TRK_INCMPL          All processors did not complete the previous shoot-down sequence.
+
+
+Table 38-45. ETRACK Return Value in RAX
+
+Concurrency Restrictions ¶
+
+                          Leaf                             Parameter   Base Concurrency Restrictions
+                                                                                On Conflict
+ETRACK ETRACK SECS [DS:RCX] Shared ETRACK SECS [DS:RCX]  SECS [DS:RCX]
+
+
+Table 38-46. Base Concurrency Restrictions of ETRACK
+
+                                                        Additional Concurrency Restrictions
+ Leaf    Parameter   vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT       vs. ETRACK, ETRACKC
+                             Access                On Conflict          Access    On Conflict   Access        On Conflict
+ETRACK SECS [DS:RCX] Concurrent                                       Concurrent               Exclusive SGX_EPC_PAGE _CONFLICT
+
+
+Table 38-47. Additional Concurrency Restrictions of ETRACK
+

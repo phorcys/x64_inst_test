@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+INCSSPD/INCSSPQ — Increment Shadow Stack Pointer
+
+      Opcode/Instruction        Op / En 64/32 bit Mode Support CPUID Feature Flag           Description
+F3 0F AE /05 INCSSPD r32        R       V/V                    CET_SS             Increment SSP by 4 * r32[7:0].
+F3 REX.W 0F AE /05 INCSSPQ r64  R       V/N.E.                 CET_SS             Increment SSP by 8 * r64[7:0].
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type    Operand 1    Operand 2 Operand 3 Operand 4
+R     N/A         ModRM:r/m (r)  N/A       N/A       N/A
+
+Description ¶
+
+This instruction can be used to increment the current shadow stack pointer by the operand size of the instruction times the unsigned 8-bit value specified by bits 7:0 in the source operand. The instruction performs a pop and discard of the first and last
+element on the shadow stack in the range specified by the unsigned 8-bit value in bits 7:0 of the source operand.
+

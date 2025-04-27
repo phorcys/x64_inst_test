@@ -1,0 +1,54 @@
+  • Index
+  • December 2023
+
+EADD — Add a Page to an Uninitialized Enclave
+
+ Opcode/Instruction   Op/En 64/32 bit Mode Support CPUID Feature Flag                         Description
+EAX = 01H ENCLS[EADD] IR    V/V                    SGX1               This leaf function adds a page to an uninitialized enclave.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX       RBX                         RCX
+IR    EADD (In) Address of a PAGEINFO (In)  Address of the destination EPC page (In)
+
+Description ¶
+
+This leaf function copies a source page from non-enclave memory into the EPC, associates the EPC page with an SECS page residing in the EPC, and stores the linear address and security attributes in EPCM. As part of the association, the enclave offset and
+the security attributes are measured and extended into the SECS.MRENCLAVE. This instruction can only be executed when current privilege level is 0.
+
+RBX contains the effective address of a PAGEINFO structure while RCX contains the effective address of an EPC page. The table below provides additional information on the memory parameter of EADD leaf function.
+
+EADD Memory Parameter Semantics ¶
+
+PAGEINFO                             PAGEINFO.SECS                           PAGEINFO.SRCPGE                      PAGEINFO.SECINFO                     EPCPAGE
+Read access permitted by Non Enclave Read/Write access permitted by Enclave  Read access permitted by Non Enclave Read access permitted by Non Enclave Write access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EADD Faulting Conditions ¶
+
+The operands are not properly aligned.    Unsupported security attributes are set.
+Refers to an invalid SECS.                Reference is made to an SECS that is locked by another thread.
+The EPC page is locked by another thread. RCX does not contain an effective address of an EPC page.
+The EPC page is already valid.            If security attributes specifies a TCS and the source page specifies unsupported TCS values or fields.
+The SECS has been initialized.            The specified enclave offset is outside of the enclave address space.
+
+Concurrency Restrictions ¶
+
+Leaf          Parameter                        Base Concurrency Restrictions
+                                  Access   On Conflict SGX_CONFLICT VM Exit Qualification
+EADD Target [DS:RCX]             Exclusive #GP         EPC_PAGE_CONFLICT_EXCEPTION
+     SECS [DS:RBX]PAGEINFO.SECS  Shared    #GP
+
+
+Table 38-8. Base Concurrency Restrictions of EADD
+
+                                                              Additional Concurrency Restrictions
+Leaf         Parameter          vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                       Access                On Conflict           Access    On Conflict    Access   On Conflict
+EADD Target [DS:RCX]            Concurrent                                       Concurrent               Concurrent
+     SECS [DS:RBX]PAGEINFO.SECS Concurrent                                       Exclusive  #GP           Concurrent
+
+
+Table 38-9. Additional Concurrency Restrictions of EADD
+

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VCVTPH2PS/VCVTPH2PSX
+		— Convert Packed FP16 Values to Single Precision Floating-PointValues</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VCVTPH2PS/VCVTPH2PSX
+		— Convert Packed FP16 Values to Single Precision Floating-PointValues</h1>
+
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op / En</th>
+<th>64/32 Bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>VEX.128.66.0F38.W0 13 /r VCVTPH2PS xmm1, xmm2/m64</td>
+<td>A</td>
+<td>V/V</td>
+<td>F16C</td>
+<td>Convert four packed FP16 values in xmm2/m64 to packed single precision floating-point value in xmm1.</td></tr>
+<tr>
+<td>VEX.256.66.0F38.W0 13 /r VCVTPH2PS ymm1, xmm2/m128</td>
+<td>A</td>
+<td>V/V</td>
+<td>F16C</td>
+<td>Convert eight packed FP16 values in xmm2/m128 to packed single precision floating-point value in ymm1.</td></tr>
+<tr>
+<td>EVEX.128.66.0F38.W0 13 /r VCVTPH2PS xmm1 {k1}{z}, xmm2/m64</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Convert four packed FP16 values in xmm2/m64 to packed single precision floating-point values in xmm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.66.0F38.W0 13 /r VCVTPH2PS ymm1 {k1}{z}, xmm2/m128</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Convert eight packed FP16 values in xmm2/m128 to packed single precision floating-point values in ymm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.66.0F38.W0 13 /r VCVTPH2PS zmm1 {k1}{z}, ymm2/m256 {sae}</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Convert sixteen packed FP16 values in ymm2/m256 to packed single precision floating-point values in zmm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.128.66.MAP6.W0 13 /r VCVTPH2PSX xmm1{k1}{z}, xmm2/m64/m16bcst</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Convert four packed FP16 values in xmm2/m64/m16bcst to four packed single precision floating-point values, and store result in xmm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.66.MAP6.W0 13 /r VCVTPH2PSX ymm1{k1}{z}, xmm2/m128/m16bcst</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Convert eight packed FP16 values in xmm2/m128/m16bcst to eight packed single precision floating-point values, and store result in ymm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.66.MAP6.W0 13 /r VCVTPH2PSX zmm1{k1}{z}, ymm2/m256/m16bcst {sae}</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Convert sixteen packed FP16 values in ymm2/m256/m16bcst to sixteen packed single precision floating-point values, and store result in zmm1 subject to writemask k1.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple Type</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>N/A</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td>
+<td>N/A</td></tr>
+<tr>
+<td>B</td>
+<td>Half Mem</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td>
+<td>N/A</td></tr>
+<tr>
+<td>C</td>
+<td>Half</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction converts packed half precision (16-bits) floating-point values in the low-order bits of the source operand (the second operand) to packed single precision floating-point values and writes the converted values into the destination operand (the first operand).</p>
+<p>If case of a denormal operand, the correct normal result is returned. MXCSR.DAZ is ignored and is treated as if it 0. No denormal exception is reported on MXCSR.</p>
+<p>VEX.128 version: The source operand is a XMM register or 64-bit memory location. The destination operand is a XMM register. The upper bits (MAXVL-1:128) of the corresponding destination register are zeroed.</p>
+<p>VEX.256 version: The source operand is a XMM register or 128-bit memory location. The destination operand is a YMM register. Bits (MAXVL-1:256) of the corresponding destination register are zeroed.</p>
+<p>EVEX encoded versions: The source operand is a YMM/XMM/XMM (low 64-bits) register or a 256/128/64-bit memory location. The destination operand is a ZMM/YMM/XMM register conditionally updated with writemask k1.</p>
+<p>The diagram below illustrates how data is converted from four packed half precision (in 64 bits) to four single precision (in 128 bits) floating-point values.</p>
+<p>Note: VEX.vvvv and EVEX.vvvv are reserved (must be 1111b).</p>
+<figure id="fig-5-6">
+<table>
+<tr>
+<td>VCVTPH2PS<em>xmm1,xmm2/mem64, imm8</em> 127 96 95 64 63 48 47 32 31 16 15 0</td></tr>
+<tr>
+<td>xmm2/mem64 VH3 VH2 VH1 VH0</td></tr>
+<tr>
+<td rowspan="4">convert convert convert convert 127 96 95 64 63 32 31 0</td></tr>
+<tr>
+<td>VS3 VS2 VS1 VS0 xmm1</td></tr></table>
+<figcaption><a href='/x86/vcvtph2ps:vcvtph2psx#fig-5-6'>Figure 5-6</a>. VCVTPH2PS (128-bit Version)</figcaption></figure>
+<p>The VCVTPH2PSX instruction is a new form of the PH to PS conversion instruction, encoded in map 6. The previous version of the instruction, VCVTPH2PS, that is present in AVX512F (encoded in map 2, 0F38) does not support embedded broadcasting. The VCVTPH2PSX instruction has the embedded broadcasting option available.</p>
+<p>The instructions associated with AVX512_FP16 always handle FP16 denormal number inputs; denormal inputs are not treated as zero.</p>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<pre>vCvt_h2s(SRC1[15:0])
+{
+RETURN Cvt_Half_Precision_To_Single_Precision(SRC1[15:0]);
+}
+</pre>
+<h4 id="vcvtph2ps--evex-encoded-versions-">VCVTPH2PS (EVEX Encoded Versions)<a class="anchor" href="#vcvtph2ps--evex-encoded-versions-">
+			¶
+		</a></h4>
+<pre>(KL, VL) = (4, 128), (8, 256), (16, 512)
+FOR j := 0 TO KL-1
+    i := j * 32
+    k := j * 16
+    IF k1[j] OR *no writemask*
+        THEN DEST[i+31:i] :=
+            vCvt_h2s(SRC[k+15:k])
+        ELSE
+            IF *merging-masking*
+                        ; merging-masking
+                THEN *DEST[i+31:i] remains unchanged*
+                ELSE
+                        ; zeroing-masking
+                    DEST[i+31:i] := 0
+            FI
+    FI;
+ENDFOR
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h4 id="vcvtph2ps--vex-256-encoded-version-">VCVTPH2PS (VEX.256 Encoded Version)<a class="anchor" href="#vcvtph2ps--vex-256-encoded-version-">
+			¶
+		</a></h4>
+<pre>DEST[31:0] := vCvt_h2s(SRC1[15:0]);
+DEST[63:32] := vCvt_h2s(SRC1[31:16]);
+DEST[95:64] := vCvt_h2s(SRC1[47:32]);
+DEST[127:96] := vCvt_h2s(SRC1[63:48]);
+DEST[159:128] := vCvt_h2s(SRC1[79:64]);
+DEST[191:160] := vCvt_h2s(SRC1[95:80]);
+DEST[223:192] := vCvt_h2s(SRC1[111:96]);
+DEST[255:224] := vCvt_h2s(SRC1[127:112]);
+DEST[MAXVL-1:256] := 0
+</pre>
+<h4 id="vcvtph2ps--vex-128-encoded-version-">VCVTPH2PS (VEX.128 Encoded Version)<a class="anchor" href="#vcvtph2ps--vex-128-encoded-version-">
+			¶
+		</a></h4>
+<pre>DEST[31:0] := vCvt_h2s(SRC1[15:0]);
+DEST[63:32] := vCvt_h2s(SRC1[31:16]);
+DEST[95:64] := vCvt_h2s(SRC1[47:32]);
+DEST[127:96] := vCvt_h2s(SRC1[63:48]);
+DEST[MAXVL-1:128] := 0
+</pre>
+<h4 id="vcvtph2psx-dest--src">VCVTPH2PSX DEST, SRC<a class="anchor" href="#vcvtph2psx-dest--src">
+			¶
+		</a></h4>
+<pre>VL = 128, 256, or 512
+KL := VL/32
+FOR j := 0 TO KL-1:
+    IF k1[j] OR *no writemask*:
+        IF *SRC is memory* and EVEX.b = 1:
+            tsrc := SRC.fp16[0]
+        ELSE
+            tsrc := SRC.fp16[j]
+        DEST.fp32[j] := Convert_fp16_to_fp32(tsrc)
+    ELSE IF *zeroing*:
+        DEST.fp32[j] := 0
+    // else dest.fp32[j] remains unchanged
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="flags-affected">Flags Affected<a class="anchor" href="#flags-affected">
+			¶
+		</a></h3>
+<p>None.</p>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VCVTPH2PS __m512 _mm512_cvtph_ps( __m256i a);
+</pre>
+<pre>VCVTPH2PS __m512 _mm512_mask_cvtph_ps(__m512 s, __mmask16 k, __m256i a);
+</pre>
+<pre>VCVTPH2PS __m512 _mm512_maskz_cvtph_ps(__mmask16 k, __m256i a);
+</pre>
+<pre>VCVTPH2PS __m512 _mm512_cvt_roundph_ps( __m256i a, int sae);
+</pre>
+<pre>VCVTPH2PS __m512 _mm512_mask_cvt_roundph_ps(__m512 s, __mmask16 k, __m256i a, int sae);
+</pre>
+<pre>VCVTPH2PS __m512 _mm512_maskz_cvt_roundph_ps( __mmask16 k, __m256i a, int sae);
+</pre>
+<pre>VCVTPH2PS __m256 _mm256_mask_cvtph_ps(__m256 s, __mmask8 k, __m128i a);
+</pre>
+<pre>VCVTPH2PS __m256 _mm256_maskz_cvtph_ps(__mmask8 k, __m128i a);
+</pre>
+<pre>VCVTPH2PS __m128 _mm_mask_cvtph_ps(__m128 s, __mmask8 k, __m128i a);
+</pre>
+<pre>VCVTPH2PS __m128 _mm_maskz_cvtph_ps(__mmask8 k, __m128i a);
+</pre>
+<pre>VCVTPH2PS __m128 _mm_cvtph_ps ( __m128i m1);
+</pre>
+<pre>VCVTPH2PS __m256 _mm256_cvtph_ps ( __m128i m1)
+</pre>
+<pre>VCVTPH2PSX __m512 _mm512_cvtx_roundph_ps (__m256h a, int sae);
+</pre>
+<pre>VCVTPH2PSX __m512 _mm512_mask_cvtx_roundph_ps (__m512 src, __mmask16 k, __m256h a, int sae);
+</pre>
+<pre>VCVTPH2PSX __m512 _mm512_maskz_cvtx_roundph_ps (__mmask16 k, __m256h a, int sae);
+</pre>
+<pre>VCVTPH2PSX __m128 _mm_cvtxph_ps (__m128h a);
+</pre>
+<pre>VCVTPH2PSX __m128 _mm_mask_cvtxph_ps (__m128 src, __mmask8 k, __m128h a);
+</pre>
+<pre>VCVTPH2PSX __m128 _mm_maskz_cvtxph_ps (__mmask8 k, __m128h a);
+</pre>
+<pre>VCVTPH2PSX __m256 _mm256_cvtxph_ps (__m128h a);
+</pre>
+<pre>VCVTPH2PSX __m256 _mm256_mask_cvtxph_ps (__m256 src, __mmask8 k, __m128h a);
+</pre>
+<pre>VCVTPH2PSX __m256 _mm256_maskz_cvtxph_ps (__mmask8 k, __m128h a);
+</pre>
+<pre>VCVTPH2PSX __m512 _mm512_cvtxph_ps (__m256h a);
+</pre>
+<pre>VCVTPH2PSX __m512 _mm512_mask_cvtxph_ps (__m512 src, __mmask16 k, __m256h a);
+</pre>
+<pre>VCVTPH2PSX __m512 _mm512_maskz_cvtxph_ps (__mmask16 k, __m256h a);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>VEX-encoded instructions: Invalid.</p>
+<p>EVEX-encoded instructions: Invalid.</p>
+<p>EVEX-encoded instructions with broadcast (VCVTPH2PSX): Invalid, Denormal.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>VEX-encoded instructions, see <span class="not-imported">Table 2-26</span>, “Type 11 Class Exception Conditions” (do not report #AC).</p>
+<p>EVEX-encoded instructions, see <span class="not-imported">Table 2-60</span>, “Type E11 Class Exception Conditions.”</p>
+<p>EVEX-encoded instructions with broadcast (VCVTPH2PSX), see <span class="not-imported">Table 2-46</span>, “Type E2 Class Exception Conditions.”</p>
+<p>Additionally:</p>
+<table>
+<tr>
+<td>#UD</td>
+<td>If VEX.W=1.</td></tr>
+<tr>
+<td>#UD</td>
+<td>If VEX.vvvv != 1111B or EVEX.vvvv != 1111B.</td></tr></table><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

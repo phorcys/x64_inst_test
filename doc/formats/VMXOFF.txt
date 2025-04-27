@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+VMXOFF — Leave VMX Operation
+
+Opcode/Instruction  Op/En      Description
+0F 01 C4 VMXOFF     ZO    Leaves VMX operation.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    NA         NA         NA         NA
+
+Description ¶
+
+Takes the logical processor out of VMX operation, unblocks INIT signals, conditionally re-enables A20M, and clears any address-range monitoring.^1
+

@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+VMFUNC — Invoke VM function
+
+Opcode/Instruction  Op/En              Description
+NP 0F 01 D4 VMFUNC  ZO    Invoke VM function specified in EAX.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    NA         NA         NA         NA
+
+Description ¶
+
+This instruction allows software in VMX non-root operation to invoke a VM function, which is processor functionality enabled and configured by software in VMX root operation. The value of EAX selects the specific VM function being invoked.
+
+The behavior of each VM function (including any additional fault checking) is specified in Section 26.5.6, “VM Functions.”
+

@@ -1,0 +1,60 @@
+  • Index
+  • December 2023
+
+EBLOCK — Mark a page in EPC as Blocked
+
+  Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                       Description
+EAX = 09H ENCLS[EBLOCK] IR    V/V                    SGX1               This leaf function marks a page in the EPC as blocked.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                  RCX
+IR    EBLOCK (In) Return error code (Out)  Effective address of the EPC page (In)
+
+Description ¶
+
+This leaf function causes an EPC page to be marked as BLOCKED. This instruction can only be executed when current privilege level is 0.
+
+The content of RCX is an effective address of an EPC page. The DS segment is used to create linear address. Segment override is not supported.
+
+An error code is returned in RAX.
+
+The table below provides additional information on the memory parameter of EBLOCK leaf function.
+
+EBLOCK Memory Parameter Semantics ¶
+
+EPCPAGE
+Read/Write access permitted by Enclave
+
+The error codes are:
+
+Error Code (see Table 38-4)                                                                                                         Description
+No Error                    EBLOCK successful.
+SGX_BLKSTATE                Page already blocked. This value is used to indicate to a VMM that the page was already in BLOCKED state as a result of EBLOCK and thus will need to be restored to this state when it is eventually reloaded (using ELDB).
+SGX_ENTRYEPOCH_LOCKED       SECS locked for Entry Epoch update. This value indicates that an ETRACK is currently executing on the SECS. The EBLOCK should be reattempted.
+SGX_NOTBLOCKABLE            Page type is not one which can be blocked.
+SGX_PG_INVLD                Page is not valid and cannot be blocked.
+SGX_EPC_PAGE_CONFLICT       Page is being written by EADD, EAUG, ECREATE, ELDU/B, EMODT, or EWB.
+
+
+Table 38-12. EBLOCK Return Value in RAX
+
+Concurrency Restrictions ¶
+
+ Leaf     Parameter                      Base Concurrency Restrictions
+                       Access       On Conflict       SGX_CONFLICT VM Exit Qualification
+EBLOCK Target [DS:RCX] Shared SGX_EPC_PAGE_ CONFLICT
+
+
+Table 38-13. Base Concurrency Restrictions of EBLOCK
+
+                                                                                                                       Additional Concurrency Restrictions
+ Leaf   Parameter     vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On      vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                   Conflict EMODPE, EMODPR, EMODT                                                                                       ETRACK, ETRACKC                           ETRACKC
+                                                         Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EBLOCK Target       Concurrent                                                                                                                                                    Concurrent                                                  Concurrent
+       [DS:RCX]
+
+
+Table 38-14. Additional Concurrency Restrictions of EBLOCK
+

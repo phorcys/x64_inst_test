@@ -1,0 +1,35 @@
+  • Index
+  • December 2023
+
+VGETEXPSD — Convert Exponents of Scalar Double Precision Floating-Point Value to DoublePrecision Floating-Point Value
+
+                                            Op/ 64/32 Bit Mode    CPUID
+            Opcode/Instruction              En     Support       Feature                                                                                       Description
+                                                                  Flag
+EVEX.LLIG.66.0F38.W1 43 /r VGETEXPSD xmm1   A   V/V            AVX512F     Convert the biased exponent (bits 62:52) of the low double precision floating-point value in xmm3/m64 to a double precision floating-point value representing unbiased integer
+{k1}{z}, xmm2, xmm3/m64{sae}                                               exponent. Stores the result to the low 64-bit of xmm1 under the writemask k1 and merge with the other elements of xmm2.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple Type     Operand 1     Operand 2     Operand 3   Operand 4
+A     Tuple1 Scalar ModRM:reg (w) EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Extracts the biased exponent from the normalized double precision floating-point representation of the low qword data element of the source operand (the third operand) as unbiased signed integer value, or convert the denormal representation of input data
+to unbiased negative integer values. The integer value of the unbiased exponent is converted to double precision floating-point value and written to the destination operand (the first operand) as double precision floating-point numbers. Bits (127:64) of
+the XMM register destination are copied from corresponding bits in the first source operand.
+
+The destination must be a XMM register, the source operand can be a XMM register or a float64 memory location.
+
+If writemasking is used, the low quadword element of the destination operand is conditionally updated depending on the value of writemask register k1. If writemasking is not used, the low quadword element of the destination operand is unconditionally
+updated.
+
+Each GETEXP operation converts the exponent value into a floating-point number (permitting input value in denormal representation). Special cases of input values are listed in Table 5-15.
+
+The formula is:
+
+GETEXP(x) = floor(log[2](|x|))
+
+Notation floor(x) stands for maximal integer not exceeding real number x.
+

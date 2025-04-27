@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+VCVTQQ2PH — Convert Packed Signed Quadword Integers to Packed FP16 Values
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode
+Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32    Support                                           Description
+                                                                         CPUID Feature
+                                                                                                                                                                           AVX512-FP16 Convert two packed signed quadword integers in xmm2/m128/m64bcst to
+EVEX.128.NP.MAP5.W1 5B /r VCVTQQ2PH xmm1{k1}{z}, xmm2/m128/m64bcst                                                                                               A V/V     AVX512VL    packed FP16 values, and store the result in xmm1 subject to writemask
+                                                                                                                                                                                       k1.
+                                                                                                                                                                           AVX512-FP16 Convert four packed signed quadword integers in ymm2/m256/m64bcst to
+EVEX.256.NP.MAP5.W1 5B /r VCVTQQ2PH xmm1{k1}{z}, ymm2/m256/m64bcst                                                                                               A V/V     AVX512VL    packed FP16 values, and store the result in xmm1 subject to writemask
+                                                                                                                                                                                       k1.
+                                                                                                                                                                                       Convert eight packed signed quadword integers in zmm2/m512/m64bcst to
+EVEX.512.NP.MAP5.W1 5B /r VCVTQQ2PH xmm1{k1}{z}, zmm2/m512/m64bcst {er}                                                                                          A V/V     AVX512-FP16 packed FP16 values, and store the result in xmm1 subject to writemask
+                                                                                                                                                                                       k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts packed signed quadword integers in the source operand to packed FP16 values in the destination operand. The destination elements are updated according to the writemask.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+
+If the result of the convert operation is overflow and MXCSR.OM=0 then a SIMD exception will be raised with OE=1, PE=1.
+

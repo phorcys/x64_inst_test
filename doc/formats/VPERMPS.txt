@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+VPERMPS — Permute Single Precision Floating-Point Elements
+
+                         Opcode/Instruction                          Op/En    64/32 bit Mode       CPUID Feature                                                                   Description
+                                                                                  Support              Flag
+VEX.256.66.0F38.W0 16 /r VPERMPS ymm1, ymm2, ymm3/m256               A     V/V                   AVX2              Permute single-precision floating-point elements in ymm3/m256 using indices in ymm2 and store the result in ymm1.
+EVEX.256.66.0F38.W0 16 /r VPERMPS ymm1 {k1}{z}, ymm2, ymm3/m256/     B     V/V                   AVX512VL AVX512F  Permute single-precision floating-point elements in ymm3/m256/m32bcst using indexes in ymm2 and store the result in ymm1 subject to write
+m32bcst                                                                                                            mask k1.
+EVEX.512.66.0F38.W0 16 /r VPERMPS zmm1 {k1}{z}, zmm2, zmm3/m512/     B     V/V                   AVX512F           Permute single-precision floating-point values in zmm3/m512/m32bcst using indices in zmm2 and store the result in zmm1 subject to write
+m32bcst                                                                                                            mask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     N/A        ModRM:reg (w)  VEX.vvvv (r)   ModRM:r/m (r)  N/A
+B     Full       ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+Copies doubleword elements of single-precision floating-point values from the second source operand (the third operand) to the destination operand (the first operand) according to the indices in the first source operand (the second operand). Note that
+this instruction permits a doubleword in the source operand to be copied to more than one location in the destination operand.
+
+VEX.256 versions: The first and second operands are YMM registers, the third operand can be a YMM register or memory location. Bits (MAXVL-1:256) of the corresponding destination register are zeroed.
+
+EVEX encoded version: The first and second operands are ZMM registers, the third operand can be a ZMM register, a 512-bit memory location or a 512-bit vector broadcasted from a 32-bit memory location. The elements in the destination are updated using the
+writemask k1.
+
+If VPERMPS is encoded with VEX.L= 0, an attempt to execute the instruction encoded with VEX.L= 0 will cause an #UD exception.
+

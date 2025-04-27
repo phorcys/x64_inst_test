@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+STAC — Set AC Flag in EFLAGS Register
+
+Opcode/Instruction Op / En 64/32 bit Mode Support CPUID Feature Flag               Description
+NP 0F 01 CB STAC   ZO      V/V                    SMAP               Set the AC flag in the EFLAGS register.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+Sets the AC flag bit in EFLAGS register. This may enable alignment checking of user-mode data accesses. This allows explicit supervisor-mode data accesses to user-mode pages even if the SMAP bit is set in the CR4 register.
+
+This instruction's operation is the same in non-64-bit modes and 64-bit mode. Attempts to execute STAC when CPL > 0 cause #UD.
+

@@ -1,0 +1,20 @@
+  • Index
+  • December 2023
+
+RDPID — Read Processor ID
+
+  Opcode/Instruction   Op/En 64/32-bit Mode CPUID Feature Flag         Description
+F3 0F C7 /7 RDPID r32  R     N.E./V         RDPID              Read IA32_TSC_AUX into r32.
+F3 0F C7 /7 RDPID r64  R     V/N.E.         RDPID              Read IA32_TSC_AUX into r64.
+
+Instruction Operand Encoding^1 ¶
+
+    1.ModRM.MOD = 011B required
+
+Op/En   Operand 1    Operand 2 Operand 3 Operand 4
+R     ModRM:r/m (w)  N/A       N/A       N/A
+
+Description ¶
+
+Reads the value of the IA32_TSC_AUX MSR (address C0000103H) into the destination register. The value of CS.D and operand-size prefixes (66H and REX.W) do not affect the behavior of the RDPID instruction.
+

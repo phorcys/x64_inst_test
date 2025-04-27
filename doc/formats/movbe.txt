@@ -1,0 +1,29 @@
+  • Index
+  • December 2023
+
+MOVBE — Move Data After Swapping Bytes
+
+        Opcode/Instruction         Op/En 64/32 bit Mode Support CPUID Feature Flag                 Description
+0F 38 F0 /r MOVBE r16, m16         RM    V/V                    MOVBE              Reverse byte order in m16 and move to r16.
+0F 38 F0 /r MOVBE r32, m32         RM    V/V                    MOVBE              Reverse byte order in m32 and move to r32.
+REX.W + 0F 38 F0 /r MOVBE r64, m64 RM    V/N.E.                 MOVBE              Reverse byte order in m64 and move to r64.
+0F 38 F1 /r MOVBE m16, r16         MR    V/V                    MOVBE              Reverse byte order in r16 and move to m16.
+0F 38 F1 /r MOVBE m32, r32         MR    V/V                    MOVBE              Reverse byte order in r32 and move to m32.
+REX.W + 0F 38 F1 /r MOVBE m64, r64 MR    V/N.E.                 MOVBE              Reverse byte order in r64 and move to m64.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+MR    ModRM:r/m (w)  ModRM:reg (r)  N/A       N/A
+
+Description ¶
+
+Performs a byte swap operation on the data copied from the second operand (source operand) and store the result in the first operand (destination operand). The source operand can be a general-purpose register, or memory location; the destination register
+can be a general-purpose register, or a memory location; however, both operands can not be registers, and only one operand can be a memory location. Both operands must be the same size, which can be a word, a doubleword or quadword.
+
+The MOVBE instruction is provided for swapping the bytes on a read from memory or on a write to memory; thus providing support for converting little-endian values to big-endian format and vice versa.
+
+In 64-bit mode, the instruction's default operation size is 32 bits. Use of the REX.R prefix permits access to additional registers (R8-R15). Use of the REX.W prefix promotes operation to 64 bits. See the summary chart at the beginning of this section
+for encoding data and limits.
+

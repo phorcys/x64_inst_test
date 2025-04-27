@@ -1,0 +1,40 @@
+  • Index
+  • December 2023
+
+XSAVEOPT — Save Processor Extended States Optimized
+
+        Opcode/Instruction         Op/En 64/32 bit Mode Support CPUID Feature Flag                                 Description
+NP 0F AE /6 XSAVEOPT mem           M     V/V                    XSAVEOPT           Save state components specified by EDX:EAX to mem, optimizing if possible.
+NP REX.W + 0F AE /6 XSAVEOPT64 mem M     V/V                    XSAVEOPT           Save state components specified by EDX:EAX to mem, optimizing if possible.
+
+Instruction Operand Encoding ¶
+
+Op/En     Operand 1     Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (r, w)  N/A       N/A       N/A
+
+Description ¶
+
+Performs a full or partial save of processor state components to the XSAVE area located at the memory address specified by the destination operand. The implicit EDX:EAX register pair specifies a 64-bit instruction mask. The specific state components
+saved correspond to the bits set in the requested-feature bitmap (RFBM), which is the logical-AND of EDX:EAX and XCR0.
+
+The format of the XSAVE area is detailed in Section 13.4, “XSAVE Area,” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1. Like FXRSTOR and FXSAVE, the memory format used for x87 state depends on a REX.W prefix; see Section
+13.5.1, “x87 State” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1.
+
+Section 13.9, “Operation of XSAVEOPT,” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1 provides a detailed description of the operation of the XSAVEOPT instruction. The following items provide a highlevel outline:
+
+  • Execution of XSAVEOPT is similar to that of XSAVE. XSAVEOPT differs from XSAVE in that it may use the init and modified optimizations. The performance of XSAVEOPT will be equal to or better than that of XSAVE.
+  • XSAVEOPT saves state component i only if RFBM[i] = 1 and XINUSE[i] = 1.^1 (XINUSE is a bitmap by which the processor tracks the status of various state components. See Section 13.6, “Processor Tracking of XSAVEManaged State,” of the Intel^® 64 and
+    IA-32 Architectures Software Developer’s Manual, Volume 1.) Even if both bits are 1, XSAVEOPT may optimize and not save state component i if (1) state component i has not been modified since the last execution of XRSTOR or XRSTORS; and (2) this
+    execution of XSAVES corresponds to that last execution of XRSTOR or XRSTORS as determined by the internal value XRSTOR_INFO (see the Operation section below).
+  • XSAVEOPT does not modify bytes 511:464 of the legacy region of the XSAVE area (see Section 13.4.1, “Legacy Region of an XSAVE Area” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1).
+  • XSAVEOPT reads the XSTATE_BV field of the XSAVE header (see Section 13.4.2, “XSAVE Header,” of the Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1) and writes a modified value back to memory as follows. If RFBM[i] = 1,
+    XSAVEOPT writes XSTATE_BV[i] with the value of XINUSE[i]. If RFBM[i] = 0, XSAVEOPT writes XSTATE_BV[i] with the value that it read from memory (it does not modify the bit). XSAVEOPT does not write to any part of the XSAVE header other than the
+    XSTATE_BV field.
+  • XSAVEOPT always uses the standard format of the extended region of the XSAVE area (see Section 13.4.3, “Extended Region of an XSAVE Area” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1).
+
+    1. There is an exception made for MXCSR and MXCSR_MASK, which belong to state component 1 — SSE. XSAVEOPT always saves these to memory if RFBM[1] = 1 or RFBM[2] = 1, regardless of the value of XINUSE.
+
+Use of a destination operand not aligned to 64-byte boundary (in either 64-bit or 32-bit modes) will result in a general-protection (#GP) exception. In 64-bit mode, the upper 32 bits of RDX and RAX are ignored.
+
+See Section 13.6, “Processor Tracking of XSAVE-Managed State,” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1 for discussion of the bitmap XMODIFIED and of the quantity XRSTOR_INFO.
+

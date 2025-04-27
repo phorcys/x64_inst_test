@@ -1,0 +1,36 @@
+  • Index
+  • December 2023
+
+AESDECLAST — Perform Last Round of an AES Decryption Flow
+
+                Opcode/Instruction                  Op/   64/32-bit    CPUID Feature                                                                                Description
+                                                     En      Mode          Flag
+66 0F 38 DF /r AESDECLAST xmm1, xmm2/m128           A    V/V          AES             Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, using one 128-bit data (state) from xmm1 with one 128-bit round key from xmm2/
+                                                                                      m128.
+VEX.128.66.0F38.WIG DF /r VAESDECLAST xmm1, xmm2,   B    V/V          AES AVX         Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, using one 128-bit data (state) from xmm2 with one 128-bit round key from xmm3/
+xmm3/m128                                                                             m128; store the result in xmm1.
+VEX.256.66.0F38.WIG DF /r VAESDECLAST ymm1, ymm2,   B    V/V          VAES            Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, using two 128-bit data (state) from ymm2 with two 128-bit round keys from ymm3/
+ymm3/m256                                                                             m256; store the result in ymm1.
+EVEX.128.66.0F38.WIG DF /r VAESDECLAST xmm1, xmm2,  C    V/V          VAES AVX512VL   Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, using one 128-bit data (state) from xmm2 with one 128-bit round key from xmm3/
+xmm3/m128                                                                             m128; store the result in xmm1.
+EVEX.256.66.0F38.WIG DF /r VAESDECLAST ymm1, ymm2,  C    V/V          VAES AVX512VL   Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, using two 128-bit data (state) from ymm2 with two 128-bit round keys from ymm3/
+ymm3/m256                                                                             m256; store the result in ymm1.
+EVEX.512.66.0F38.WIG DF /r VAESDECLAST zmm1, zmm2,  C    V/V          VAES AVX512F    Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, using four128-bit data (state) from zmm2 with four 128-bit round keys from zmm3/
+zmm3/m512                                                                             m512; store the result in zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple       Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A      ModRM:reg (r, w)  ModRM:r/m (r) N/A           N/A
+B     N/A      ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) N/A
+C     Full Mem ModRM:reg (w)     EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+This instruction performs the last round of the AES decryption flow using the Equivalent Inverse Cipher, using one/two/four (depending on vector length) 128-bit data (state) from the first source operand with one/two/four (depending on vector length)
+round key(s) from the second source operand, and stores the result in the destination operand.
+
+VEX and EVEX encoded versions of the instruction allow 3-operand (non-destructive) operation. The legacy encoded versions of the instruction require that the first source operand and the destination operand are the same and must be an XMM register.
+
+The EVEX encoded form of this instruction does not support memory fault suppression.
+

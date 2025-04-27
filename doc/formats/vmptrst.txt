@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+VMPTRST — Store Pointer to Virtual-Machine Control Structure
+
+   Opcode/Instruction    Op/En                  Description
+NP 0F C7 /7 VMPTRST m64  M     Stores the current VMCS pointer into memory.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1      Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (w)  NA        NA        NA
+
+Description ¶
+
+Stores the current-VMCS pointer into a specified memory address. The operand of this instruction is always 64 bits and is always in memory.
+

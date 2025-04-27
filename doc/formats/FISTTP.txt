@@ -1,0 +1,35 @@
+  • Index
+  • December 2023
+
+FISTTP — Store Integer With Truncation
+
+Opcode  Instruction  64-Bit Mode Compat/Leg Mode                Description
+DF /1  FISTTP m16int Valid       Valid            Store ST(0) in m16int with truncation.
+DB /1  FISTTP m32int Valid       Valid            Store ST(0) in m32int with truncation.
+DD /1  FISTTP m64int Valid       Valid            Store ST(0) in m64int with truncation.
+
+Description ¶
+
+FISTTP converts the value in ST into a signed integer using truncation (chop) as rounding mode, transfers the result to the destination, and pop ST. FISTTP accepts word, short integer, and long integer destinations.
+
+The following table shows the results obtained when storing various classes of numbers in integer format.
+
+                 ST(0)                   DEST
+− ∞ or Value Too Large for DEST Format   *
+F≤ −1                                    −I
+−1<F<+1                                  0
+FŠ+1                                     +I
++ ∞ or Value Too Large for DEST Format   *
+NaN                                      *
+
+
+Table 3-28. FISTTP Results
+
+    F Meansfinitefloating-pointvalue.
+
+    Ι Means integer.
+
+    ∗ Indicates floating-point invalid-operation (#IA) exception.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

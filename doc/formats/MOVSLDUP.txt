@@ -1,0 +1,37 @@
+  • Index
+  • December 2023
+
+MOVSLDUP — Replicate Single Precision Floating-Point Values
+
+                   Opcode/Instruction                     Op / En 64/32 bit Mode Support CPUID Feature Flag                                                         Description
+F3 0F 12 /r MOVSLDUP xmm1, xmm2/m128                      A       V/V                    SSE3               Move even index single precision floating-point values from xmm2/mem and duplicate each element into xmm1.
+VEX.128.F3.0F.WIG 12 /r VMOVSLDUP xmm1, xmm2/m128         A       V/V                    AVX                Move even index single precision floating-point values from xmm2/mem and duplicate each element into xmm1.
+VEX.256.F3.0F.WIG 12 /r VMOVSLDUP ymm1, ymm2/m256         A       V/V                    AVX                Move even index single precision floating-point values from ymm2/mem and duplicate each element into ymm1.
+EVEX.128.F3.0F.W0 12 /r VMOVSLDUP xmm1 {k1}{z}, xmm2/m128 B       V/V                    AVX512VL AVX512F   Move even index single precision floating-point values from xmm2/m128 and duplicate each element into xmm1 under writemask.
+EVEX.256.F3.0F.W0 12 /r VMOVSLDUP ymm1 {k1}{z}, ymm2/m256 B       V/V                    AVX512VL AVX512F   Move even index single precision floating-point values from ymm2/m256 and duplicate each element into ymm1 under writemask.
+EVEX.512.F3.0F.W0 12 /r VMOVSLDUP zmm1 {k1}{z}, zmm2/m512 B       V/V                    AVX512F            Move even index single precision floating-point values from zmm2/m512 and duplicate each element into zmm1 under writemask.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     N/A        ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+B     Full Mem   ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Duplicates even-indexed single precision floating-point values from the source operand (the second operand). See Figure 4-4. The source operand is an XMM, YMM or ZMM register or 128, 256 or 512-bit memory location and the destination operand is an XMM,
+YMM or ZMM register.
+
+128-bit Legacy SSE version: Bits (MAXVL-1:128) of the corresponding destination register remain unchanged.
+
+VEX.128 encoded version: Bits (MAXVL-1:128) of the destination register are zeroed.
+
+VEX.256 encoded version: Bits (MAXVL-1:256) of the destination register are zeroed.
+
+EVEX encoded version: The destination operand is updated at 32-bit granularity according to the writemask.
+
+Note: VEX.vvvv and EVEX.vvvv are reserved and must be 1111b otherwise instructions will #UD.
+
+X7 X6 X5 X4 X3 X2 X1 X0 SRC DEST X6 X6 X4 X4 X2 X2 X0 X0
+Figure 4-4. MOVSLDUP Operation
+

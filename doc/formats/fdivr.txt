@@ -1,0 +1,59 @@
+  • Index
+  • December 2023
+
+FDIVR/FDIVRP/FIDIVR — Reverse Divide
+
+Opcode      Instruction     64-Bit Mode Compat/Leg Mode                                Description
+D8 /7   FDIVR m32fp         Valid       Valid           Divide m32fp by ST(0) and store result in ST(0).
+DC /7   FDIVR m64fp         Valid       Valid           Divide m64fp by ST(0) and store result in ST(0).
+D8 F8+i FDIVR ST(0), ST(i)  Valid       Valid           Divide ST(i) by ST(0) and store result in ST(0).
+DC F0+i FDIVR ST(i), ST(0)  Valid       Valid           Divide ST(0) by ST(i) and store result in ST(i).
+DE F0+i FDIVRP ST(i), ST(0) Valid       Valid           Divide ST(0) by ST(i), store result in ST(i), and pop the register stack.
+DE F1   FDIVRP              Valid       Valid           Divide ST(0) by ST(1), store result in ST(1), and pop the register stack.
+DA /7   FIDIVR m32int       Valid       Valid           Divide m32int by ST(0) and store result in ST(0).
+DE /7   FIDIVR m16int       Valid       Valid           Divide m16int by ST(0) and store result in ST(0).
+
+Description ¶
+
+Divides the source operand by the destination operand and stores the result in the destination location. The destination operand (divisor) is always in an FPU register; the source operand (dividend) can be a register or a memory location. Source operands
+in memory can be in single precision or double precision floating-point format, word or doubleword integer format.
+
+These instructions perform the reverse operations of the FDIV, FDIVP, and FIDIV instructions. They are provided to support more efficient coding.
+
+The no-operand version of the instruction divides the contents of the ST(0) register by the contents of the ST(1) register. The one-operand version divides the contents of a memory location (either a floating-point or an integer value) by the contents of
+the ST(0) register. The two-operand version, divides the contents of the ST(i) register by the contents of the ST(0) register or vice versa.
+
+The FDIVRP instructions perform the additional operation of popping the FPU register stack after storing the result. To pop the register stack, the processor marks the ST(0) register as empty and increments the stack pointer (TOP) by 1. The no-operand
+version of the floating-point divide instructions always results in the register stack being popped. In some assemblers, the mnemonic for this instruction is FDIVR rather than FDIVRP.
+
+The FIDIVR instructions convert an integer source operand to double extended-precision floating-point format before performing the division.
+
+If an unmasked divide-by-zero exception (#Z) is generated, no result is stored; if the exception is masked, an ∞ of the appropriate sign is stored in the destination operand.
+
+The following table shows the results obtained when dividing various classes of numbers, assuming that neither overflow nor underflow occurs.
+
+               DEST
+        −∞  −F  −0  +0  +F  +∞  NaN
+    −∞  *   +∞  +∞  −∞  −∞  *   NaN
+    −F  +0  +F  **  **  −F  −0  NaN
+    −I  +0  +F  **  **  −F  −0  NaN
+SRC −0  +0  +0  *   *   −0  −0  NaN
+    +0  −0  −0  *   *   +0  +0  NaN
+    +I  −0  −F  **  **  +F  +0  NaN
+    +F  −0  −F  **  **  +F  +0  NaN
+    +∞  *   −∞  −∞  +∞  +∞  *   NaN
+    NaN NaN NaN NaN NaN NaN NaN NaN
+
+
+Table 3-25. FDIVR/FDIVRP/FIDIVR Results
+
+    F Means finite floating-point value.
+
+    I Means integer.
+
+    * Indicatesfloating-pointinvalid-arithmetic-operand(#IA)exception.
+
+    ** Indicates floating-point zero-divide (#Z) exception.
+
+When the source operand is an integer 0, it is treated as a +0. This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

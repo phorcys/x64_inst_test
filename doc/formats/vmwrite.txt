@@ -1,0 +1,27 @@
+  • Index
+  • December 2023
+
+VMWRITE — Write Field to Virtual-Machine Control Structure
+
+     Opcode/Instruction      Op/En                      Description
+NP 0F 79 VMWRITE r64, r/m64  RM    Writes a specified VMCS field (in 64-bit mode).
+NP 0F 79 VMWRITE r32, r/m32  RM    Writes a specified VMCS field (outside 64-bit mode).
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1      Operand 2      Operand 3 Operand 4
+RM    ModRM:reg (r)  ModRM:r/m (r)  NA        NA
+
+Description ¶
+
+Writes the contents of a primary source operand (register or memory) to a specified field in a VMCS. In VMX root operation, the instruction writes to the current VMCS. If executed in VMX non-root operation, the instruction writes to the VMCS referenced
+by the VMCS link pointer field in the current VMCS.
+
+The VMCS field is specified by the VMCS-field encoding contained in the register secondary source operand. Outside IA-32e mode, the secondary source operand is always 32 bits, regardless of the value of CS.D. In 64-bit mode, the secondary source operand
+has 64 bits.
+
+The effective size of the primary source operand, which may be a register or in memory, is always 32 bits outside IA-32e mode (the setting of CS.D is ignored with respect to operand size) and 64 bits in 64-bit mode. If the VMCS field specified by the
+secondary source operand is shorter than this effective operand size, the high bits of the primary source operand are ignored. If the VMCS field is longer, then the high bits of the field are cleared to 0.
+
+Note that any faults resulting from accessing a memory source operand occur after determining, in the operation section below, that the relevant VMCS pointer is valid but before determining if the destination VMCS field is supported.
+

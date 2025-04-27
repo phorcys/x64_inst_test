@@ -1,0 +1,64 @@
+  • Index
+  • December 2023
+
+EACCEPTCOPY — Initialize a Pending Page
+
+     Opcode/Instruction      Op/En 64/32 bit Mode Support CPUID Feature Flag                                          Description
+EAX = 07H ENCLU[EACCEPTCOPY] IR    V/V                    SGX2               This leaf function initializes a dynamically allocated EPC page from another page in the EPC.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                      RBX                       RCX                                       RDX
+IR    EACCEPTCOPY (In) Return Error Code (Out) Address of a SECINFO (In) Address of the destination EPC page (In)  Address of the source EPC page (In)
+
+Description ¶
+
+This leaf function copies the contents of an existing EPC page into an uninitialized EPC page (created by EAUG). After initialization, the instruction may also modify the access rights associated with the destination EPC page. This instruction leaf can
+only be executed when inside the enclave.
+
+RBX contains the effective address of a SECINFO structure while RCX and RDX each contain the effective address of an EPC page. The table below provides additional information on the memory parameter of the EACCEPTCOPY leaf function.
+
+EACCEPTCOPY Memory Parameter Semantics ¶
+
+SECINFO                              EPCPAGE (Destination)                   EPCPAGE (Source)
+Read access permitted by Non Enclave Read/Write access permitted by Enclave  Read access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EACCEPTCOPY Faulting Conditions ¶
+
+The operands are not properly aligned.    If security attributes of the SECINFO page make the page inaccessible.
+The EPC page is locked by another thread. If security attributes of the source EPC page make the page inaccessible.
+The EPC page is not valid.                RBX does not contain an effective address in an EPC page in the running enclave.
+SECINFO contains an invalid request.      RCX/RDX does not contain an effective address of an EPC page in the running enclave.
+
+The error codes are:
+
+ Error Code (see Table 38-4)                                Description
+No Error                      EACCEPTCOPY successful.
+SGX_PAGE_ATTRIBUTES_MISMATCH  The attributes of the target EPC page do not match the expected values.
+
+
+Table 38-57. EACCEPTCOPY Return Value in RAX
+
+Concurrency Restrictions ¶
+
+   Leaf         Parameter                   Base Concurrency Restrictions
+                                Access   On Conflict SGX_CONFLICT VM Exit Qualification
+            Target [DS:RCX]   Concurrent
+EACCEPTCOPY Source [DS:RDX]   Concurrent
+            SECINFO [DS:RBX]  Concurrent
+
+
+Table 38-58. Base Concurrency Restrictions of EACCEPTCOPY
+
+                                                           Additional Concurrency Restrictions
+   Leaf        Parameter     vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                     Access                On Conflict          Access    On Conflict    Access   On Conflict
+            Target [DS:RCX]  Exclusive              #GP                       Concurrent               Concurrent
+EACCEPTCOPY Source [DS:RDX]  Concurrent                                       Concurrent               Concurrent
+            SECINFO [DS:RBX] Concurrent                                       Concurrent               Concurrent
+
+
+Table 38-59. Additional Concurrency Restrictions of EACCEPTCOPY
+

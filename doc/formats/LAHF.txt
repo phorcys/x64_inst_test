@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+LAHF — Load Status Flags Into AH Register
+
+Opcode  En Mode Leg Mode                 Description
+9F                       Load: AH := EFLAGS(SF:ZF:0:AF:0:PF:1:CF).
+
+1. Valid in specific steppings; see Description section.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+This instruction executes as described above in compatibility mode and legacy mode. It is valid in 64-bit mode only if CPUID.80000001H:ECX.LAHF-SAHF[bit 0] = 1.
+

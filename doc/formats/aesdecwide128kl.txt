@@ -1,0 +1,18 @@
+  • Index
+  • December 2023
+
+AESDECWIDE128KL — Perform Ten Rounds of AES Decryption Flow With Key Locker on 8 BlocksUsing 128-Bit Key
+
+                   Opcode/Instruction                    Op/En 64/32-bit Mode CPUID Feature Flag                                                             Description
+F3 0F 38 D8 !(11):001:bbb AESDECWIDE128KL m384, <XMM0-7> A     V/V            AESKLEWIDE_KL      Decrypt XMM0-7 using 128-bit AES key indicated by handle at m384 and store each resultant block back to its corresponding register.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1         Operands 2—9
+A     N/A   ModRM:r/m (r)  Implicit XMM0-7 (r, w)
+
+Description ¶
+
+The AESDECWIDE128KL^1 instruction performs ten rounds of AES to decrypt each of the eight blocks in XMM0-7 using the 128-bit key indicated by the handle from the second operand. It replaces each input block in XMM0-7 with its corresponding decrypted
+block if the operation succeeds (e.g., does not run into a handle violation failure).
+

@@ -1,0 +1,54 @@
+  • Index
+  • December 2023
+
+ECREATE — Create an SECS page in the Enclave Page Cache
+
+   Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                                 Description
+EAX = 00H ENCLS[ECREATE] IR    V/V                    SGX1               This leaf function begins an enclave build by creating an SECS page in EPC.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX          RBX                         RCX
+IR    ECREATE (In) Address of a PAGEINFO (In)  Address of the destination SECS page (In)
+
+Description ¶
+
+ENCLS[ECREATE] is the first instruction executed in the enclave build process. ECREATE copies an SECS structure outside the EPC into an SECS page inside the EPC. The internal structure of SECS is not accessible to software.
+
+ECREATE will set up fields in the protected SECS and mark the page as valid inside the EPC. ECREATE initializes or checks unused fields.
+
+Software sets the following fields in the source structure: SECS:BASEADDR, SECS:SIZE in bytes, ATTRIBUTES, CONFIGID, and CONFIGSVN. SECS:BASEADDR must be naturally aligned on an SECS.SIZE boundary. SECS.SIZE must be at least 2 pages (8192).
+
+The source operand RBX contains an effective address of a PAGEINFO structure. PAGEINFO contains an effective address of a source SECS and an effective address of an SECINFO. The SECS field in PAGEINFO is not used.
+
+The RCX register is the effective address of the destination SECS. It is an address of an empty slot in the EPC. The SECS structure must be page aligned. SECINFO flags must specify the page as an SECS page.
+
+ECREATE Memory Parameter Semantics ¶
+
+PAGEINFO                             PAGEINFO.SRCPGE                      PAGEINFO.SECINFO                     EPCPAGE
+Read access permitted by Non Enclave Read access permitted by Non Enclave Read access permitted by Non Enclave Write access permitted by Enclave
+
+ECREATE will fault if the SECS target page is in use; already valid; outside the EPC. It will also fault if addresses are not aligned; unused PAGEINFO fields are not zero.
+
+If the amount of space needed to store the SSA frame is greater than the amount specified in SECS.SSAFRAMESIZE, a #GP(0) results. The amount of space needed for an SSA frame is computed based on DS:TMP_SECS.ATTRIBUTES.XFRM size. Details of computing the
+size can be found Section 39.7.
+
+Concurrency Restrictions ¶
+
+                               Leaf                                  Parameter   Base Concurrency Restrictions
+                                                                                          On Conflict
+ECREATE ECREATE SECS [DS:RCX] Exclusive #GP ECREATE SECS [DS:RCX]  SECS [DS:RCX]
+
+
+Table 38-15. Base Concurrency Restrictions of ECREATE
+
+                                                                                                                       Additional Concurrency Restrictions
+ Leaf   Parameter    vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On       vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                   Conflict EMODPE, EMODPR, EMODT                                                                                       ETRACK, ETRACKC                           ETRACKC
+                                                        Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+ECREATE SECS       Concurrent                                                                                                                                                     Concurrent                                                  Concurrent
+        [DS:RCX]
+
+
+Table 38-16. Additional Concurrency Restrictions of ECREATE
+

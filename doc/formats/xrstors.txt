@@ -1,0 +1,38 @@
+  • Index
+  • December 2023
+
+XRSTORS — Restore Processor Extended States Supervisor
+
+      Opcode / Instruction        Op/En 64/32 bit Mode Support CPUID Feature Flag                       Description
+NP 0F C7 /3 XRSTORS mem           M     V/V                    XSS                Restore state components specified by EDX:EAX from mem.
+NP REX.W + 0F C7 /3 XRSTORS64 mem M     V/N.E.                 XSS                Restore state components specified by EDX:EAX from mem.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1    Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (r)  N/A       N/A       N/A
+
+Description ¶
+
+Performs a full or partial restore of processor state components from the XSAVE area located at the memory address specified by the source operand. The implicit EDX:EAX register pair specifies a 64-bit instruction mask. The specific state components
+restored correspond to the bits set in the requested-feature bitmap (RFBM), which is the logical-AND of EDX:EAX and the logical-OR of XCR0 with the IA32_XSS MSR. XRSTORS may be executed only if CPL = 0.
+
+The format of the XSAVE area is detailed in Section 13.4, “XSAVE Area,” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1. Like FXRSTOR and FXSAVE, the memory format used for x87 state depends on a REX.W prefix; see Section
+13.5.1, “x87 State” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1.
+
+Section 13.12, “Operation of XRSTORS,” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1 provides a detailed description of the operation of the XRSTOR instruction. The following items provide a high-level outline:
+
+  • Execution of XRSTORS is similar to that of the compacted form of XRSTOR; XRSTORS cannot restore from an XSAVE area in which the extended region is in the standard format (see Section 13.4.3, “Extended Region of an XSAVE Area” of Intel^® 64 and IA-32
+    Architectures Software Developer’s Manual, Volume 1).
+  • XRSTORS differs from XRSTOR in that it can restore state components corresponding to bits set in the IA32_XSS MSR.
+  • If RFBM[i] = 0, XRSTORS does not update state component i.
+  • If RFBM[i] = 1 and bit i is clear in the XSTATE_BV field in the XSAVE header, XRSTORS initializes state component i.
+  • If RFBM[i] = 1 and XSTATE_BV[i] = 1, XRSTORS loads state component i from the XSAVE area.
+  • If XRSTORS attempts to load MXCSR with an illegal value, a general-protection exception (#GP) occurs.
+  • XRSTORS loads the internal value XRSTOR_INFO, which may be used to optimize a subsequent execution of XSAVEOPT or XSAVES.
+  • Immediately following an execution of XRSTORS, the processor tracks as in-use (not in initial configuration) any state component i for which RFBM[i] = 1 and XSTATE_BV[i] = 1; it tracks as modified any state component i for which RFBM[i] = 0.
+
+Use of a source operand not aligned to 64-byte boundary (for 64-bit and 32-bit modes) results in a general-protection (#GP) exception. In 64-bit mode, the upper 32 bits of RDX and RAX are ignored.
+
+See Section 13.6, “Processor Tracking of XSAVE-Managed State,” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1 for discussion of the bitmaps XINUSE and XMODIFIED and of the quantity XRSTOR_INFO.
+

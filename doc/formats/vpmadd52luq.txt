@@ -1,0 +1,27 @@
+  • Index
+  • December 2023
+
+VPMADD52LUQ — Packed Multiply of Unsigned 52-Bit Integers and Add the Low 52-Bit Productsto Qword Accumulators
+
+                        Opcode/Instruction                         Op/     64/32 Bit Mode          CPUID                                                                         Description
+                                                                    En        Support
+EVEX.128.66.0F38.W1 B4 /r VPMADD52LUQ xmm1 {k1}{z}, xmm2,xmm3/m128 A    V/V                  AVX512_IFMA        Multiply unsigned 52-bit integers in xmm2 and xmm3/m128 and add the low 52 bits of the 104-bit product to the qword unsigned integers in xmm1
+/m64bcst                                                                                     AVX512VL           using writemask k1.
+EVEX.256.66.0F38.W1 B4 /r VPMADD52LUQ ymm1 {k1}{z}, ymm2, ymm3/    A    V/V                  AVX512_IFMA        Multiply unsigned 52-bit integers in ymm2 and ymm3/m256 and add the low 52 bits of the 104-bit product to the qword unsigned integers in ymm1
+m256/m64bcst                                                                                 AVX512VL           using writemask k1.
+EVEX.512.66.0F38.W1 B4 /r VPMADD52LUQ zmm1 {k1}{z}, zmm2,zmm3/m512 A    V/V                  AVX512_IFMA        Multiply unsigned 52-bit integers in zmm2 and zmm3/m512 and add the low 52 bits of the 104-bit product to the qword unsigned integers in zmm1
+/m64bcst                                                                                                        using writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type     Operand 1       Operand 2     Operand 3   Operand 4
+A     Full       ModRM:reg (r, w)  EVEX.vvvv (r)  ModRM:r/m(r) N/A
+
+Description ¶
+
+Multiplies packed unsigned 52-bit integers in each qword element of the first source operand (the second operand) with the packed unsigned 52-bit integers in the corresponding elements of the second source operand (the third operand) to form packed
+104-bit intermediate results. The low 52-bit, unsigned integer of each 104-bit product is added to the corresponding qword unsigned integer of the destination operand (the first operand) under the writemask k1.
+
+The first source operand is a ZMM/YMM/XMM register. The second source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcasted from a 64-bit memory location. The destination operand is a ZMM/YMM/XMM
+register conditionally updated with writemask k1 at 64-bit granularity.
+

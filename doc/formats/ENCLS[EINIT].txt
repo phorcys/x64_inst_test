@@ -1,0 +1,100 @@
+  • Index
+  • December 2023
+
+EINIT — Initialize an Enclave for Execution
+
+  Opcode/Instruction   Op/En 64/32 bit Mode Support CPUID Feature Flag                                       Description
+EAX = 02H ENCLS[EINIT] IR    V/V                    SGX1               This leaf function initializes the enclave and makes it ready to execute enclave code.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                         RBX                        RCX                  RDX
+IR    EINIT (In) Error code (Out) Address of SIGSTRUCT (In)  Address of SECS (In) Address of EINITTOKEN (In)
+
+Description ¶
+
+This leaf function is the final instruction executed in the enclave build process. After EINIT, the MRENCLAVE measurement is complete, and the enclave is ready to start user code execution using the EENTER instruction.
+
+EINIT takes the effective address of a SIGSTRUCT and EINITTOKEN. The SIGSTRUCT describes the enclave including MRENCLAVE, ATTRIBUTES, ISVSVN, a 3072 bit RSA key, and a signature using the included key. SIGSTRUCT must be populated with two values, q1 and
+q2. These are calculated using the formulas shown below:
+
+q1 = floor(Signature^2 / Modulus);
+
+q2 = floor((Signature^3 - q1 * Signature * Modulus) / Modulus);
+
+The EINITTOKEN contains the MRENCLAVE, MRSIGNER, and ATTRIBUTES. These values must match the corresponding values in the SECS. If the EINITTOKEN was created with a debug launch key, the enclave must be in debug mode as well.
+
+Signature Verify Hashed PubKey ATTRIBUTES ATTRIBUTEMASK Check MRENCLAVE If VALID=1, Check MRSIGNER SIGSTRUCT MRSIGNER DS:RBX ATTRIBUTES If VALID=1, MRENCLAVE Check DS:RDX EINITTOKEN EINIT Copy ATTRIBUTES SECS DS:RCX MRENCLAVE Check ENCLAVE EPC
+Figure 38-1. Relationships Between SECS, SIGSTRUCT, and EINITTOKEN
+
+EINIT Memory Parameter Semantics ¶
+
+SIGSTRUCT
+
+SECS                          EINITTOKEN
+Read/Write access by Enclave  Access by non-Enclave
+
+Access by non-Enclave
+
+EINIT performs the following steps, which can be seen in Figure 38-1:
+
+1. Validates that SIGSTRUCT is signed using the enclosed public key.
+
+2. Checks that the completed computation of SECS.MRENCLAVE equals SIGSTRUCT.HASHENCLAVE.
+
+3. Checks that no controlled ATTRIBUTES bits are set in SIGSTRUCT.ATTRIBUTES unless the SHA256 digest of SIGSTRUCT.MODULUS equals IA32_SGX_LEPUBKEYHASH.
+
+4. Checks that the result of bitwise and-ing SIGSTRUCT.ATTRIBUTEMASK with SIGSTRUCT.ATTRIBUTES equals the result of bitwise and-ing SIGSTRUCT.ATTRIBUTEMASK with SECS.ATTRIBUTES.
+
+5. If EINITTOKEN.VALID is 0, checks that the SHA256 digest of SIGSTRUCT.MODULUS equals IA32_SGX_LEPUBKEYHASH.
+
+6. If EINITTOKEN.VALID is 1, checks the validity of EINITTOKEN.
+
+7. If EINITTOKEN.VALID is 1, checks that EINITTOKEN.MRENCLAVE equals SECS.MRENCLAVE.
+
+8. If EINITTOKEN.VALID is 1 and EINITTOKEN.ATTRIBUTES.DEBUG is 1, SECS.ATTRIBUTES.DEBUG must be 1.
+
+9. Commits SECS.MRENCLAVE, and sets SECS.MRSIGNER, SECS.ISVSVN, and SECS.ISVPRODID based on SIGSTRUCT.
+
+10. Update the SECS as Initialized.
+
+Periodically, EINIT polls for certain asynchronous events. If such an event is detected, it completes with failure code (ZF=1 and RAX = SGX_UNMASKED_EVENT), and RIP is incremented to point to the next instruction. These events includes external
+interrupts, non-maskable interrupts, system-management interrupts, machine checks, INIT signals, and the VMX-preemption timer. EINIT does not fail if the pending event is inhibited (e.g., external interrupts could be inhibited due to blocking by MOV SS
+blocking or by STI).
+
+The following bits in RFLAGS are cleared: CF, PF, AF, OF, and SF. When the instruction completes with an error, RFLAGS.ZF is set to 1, and the corresponding error bit is set in RAX. If no error occurs, RFLAGS.ZF is cleared and RAX is set to 0.
+
+The error codes are:
+
+Error Code (see Table 38-4)                                            Description
+No Error                    EINIT successful.
+SGX_INVALID_SIG_STRUCT      If SIGSTRUCT contained an invalid value.
+SGX_INVALID_ATTRIBUTE       If SIGSTRUCT contains an unauthorized attributes mask.
+SGX_INVALID_MEASUREMENT     If SIGSTRUCT contains an incorrect measurement. If EINITTOKEN contains an incorrect measurement.
+SGX_INVALID_SIGNATURE       If signature does not validate with enclosed public key.
+SGX_INVALID_LICENSE         If license is invalid.
+SGX_INVALID_CPUSVN          If license SVN is unsupported.
+SGX_UNMASKED_EVENT          If an unmasked event is received before the instruction completes its operation.
+
+
+Table 38-25. EINIT Return Value in RAX
+
+Concurrency Restrictions ¶
+
+                        Leaf                            Parameter   Base Concurrency Restrictions
+                                                                             On Conflict
+EINIT EINIT SECS [DS:RCX] Shared EINIT SECS [DS:RCX]  SECS [DS:RCX]
+
+
+Table 38-26. Base Concurrency Restrictions of EINIT
+
+                                                                                  Additional Concurrency Restrictions
+Leaf Access On Conflict EINIT SECS [DS:RCX] Concurrent Exclusive Access Parameter vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On         vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, vs. ETRACK,
+On Conflict EINIT SECS [DS:RCX] Concurrent                                        Conflict Access vs. ETRACK, ETRACKC Access On Conflict EMODPE, EMODPR, EMODT                                        EINIT vs. ETRACK, ETRACKC                   ETRACKC
+                                                                                  Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EINIT                                                                   SECS      Concurrent                                                                                                                                                      Concurrent
+                                                                        [DS:RCX]
+
+
+Table 38-27. Additional Concurrency Restrictions of ENIT
+

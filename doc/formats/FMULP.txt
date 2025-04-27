@@ -1,0 +1,56 @@
+  • Index
+  • December 2023
+
+FMUL/FMULP/FIMUL — Multiply
+
+Opcode     Instruction     64-Bit Mode Compat/Leg Mode                                 Description
+D8 /1   FMUL m32fp         Valid       Valid           Multiply ST(0) by m32fp and store result in ST(0).
+DC /1   FMUL m64fp         Valid       Valid           Multiply ST(0) by m64fp and store result in ST(0).
+D8 C8+i FMUL ST(0), ST(i)  Valid       Valid           Multiply ST(0) by ST(i) and store result in ST(0).
+DC C8+i FMUL ST(i), ST(0)  Valid       Valid           Multiply ST(i) by ST(0) and store result in ST(i).
+DE C8+i FMULP ST(i), ST(0) Valid       Valid           Multiply ST(i) by ST(0), store result in ST(i), and pop the register stack.
+DE C9   FMULP              Valid       Valid           Multiply ST(1) by ST(0), store result in ST(1), and pop the register stack.
+DA /1   FIMUL m32int       Valid       Valid           Multiply ST(0) by m32int and store result in ST(0).
+DE /1   FIMUL m16int       Valid       Valid           Multiply ST(0) by m16int and store result in ST(0).
+
+Description ¶
+
+Multiplies the destination and source operands and stores the product in the destination location. The destination operand is always an FPU data register; the source operand can be an FPU data register or a memory location. Source operands in memory can
+be in single precision or double precision floating-point format or in word or doubleword integer format.
+
+The no-operand version of the instruction multiplies the contents of the ST(1) register by the contents of the ST(0) register and stores the product in the ST(1) register. The one-operand version multiplies the contents of the ST(0) register by the
+contents of a memory location (either a floating-point or an integer value) and stores the product in the ST(0) register. The two-operand version, multiplies the contents of the ST(0) register by the contents of the ST(i) register, or vice versa, with
+the result being stored in the register specified with the first operand (the destination operand).
+
+The FMULP instructions perform the additional operation of popping the FPU register stack after storing the product. To pop the register stack, the processor marks the ST(0) register as empty and increments the stack pointer (TOP) by 1. The no-operand
+version of the floating-point multiply instructions always results in the register stack being popped. In some assemblers, the mnemonic for this instruction is FMUL rather than FMULP.
+
+The FIMUL instructions convert an integer source operand to double extended-precision floating-point format before performing the multiplication.
+
+The sign of the result is always the exclusive-OR of the source signs, even if one or more of the values being multiplied is 0 or ∞. When the source operand is an integer 0, it is treated as a +0.
+
+The following table shows the results obtained when multiplying various classes of numbers, assuming that neither overflow nor underflow occurs.
+
+               DEST
+        −∞  −F  −0  +0  +F  +∞  NaN
+    −∞  +∞  +∞  *   *   −∞  −∞  NaN
+    −F  +∞  +F  +0  −0  −F  −∞  NaN
+    −I  +∞  +F  +0  −0  −F  −∞  NaN
+SRC −0  *   +0  +0  −0  −0  *   NaN
+    +0  *   −0  −0  +0  +0  *   NaN
+    +I  −∞  −F  −0  +0  +F  +∞  NaN
+    +F  −∞  −F  −0  +0  +F  +∞  NaN
+    +∞  −∞  −∞  *   *   +∞  +∞  NaN
+    NaN NaN NaN NaN NaN NaN NaN NaN
+
+
+Table 3-29. FMUL/FMULP/FIMUL Results
+
+    F Means finite floating-point value.
+
+    I Means Integer.
+
+    * Indicatesinvalid-arithmetic-operand(#IA)exception.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

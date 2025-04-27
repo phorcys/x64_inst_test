@@ -1,0 +1,20 @@
+  • Index
+  • December 2023
+
+KANDNW/KANDNB/KANDNQ/KANDND — Bitwise Logical AND NOT Masks
+
+          Opcode/Instruction            Op/En 64/32 bit Mode Support CPUID Feature Flag                           Description
+VEX.L1.0F.W0 42 /r KANDNW k1, k2, k3    RVR   V/V                    AVX512F            Bitwise AND NOT 16 bits masks k2 and k3 and place result in k1.
+VEX.L1.66.0F.W0 42 /r KANDNB k1, k2, k3 RVR   V/V                    AVX512DQ           Bitwise AND NOT 8 bits masks k1 and k2 and place result in k1.
+VEX.L1.0F.W1 42 /r KANDNQ k1, k2, k3    RVR   V/V                    AVX512BW           Bitwise AND NOT 64 bits masks k2 and k3 and place result in k1.
+VEX.L1.66.0F.W1 42 /r KANDND k1, k2, k3 RVR   V/V                    AVX512BW           Bitwise AND NOT 32 bits masks k2 and k3 and place result in k1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1     Operand 2                  Operand 3
+RVR   ModRM:reg (w)  VEX.1vvv (r) ModRM:r/m (r, ModRM:[7:6] must be 11b)
+
+Description ¶
+
+Performs a bitwise AND NOT between the vector mask k2 and the vector mask k3, and writes the result into vector mask k1.
+

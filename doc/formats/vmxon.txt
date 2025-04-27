@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+VMXON — Enter VMX Operation
+
+  Opcode/Instruction   Op/En        Description
+F3 0F C7 /6 VMXON m64  M     Enter VMX root operation.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1      Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (r)  NA        NA        NA
+
+Description ¶
+
+Puts the logical processor in VMX operation with no current VMCS, blocks INIT signals, disables A20M, and clears any address-range monitoring established by the MONITOR instruction.^1
+
+The operand of this instruction is a 4KB-aligned physical address (the VMXON pointer) that references the VMXON region, which the logical processor may use to support VMX operation. This operand is always 64 bits and is always in memory.
+

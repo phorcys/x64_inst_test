@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+TDPBF16PS — Dot Product of BF16 Tiles Accumulated into Packed Single Precision Tile
+
+                    Opcode/Instruction                      Op/En 64/32 bit Mode Support CPUID Feature Flag                                                  Description
+VEX.128.F3.0F38.W0 5C 11:rrr:bbb TDPBF16PS tmm1, tmm2, tmm3 A     V/N.E.                 AMX-BF16           Matrix multiply BF16 elements from tmm2 and tmm3, and accumulate the packed single precision elements in tmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A   ModRM:reg (r, w)  ModRM:r/m (r)  VEX.vvvv (r) N/A
+
+Description ¶
+
+This instruction performs a set of SIMD dot-products of two BF16 elements and accumulates the results into a packed single precision tile. Each dword element in input tiles tmm2 and tmm3 is interpreted as a BF16 pair. For each possible combination of
+(row of tmm2, column of tmm3), the instruction performs a set of SIMD dot-products on all corresponding BF16 pairs (one pair from tmm2 and one pair from tmm3), adds the results of those dot-products, and then accumulates the result into the corresponding
+row and column of tmm1.
+
+“Round to nearest even” rounding mode is used when doing each accumulation of the FMA. Output denormals are always flushed to zero and input denormals are always treated as zero. MXCSR is not consulted nor updated.
+
+Any attempt to execute the TDPBF16PS instruction inside a TSX transaction will result in a transaction abort.
+

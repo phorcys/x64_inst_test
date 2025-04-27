@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VMULSH
+		— Multiply Scalar FP16 Values</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VMULSH
+		— Multiply Scalar FP16 Values</h1>
+
+<table>
+<tr>
+<th> Instruction En bit Mode Flag
+Support  Instruction En bit Mode Flag
+Support  64/32 CPUID Feature Instruction En bit Mode Flag  CPUID Feature Instruction En bit Mode Flag  Op/ 64/32 CPUID Feature Instruction En bit Mode Flag  64/32 CPUID Feature Instruction En bit Mode Flag  CPUID Feature Instruction En bit Mode Flag  Op/ 64/32 CPUID Feature </th>
+<th></th>
+<th>Support</th>
+<th></th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.LLIG.F3.MAP5.W0 59 /r VMULSH xmm1{k1}{z}, xmm2, xmm3/m16 {er}</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Multiply the low FP16 value in xmm3/m16 by low FP16 value in xmm2, and store the result in xmm1 subject to writemask k1. Bits 127:16 of xmm2 are copied to xmm1[127:16].</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Scalar</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction multiplies the low FP16 value from the source operands and stores the FP16 result in the destination operand. Bits 127:16 of the destination operand are copied from the corresponding bits of the first source operand. Bits MAXVL-1:128 of the destination operand are zeroed. The low FP16 element of the destination is updated according to the writemask.</p>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<h4 id="vmulsh--evex-encoded-versions-">VMULSH (EVEX encoded versions)<a class="anchor" href="#vmulsh--evex-encoded-versions-">
+			¶
+		</a></h4>
+<pre>IF EVEX.b = 1 and SRC2 is a register:
+    SET_RM(EVEX.RC)
+ELSE
+    SET_RM(MXCSR.RC)
+IF k1[0] OR *no writemask*:
+    DEST.fp16[0] := SRC1.fp16[0] * SRC2.fp16[0]
+ELSE IF *zeroing*:
+    DEST.fp16[0] := 0
+// else dest.fp16[0] remains unchanged
+DEST[127:16] := SRC1[127:16]
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VMULSH __m128h _mm_mask_mul_round_sh (__m128h src, __mmask8 k, __m128h a, __m128h b, int rounding);
+</pre>
+<pre>VMULSH __m128h _mm_maskz_mul_round_sh (__mmask8 k, __m128h a, __m128h b, int rounding);
+</pre>
+<pre>VMULSH __m128h _mm_mul_round_sh (__m128h a, __m128h b, int rounding);
+</pre>
+<pre>VMULSH __m128h _mm_mask_mul_sh (__m128h src, __mmask8 k, __m128h a, __m128h b);
+</pre>
+<pre>VMULSH __m128h _mm_maskz_mul_sh (__mmask8 k, __m128h a, __m128h b);
+</pre>
+<pre>VMULSH __m128h _mm_mul_sh (__m128h a, __m128h b);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Invalid, Underflow, Overflow, Precision, Denormal</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>EVEX-encoded instructions, see <span class="not-imported">Table 2-47</span>, “Type E3 Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

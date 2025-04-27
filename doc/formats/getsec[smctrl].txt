@@ -1,0 +1,39 @@
+  • Index
+  • December 2023
+
+GETSEC[SMCTRL] — SMX Mode Control
+
+      Opcode         Instruction                               Description
+NP 0F 37 (EAX = 7)  GETSEC[SMCTRL] Perform specified SMX mode control as selected with the input EBX.
+
+Description ¶
+
+The GETSEC[SMCTRL] instruction is available for performing certain SMX specific mode control operations. The operation to be performed is selected through the input register EBX. Currently only an input value in EBX of 0 is supported. All other EBX
+settings will result in the signaling of a general protection violation.
+
+If EBX is set to 0, then the SMCTRL leaf is used to re-enable SMI events. SMI is masked by the ILP executing the GETSEC[SENTER] instruction (SMI is also masked in the responding logical processors in response to SENTER rendezvous messages.). The
+determination of when this instruction is allowed and the events that are unmasked is dependent on the processor context (See Table 7-11). For brevity, the usage of SMCTRL where EBX=0 will be referred to as GETSEC[SMCTRL(0)].
+
+As part of support for launching a measured environment, the SMI, NMI, and INIT events are masked after GETSEC[SENTER], and remain masked after exiting authenticated execution mode. Unmasking these events should be accompanied by securely enabling these
+event handlers. These security concerns can be addressed in VMX operation by a MVMM.
+
+The VM monitor can choose two approaches:
+
+  • In a dual monitor approach, the executive software will set up an SMM monitor in parallel to the executive VMM (i.e., the MVMM), see Chapter 32, “System Management Mode‚” of Intel^® 64 and IA-32 Architectures Software Developer’s Manual, Volume 3C.
+    The SMM monitor is dedicated to handling SMI events without compromising the security of the MVMM. This usage model of handling SMI while a measured environment is active does not require the use of GETSEC[SMCTRL(0)] as event re-enabling after the
+    VMX environment launch is handled implicitly and through separate VMX based controls.
+  • If a dedicated SMM monitor will not be established and SMIs are to be handled within the measured environment, then GETSEC[SMCTRL(0)] can be used by the executive software to re-enable SMI that has been masked as a result of SENTER.
+
+Table 7-11 defines the processor context in which GETSEC[SMCTRL(0)] can be used and which events will be unmasked. Note that the events that are unmasked are dependent upon the currently operating processor context.
+
+                ILP Mode of Operation                                    SMCTRL execution action
+In VMX non-root operation                             VM exit
+SENTERFLAG = 0                                        #GP(0), illegal context
+In authenticated code execution mode (ACMODEFLAG = 1) #GP(0), illegal context
+SENTERFLAG = 1, not in VMX operation, not in SMM      Unmask SMI
+SENTERFLAG = 1, in VMX root operation, not in SMM     Unmask SMI if SMM monitor is not configured, otherwise #GP(0)
+SENTERFLAG = 1, In VMX root operation, in SMM         #GP(0), illegal context
+
+
+Table 7-11. Supported Actions for GETSEC[SMCTRL(0)]
+

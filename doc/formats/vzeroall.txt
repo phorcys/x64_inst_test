@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+VZEROALL — Zero XMM, YMM, and ZMM Registers
+
+    Opcode/Instruction     Op /En 64/32 bit Mode Support CPUID Feature Flag                  Description
+VEX.256.0F.WIG 77 VZEROALL ZO     V/V                    AVX                Zero some of the XMM, YMM, and ZMM registers.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+In 64-bit mode, the instruction zeroes XMM0-XMM15, YMM0-YMM15, and ZMM0-ZMM15. Outside 64-bit mode, it zeroes only XMM0-XMM7, YMM0-YMM7, and ZMM0-ZMM7. VZEROALL does not modify ZMM16-ZMM31.
+
+Note: VEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD. In Compatibility and legacy 32-bit mode only the lower 8 registers are modified.
+

@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+KTESTW/KTESTB/KTESTQ/KTESTD — Packed Bit Test Masks and Set Flags
+
+        Opcode/Instruction          Op En 64/32 bit Mode Support CPUID Feature Flag                                     Description
+VEX.L0.0F.W0 99 /r KTESTW k1, k2    RR    V/V                    AVX512DQ           Set ZF and CF depending on sign bit AND and ANDN of 16 bits mask register sources.
+VEX.L0.66.0F.W0 99 /r KTESTB k1, k2 RR    V/V                    AVX512DQ           Set ZF and CF depending on sign bit AND and ANDN of 8 bits mask register sources.
+VEX.L0.0F.W1 99 /r KTESTQ k1, k2    RR    V/V                    AVX512BW           Set ZF and CF depending on sign bit AND and ANDN of 64 bits mask register sources.
+VEX.L0.66.0F.W1 99 /r KTESTD k1, k2 RR    V/V                    AVX512BW           Set ZF and CF depending on sign bit AND and ANDN of 32 bits mask register sources.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1                   Operand 2
+RR    ModRM:reg (r)  ModRM:r/m (r, ModRM:[7:6] must be 11b)
+
+Description ¶
+
+Performs a bitwise comparison of the bits of the first source operand and corresponding bits in the second source operand. If the AND operation produces all zeros, the ZF is set else the ZF is clear. If the bitwise AND operation of the inverted first
+source operand with the second source operand produces all zeros the CF is set else the CF is clear. Only the EFLAGS register is updated.
+
+Note: In VEX-encoded versions, VEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.
+

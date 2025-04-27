@@ -1,0 +1,42 @@
+  • Index
+  • December 2023
+
+VFIXUPIMMPS — Fix Up Special Packed Float32 Values
+
+                            Opcode/Instruction                              Op/    64/32 Bit Mode     CPUID Feature                                                                 Description
+                                                                             En        Support            Flag
+EVEX.128.66.0F3A.W0 54 /r VFIXUPIMMPS xmm1 {k1}{z}, xmm2, xmm3/m128/        A    V/V                 AVX512VL        Fix up special numbers in float32 vector xmm1, float32 vector xmm2 and int32 vector xmm3/m128/m32bcst and store the result in xmm1, under
+m32bcst, imm8                                                                                        AVX512F         writemask.
+EVEX.256.66.0F3A.W0 54 /r VFIXUPIMMPS ymm1 {k1}{z}, ymm2, ymm3/m256/        A    V/V                 AVX512VL        Fix up special numbers in float32 vector ymm1, float32 vector ymm2 and int32 vector ymm3/m256/m32bcst and store the result in ymm1, under
+m32bcst, imm8                                                                                        AVX512F         writemask.
+EVEX.512.66.0F3A.W0 54 /r ib VFIXUPIMMPS zmm1 {k1}{z}, zmm2, zmm3/m512/     A    V/V                 AVX512F         Fix up elements of float32 vector in zmm2 using int32 vector table in zmm3/m512/m32bcst, combine with preserved elements from zmm1, and
+m32bcst{sae}, imm8                                                                                                   store the result in zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type     Operand 1       Operand 2     Operand 3   Operand 4
+A     Full       ModRM:reg (r, w)  EVEX.vvvv (r) ModRM:r/m (r) imm8
+
+Description ¶
+
+Perform fix-up of doubleword elements encoded in single precision floating-point format in the first source operand (the second operand) using a 32-bit, two-level look-up table specified in the corresponding doubleword element of the second source
+operand (the third operand) with exception reporting specifier imm8. The elements that are fixed-up are selected by mask bits of 1 specified in the opmask k1. Mask bits of 0 in the opmask k1 or table response action of 0000b preserves the corresponding
+element of the first operand. The fixed-up elements from the first source operand and the preserved element in the first operand are combined as the final results in the destination operand (the first operand).
+
+The destination and the first source operands are ZMM/YMM/XMM registers. The second source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcasted from a 64-bit memory location.
+
+The two-level look-up table perform a fix-up of each single precision floating-point input data in the first source operand by decoding the input data encoding into 8 token types. A response table is defined for each token type that converts the input
+encoding in the first source operand with one of 16 response actions.
+
+This instruction is specifically intended for use in fixing up the results of arithmetic calculations involving one source so that they match the spec, although it is generally useful for fixing up the results of multiple-instruction sequences to reflect
+special-number inputs. For example, consider rcp(0). Input 0 to rcp, and you should get INF according to the DX10 spec. However, evaluating rcp via Newton-Raphson, where x=approx(1/0), yields an incorrect result. To deal with this, VFIXUPIMMPS can be
+used after the N-R reciprocal sequence to set the result to the correct value (i.e., INF when the input is 0).
+
+If MXCSR.DAZ is not set, denormal input elements in the first source operand are considered as normal inputs and do not trigger any fixup nor fault reporting.
+
+Imm8 is used to set the required flags reporting. It supports #ZE and #IE fault reporting (see details below).
+
+MXCSR.DAZ is used and refer to zmm2 only (i.e., zmm1 is not considered as zero in case MXCSR.DAZ is set).
+
+MXCSR mask bits are ignored and are treated as if all mask bits are set to masked response). If any of the imm8 bits is set and the condition met for fault reporting, MXCSR.IE or MXCSR.ZE might be updated.
+

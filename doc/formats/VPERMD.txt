@@ -1,0 +1,34 @@
+  • Index
+  • December 2023
+
+VPERMD/VPERMW — Permute Packed Doubleword/Word Elements
+
+                          Opcode/Instruction                           Op / En 64/32 bit Mode Support CPUID Feature Flag                                                   Description
+VEX.256.66.0F38.W0 36 /r VPERMD ymm1, ymm2, ymm3/m256                  A       V/V                    AVX2               Permute doublewords in ymm3/m256 using indices in ymm2 and store the result in ymm1.
+EVEX.256.66.0F38.W0 36 /r VPERMD ymm1 {k1}{z}, ymm2, ymm3/m256/m32bcst B       V/V                    AVX512VL AVX512F   Permute doublewords in ymm3/m256/m32bcst using indexes in ymm2 and store the result in ymm1 using writemask k1.
+EVEX.512.66.0F38.W0 36 /r VPERMD zmm1 {k1}{z}, zmm2, zmm3/m512/m32bcst B       V/V                    AVX512F            Permute doublewords in zmm3/m512/m32bcst using indices in zmm2 and store the result in zmm1 using writemask k1.
+EVEX.128.66.0F38.W1 8D /r VPERMW xmm1 {k1}{z}, xmm2, xmm3/m128         C       V/V                    AVX512VL AVX512BW  Permute word integers in xmm3/m128 using indexes in xmm2 and store the result in xmm1 using writemask k1.
+EVEX.256.66.0F38.W1 8D /r VPERMW ymm1 {k1}{z}, ymm2, ymm3/m256         C       V/V                    AVX512VL AVX512BW  Permute word integers in ymm3/m256 using indexes in ymm2 and store the result in ymm1 using writemask k1.
+EVEX.512.66.0F38.W1 8D /r VPERMW zmm1 {k1}{z}, zmm2, zmm3/m512         C       V/V                    AVX512BW           Permute word integers in zmm3/m512 using indexes in zmm2 and store the result in zmm1 using writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     N/A        ModRM:reg (w)  VEX.vvvv (r)   ModRM:r/m (r)  N/A
+B     Full       ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+C     Full Mem   ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+Copies doublewords (or words) from the second source operand (the third operand) to the destination operand (the first operand) according to the indices in the first source operand (the second operand). Note that this instruction permits a doubleword
+(word) in the source operand to be copied to more than one location in the destination operand.
+
+VEX.256 encoded VPERMD: The first and second operands are YMM registers, the third operand can be a YMM register or memory location. Bits (MAXVL-1:256) of the corresponding destination register are zeroed.
+
+EVEX encoded VPERMD: The first and second operands are ZMM/YMM registers, the third operand can be a ZMM/YMM register, a 512/256-bit memory location or a 512/256-bit vector broadcasted from a 32-bit memory location. The elements in the destination are
+updated using the writemask k1.
+
+VPERMW: first and second operands are ZMM/YMM/XMM registers, the third operand can be a ZMM/YMM/XMM register, or a 512/256/128-bit memory location. The destination is updated using the writemask k1.
+
+EVEX.128 encoded versions: Bits (MAXVL-1:128) of the corresponding ZMM register are zeroed.
+

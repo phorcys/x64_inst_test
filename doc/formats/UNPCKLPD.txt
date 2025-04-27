@@ -1,0 +1,45 @@
+  • Index
+  • December 2023
+
+UNPCKLPD — Unpack and Interleave Low Packed Double Precision Floating-Point Values
+
+                          Opcode/Instruction                           Op / En    64/32 bit Mode     CPUID Feature Flag                                                              Description
+                                                                                      Support
+66 0F 14 /r UNPCKLPD xmm1, xmm2/m128                                   A       V/V                   SSE2               Unpacks and Interleaves double precision floating-point values from low quadwords of xmm1 and xmm2/m128.
+VEX.128.66.0F.WIG 14 /r VUNPCKLPD xmm1,xmm2, xmm3/m128                 B       V/V                   AVX                Unpacks and Interleaves double precision floating-point values from low quadwords of xmm2 and xmm3/m128.
+VEX.256.66.0F.WIG 14 /r VUNPCKLPD ymm1,ymm2, ymm3/m256                 B       V/V                   AVX                Unpacks and Interleaves double precision floating-point values from low quadwords of ymm2 and ymm3/m256.
+EVEX.128.66.0F.W1 14 /r VUNPCKLPD xmm1 {k1}{z}, xmm2, xmm3/m128/       C       V/V                   AVX512VL AVX512F   Unpacks and Interleaves double precision floating-point values from low quadwords of xmm2 and xmm3/m128/m64bcst subject to write mask
+m64bcst                                                                                                                 k1.
+EVEX.256.66.0F.W1 14 /r VUNPCKLPD ymm1 {k1}{z}, ymm2, ymm3/m256/       C       V/V                   AVX512VL AVX512F   Unpacks and Interleaves double precision floating-point values from low quadwords of ymm2 and ymm3/m256/m64bcst subject to write mask
+m64bcst                                                                                                                 k1.
+EVEX.512.66.0F.W1 14 /r VUNPCKLPD zmm1 {k1}{z}, zmm2, zmm3/m512/       C       V/V                   AVX512F            Unpacks and Interleaves double precision floating-point values from low quadwords of zmm2 and zmm3/m512/m64bcst subject to write mask
+m64bcst                                                                                                                 k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A        ModRM:reg (r, w)  ModRM:r/m (r) N/A           N/A
+B     N/A        ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) N/A
+C     Full       ModRM:reg (w)     EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Performs an interleaved unpack of the low double precision floating-point values from the first source operand and the second source operand.
+
+128-bit Legacy SSE version: The second source can be an XMM register or an 128-bit memory location. The destination is not distinct from the first source XMM register and the upper bits (MAXVL-1:128) of the corresponding ZMM register destination are
+unmodified. When unpacking from a memory operand, an implementation may fetch only the appropriate 64 bits; however, alignment to 16-byte boundary and normal segment checking will still be enforced.
+
+VEX.128 encoded version: The first source operand is a XMM register. The second source operand can be a XMM register or a 128-bit memory location. The destination operand is a XMM register. The upper bits (MAXVL-1:128) of the corresponding ZMM register
+destination are zeroed.
+
+VEX.256 encoded version: The first source operand is a YMM register. The second source operand can be a YMM register or a 256-bit memory location. The destination operand is a YMM register.
+
+EVEX.512 encoded version: The first source operand is a ZMM register. The second source operand is a ZMM register, a 512-bit memory location, or a 512-bit vector broadcasted from a 64-bit memory location. The destination operand is a ZMM register,
+conditionally updated using writemask k1.
+
+EVEX.256 encoded version: The first source operand is a YMM register. The second source operand is a YMM register, a 256-bit memory location, or a 256-bit vector broadcasted from a 64-bit memory location. The destination operand is a YMM register,
+conditionally updated using writemask k1.
+
+EVEX.128 encoded version: The first source operand is an XMM register. The second source operand is a XMM register, a 128-bit memory location, or a 128-bit vector broadcasted from a 64-bit memory location. The destination operand is a XMM register,
+conditionally updated using writemask k1.
+

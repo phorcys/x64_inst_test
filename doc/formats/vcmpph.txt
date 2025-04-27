@@ -1,0 +1,28 @@
+  • Index
+  • December 2023
+
+VCMPPH — Compare Packed FP16 Values
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En
+ Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit     Support                                               Description
+                                                           Mode Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                  AVX512-FP16 Compare packed FP16 values in xmm3/m128/m16bcst and xmm2 using bits 4:0 of imm8
+EVEX.128.NP.0F3A.W0 C2 /r /ib VCMPPH k1{k2}, xmm2, xmm3/m128/m16bcst, imm8                                                                              A V/V     AVX512VL    as a comparison predicate subject to writemask k2, and store the result in mask
+                                                                                                                                                                              register k1.
+                                                                                                                                                                  AVX512-FP16 Compare packed FP16 values in ymm3/m256/m16bcst and ymm2 using bits 4:0 of imm8
+EVEX.256.NP.0F3A.W0 C2 /r /ib VCMPPH k1{k2}, ymm2, ymm3/m256/m16bcst, imm8                                                                              A V/V     AVX512VL    as a comparison predicate subject to writemask k2, and store the result in mask
+                                                                                                                                                                              register k1.
+                                                                                                                                                                              Compare packed FP16 values in zmm3/m512/m16bcst and zmm2 using bits 4:0 of imm8
+EVEX.512.NP.0F3A.W0 C2 /r /ib VCMPPH k1{k2}, zmm2, zmm3/m512/m16bcst {sae}, imm8                                                                        A V/V     AVX512-FP16 as a comparison predicate subject to writemask k2, and store the result in mask
+                                                                                                                                                                              register k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1     Operand 2     Operand 3    Operand 4
+A     Full  ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  imm8 (r)
+
+Description ¶
+
+This instruction compares packed FP16 values from source operands and stores the result in the destination mask operand. The comparison predicate operand (immediate byte bits 4:0) specifies the type of comparison performed on each of the pairs of packed
+values. The destination elements are updated according to the writemask.
+

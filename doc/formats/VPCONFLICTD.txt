@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+VPCONFLICTD/VPCONFLICTQ — Detect Conflicts Within a Vector of Packed Dword/Qword Values Into DenseMemory/ Register
+
+                         Opcode/Instruction                           Op/En 64/32 bit Mode Support CPUID Feature Flag                                  Description
+EVEX.128.66.0F38.W0 C4 /r VPCONFLICTD xmm1 {k1}{z}, xmm2/m128/m32bcst A     V/V                    AVX512VL AVX512CD  Detect duplicate double-word values in xmm2/m128/m32bcst using writemask k1.
+EVEX.256.66.0F38.W0 C4 /r VPCONFLICTD ymm1 {k1}{z}, ymm2/m256/m32bcst A     V/V                    AVX512VL AVX512CD  Detect duplicate double-word values in ymm2/m256/m32bcst using writemask k1.
+EVEX.512.66.0F38.W0 C4 /r VPCONFLICTD zmm1 {k1}{z}, zmm2/m512/m32bcst A     V/V                    AVX512CD           Detect duplicate double-word values in zmm2/m512/m32bcst using writemask k1.
+EVEX.128.66.0F38.W1 C4 /r VPCONFLICTQ xmm1 {k1}{z}, xmm2/m128/m64bcst A     V/V                    AVX512VL AVX512CD  Detect duplicate quad-word values in xmm2/m128/m64bcst using writemask k1.
+EVEX.256.66.0F38.W1 C4 /r VPCONFLICTQ ymm1 {k1}{z}, ymm2/m256/m64bcst A     V/V                    AVX512VL AVX512CD  Detect duplicate quad-word values in ymm2/m256/m64bcst using writemask k1.
+EVEX.512.66.0F38.W1 C4 /r VPCONFLICTQ zmm1 {k1}{z}, zmm2/m512/m64bcst A     V/V                    AVX512CD           Detect duplicate quad-word values in zmm2/m512/m64bcst using writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Test each dword/qword element of the source operand (the second operand) for equality with all other elements in the source operand closer to the least significant element. Each element’s comparison results form a bit vector, which is then zero extended
+and written to the destination according to the writemask.
+
+EVEX.512 encoded version: The source operand is a ZMM register, a 512-bit memory location, or a 512-bit vector broadcasted from a 32/64-bit memory location. The destination operand is a ZMM register, conditionally updated using writemask k1.
+
+EVEX.256 encoded version: The source operand is a YMM register, a 256-bit memory location, or a 256-bit vector broadcasted from a 32/64-bit memory location. The destination operand is a YMM register, conditionally updated using writemask k1.
+
+EVEX.128 encoded version: The source operand is a XMM register, a 128-bit memory location, or a 128-bit vector broadcasted from a 32/64-bit memory location. The destination operand is a XMM register, conditionally updated using writemask k1.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

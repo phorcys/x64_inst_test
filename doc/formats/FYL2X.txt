@@ -1,0 +1,41 @@
+  • Index
+  • December 2023
+
+FYL2X — Compute y ∗ log2x
+
+Opcode Instruction 64-Bit Mode Compat/Leg Mode                              Description
+D9 F1  FYL2X       Valid       Valid           Replace ST(1) with (ST(1) ∗ log[2]ST(0)) and pop the register stack.
+
+Description ¶
+
+Computes (ST(1) ∗ log[2] (ST(0))), stores the result in register ST(1), and pops the FPU register stack. The source operand in ST(0) must be a non-zero positive number.
+
+The following table shows the results obtained when taking the log of various classes of numbers, assuming that neither overflow nor underflow occurs.
+
+                       ST(0)
+           −∞  −F  ±0  +0<+F<+1  +1  +F>+1  +∞  NaN
+       −∞  *   *   +∞  +∞        *   −∞     −∞  NaN
+       −F  *   *   **  +F        −0  −F     −∞  NaN
+ST(1)  −0  *   *   *   +0        −0  −0     *   NaN
+       +0  *   *   *   −0        +0  +0     *   NaN
+       +F  *   *   **  −F        +0  +F     +∞  NaN
+       +∞  *   *   −∞  −∞        *   +∞     +∞  NaN
+       NaN NaN NaN NaN NaN       NaN NaN    NaN NaN
+
+
+Table 3-48. FYL2X Results
+
+    F Means finite floating-point value.
+
+    * Indicatesfloating-pointinvalid-operation(#IA)exception.
+
+    ** Indicates floating-point zero-divide (#Z) exception.
+
+If the divide-by-zero exception is masked and register ST(0) contains ±0, the instruction returns ∞ with a sign that is the opposite of the sign of the source operand in register ST(1).
+
+The FYL2X instruction is designed with a built-in multiplication to optimize the calculation of logarithms with an arbitrary positive base (b):
+
+log[b]x := (log[2]b)^–1 ∗ log[2]x
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

@@ -1,0 +1,18 @@
+  • Index
+  • December 2023
+
+AESDEC256KL — Perform 14 Rounds of AES Decryption Flow With Key Locker Using 256-Bit Key
+
+              Opcode/Instruction                Op/En 64/32-bit Mode CPUID Feature Flag                                       Description
+F3 0F 38 DF !(11):rrr:bbb AESDEC256KL xmm, m512 A     V/V            AESKLE             Decrypt xmm using 256-bit AES key indicated by handle at m512 and store result in xmm.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1       Operand 2    Operand 3 Operand 4
+A     N/A   ModRM:reg (r, w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+The AESDEC256KL^1 instruction performs 14 rounds of AES to decrypt the first operand using the 256-bit key indicated by the handle from the second operand. It stores the result in the first operand if the operation succeeds (e.g., does not run into a
+handle violation failure).
+

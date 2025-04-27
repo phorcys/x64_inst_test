@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>PCLMULQDQ
+		— Carry-Less Multiplication Quadword</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>PCLMULQDQ
+		— Carry-Less Multiplication Quadword</h1>
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>66 0F 3A 44 /r ib PCLMULQDQ xmm1, xmm2/m128, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>PCLMULQDQ</td>
+<td>Carry-less multiplication of one quadword of xmm1 by one quadword of xmm2/m128, stores the 128-bit result in xmm1. The immediate is used to determine which quadwords of xmm1 and xmm2/m128 should be used.</td></tr>
+<tr>
+<td>VEX.128.66.0F3A.WIG 44 /r ib VPCLMULQDQ xmm1, xmm2, xmm3/m128, imm8</td>
+<td>B</td>
+<td>V/V</td>
+<td>PCLMULQDQ AVX</td>
+<td>Carry-less multiplication of one quadword of xmm2 by one quadword of xmm3/m128, stores the 128-bit result in xmm1. The immediate is used to determine which quadwords of xmm2 and xmm3/m128 should be used.</td></tr>
+<tr>
+<td>VEX.256.66.0F3A.WIG 44 /r /ib VPCLMULQDQ ymm1, ymm2, ymm3/m256, imm8</td>
+<td>B</td>
+<td>V/V</td>
+<td>VPCLMULQDQ AVX</td>
+<td>Carry-less multiplication of one quadword of ymm2 by one quadword of ymm3/m256, stores the 128-bit result in ymm1. The immediate is used to determine which quadwords of ymm2 and ymm3/m256 should be used.</td></tr>
+<tr>
+<td>EVEX.128.66.0F3A.WIG 44 /r /ib VPCLMULQDQ xmm1, xmm2, xmm3/m128, imm8</td>
+<td>C</td>
+<td>V/V</td>
+<td>VPCLMULQDQ AVX512VL</td>
+<td>Carry-less multiplication of one quadword of xmm2 by one quadword of xmm3/m128, stores the 128-bit result in xmm1. The immediate is used to determine which quadwords of xmm2 and xmm3/m128 should be used.</td></tr>
+<tr>
+<td>EVEX.256.66.0F3A.WIG 44 /r /ib VPCLMULQDQ ymm1, ymm2, ymm3/m256, imm8</td>
+<td>C</td>
+<td>V/V</td>
+<td>VPCLMULQDQ AVX512VL</td>
+<td>Carry-less multiplication of one quadword of ymm2 by one quadword of ymm3/m256, stores the 128-bit result in ymm1. The immediate is used to determine which quadwords of ymm2 and ymm3/m256 should be used.</td></tr>
+<tr>
+<td>EVEX.512.66.0F3A.WIG 44 /r /ib VPCLMULQDQ zmm1, zmm2, zmm3/m512, imm8</td>
+<td>C</td>
+<td>V/V</td>
+<td>VPCLMULQDQ AVX512F</td>
+<td>Carry-less multiplication of one quadword of zmm2 by one quadword of zmm3/m512, stores the 128-bit result in zmm1. The immediate is used to determine which quadwords of zmm2 and zmm3/m512 should be used.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>N/A</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td>
+<td>N/A</td></tr>
+<tr>
+<td>B</td>
+<td>N/A</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td></tr>
+<tr>
+<td>C</td>
+<td>Full Mem</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8 (r)</td></tr></table>
+<h2 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h2>
+<p>Performs a carry-less multiplication of two quadwords, selected from the first source and second source operand according to the value of the immediate byte. Bits 4 and 0 are used to select which 64-bit half of each operand to use according to <a href='/x86/pclmulqdq#tbl-4-13'>Table 4-13</a>, other bits of the immediate byte are ignored.</p>
+<p>The EVEX encoded form of this instruction does not support memory fault suppression.</p>
+<figure id="tbl-4-13">
+<table>
+<tr>
+<th>Imm[4]</th>
+<th>Imm[0]</th>
+<th>PCLMULQDQ Operation</th></tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>CL_MUL( SRC2<sup>1</sup>[63:0], SRC1[63:0] )</td></tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>CL_MUL( SRC2[63:0], SRC1[127:64] )</td></tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>CL_MUL( SRC2[127:64], SRC1[63:0] )</td></tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>CL_MUL( SRC2[127:64], SRC1[127:64] )</td></tr></table>
+<figcaption><a href='/x86/pclmulqdq#tbl-4-13'>Table 4-13</a>. PCLMULQDQ Quadword Selection of Immediate Byte</figcaption></figure>
+<blockquote>
+<p>1. SRC2 denotes the second source operand, which can be a register or memory; SRC1 denotes the first source and destination operand.</p></blockquote>
+<p>The first source operand and the destination operand are the same and must be a ZMM/YMM/XMM register. The second source operand can be a ZMM/YMM/XMM register or a 512/256/128-bit memory location. Bits (VL_MAX-1:128) of the corresponding YMM destination register remain unchanged.</p>
+<p>Compilers and assemblers may implement the following pseudo-op syntax to simplify programming and emit the required encoding for imm8.</p>
+<figure id="tbl-4-14">
+<table>
+<tr>
+<th>Pseudo-Op</th>
+<th>Imm8 Encoding</th></tr>
+<tr>
+<td><strong>PCLMULLQLQDQ</strong> xmm1, xmm2</td>
+<td><strong>0000_0000B</strong></td></tr>
+<tr>
+<td><strong>PCLMULHQLQDQ</strong> xmm1, xmm2</td>
+<td><strong>0000_0001B</strong></td></tr>
+<tr>
+<td><strong>PCLMULLQHQDQ</strong> xmm1, xmm2</td>
+<td><strong>0001_0000B</strong></td></tr>
+<tr>
+<td><strong>PCLMULHQHQDQ</strong> xmm1, xmm2</td>
+<td><strong>0001_0001B</strong></td></tr></table>
+<figcaption><a href='/x86/pclmulqdq#tbl-4-14'>Table 4-14</a>. Pseudo-Op and PCLMULQDQ Implementation</figcaption></figure>
+<h2 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h2>
+<pre>define PCLMUL128(X,Y): // helper function
+    FOR i := 0 to 63:
+        TMP [ i ] := X[ 0 ] and Y[ i ]
+        FOR j := 1 to i:
+            TMP [ i ] := TMP [ i ] xor (X[ j ] and Y[ i - j ])
+        DEST[ i ] := TMP[ i ]
+    FOR i := 64 to 126:
+        TMP [ i ] := 0
+        FOR j := i - 63 to 63:
+            TMP [ i ] := TMP [ i ] xor (X[ j ] and Y[ i - j ])
+        DEST[ i ] := TMP[ i ]
+    DEST[127] := 0;
+    RETURN DEST // 128b vector
+</pre>
+<h3 id="pclmulqdq--sse-version-">PCLMULQDQ (SSE Version)<a class="anchor" href="#pclmulqdq--sse-version-">
+			¶
+		</a></h3>
+<pre>IF imm8[0] = 0:
+    TEMP1 := SRC1.qword[0]
+ELSE:
+    TEMP1 := SRC1.qword[1]
+IF imm8[4] = 0:
+    TEMP2 := SRC2.qword[0]
+ELSE:
+    TEMP2 := SRC2.qword[1]
+DEST[127:0] := PCLMUL128(TEMP1, TEMP2)
+DEST[MAXVL-1:128] (Unmodified)
+</pre>
+<h3 id="vpclmulqdq--128b-and-256b-vex-encoded-versions-">VPCLMULQDQ (128b and 256b VEX Encoded Versions)<a class="anchor" href="#vpclmulqdq--128b-and-256b-vex-encoded-versions-">
+			¶
+		</a></h3>
+<pre>(KL,VL) = (1,128), (2,256)
+FOR i= 0 to KL-1:
+    IF imm8[0] = 0:
+        TEMP1 := SRC1.xmm[i].qword[0]
+    ELSE:
+        TEMP1 := SRC1.xmm[i].qword[1]
+    IF imm8[4] = 0:
+        TEMP2 := SRC2.xmm[i].qword[0]
+    ELSE:
+        TEMP2 := SRC2.xmm[i].qword[1]
+    DEST.xmm[i] := PCLMUL128(TEMP1, TEMP2)
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="vpclmulqdq--evex-encoded-version-">VPCLMULQDQ (EVEX Encoded Version)<a class="anchor" href="#vpclmulqdq--evex-encoded-version-">
+			¶
+		</a></h3>
+<pre>(KL,VL) = (1,128), (2,256), (4,512)
+FOR i = 0 to KL-1:
+    IF imm8[0] = 0:
+        TEMP1 := SRC1.xmm[i].qword[0]
+    ELSE:
+        TEMP1 := SRC1.xmm[i].qword[1]
+    IF imm8[4] = 0:
+        TEMP2 := SRC2.xmm[i].qword[0]
+    ELSE:
+        TEMP2 := SRC2.xmm[i].qword[1]
+    DEST.xmm[i] := PCLMUL128(TEMP1, TEMP2)
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h2 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h2>
+<pre>(V)PCLMULQDQ __m128i _mm_clmulepi64_si128 (__m128i, __m128i, const int)
+</pre>
+<pre>VPCLMULQDQ __m256i _mm256_clmulepi64_epi128(__m256i, __m256i, const int);
+</pre>
+<pre>VPCLMULQDQ __m512i _mm512_clmulepi64_epi128(__m512i, __m512i, const int);
+</pre>
+<h2 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h2>
+<p>See <span class="not-imported">Table 2-21</span>, “Type 4 Class Exception Conditions,” additionally:</p>
+<table>
+<tr>
+<td>#UD</td>
+<td>If VEX.L = 1.</td></tr></table>
+<p>EVEX-encoded: See <span class="not-imported">Table 2-50</span>, “Type E4NF Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

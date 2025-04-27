@@ -1,0 +1,42 @@
+  • Index
+  • December 2023
+
+GETSEC[WAKEUP] — Wake Up Sleeping Processors in Measured Environment
+
+     Opcode        Instruction                                 Description
+NP 0F 37 (EAX=8)  GETSEC[WAKEUP] Wake up the responding logical processors from the SENTER sleep state.
+
+Description ¶
+
+The GETSEC[WAKEUP] leaf function broadcasts a wake-up message to all logical processors currently in the SENTER sleep state. This GETSEC leaf must be executed only by the ILP, in order to wake-up the RLPs. Responding logical processors (RLPs) enter the
+SENTER sleep state after completion of the SENTER rendezvous sequence.
+
+The GETSEC[WAKEUP] instruction may only be executed:
+
+  • In a measured environment as initiated by execution of GETSEC[SENTER].
+  • Outside of authenticated code execution mode.
+  • Execution is not allowed unless the processor is in protected mode with CPL = 0 and EFLAGS.VM = 0.
+  • In addition, the logical processor must be designated as the boot-strap processor as configured by setting IA32_APIC_BASE.BSP = 1.
+
+If these conditions are not met, attempts to execute GETSEC[WAKEUP] result in a general protection violation.
+
+An RLP exits the SENTER sleep state and start execution in response to a WAKEUP signal initiated by ILP’s execution of GETSEC[WAKEUP]. The RLP retrieves a pointer to a data structure that contains information to enable execution from a defined entry
+point. This data structure is located using a physical address held in the Intel^® TXT-capable chipset configuration register LT.MLE.JOIN. The register is publicly writable in the chipset by all processors and is not restricted by the Intel^® TXT-capable
+chipset configuration register lock status. The format of this data structure is defined in Table 7-12.
+
+Offset             Field
+0      GDT limit
+4      GDT base pointer
+8      Segment selector initializer
+12     EIP
+
+
+Table 7-12. RLP MVMM JOIN Data Structure
+
+The MLE JOIN data structure contains the information necessary to initialize RLP processor state and permit the processor to join the measured environment. The GDTR, LIP, and CS, DS, SS, and ES selector values are initialized using this data structure.
+The CS selector index is derived directly from the segment selector initializer field; DS, SS, and ES selectors are initialized to CS+8. The segment descriptor fields are initialized implicitly with BASE = 0, LIMIT = FFFFFH, G = 1, D = 1, P = 1, S = 1;
+read/write/access for DS, SS, and ES; and execute/read/access for CS. It is the responsibility of external software to establish a GDT pointed to by the MLE JOIN data structure that contains descriptor entries consistent with the implicit settings
+initialized by the processor (see Table 7-6). Certain states from the content of Table 7-12 are checked for consistency by the processor prior to execution. A failure of any consistency check results in the RLP aborting entry into the protected
+environment and signaling an Intel® TXT shutdown condition. The specific checks performed are documented later in this section. After successful completion of processor consistency checks and subsequent initialization, RLP execution in the measured
+environment begins from the entry point at offset 12 (as indicated in Table 7-12).
+

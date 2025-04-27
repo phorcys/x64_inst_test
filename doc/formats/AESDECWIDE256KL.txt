@@ -1,0 +1,18 @@
+  • Index
+  • December 2023
+
+AESDECWIDE256KL — Perform 14 Rounds of AES Decryption Flow With Key Locker on 8 BlocksUsing 256-Bit Key
+
+                   Opcode/Instruction                    Op/En 64/32-bit Mode CPUID Feature Flag                                                             Description
+F3 0F 38 D8 !(11):011:bbb AESDECWIDE256KL m512, <XMM0-7> A     V/V            AESKLEWIDE_KL      Decrypt XMM0-7 using 256-bit AES key indicated by handle at m512 and store each resultant block back to its corresponding register.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1         Operands 2—9
+A     N/A   ModRM:r/m (r)  Implicit XMM0-7 (r, w)
+
+Description ¶
+
+The AESDECWIDE256KL^1 instruction performs 14 rounds of AES to decrypt each of the eight blocks in XMM0-7 using the 256-bit key indicated by the handle from the second operand. It replaces each input block in XMM0-7 with its corresponding decrypted block
+if the operation succeeds (e.g., does not run into a handle violation failure).
+

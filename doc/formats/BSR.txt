@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+BSR — Bit Scan Reverse
+
+     Opcode        Instruction   Op/En 64-bit Mode Compat/Leg Mode         Description
+0F BD /r          BSR r16, r/m16 RM    Valid       Valid           Bit scan reverse on r/m16.
+0F BD /r          BSR r32, r/m32 RM    Valid       Valid           Bit scan reverse on r/m32.
+REX.W + 0F BD /r  BSR r64, r/m64 RM    Valid       N.E.            Bit scan reverse on r/m64.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Searches the source operand (second operand) for the most significant set bit (1 bit). If a most significant 1 bit is found, its bit index is stored in the destination operand (first operand). The source operand can be a register or a memory location;
+the destination operand is a register. The bit index is an unsigned offset from bit 0 of the source operand. If the content source operand is 0, the content of the destination operand is undefined.
+
+In 64-bit mode, the instruction’s default operation size is 32 bits. Using a REX prefix in the form of REX.R permits access to additional registers (R8-R15). Using a REX prefix in the form of REX.W promotes operation to 64 bits. See the summary chart at
+the beginning of this section for encoding data and limits.
+

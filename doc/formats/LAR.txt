@@ -1,0 +1,64 @@
+  • Index
+  • December 2023
+
+LAR — Load Access Rights Byte
+
+ Opcode      Instruction     Op/En 64-Bit Mode Compat/Leg Mode                 Description
+0F 02 /r LAR r16, r16/m16    RM    Valid       Valid           r16 := access rights referenced by r16/m16
+0F 02 /r LAR reg, r32/m16^1  RM    Valid       Valid           reg := access rights referenced by r32/m16
+
+    1. For all loads (regardless of source or destination sizing) only bits 16-0 are used. Other bits are ignored.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Loads the access rights from the segment descriptor specified by the second operand (source operand) into the first operand (destination operand) and sets the ZF flag in the flag register. The source operand (which can be a register or a memory location)
+contains the segment selector for the segment descriptor being accessed. If the source operand is a memory address, only 16 bits of data are accessed. The destination operand is a general-purpose register.
+
+The processor performs access checks as part of the loading process. Once loaded in the destination register, software can perform additional checks on the access rights information.
+
+The access rights for a segment descriptor include fields located in the second doubleword (bytes 4–7) of the segment descriptor. The following fields are loaded by the LAR instruction:
+
+  • Bits 7:0 are returned as 0
+  • Bits 11:8 return the segment type.
+  • Bit 12 returns the S flag.
+  • Bits 14:13 return the DPL.
+  • Bit 15 returns the P flag.
+  • The following fields are returned only if the operand size is greater than 16 bits:
+      □ Bits 19:16 are undefined.
+      □ Bits 19:16 are undefined.
+      □ Bit 20 returns the software-available bit in the descriptor.
+      □ Bit 20 returns the software-available bit in the descriptor.
+      □ Bit 21 returns the L flag.
+      □ Bit 21 returns the L flag.
+      □ Bit 22 returns the D/B flag.
+      □ Bit 22 returns the D/B flag.
+      □ Bit 23 returns the G flag.
+      □ Bit 23 returns the G flag.
+      □ Bits 31:24 are returned as 0.
+      □ Bits 31:24 are returned as 0.
+
+This instruction performs the following checks before it loads the access rights in the destination register:
+
+  • Checks that the segment selector is not NULL.
+  • Checks that the segment selector points to a descriptor that is within the limits of the GDT or LDT being accessed
+  • Checks that the descriptor type is valid for this instruction. All code and data segment descriptors are valid for (can be accessed with) the LAR instruction. The valid system segment and gate descriptor types are given in Table 3-53.
+  • If the segment is not a conforming code segment, it checks that the specified segment descriptor is visible at the CPL (that is, if the CPL and the RPL of the segment selector are less than or equal to the DPL of the segment selector).
+
+If the segment descriptor cannot be accessed or is an invalid type for the instruction, the ZF flag is cleared and no access rights are loaded in the destination operand.
+
+The LAR instruction can only be executed in protected mode and IA-32e mode.
+
+     Type                                                                  Protected Mode                                                                                                           IA-32e Mode
+                                                                   Name                                                               Valid                                                 Name                                                Valid
+0 1 2 3 4 5 6  Reserved Available 16-bit TSS LDT Busy 16-bit TSS 16-bit call gate 16-bit/32-bit task gate 16-bit interrupt   No Yes Yes Yes Yes Yes   Reserved Reserved LDT Reserved Reserved Reserved Reserved Reserved Reserved       No No Yes No No No No
+7 8 9 A B C D  gate 16-bit trap gate Reserved Available 32-bit TSS Reserved Busy 32-bit TSS 32-bit call gate Reserved 32-bit No No No Yes No Yes Yes  Available 64-bit TSS Reserved Busy 64-bit TSS 64-bit call gate Reserved 64-bit    No No Yes No Yes Yes
+E F            interrupt gate 32-bit trap gate                                                                               No No No                 interrupt gate 64-bit trap gate                                                   No No No
+
+
+Table 3-53. Segment and Gate Types
+

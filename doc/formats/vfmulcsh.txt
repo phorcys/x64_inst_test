@@ -1,0 +1,27 @@
+  • Index
+  • December 2023
+
+VFCMULCSH/VFMULCSH — Complex Multiply Scalar FP16 Values
+
+     Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature
+ Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature     Support                                                 Description
+                                               Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                          Complex multiply a pair of FP16 values from xmm2 and complex conjugate of xmm3/m32,
+EVEX.LLIG.F2.MAP6.W0 D7 /r VFCMULCSH xmm1{k1}{z}, xmm2, xmm3/m32 {er}                                                                               A V/V     AVX512-FP16 and store the result in xmm1 subject to writemask k1. Bits 127:32 of xmm2 are copied
+                                                                                                                                                                          to xmm1[127:32].
+EVEX.LLIG.F3.MAP6.W0 D7 /r VFMULCSH xmm1{k1}{z}, xmm2, xmm3/m32 {er}                                                                                A V/V     AVX512-FP16 Complex multiply a pair of FP16 values from xmm2 and xmm3/m32, and store the result
+                                                                                                                                                                          in xmm1 subject to writemask k1. Bits 127:32 of xmm2 are copied to xmm1[127:32].
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1     Operand 2     Operand 3    Operand 4
+A     Scalar ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction performs a complex multiply operation. There are normal and complex conjugate forms of the operation. The masking for this operation is done on 32-bit quantities representing a pair of FP16 values.
+
+Bits 127:32 of the destination operand are copied from the corresponding bits of the first source operand. Bits MAXVL-1:128 of the destination operand are zeroed. The low FP16 element of the destination is updated according to the writemask.
+
+Rounding is performed at every FMA (fused multiply and add) boundary. Execution occurs as if all MXCSR exceptions are masked. MXCSR status bits are updated to reflect exceptional conditions.
+

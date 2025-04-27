@@ -1,0 +1,28 @@
+  • Index
+  • December 2023
+
+HRESET — History Reset
+
+         Opcode/Instruction           Op/En 64/32 bit Mode Support CPUID Feature Flag                                Description
+F3 0F 3A F0 C0 /ib HRESET imm8, <EAX> A     V/V                    HRESET             Processor history reset request. Controlled by the EAX implicit operand.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1    Operand 2 Operand 3 Operand 4
+A     N/A   ModRM:r/m (r)  N/A       N/A       N/A
+
+Description ¶
+
+Requests the processor to selectively reset selected components of hardware history maintained by the current logical processor. HRESET operation is controlled by the implicit EAX operand. The value of the explicit imm8 operand is ignored. This
+instruction can only be executed at privilege level 0.
+
+The HRESET instruction can be used to request reset of multiple components of hardware history. Prior to the execution of HRESET, the system software must take the following steps:
+
+1. Enumerate the HRESET capabilities via CPUID.20H.0H:EBX, which indicates what components of hardware history can be reset.
+
+2. Only the bits enumerated by CPUID.20H.0H:EBX can be set in the IA32_HRESET_ENABLE MSR.
+
+HRESET causes a general-protection exception (#GP) if EAX sets any bits that are not set in the IA32_HRESET_EN-ABLE MSR.
+
+Any attempt to execute the HRESET instruction inside a transactional region will result in a transaction abort.
+

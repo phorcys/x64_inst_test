@@ -1,0 +1,28 @@
+  • Index
+  • December 2023
+
+GF2P8AFFINEQB — Galois Field Affine Transformation
+
+                                   Opcode/Instruction                                    Op/En 64/32 bit Mode Support CPUID Feature Flag                         Description
+66 0F3A CE /r /ib GF2P8AFFINEQB xmm1, xmm2/m128, imm8                                    A     V/V                    GFNI               Computes affine transformation in the finite field GF(2^8).
+VEX.128.66.0F3A.W1 CE /r /ib VGF2P8AFFINEQB xmm1, xmm2, xmm3/m128, imm8                  B     V/V                    AVX GFNI           Computes affine transformation in the finite field GF(2^8).
+VEX.256.66.0F3A.W1 CE /r /ib VGF2P8AFFINEQB ymm1, ymm2, ymm3/m256, imm8                  B     V/V                    AVX GFNI           Computes affine transformation in the finite field GF(2^8).
+EVEX.128.66.0F3A.W1 CE /r /ib VGF2P8AFFINEQB xmm1{k1}{z}, xmm2, xmm3/m128/m64bcst, imm8  C     V/V                    AVX512VL GFNI      Computes affine transformation in the finite field GF(2^8).
+EVEX.256.66.0F3A.W1 CE /r /ib VGF2P8AFFINEQB ymm1{k1}{z}, ymm2, ymm3/m256/m64bcst, imm8  C     V/V                    AVX512VL GFNI      Computes affine transformation in the finite field GF(2^8).
+EVEX.512.66.0F3A.W1 CE /r /ib VGF2P8AFFINEQB zmm1{k1}{z}, zmm2, zmm3/m512/m64bcst, imm8  C     V/V                    AVX512F GFNI       Computes affine transformation in the finite field GF(2^8).
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A   ModRM:reg (r, w)  ModRM:r/m (r) imm8 (r)      N/A
+B     N/A   ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) imm8 (r)
+C     Full  ModRM:reg (w)     EVEX.vvvv (r) ModRM:r/m (r) imm8 (r)
+
+Description ¶
+
+The AFFINEB instruction computes an affine transformation in the Galois Field 2^8. For this instruction, an affine transformation is defined by A * x + b where “A” is an 8 by 8 bit matrix, and “x” and “b” are 8-bit vectors. One SIMD register (operand 1)
+holds “x” as either 16, 32 or 64 8-bit vectors. A second SIMD (operand 2) register or memory operand contains 2, 4, or 8 “A” values, which are operated upon by the correspondingly aligned 8 “x” values in the first register. The “b” vector is constant for
+all calculations and contained in the immediate byte.
+
+The EVEX encoded form of this instruction does not support memory fault suppression. The SSE encoded forms of the instruction require16B alignment on their memory operations.
+

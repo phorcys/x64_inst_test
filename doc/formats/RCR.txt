@@ -1,0 +1,105 @@
+  • Index
+  • December 2023
+
+RCL/RCR/ROL/ROR — Rotate
+
+Opcode^1
+
+                   Instruction    Op/En 64-Bit Mode Compat/Leg Mode                            Description
+D0 /2            RCL r/m8, 1      M1    Valid       Valid           Rotate 9 bits (CF, r/m8) left once.
+REX + D0 /2      RCL r/m8^2, 1    M1    Valid       N.E.            Rotate 9 bits (CF, r/m8) left once.
+D2 /2            RCL r/m8, CL     MC    Valid       Valid           Rotate 9 bits (CF, r/m8) left CL times.
+REX + D2 /2      RCL r/m8^2, CL   MC    Valid       N.E.            Rotate 9 bits (CF, r/m8) left CL times.
+C0 /2 ib         RCL r/m8, imm8   MI    Valid       Valid           Rotate 9 bits (CF, r/m8) left imm8 times.
+REX + C0 /2 ib   RCL r/m8^2, imm8 MI    Valid       N.E.            Rotate 9 bits (CF, r/m8) left imm8 times.
+D1 /2            RCL r/m16, 1     M1    Valid       Valid           Rotate 17 bits (CF, r/m16) left once.
+D3 /2            RCL r/m16, CL    MC    Valid       Valid           Rotate 17 bits (CF, r/m16) left CL times.
+C1 /2 ib         RCL r/m16, imm8  MI    Valid       Valid           Rotate 17 bits (CF, r/m16) left imm8 times.
+D1 /2            RCL r/m32, 1     M1    Valid       Valid           Rotate 33 bits (CF, r/m32) left once.
+REX.W + D1 /2    RCL r/m64, 1     M1    Valid       N.E.            Rotate 65 bits (CF, r/m64) left once. Uses a 6 bit count.
+D3 /2            RCL r/m32, CL    MC    Valid       Valid           Rotate 33 bits (CF, r/m32) left CL times.
+REX.W + D3 /2    RCL r/m64, CL    MC    Valid       N.E.            Rotate 65 bits (CF, r/m64) left CL times. Uses a 6 bit count.
+C1 /2 ib         RCL r/m32, imm8  MI    Valid       Valid           Rotate 33 bits (CF, r/m32) left imm8 times.
+REX.W + C1 /2 ib RCL r/m64, imm8  MI    Valid       N.E.            Rotate 65 bits (CF, r/m64) left imm8 times. Uses a 6 bit count.
+D0 /3            RCR r/m8, 1      M1    Valid       Valid           Rotate 9 bits (CF, r/m8) right once.
+REX + D0 /3      RCR r/m8^2, 1    M1    Valid       N.E.            Rotate 9 bits (CF, r/m8) right once.
+D2 /3            RCR r/m8, CL     MC    Valid       Valid           Rotate 9 bits (CF, r/m8) right CL times.
+REX + D2 /3      RCR r/m8^2, CL   MC    Valid       N.E.            Rotate 9 bits (CF, r/m8) right CL times.
+C0 /3 ib         RCR r/m8, imm8   MI    Valid       Valid           Rotate 9 bits (CF, r/m8) right imm8 times.
+REX + C0 /3 ib   RCR r/m8^2, imm8 MI    Valid       N.E.            Rotate 9 bits (CF, r/m8) right imm8 times.
+D1 /3            RCR r/m16, 1     M1    Valid       Valid           Rotate 17 bits (CF, r/m16) right once.
+D3 /3            RCR r/m16, CL    MC    Valid       Valid           Rotate 17 bits (CF, r/m16) right CL times.
+C1 /3 ib         RCR r/m16, imm8  MI    Valid       Valid           Rotate 17 bits (CF, r/m16) right imm8 times.
+D1 /3            RCR r/m32, 1     M1    Valid       Valid           Rotate 33 bits (CF, r/m32) right once. Uses a 6 bit count.
+REX.W + D1 /3    RCR r/m64, 1     M1    Valid       N.E.            Rotate 65 bits (CF, r/m64) right once. Uses a 6 bit count.
+D3 /3            RCR r/m32, CL    MC    Valid       Valid           Rotate 33 bits (CF, r/m32) right CL times.
+REX.W + D3 /3    RCR r/m64, CL    MC    Valid       N.E.            Rotate 65 bits (CF, r/m64) right CL times. Uses a 6 bit count.
+C1 /3 ib         RCR r/m32, imm8  MI    Valid       Valid           Rotate 33 bits (CF, r/m32) right imm8 times.
+REX.W + C1 /3 ib RCR r/m64, imm8  MI    Valid       N.E.            Rotate 65 bits (CF, r/m64) right imm8 times. Uses a 6 bit count.
+D0 /0            ROL r/m8, 1      M1    Valid       Valid           Rotate 8 bits r/m8 left once.
+REX + D0 /0      ROL r/m8^2, 1    M1    Valid       N.E.            Rotate 8 bits r/m8 left once
+D2 /0            ROL r/m8, CL     MC    Valid       Valid           Rotate 8 bits r/m8 left CL times.
+REX + D2 /0      ROL r/m8^2, CL   MC    Valid       N.E.            Rotate 8 bits r/m8 left CL times.
+C0 /0 ib         ROL r/m8, imm8   MI    Valid       Valid           Rotate 8 bits r/m8 left imm8 times.
+
+Opcode^1
+
+                   Instruction    Op/En 64-Bit Mode Compat/Leg Mode                         Description
+REX + C0 /0 ib   ROL r/m8^2, imm8 MI    Valid       N.E.            Rotate 8 bits r/m8 left imm8 times.
+D1 /0            ROL r/m16, 1     M1    Valid       Valid           Rotate 16 bits r/m16 left once.
+D3 /0            ROL r/m16, CL    MC    Valid       Valid           Rotate 16 bits r/m16 left CL times.
+C1 /0 ib         ROL r/m16, imm8  MI    Valid       Valid           Rotate 16 bits r/m16 left imm8 times.
+D1 /0            ROL r/m32, 1     M1    Valid       Valid           Rotate 32 bits r/m32 left once.
+REX.W + D1 /0    ROL r/m64, 1     M1    Valid       N.E.            Rotate 64 bits r/m64 left once. Uses a 6 bit count.
+D3 /0            ROL r/m32, CL    MC    Valid       Valid           Rotate 32 bits r/m32 left CL times.
+REX.W + D3 /0    ROL r/m64, CL    MC    Valid       N.E.            Rotate 64 bits r/m64 left CL times. Uses a 6 bit count.
+C1 /0 ib         ROL r/m32, imm8  MI    Valid       Valid           Rotate 32 bits r/m32 left imm8 times.
+REX.W + C1 /0 ib ROL r/m64, imm8  MI    Valid       N.E.            Rotate 64 bits r/m64 left imm8 times. Uses a 6 bit count.
+D0 /1            ROR r/m8, 1      M1    Valid       Valid           Rotate 8 bits r/m8 right once.
+REX + D0 /1      ROR r/m8^2, 1    M1    Valid       N.E.            Rotate 8 bits r/m8 right once.
+D2 /1            ROR r/m8, CL     MC    Valid       Valid           Rotate 8 bits r/m8 right CL times.
+REX + D2 /1      ROR r/m8^2, CL   MC    Valid       N.E.            Rotate 8 bits r/m8 right CL times.
+C0 /1 ib         ROR r/m8, imm8   MI    Valid       Valid           Rotate 8 bits r/m16 right imm8 times.
+REX + C0 /1 ib   ROR r/m8^2, imm8 MI    Valid       N.E.            Rotate 8 bits r/m16 right imm8 times.
+D1 /1            ROR r/m16, 1     M1    Valid       Valid           Rotate 16 bits r/m16 right once.
+D3 /1            ROR r/m16, CL    MC    Valid       Valid           Rotate 16 bits r/m16 right CL times.
+C1 /1 ib         ROR r/m16, imm8  MI    Valid       Valid           Rotate 16 bits r/m16 right imm8 times.
+D1 /1            ROR r/m32, 1     M1    Valid       Valid           Rotate 32 bits r/m32 right once.
+REX.W + D1 /1    ROR r/m64, 1     M1    Valid       N.E.            Rotate 64 bits r/m64 right once. Uses a 6 bit count.
+D3 /1            ROR r/m32, CL    MC    Valid       Valid           Rotate 32 bits r/m32 right CL times.
+REX.W + D3 /1    ROR r/m64, CL    MC    Valid       N.E.            Rotate 64 bits r/m64 right CL times. Uses a 6 bit count.
+C1 /1 ib         ROR r/m32, imm8  MI    Valid       Valid           Rotate 32 bits r/m32 right imm8 times.
+REX.W + C1 /1 ib ROR r/m64, imm8  MI    Valid       N.E.            Rotate 64 bits r/m64 right imm8 times. Uses a 6 bit count.
+
+    1. See the IA-32 Architecture Compatibility section below.
+
+    2. In 64-bit mode, r/m8 can not be encoded to access the following byte registers if a REX prefix is used: AH, BH, CH, DH.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1    Operand 2 Operand 3 Operand 4
+M1    ModRM:r/m (w)  1         N/A       N/A
+MC    ModRM:r/m (w)  CL        N/A       N/A
+MI    ModRM:r/m (w)  imm8      N/A       N/A
+
+Description ¶
+
+Shifts (rotates) the bits of the first operand (destination operand) the number of bit positions specified in the second operand (count operand) and stores the result in the destination operand. The destination operand can be a register or a memory
+location; the count operand is an unsigned integer that can be an immediate or a value in the CL register. The count is masked to 5 bits (or 6 bits if in 64-bit mode and REX.W = 1).
+
+The rotate left (ROL) and rotate through carry left (RCL) instructions shift all the bits toward more-significant bit positions, except for the most-significant bit, which is rotated to the least-significant bit location. The rotate right (ROR) and
+rotate through carry right (RCR) instructions shift all the bits toward less significant bit positions, except for the least-significant bit, which is rotated to the most-significant bit location.
+
+The RCL and RCR instructions include the CF flag in the rotation. The RCL instruction shifts the CF flag into the least-significant bit and shifts the most-significant bit into the CF flag. The RCR instruction shifts the CF flag into the most-significant
+bit and shifts the least-significant bit into the CF flag. For the ROL and ROR instructions, the original value of the CF flag is not a part of the result, but the CF flag receives a copy of the bit that was shifted from one end to the other.
+
+The OF flag is defined only for the 1-bit rotates; it is undefined in all other cases (except RCL and RCR instructions only: a zero-bit rotate does nothing, that is affects no flags). For left rotates, the OF flag is set to the exclusive OR of the CF bit
+(after the rotate) and the most-significant bit of the result. For right rotates, the OF flag is set to the exclusive OR of the two most-significant bits of the result.
+
+In 64-bit mode, using a REX prefix in the form of REX.R permits access to additional registers (R8-R15). Use of REX.W promotes the first operand to 64 bits and causes the count operand to become a 6-bit counter.
+
+IA-32 Architecture Compatibility ¶
+
+The 8086 does not mask the rotation count. However, all other IA-32 processors (starting with the Intel 286 processor) do mask the rotation count to 5 bits, resulting in a maximum count of 31. This masking is done in all operating modes (including the
+virtual-8086 mode) to reduce the maximum execution time of the instructions.
+

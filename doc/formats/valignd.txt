@@ -1,0 +1,34 @@
+  • Index
+  • December 2023
+
+VALIGND/VALIGNQ — Align Doubleword/Quadword Vectors
+
+                       Opcode/Instruction                         Op/    64/32 Bit Mode    CPUID Feature                                                                      Description
+                                                                   En       Support            Flag
+EVEX.128.66.0F3A.W0 03 /r ib VALIGND xmm1 {k1}{z}, xmm2, xmm3/    A    V/V                AVX512VL        Shift right and merge vectors xmm2 and xmm3/m128/m32bcst with double-word granularity using imm8 as number of elements to shift, and store the final
+m128/m32bcst, imm8                                                                        AVX512F         result in xmm1, under writemask.
+EVEX.128.66.0F3A.W1 03 /r ib VALIGNQ xmm1 {k1}{z}, xmm2, xmm3/    A    V/V                AVX512VL        Shift right and merge vectors xmm2 and xmm3/m128/m64bcst with quad-word granularity using imm8 as number of elements to shift, and store the final
+m128/m64bcst, imm8                                                                        AVX512F         result in xmm1, under writemask.
+EVEX.256.66.0F3A.W0 03 /r ib VALIGND ymm1 {k1}{z}, ymm2, ymm3/    A    V/V                AVX512VL        Shift right and merge vectors ymm2 and ymm3/m256/m32bcst with double-word granularity using imm8 as number of elements to shift, and store the final
+m256/m32bcst, imm8                                                                        AVX512F         result in ymm1, under writemask.
+EVEX.256.66.0F3A.W1 03 /r ib VALIGNQ ymm1 {k1}{z}, ymm2, ymm3/    A    V/V                AVX512VL        Shift right and merge vectors ymm2 and ymm3/m256/m64bcst with quad-word granularity using imm8 as number of elements to shift, and store the final
+m256/m64bcst, imm8                                                                        AVX512F         result in ymm1, under writemask.
+EVEX.512.66.0F3A.W0 03 /r ib VALIGND zmm1 {k1}{z}, zmm2, zmm3/    A    V/V                AVX512F         Shift right and merge vectors zmm2 and zmm3/m512/m32bcst with double-word granularity using imm8 as number of elements to shift, and store the final
+m512/m32bcst, imm8                                                                                        result in zmm1, under writemask.
+EVEX.512.66.0F3A.W1 03 /r ib VALIGNQ zmm1 {k1}{z}, zmm2, zmm3/    A    V/V                AVX512F         Shift right and merge vectors zmm2 and zmm3/m512/m64bcst with quad-word granularity using imm8 as number of elements to shift, and store the final
+m512/m64bcst, imm8                                                                                        result in zmm1, under writemask.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     Full       ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+Concatenates and shifts right doubleword/quadword elements of the first source operand (the second operand) and the second source operand (the third operand) into a 1024/512/256-bit intermediate vector. The low 512/256/128-bit of the intermediate vector
+is written to the destination operand (the first operand) using the writemask k1. The destination and first source operands are ZMM/YMM/XMM registers. The second source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256
+/128-bit vector broadcasted from a 32/64-bit memory location.
+
+This instruction is writemasked, so only those elements with the corresponding bit set in vector mask register k1 are computed and stored into zmm1. Elements in zmm1 with the corresponding bit clear in k1 retain their previous values (merging-masking) or
+are set to 0 (zeroing-masking).
+

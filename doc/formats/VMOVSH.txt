@@ -1,0 +1,29 @@
+  • Index
+  • December 2023
+
+VMOVSH — Move Scalar FP16 Value
+
+Instruction En bit Mode Flag Support Instruction En bit Mode Flag Support 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64   Support                                     Description
+     /32 CPUID Feature Instruction En bit Mode Flag 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64/32 CPUID Feature
+EVEX.LLIG.F3.MAP5.W0 10 /r VMOVSH xmm1{k1}{z}, m16                                                                                                                           A V/V     AVX512-FP16 Move FP16 value from m16 to xmm1 subject to writemask k1.
+EVEX.LLIG.F3.MAP5.W0 11 /r VMOVSH m16{k1}, xmm1                                                                                                                              B V/V     AVX512-FP16 Move low FP16 value from xmm1 to m16 subject to writemask
+                                                                                                                                                                                                   k1.
+EVEX.LLIG.F3.MAP5.W0 10 /r VMOVSH xmm1{k1}{z}, xmm2, xmm3                                                                                                                    C V/V     AVX512-FP16 Move low FP16 values from xmm3 to xmm1 subject to writemask
+                                                                                                                                                                                                   k1. Bits 127:16 of xmm2 are copied to xmm1[127:16].
+EVEX.LLIG.F3.MAP5.W0 11 /r VMOVSH xmm1{k1}{z}, xmm2, xmm3                                                                                                                    D V/V     AVX512-FP16 Move low FP16 values from xmm3 to xmm1 subject to writemask
+                                                                                                                                                                                                   k1. Bits 127:16 of xmm2 are copied to xmm1[127:16].
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1      Operand 2      Operand 3    Operand 4
+A     Scalar ModRM:reg (w)  ModRM:r/m (r)  N/A            N/A
+B     Scalar ModRM:r/m (w)  ModRM:reg (r)  N/A            N/A
+C     N/A    ModRM:reg (w)  VEX.vvvv (r)   ModRM:r/m (r)  N/A
+D     N/A    ModRM:r/m (w)  VEX.vvvv (r)   ModRM:reg (r)  N/A
+
+Description ¶
+
+This instruction moves a FP16 value to a register or memory location.
+
+The two register-only forms are aliases and differ only in where their operands are encoded; this is a side effect of the encodings selected.
+

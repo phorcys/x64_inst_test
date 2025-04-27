@@ -1,0 +1,18 @@
+  • Index
+  • December 2023
+
+WRSSD/WRSSQ — Write to Shadow Stack
+
+             Opcode/Instruction              Op/En 64/32 bit Mode Support CPUID Feature Flag          Description
+0F 38 F6 !(11):rrr:bbb WRSSD m32, r32        MR    V/V                    CET_SS             Write 4 bytes to shadow stack.
+REX.W 0F 38 F6 !(11):rrr:bbb WRSSQ m64, r64  MR    V/N.E.                 CET_SS             Write 8 bytes to shadow stack.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+MR    ModRM:r/m (w)  ModRM:reg (r)  N/A       N/A
+
+Description ¶
+
+Writes bytes in register source to the shadow stack.
+

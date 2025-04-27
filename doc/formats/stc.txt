@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+STC — Set Carry Flag
+
+Opcode Instruction Op/En 64-Bit Mode Compat/Leg Mode   Description
+F9     STC         ZO    Valid       Valid            Set CF flag.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+Sets the CF flag in the EFLAGS register. Operation is the same in all modes.
+

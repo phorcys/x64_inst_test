@@ -1,0 +1,22 @@
+  • Index
+  • December 2023
+
+VZEROUPPER — Zero Upper Bits of YMM and ZMM Registers
+
+     Opcode/Instruction      Op /En 64/32 bit Mode Support CPUID Feature Flag                              Description
+VEX.128.0F.WIG 77 VZEROUPPER ZO     V/V                    AVX                Zero bits in positions 128 and higher of some YMM and ZMM registers.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+In 64-bit mode, the instruction zeroes the bits in positions 128 and higher in YMM0-YMM15 and ZMM0-ZMM15. Outside 64-bit mode, it zeroes those bits only in YMM0-YMM7 and ZMM0-ZMM7. VZEROUPPER does not modify the lower 128 bits of these registers and it
+does not modify ZMM16-ZMM31.
+
+This instruction is recommended when transitioning between AVX and legacy SSE code; it will eliminate performance penalties caused by false dependencies.
+
+Note: VEX.vvvv is reserved and must be 1111b otherwise instructions will #UD. In Compatibility and legacy 32-bit mode only the lower 8 registers are modified.
+

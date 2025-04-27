@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VGETMANTPS
+		— Extract Float32 Vector of Normalized Mantissas From Float32 Vector</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VGETMANTPS
+		— Extract Float32 Vector of Normalized Mantissas From Float32 Vector</h1>
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 Bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.128.66.0F3A.W0 26 /r ib VGETMANTPS xmm1 {k1}{z}, xmm2/m128/m32bcst, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Get normalized mantissa from float32 vector xmm2/m128/m32bcst and store the result in xmm1, using imm8 for sign control and mantissa interval normalization, under writemask.</td></tr>
+<tr>
+<td>EVEX.256.66.0F3A.W0 26 /r ib VGETMANTPS ymm1 {k1}{z}, ymm2/m256/m32bcst, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Get normalized mantissa from float32 vector ymm2/m256/m32bcst and store the result in ymm1, using imm8 for sign control and mantissa interval normalization, under writemask.</td></tr>
+<tr>
+<td>EVEX.512.66.0F3A.W0 26 /r ib VGETMANTPS zmm1 {k1}{z}, zmm2/m512/m32bcst{sae}, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Get normalized mantissa from float32 vector zmm2/m512/m32bcst and store the result in zmm1, using imm8 for sign control and mantissa interval normalization, under writemask.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple Type</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Full</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>Convert single-precision floating values in the source operand (the second operand) to single-precision floating-point values with the mantissa normalization and sign control specified by the imm8 byte, see <a href='/x86/vgetmantpd#fig-5-15'>Figure 5-15</a>. The converted results are written to the destination operand (the first operand) using writemask k1. The normalized mantissa is specified by interv (imm8[1:0]) and the sign control (sc) is specified by bits 3:2 of the immediate byte.</p>
+<p>The destination operand is a ZMM/YMM/XMM register updated under the writemask. The source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location, or a 512/256/128-bit vector broadcasted from a 32-bit memory location.</p>
+<p>For each input single-precision floating-point value x, The conversion operation is:</p>
+<p><em>GetMant</em>(<em>x</em>) = <em>±</em>2<em><sup>k</sup>|x.significand|</em></p>
+<p>where:</p>
+<p>1 <em>&lt;</em>= <em>|x.significand| &lt;</em> 2</p>
+<p>Unbiased exponent k can be either 0 or -1, depending on the interval range defined by interv, the range of the significand and whether the exponent of the source is even or odd. The sign of the final result is determined by sc and the source sign. The encoded value of imm8[1:0] and sign control are shown in <a href='/x86/vgetmantpd#fig-5-15'>Figure 5-15</a>.</p>
+<p>Each converted single-precision floating-point result is encoded according to the sign control, the unbiased exponent k (adding bias) and a mantissa normalized to the range specified by interv.</p>
+<p>The GetMant() function follows <a href='/x86/vgetmantpd#tbl-5-18'>Table 5-18</a> when dealing with floating-point special numbers.</p>
+<p>This instruction is writemasked, so only those elements with the corresponding bit set in vector mask register k1 are computed and stored into the destination. Elements in zmm1 with the corresponding bit clear in k1 retain their previous values.</p>
+<p>Note: EVEX.vvvv is reserved and must be 1111b, VEX.L must be 0; otherwise instructions will #UD.</p>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<pre>def getmant_fp32(src, sign_control, normalization_interval):
+    bias := 127
+    dst.sign := sign_control[0] ? 0 : src.sign
+    signed_one := sign_control[0] ? +1.0 : -1.0
+    dst.exp := src.exp
+    dst.fraction := src.fraction
+    zero := (dst.exp = 0) and ((dst.fraction = 0) or (MXCSR.DAZ=1))
+    denormal := (dst.exp = 0) and (dst.fraction != 0) and (MXCSR.DAZ=0)
+    infinity := (dst.exp = 0xFF) and (dst.fraction = 0)
+    nan := (dst.exp = 0xFF) and (dst.fraction != 0)
+    src_signaling := src.fraction[22]
+    snan := nan and (src_signaling = 0)
+    positive := (src.sign = 0)
+    negative := (src.sign = 1)
+    if nan:
+        if snan:
+            MXCSR.IE := 1
+        return qnan(src)
+    if positive and (zero or infinity):
+        return 1.0
+    if negative:
+        if zero:
+            return signed_one
+        if infinity:
+            if sign_control[1]:
+                MXCSR.IE := 1
+                return QNaN_Indefinite
+            return signed_one
+        if sign_control[1]:
+            MXCSR.IE := 1
+            return QNaN_Indefinite
+    if denormal:
+        jbit := 0
+        dst.exp := bias
+        while jbit = 0:
+            jbit := dst.fraction[22]
+            dst.fraction := dst.fraction &lt;&lt; 1
+            dst.exp : = dst.exp - 1
+        MXCSR.DE := 1
+    unbiased_exp := dst.exp - bias
+    odd_exp := unbiased_exp[0]
+    signaling_bit := dst.fraction[22]
+    if normalization_interval = 0b00:
+        dst.exp := bias
+    else if normalization_interval = 0b01:
+        dst.exp := odd_exp ? bias-1 : bias
+    else if normalization_interval = 0b10:
+        dst.exp := bias-1
+    else if normalization_interval = 0b11:
+        dst.exp := signaling_bit ? bias-1 : bias
+    return dst
+</pre>
+<h4 id="vgetmantps--evex-encoded-versions-">VGETMANTPS (EVEX encoded versions)<a class="anchor" href="#vgetmantps--evex-encoded-versions-">
+			¶
+		</a></h4>
+<pre>VGETMANTPS dest{k1}, src, imm8
+VL = 128, 256, or 512
+KL := VL / 32
+sign_control := imm8[3:2]
+normalization_interval := imm8[1:0]
+FOR i := 0 to KL-1:
+    IF k1[i] or *no writemask*:
+        IF SRC is memory and (EVEX.b = 1):
+            tsrc := src.float[0]
+        ELSE:
+            tsrc := src.float[i]
+        DEST.float[i] := getmant_fp32(tsrc, sign_control, normalization_interval)
+    ELSE IF *zeroing*:
+        DEST.float[i] := 0
+    //else DEST.float[i] remains unchanged
+DEST[MAX_VL-1:VL] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VGETMANTPS __m512 _mm512_getmant_ps( __m512 a, enum intv, enum sgn);
+</pre>
+<pre>VGETMANTPS __m512 _mm512_mask_getmant_ps(__m512 s, __mmask16 k, __m512 a, enum intv, enum sgn;
+</pre>
+<pre>VGETMANTPS __m512 _mm512_maskz_getmant_ps(__mmask16 k, __m512 a, enum intv, enum sgn);
+</pre>
+<pre>VGETMANTPS __m512 _mm512_getmant_round_ps( __m512 a, enum intv, enum sgn, int r);
+</pre>
+<pre>VGETMANTPS __m512 _mm512_mask_getmant_round_ps(__m512 s, __mmask16 k, __m512 a, enum intv, enum sgn, int r);
+</pre>
+<pre>VGETMANTPS __m512 _mm512_maskz_getmant_round_ps(__mmask16 k, __m512 a, enum intv, enum sgn, int r);
+</pre>
+<pre>VGETMANTPS __m256 _mm256_getmant_ps( __m256 a, enum intv, enum sgn);
+</pre>
+<pre>VGETMANTPS __m256 _mm256_mask_getmant_ps(__m256 s, __mmask8 k, __m256 a, enum intv, enum sgn);
+</pre>
+<pre>VGETMANTPS __m256 _mm256_maskz_getmant_ps( __mmask8 k, __m256 a, enum intv, enum sgn);
+</pre>
+<pre>VGETMANTPS __m128 _mm_getmant_ps( __m128 a, enum intv, enum sgn);
+</pre>
+<pre>VGETMANTPS __m128 _mm_mask_getmant_ps(__m128 s, __mmask8 k, __m128 a, enum intv, enum sgn);
+</pre>
+<pre>VGETMANTPS __m128 _mm_maskz_getmant_ps( __mmask8 k, __m128 a, enum intv, enum sgn);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Denormal, Invalid.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>See <span class="not-imported">Table 2-46</span>, “Type E2 Class Exception Conditions.”</p>
+<p>Additionally:</p>
+<table>
+<tr>
+<td>#UD</td>
+<td>If EVEX.vvvv != 1111B.</td></tr></table><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

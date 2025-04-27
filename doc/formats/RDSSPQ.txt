@@ -1,0 +1,18 @@
+  • Index
+  • December 2023
+
+RDSSPD/RDSSPQ — Read Shadow Stack Pointer
+
+         Opcode/Instruction           Op/En 64/32 bit Mode Support CPUID Feature Flag                       Description
+F3 0F 1E /1 (mod=11) RDSSPD r32       R     V/V                    CET_SS             Copy low 32 bits of shadow stack pointer (SSP) to r32.
+F3 REX.W 0F 1E /1 (mod=11) RDSSPQ r64 R     V/N.E.                 CET_SS             Copies shadow stack pointer (SSP) to r64.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1    Operand 2 Operand 3 Operand 4
+R     ModRM:r/m (w)  N/A       N/A       N/A
+
+Description ¶
+
+Copies the current shadow stack pointer (SSP) register to the register destination. This opcode is a NOP when CET shadow stacks are not enabled and on processors that do not support CET.
+

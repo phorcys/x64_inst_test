@@ -1,0 +1,28 @@
+  • Index
+  • December 2023
+
+FCHS — Change Sign
+
+Opcode  Mode Leg Mode          Description
+D9 E0                  Complements sign of ST(0).
+
+Description ¶
+
+Complements the sign bit of ST(0). This operation changes a positive value into a negative value of equal magnitude or vice versa. The following table shows the results obtained when changing the sign of various classes of numbers.
+
+ST(0) SRC  ST(0) DEST
+−∞         +∞
+−F         +F
+−0         +0
++0         −0
++F         −F
++∞         −∞
+NaN        NaN
+
+
+Table 3-20. FCHS Results
+
+    * Fmeansfinitefloating-pointvalue.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

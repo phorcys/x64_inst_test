@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+CLC — Clear Carry Flag
+
+Opcode Instruction Op/En 64-bit Mode Compat/Leg Mode    Description
+F8     CLC         ZO    Valid       Valid            Clear CF flag.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+Clears the CF flag in the EFLAGS register. Operation is the same in all modes.
+

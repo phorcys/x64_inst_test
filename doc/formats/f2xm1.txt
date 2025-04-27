@@ -1,0 +1,30 @@
+  • Index
+  • December 2023
+
+F2XM1 — Compute 2x–1
+
+Opcode  Mode Leg Mode             Description
+D9 F0                  Replace ST(0) with (2^ST(0) – 1).
+
+Description ¶
+
+Computes the exponential value of 2 to the power of the source operand minus 1. The source operand is located in register ST(0) and the result is also stored in ST(0). The value of the source operand must lie in the range –1.0 to +1.0. If the source
+value is outside this range, the result is undefined.
+
+The following table shows the results obtained when computing the exponential value of various classes of numbers, assuming that neither overflow nor underflow occurs.
+
+ ST(0) SRC    ST(0) DEST
+− 1.0 to −0  − 0.5 to − 0
+−0           −0
++0           +0
++ 0 to +1.0  + 0 to 1.0
+
+
+Table 3-16. Results Obtained from F2XM1
+
+Values other than 2 can be exponentiated using the following formula:
+
+[x]y [:= 2](y ∗ log[2]x)
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

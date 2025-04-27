@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>SENDUIPI
+		— Send User Interprocessor Interrupt</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>SENDUIPI
+		— Send User Interprocessor Interrupt</h1>
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>F3 0F C7 /6 SENDUIPI reg</td>
+<td>A</td>
+<td>V/I</td>
+<td>UINTR</td>
+<td>Send interprocessor user interrupt.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>N/A</td>
+<td>ModRM:reg (r)</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td></tr></table>
+<h2 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h2>
+<p>The SENDUIPI instruction sends the user interprocessor interrupt (IPI) indicated by its register operand. (The operand always has 64 bits; operand-size overrides such as the prefix 66 are ignored.)</p>
+<p>SENDUIPI uses a data structure called the user-interrupt target table (UITT). This table is located at the linear address UITTADDR (in the IA32_UINTR_TT MSR); it comprises UITTSZ+1 16-byte entries, where UITTSZ = IA32_UINT_MISC[31:0]. SENDUIPI uses the UITT entry (UITTE) indexed by the instruction's register operand. Each UITTE has the following format:</p>
+<ul>
+<li>Bit 0: V, a valid bit.</li>
+<li>Bits 7:1 are reserved and must be 0.</li>
+<li>Bits 15:8: UV, the user-interrupt vector (in the range 0–63, so bits 15:14 must be 0).</li>
+<li>Bits 63:16 are reserved.</li>
+<li>Bits 127:64: UPIDADDR, the linear address of a user posted-interrupt descriptor (UPID). (UPIDADDR is 64-byte aligned, so bits 69:64 of each UITTE must be 0.)</li></ul>
+<p>Each UPID has the following format (fields and bits not referenced are reserved):</p>
+<ul>
+<li>Bit 0 (ON) indicates an outstanding notification. If this bit is set, there is a notification outstanding for one or more user interrupts in PIR.</li>
+<li>Bit 1 (SN) indicates that notifications should be suppressed. If this bit is set, agents (including SENDUIPI) should not send notifications when posting user interrupts in this descriptor.</li>
+<li>Bits 23:16 (NV) contain the notification vector. This is used by agents sending user-interrupt notifications (including SENDUIPI).</li>
+<li>Bits 63:32 (NDST) contain the notification destination. This is the target physical APIC ID (in xAPIC mode, bits 47:40 are the 8-bit APIC ID; in x2APIC mode, the entire field forms the 32-bit APIC ID).</li>
+<li>Bits 127:64 (PIF) contain posted-interrupt requests. There is one bit for each user-interrupt vector. There is a user-interrupt request for a vector if the corresponding bit is 1.</li></ul>
+<p>Although SENDUIPI may be executed at any privilege level, all of the instruction’s memory accesses (to a UITTE and a UPID) are performed with supervisor privilege.</p>
+<p>SENDUIPI sends a user interrupt by posting a user interrupt with vector V in the UPID referenced by UPIDADDR and then sending, as an ordinary IPI, any notification interrupt specified in that UPID.</p>
+<h2 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h2>
+<pre>IF reg &gt; UITTSZ;
+    THEN #GP(0);
+FI;
+read tempUITTE from 16 bytes at UITTADDR+ (reg « 4);
+IF tempUITTE.V = 0 or tempUITTE sets any reserved bit
+    THEN #GP(0);
+FI;
+read tempUPID from 16 bytes at tempUITTE.UPIDADDR;// under lock
+IF tempUPID sets any reserved bits or bits that must be zero
+    THEN #GP(0); // release lock
+FI;
+tempUPID.PIR[tempUITTE.UV] := 1;
+IF tempUPID.SN = tempUPID.ON = 0
+    THEN
+        tempUPID.ON := 1;
+        sendNotify := 1;
+    ELSE sendNotify := 0;
+FI;
+write tempUPID to 16 bytes at tempUITTE.UPIDADDR;// release lock
+IF sendNotify = 1
+    THEN
+        IF local APIC is in x2APIC mode
+            THEN send ordinary IPI with vector tempUPID.NV
+                to 32-bit physical APIC ID tempUPID.NDST;
+            ELSE send ordinary IPI with vector tempUPID.NV
+                to 8-bit physical APIC ID tempUPID.NDST[15:8];
+        FI;
+FI;
+</pre>
+<h2 id="flags-affected">Flags Affected<a class="anchor" href="#flags-affected">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="protected-mode-exceptions">Protected Mode Exceptions<a class="anchor" href="#protected-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>#UD</td>
+<td>The SENDUIPI instruction is not recognized in protected mode.</td></tr></table>
+<h2 class="exceptions" id="real-address-mode-exceptions">Real-Address Mode Exceptions<a class="anchor" href="#real-address-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>#UD</td>
+<td>The SENDUIPI instruction is not recognized in real-address mode.</td></tr></table>
+<h2 class="exceptions" id="virtual-8086-mode-exceptions">Virtual-8086 Mode Exceptions<a class="anchor" href="#virtual-8086-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>#UD</td>
+<td>The SENDUIPI instruction is not recognized in virtual-8086 mode.</td></tr></table>
+<h2 class="exceptions" id="compatibility-mode-exceptions">Compatibility Mode Exceptions<a class="anchor" href="#compatibility-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td>#UD</td>
+<td>The SENDUIPI instruction is not recognized in compatibility mode.</td></tr></table>
+<h2 class="exceptions" id="64-bit-mode-exceptions">64-Bit Mode Exceptions<a class="anchor" href="#64-bit-mode-exceptions">
+			¶
+		</a></h2>
+<table>
+<tr>
+<td rowspan="5">#UD</td>
+<td>If the LOCK prefix is used.</td></tr>
+<tr>
+<td>If executed inside an enclave.</td></tr>
+<tr>
+<td>If CR4.UINTR = 0.</td></tr>
+<tr>
+<td>If IA32_UINTR_TT[0] = 0.</td></tr>
+<tr>
+<td>If CPUID.07H.0H:EDX.UINTR[bit 5] = 0.</td></tr>
+<tr>
+<td>#PF</td>
+<td>If a page fault occurs.</td></tr>
+<tr>
+<td rowspan="4">#GP</td>
+<td>If the value of the register operand exceeds UITTSZ.</td></tr>
+<tr>
+<td>If the selected UITTE is not valid or sets any reserved bits.</td></tr>
+<tr>
+<td>If the selected UPID sets any reserved bits.</td></tr>
+<tr>
+<td>If there is an attempt to access memory using a linear address that is not canonical relative to the current paging mode.</td></tr></table><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

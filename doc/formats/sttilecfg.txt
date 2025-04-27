@@ -1,0 +1,22 @@
+  • Index
+  • December 2023
+
+STTILECFG — Store Tile Configuration
+
+                Opcode/Instruction                  Op/En 64/32 bit Mode Support CPUID Feature Flag            Description
+VEX.128.66.0F38.W0 49 !(11):000:bbb STTILECFG m512  A     V/N.E.                 AMX-TILE           Store tile configuration in m512.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1    Operand 2 Operand 3 Operand 4
+A     N/A   ModRM:r/m (w)  N/A       N/A       N/A
+
+Description ¶
+
+The STTILECFG instruction takes a pointer to a 64-byte memory location (described in Table 3-10 in the “LDTILECFG—Load Tile Configuration” entry) that will, after successful execution of this instruction, contain the description of the tiles that were
+configured. In order to configure tiles, the AMX-TILE bit in CPUID must be set and the operating system has to have enabled the tiles architecture.
+
+If the tiles are not configured, then STTILECFG stores 64B of zeros to the indicated memory location.
+
+Any attempt to execute the STTILECFG instruction inside an Intel TSX transaction will result in a transaction abort.
+

@@ -1,0 +1,33 @@
+  • Index
+  • December 2023
+
+SQRTSD — Compute Square Root of Scalar Double Precision Floating-Point Value
+
+              Opcode/Instruction               Op /   64/32 bit Mode  CPUID Feature                                                                                Description
+                                                En       Support          Flag
+F2 0F 51/r SQRTSD xmm1,xmm2/m64                A     V/V              SSE2          Computes square root of the low double precision floating-point value in xmm2/m64 and stores the results in xmm1.
+VEX.LIG.F2.0F.WIG 51/r VSQRTSD xmm1,xmm2, xmm3 B     V/V              AVX           Computes square root of the low double precision floating-point value in xmm3/m64 and stores the results in xmm1. Also, upper double precision floating-point value (bits
+/m64                                                                                [127:64]) from xmm2 is copied to xmm1[127:64].
+EVEX.LLIG.F2.0F.W1 51/r VSQRTSD xmm1 {k1}{z},  C     V/V              AVX512F       Computes square root of the low double precision floating-point value in xmm3/m64 and stores the results in xmm1 under writemask k1. Also, upper double precision
+xmm2, xmm3/m64{er}                                                                  floating-point value (bits[127:64]) from xmm2 is copied to xmm1[127:64].
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple Type     Operand 1     Operand 2     Operand 3   Operand 4
+A     N/A           ModRM:reg (w) ModRM:r/m (r) N/A           N/A
+B     N/A           ModRM:reg (w) VEX.vvvv (r)  ModRM:r/m (r) N/A
+C     Tuple1 Scalar ModRM:reg (w) EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Computes the square root of the low double precision floating-point value in the second source operand and stores the double precision floating-point result in the destination operand. The second source operand can be an XMM register or a 64-bit memory
+location. The first source and destination operands are XMM registers.
+
+128-bit Legacy SSE version: The first source operand and the destination operand are the same. The quadword at bits 127:64 of the destination operand remains unchanged. Bits (MAXVL-1:64) of the corresponding destination register remain unchanged.
+
+VEX.128 and EVEX encoded versions: Bits 127:64 of the destination operand are copied from the corresponding bits of the first source operand. Bits (MAXVL-1:128) of the destination register are zeroed.
+
+EVEX encoded version: The low quadword element of the destination operand is updated according to the write-mask.
+
+Software should ensure VSQRTSD is encoded with VEX.L=0. Encoding VSQRTSD with VEX.L=1 may encounter unpredictable behavior across different processor generations.
+

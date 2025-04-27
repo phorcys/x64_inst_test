@@ -1,0 +1,49 @@
+  • Index
+  • December 2023
+
+EDECCSSA — Decrements TCS.CSSA
+
+   Opcode/Instruction     Op/En 64/32 bit Mode Support CPUID Feature Flag               Description
+EAX = 09H ENCLU[EDECCSSA] IR    V/V                    EDECCSSA           This leaf function decrements TCS.CSSA.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX
+IR    EDECCSSA (In)
+
+Description ¶
+
+This leaf function changes the current SSA frame by decrementing TCS.CSSA for the current enclave thread. If the enclave has enabled CET shadow stacks or indirect branch tracking, then EDECCSSA also changes the current CET state save frame. This
+instruction leaf can only be executed inside an enclave.
+
+EDECCSSA Memory Parameter Semantics ¶
+
+TCS
+Read/Write access by Enclave
+
+The instruction faults if any of the following:
+
+EDECCSSA Faulting Conditions ¶
+
+TCS.CSSA is 0.                         TCS is not valid or available or locked.
+The SSA frame is not valid or in use.
+
+Concurrency Restrictions ¶
+
+                               Leaf                                   Parameter    Base Concurrency Restrictions
+                                                                                            On Conflict
+EDECCSSA EDECCSSA TCS [CR_TCS_PA] Shared EDECCSSA TCS [CR_TCS_PA]  TCS [CR_TCS_PA]
+
+
+Table 38-60. Base Concurrency Restrictions of EDECCSSA
+
+                                                                                                                        Additional Concurrency Restrictions
+  Leaf    Parameter    vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On     vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                     Conflict EMODPE, EMODPR, EMODT                                                                                     ETRACK, ETRACKC                           ETRACKC
+                                                          Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EDECCSSA TCS          Concurrent                                                                                                                                                   Concurrent                                                 Concurrent
+         [CR_TCS_PA]
+
+
+Table 38-61. Additional Concurrency Restrictions of EDECCSSA
+

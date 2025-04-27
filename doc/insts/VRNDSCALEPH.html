@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VRNDSCALEPH
+		— Round Packed FP16 Values to Include a Given Number of Fraction Bits</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VRNDSCALEPH
+		— Round Packed FP16 Values to Include a Given Number of Fraction Bits</h1>
+
+<table>
+<tr>
+<th> Instruction En bit Mode Flag
+Support  Instruction En bit Mode Flag
+Support  64/32 CPUID Feature Instruction En bit Mode Flag  CPUID Feature Instruction En bit Mode Flag  Op/ 64/32 CPUID Feature Instruction En bit Mode Flag  64/32 CPUID Feature Instruction En bit Mode Flag  CPUID Feature Instruction En bit Mode Flag  Op/ 64/32 CPUID Feature </th>
+<th></th>
+<th>Support</th>
+<th></th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.128.NP.0F3A.W0 08 /r /ib VRNDSCALEPH xmm1{k1}{z}, xmm2/m128/m16bcst, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Round packed FP16 values in xmm2/m128/m16bcst to a number of fraction bits specified by the imm8 field. Store the result in xmm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.NP.0F3A.W0 08 /r /ib VRNDSCALEPH ymm1{k1}{z}, ymm2/m256/m16bcst, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Round packed FP16 values in ymm2/m256/m16bcst to a number of fraction bits specified by the imm8 field. Store the result in ymm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.NP.0F3A.W0 08 /r /ib VRNDSCALEPH zmm1{k1}{z}, zmm2/m512/m16bcst {sae}, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Round packed FP16 values in zmm2/m512/m16bcst to a number of fraction bits specified by the imm8 field. Store the result in zmm1 subject to writemask k1.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Full</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8 (r)</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction rounds the FP16 values in the source operand by the rounding mode specified in the immediate operand (see <a href='/x86/vrndscaleph#tbl-5-32'>Table 5-32</a>) and places the result in the destination operand. The destination operand is conditionally updated according to the writemask.</p>
+<p>The rounding process rounds the input to an integral value, plus number bits of fraction that are specified by imm8[7:4] (to be included in the result), and returns the result as an FP16 value.</p>
+<p>Note that no overflow is induced while executing this instruction (although the source is scaled by the imm8[7:4] value).</p>
+<p>The immediate operand also specifies control fields for the rounding operation. Three bit fields are defined and shown in <a href='/x86/vrndscaleph#tbl-5-32'>Table 5-32</a>, “Imm8 Controls for VRNDSCALEPH/VRNDSCALESH.” Bit 3 of the immediate byte controls the processor behavior for a precision exception, bit 2 selects the source of rounding mode control, and bits 1:0 specify a non-sticky rounding-mode value.</p>
+<p>The Precision Floating-Point Exception is signaled according to the immediate operand. If any source operand is an SNaN then it will be converted to a QNaN.</p>
+<p>The sign of the result of this instruction is preserved, including the sign of zero. Special cases are described in Table 5-33.</p>
+<p>The formula of the operation on each data element for VRNDSCALEPH is</p>
+<p>ROUND(x) = 2<sup>−M</sup> *Round_to_INT(x * 2<sup>M</sup>, round_ctrl),</p>
+<p>round_ctrl = imm[3:0];</p>
+<p>M=imm[7:4];</p>
+<p>The operation of x * 2<sup>M</sup> is computed as if the exponent range is unlimited (i.e., no overflow ever occurs).</p>
+<p>If this instruction encoding’s SPE bit (bit 3) in the immediate operand is 1, VRNDSCALEPH can set MXCSR.UE without MXCSR.PE.</p>
+<p>EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.</p>
+<figure id="tbl-5-32">
+<table>
+<tr>
+<th>Imm8 Bits</th>
+<th>Description</th></tr>
+<tr>
+<td>imm8[7:4]</td>
+<td>Number of fixed points to preserve.</td></tr>
+<tr>
+<td>imm8[3]</td>
+<td>Suppress Precision Exception (SPE) 0b00: Implies use of MXCSR exception mask. 0b01: Implies suppress.</td></tr>
+<tr>
+<td>imm8[2]</td>
+<td>Round Select (RS) 0b00: Implies use of imm8[1:0]. 0b01: Implies use of MXCSR.</td></tr>
+<tr>
+<td>imm8[1:0]</td>
+<td>Round Control Override: 0b00: Round nearest even. 0b01: Round down. 0b10: Round up. 0b11: Truncate.</td></tr></table>
+<figcaption><a href='/x86/vrndscaleph#tbl-5-32'>Table 5-32</a>. Imm8 Controls for VRNDSCALEPH/VRNDSCALESH</figcaption></figure>
+<figure id="tbl-5-33">
+<table>
+<tr>
+<th>Input Value</th>
+<th>Returned Value</th></tr>
+<tr>
+<td>Src1 = ±∞</td>
+<td>Src1</td></tr>
+<tr>
+<td>Src1 = ±NaN</td>
+<td>Src1 converted to QNaN</td></tr>
+<tr>
+<td>Src1 = ±0</td>
+<td>Src1</td></tr></table>
+<figcaption><a href='/x86/vrndscaleph#tbl-5-33'>Table 5-33</a>. VRNDSCALEPH/VRNDSCALESH Special Cases</figcaption></figure>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<pre>def round_fp16_to_integer(src, imm8):
+    if imm8[2] = 1:
+        rounding_direction := MXCSR.RC
+    else:
+        rounding_direction := imm8[1:0]
+    m := imm8[7:4] // scaling factor
+    tsrc1 := 2^m * src
+    if rounding_direction = 0b00:
+        tmp := round_to_nearest_even_integer(trc1)
+    else if rounding_direction = 0b01:
+        tmp := round_to_equal_or_smaller_integer(trc1)
+    else if rounding_direction = 0b10:
+        tmp := round_to_equal_or_larger_integer(trc1)
+    else if rounding_direction = 0b11:
+        tmp := round_to_smallest_magnitude_integer(trc1)
+    dst := 2^(-m) * tmp
+    if imm8[3]==0: // check SPE
+        if src != dst:
+            MXCSR.PE := 1
+    return dst
+</pre>
+<h4 id="vrndscaleph-dest-k1---src--imm8">VRNDSCALEPH dest{k1}, src, imm8<a class="anchor" href="#vrndscaleph-dest-k1---src--imm8">
+			¶
+		</a></h4>
+<pre>VL = 128, 256 or 512
+KL := VL/16
+FOR i := 0 to KL-1:
+    IF k1[i] or *no writemask*:
+        IF SRC is memory and (EVEX.b = 1):
+            tsrc := src.fp16[0]
+        ELSE:
+            tsrc := src.fp16[i]
+        DEST.fp16[i] := round_fp16_to_integer(tsrc, imm8)
+    ELSE IF *zeroing*:
+        DEST.fp16[i] := 0
+    //else DEST.fp16[i] remains unchanged
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VRNDSCALEPH __m128h _mm_mask_roundscale_ph (__m128h src, __mmask8 k, __m128h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m128h _mm_maskz_roundscale_ph (__mmask8 k, __m128h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m128h _mm_roundscale_ph (__m128h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m256h _mm256_mask_roundscale_ph (__m256h src, __mmask16 k, __m256h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m256h _mm256_maskz_roundscale_ph (__mmask16 k, __m256h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m256h _mm256_roundscale_ph (__m256h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m512h _mm512_mask_roundscale_ph (__m512h src, __mmask32 k, __m512h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m512h _mm512_maskz_roundscale_ph (__mmask32 k, __m512h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m512h _mm512_roundscale_ph (__m512h a, int imm8);
+</pre>
+<pre>VRNDSCALEPH __m512h _mm512_mask_roundscale_round_ph (__m512h src, __mmask32 k, __m512h a, int imm8, const int sae);
+</pre>
+<pre>VRNDSCALEPH __m512h _mm512_maskz_roundscale_round_ph (__mmask32 k, __m512h a, int imm8, const int sae);
+</pre>
+<pre>VRNDSCALEPH __m512h _mm512_roundscale_round_ph (__m512h a, int imm8, const int sae);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Invalid, Underflow, Precision.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>EVEX-encoded instruction, see <span class="not-imported">Table 2-46</span>, “Type E2 Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

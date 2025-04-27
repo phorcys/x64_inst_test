@@ -1,0 +1,73 @@
+  • Index
+  • December 2023
+
+EREPORT — Create a Cryptographic Report of the Enclave
+
+   Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                            Description
+EAX = 00H ENCLU[EREPORT] IR    V/V                    SGX1               This leaf function creates a cryptographic report of the enclave.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX          RBX                        RCX                        RDX
+IR    EREPORT (In) Address of TARGETINFO (In) Address of REPORTDATA (In) Address where the REPORT is written to in an OUTPUTDATA (In)
+
+Description ¶
+
+This leaf function creates a cryptographic REPORT that describes the contents of the enclave. This instruction leaf can only be executed when inside the enclave. The cryptographic report can be used by other enclaves to determine that the enclave is
+running on the same platform.
+
+RBX contains the effective address of the MRENCLAVE value of the enclave that will authenticate the REPORT output, using the REPORT key delivered by EGETKEY command for that enclave. RCX contains the effective address of a 64-byte REPORTDATA structure,
+which allows the caller of the instruction to associate data with the enclave from which the instruction is called. RDX contains the address where the REPORT will be output by the instruction.
+
+EREPORT Memory Parameter Semantics ¶
+
+TARGETINFO             REPORTDATA             OUTPUTDATA
+Read access by Enclave Read access by Enclave Read/Write access by Enclave
+
+This instruction leaf perform the following:
+
+1. Validate the 3 operands (RBX, RCX, RDX) are inside the enclave.
+
+2. Compute a report key for the target enclave, as indicated by the value located in RBX(TARGETINFO).
+
+3. Assemble the enclave SECS data to complete the REPORT structure (including the data provided using the RCX (REPORTDATA) operand).
+
+4. Computes a cryptographic hash over REPORT structure.
+
+5. Add the computed hash to the REPORT structure.
+
+6. Output the completed REPORT structure to the address in RDX (OUTPUTDATA).
+
+The instruction fails if the operands are not properly aligned.
+
+CR_REPORT_KEYID, used to provide key wearout protection, is populated with a statistically unique value on boot of the platform by a trusted entity within the SGX TCB.
+
+The instruction faults if any of the following:
+
+EREPORT Faulting Conditions ¶
+
+An effective address not properly aligned.  An memory address does not resolve in an EPC page.
+If accessing an invalid EPC page.           If the EPC page is blocked.
+May page fault.
+
+Concurrency Restrictions ¶
+
+ Leaf        Parameter                     Base Concurrency Restrictions
+                               Access   On Conflict SGX_CONFLICT VM Exit Qualification
+        TARGETINFO [DS:RBX]  Concurrent
+EREPORT REPORTDATA [DS:RCX]  Concurrent
+        OUTPUTDATA [DS:RDX]  Concurrent
+
+
+Table 38-72. Base Concurrency Restrictions of EREPORT
+
+                                                          Additional Concurrency Restrictions
+ Leaf        Parameter      vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                    Access                On Conflict          Access    On Conflict    Access   On Conflict
+        TARGETINFO [DS:RBX] Concurrent                                       Concurrent               Concurrent
+EREPORT REPORTDATA [DS:RCX] Concurrent                                       Concurrent               Concurrent
+        OUTPUTDATA [DS:RDX] Concurrent                                       Concurrent               Concurrent
+
+
+Table 38-73. Additional Concurrency Restrictions of EREPORT
+

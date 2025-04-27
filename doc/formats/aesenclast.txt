@@ -1,0 +1,35 @@
+  • Index
+  • December 2023
+
+AESENCLAST — Perform Last Round of an AES Encryption Flow
+
+                    Opcode/Instruction                     Op/En 64/32-bit Mode   CPUID Feature                                                                           Description
+                                                                                      Flag
+66 0F 38 DD /r AESENCLAST xmm1, xmm2/m128                  A     V/V            AES               Perform the last round of an AES encryption flow, using one 128-bit data (state) from xmm1 with one 128-bit round key from xmm2/m128.
+VEX.128.66.0F38.WIG DD /r VAESENCLAST xmm1, xmm2, xmm3/    B     V/V            AES AVX           Perform the last round of an AES encryption flow, using one 128-bit data (state) from xmm2 with one 128-bit round key from xmm3/m128; store the result in
+m128                                                                                              xmm1.
+VEX.256.66.0F38.WIG DD /r VAESENCLAST ymm1, ymm2, ymm3/    B     V/V            VAES              Perform the last round of an AES encryption flow, using two 128-bit data (state) from ymm2 with two 128-bit round keys from ymm3/m256; store the result in
+m256                                                                                              ymm1.
+EVEX.128.66.0F38.WIG DD /r VAESENCLAST xmm1, xmm2, xmm3/   C     V/V            VAES AVX512VL     Perform the last round of an AES encryption flow, using one 128-bit data (state) from xmm2 with one 128-bit round key from xmm3/m128; store the result in
+m128                                                                                              xmm1.
+EVEX.256.66.0F38.WIG DD /r VAESENCLAST ymm1, ymm2, ymm3/   C     V/V            VAES AVX512VL     Perform the last round of an AES encryption flow, using two 128-bit data (state) from ymm2 with two 128-bit round keys from ymm3/m256; store the result in
+m256                                                                                              ymm1.
+EVEX.512.66.0F38.WIG DD /r VAESENCLAST zmm1, zmm2, zmm3/   C     V/V            VAES AVX512F      Perform the last round of an AES encryption flow, using four 128-bit data (state) from zmm2 with four 128-bit round keys from zmm3/m512; store the result in
+m512                                                                                              zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple       Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A      ModRM:reg (r, w)  ModRM:r/m (r) N/A           N/A
+B     N/A      ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) N/A
+C     Full Mem ModRM:reg (w)     EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+This instruction performs the last round of an AES encryption flow using one/two/four (depending on vector length) 128-bit data (state) from the first source operand with one/two/four (depending on vector length) round key(s) from the second source
+operand, and stores the result in the destination operand.
+
+VEX and EVEX encoded versions of the instruction allows 3-operand (non-destructive) operation. The legacy encoded versions of the instruction require that the first source operand and the destination operand are the same and must be an XMM register.
+
+The EVEX encoded form of this instruction does not support memory fault suppression.
+

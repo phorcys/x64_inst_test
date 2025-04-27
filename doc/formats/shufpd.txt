@@ -1,0 +1,49 @@
+  • Index
+  • December 2023
+
+SHUFPD — Packed Interleave Shuffle of Pairs of Double Precision Floating-Point Values
+
+                     Opcode/Instruction                        Op /    64/32 bit Mode   CPUID Feature                                                                        Description
+                                                                En        Support            Flag
+66 0F C6 /r ib SHUFPD xmm1, xmm2/m128, imm8                   A      V/V                SSE2           Shuffle two pairs of double precision floating-point values from xmm1 and xmm2/m128 using imm8 to select from each pair, interleaved result is stored
+                                                                                                       in xmm1.
+VEX.128.66.0F.WIG C6 /r ib VSHUFPD xmm1, xmm2, xmm3/m128,     B      V/V                AVX            Shuffle two pairs of double precision floating-point values from xmm2 and xmm3/m128 using imm8 to select from each pair, interleaved result is stored
+imm8                                                                                                   in xmm1.
+VEX.256.66.0F.WIG C6 /r ib VSHUFPD ymm1, ymm2, ymm3/m256,     B      V/V                AVX            Shuffle four pairs of double precision floating-point values from ymm2 and ymm3/m256 using imm8 to select from each pair, interleaved result is stored
+imm8                                                                                                   in xmm1.
+EVEX.128.66.0F.W1 C6 /r ib VSHUFPD xmm1{k1}{z}, xmm2, xmm3/   C      V/V                AVX512VL       Shuffle two pairs of double precision floating-point values from xmm2 and xmm3/m128/m64bcst using imm8 to select from each pair. store interleaved
+m128/m64bcst, imm8                                                                      AVX512F        results in xmm1 subject to writemask k1.
+EVEX.256.66.0F.W1 C6 /r ib VSHUFPD ymm1{k1}{z}, ymm2, ymm3/   C      V/V                AVX512VL       Shuffle four pairs of double precision floating-point values from ymm2 and ymm3/m256/m64bcst using imm8 to select from each pair. store interleaved
+m256/m64bcst, imm8                                                                      AVX512F        results in ymm1 subject to writemask k1.
+EVEX.512.66.0F.W1 C6 /r ib VSHUFPD zmm1{k1}{z}, zmm2, zmm3/   C      V/V                AVX512F        Shuffle eight pairs of double precision floating-point values from zmm2 and zmm3/m512/m64bcst using imm8 to select from each pair. store interleaved
+m512/m64bcst, imm8                                                                                     results in zmm1 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A        ModRM:reg (r, w)  ModRM:r/m (r) imm8          N/A
+B     N/A        ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) imm8
+C     Full       ModRM:reg (w)     EVEX.vvvv (r) ModRM:r/m (r) imm8
+
+Description ¶
+
+Selects a double precision floating-point value of an input pair using a bit control and move to a designated element of the destination operand. The low-to-high order of double precision element of the destination operand is interleaved between the
+first source operand and the second source operand at the granularity of input pair of 128 bits. Each bit in the imm8 byte, starting from bit 0, is the select control of the corresponding element of the destination to received the shuffled result of an
+input pair.
+
+EVEX encoded versions: The first source operand is a ZMM/YMM/XMM register. The second source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcasted from a 64-bit memory location The destination
+operand is a ZMM/YMM/XMM register updated according to the writemask. The select controls are the lower 8/4/2 bits of the imm8 byte.
+
+VEX.256 encoded version: The first source operand is a YMM register. The second source operand can be a YMM register or a 256-bit memory location. The destination operand is a YMM register. The select controls are the bit 3:0 of the imm8 byte, imm8[7:4)
+are ignored.
+
+VEX.128 encoded version: The first source operand is a XMM register. The second source operand can be a XMM register or a 128-bit memory location. The destination operand is a XMM register. The upper bits (MAXVL-1:128) of
+
+the corresponding ZMM register destination are zeroed. The select controls are the bit 1:0 of the imm8 byte, imm8[7:2) are ignored.
+
+128-bit Legacy SSE version: The second source can be an XMM register or an 128-bit memory location. The destination operand and the first source operand is the same and is an XMM register. The upper bits (MAXVL-1:128) of the corresponding ZMM register
+destination are unmodified. The select controls are the bit 1:0 of the imm8 byte, imm8[7:2) are ignored.
+
+X3 X2 X1 X0 SRC1 Y3 Y2 Y1 Y0 SRC2 DEST Y2 or Y3 X2 or X3 Y0 or Y1 X0 or X1
+Figure 4-25. 256-bit VSHUFPD Operation of Four Pairs of Double Precision Floating-Point Values
+

@@ -1,0 +1,32 @@
+  • Index
+  • December 2023
+
+VCVTTPH2W — Convert Packed FP16 Values to Signed Word Integers
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En
+Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode   Support                                              Description
+                                                              Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                    AVX512-FP16 Convert eight packed FP16 values in xmm2/m128/m16bcst to eight signed word
+EVEX.128.66.MAP5.W0 7C /r VCVTTPH2W xmm1{k1}{z}, xmm2/m128/m16bcst                                                                                        A V/V     AVX512VL    integers, and store the result in xmm1 using truncation subject to writemask
+                                                                                                                                                                                k1.
+                                                                                                                                                                    AVX512-FP16 Convert sixteen packed FP16 values in ymm2/m256/m16bcst to sixteen signed word
+EVEX.256.66.MAP5.W0 7C /r VCVTTPH2W ymm1{k1}{z}, ymm2/m256/m16bcst                                                                                        A V/V     AVX512VL    integers, and store the result in ymm1 using truncation subject to writemask
+                                                                                                                                                                                k1.
+                                                                                                                                                                                Convert thirty-two packed FP16 values in zmm2/m512/m16bcst to thirty-two
+EVEX.512.66.MAP5.W0 7C /r VCVTTPH2W zmm1{k1}{z}, zmm2/m512/m16bcst {sae}                                                                                  A V/V     AVX512-FP16 signed word integers, and store the result in zmm1 using truncation subject to
+                                                                                                                                                                                writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts packed FP16 values in the source operand to signed word integers in the destination operand.
+
+When a conversion is inexact, a truncated (round toward zero) value is returned. If a converted result cannot be represented in the destination format, the floating-point invalid exception is raised, and if this exception is masked, the integer
+indefinite value is returned.
+
+The destination elements are updated according to the writemask.
+

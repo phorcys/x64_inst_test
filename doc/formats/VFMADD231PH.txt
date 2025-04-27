@@ -1,0 +1,72 @@
+  • Index
+  • December 2023
+
+VFMADD132PH/VFNMADD132PH/VFMADD213PH/VFNMADD213PH/VFMADD231PH/VFNMADD231PH — Fused Multiply-Add of Packed FP16 Values
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode
+ Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32     Support                                          Description
+                                                                          CPUID Feature
+EVEX.128.66.MAP6.W0 98 /r VFMADD132PH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                         A V/V     AVX512-FP16 Multiply packed FP16 values from xmm1 and xmm3/m128/m16bcst, add to
+                                                                                                                                                                             AVX512VL    xmm2, and store the result in xmm1.
+EVEX.256.66.MAP6.W0 98 /r VFMADD132PH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                         A V/V     AVX512-FP16 Multiply packed FP16 values from ymm1 and ymm3/m256/m16bcst, add to
+                                                                                                                                                                             AVX512VL    ymm2, and store the result in ymm1.
+EVEX.512.66.MAP6.W0 98 /r VFMADD132PH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                    A V/V     AVX512-FP16 Multiply packed FP16 values from zmm1 and zmm3/m512/m16bcst, add to
+                                                                                                                                                                                         zmm2, and store the result in zmm1.
+EVEX.128.66.MAP6.W0 A8 /r VFMADD213PH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                         A V/V     AVX512-FP16 Multiply packed FP16 values from xmm1 and xmm2, add to xmm3/m128/
+                                                                                                                                                                             AVX512VL    m16bcst, and store the result in xmm1.
+EVEX.256.66.MAP6.W0 A8 /r VFMADD213PH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                         A V/V     AVX512-FP16 Multiply packed FP16 values from ymm1 and ymm2, add to ymm3/m256/
+                                                                                                                                                                             AVX512VL    m16bcst, and store the result in ymm1.
+EVEX.512.66.MAP6.W0 A8 /r VFMADD213PH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                    A V/V     AVX512-FP16 Multiply packed FP16 values from zmm1 and zmm2, add to zmm3/m512/
+                                                                                                                                                                                         m16bcst, and store the result in zmm1.
+EVEX.128.66.MAP6.W0 B8 /r VFMADD231PH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                         A V/V     AVX512-FP16 Multiply packed FP16 values from xmm2 and xmm3/m128/m16bcst, add to
+                                                                                                                                                                             AVX512VL    xmm1, and store the result in xmm1.
+EVEX.256.66.MAP6.W0 B8 /r VFMADD231PH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                         A V/V     AVX512-FP16 Multiply packed FP16 values from ymm2 and ymm3/m256/m16bcst, add to
+                                                                                                                                                                             AVX512VL    ymm1, and store the result in ymm1.
+EVEX.512.66.MAP6.W0 B8 /r VFMADD231PH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                    A V/V     AVX512-FP16 Multiply packed FP16 values from zmm2 and zmm3/m512/m16bcst, add to
+                                                                                                                                                                                         zmm1, and store the result in zmm1.
+                                                                                                                                                                             AVX512-FP16 Multiply packed FP16 values from xmm1 and xmm3/m128/m16bcst, and
+EVEX.128.66.MAP6.W0 9C /r VFNMADD132PH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                        A V/V     AVX512VL    negate the value. Add this value to xmm2, and store the result in
+                                                                                                                                                                                         xmm1.
+                                                                                                                                                                             AVX512-FP16 Multiply packed FP16 values from ymm1 and ymm3/m256/m16bcst, and
+EVEX.256.66.MAP6.W0 9C /r VFNMADD132PH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                        A V/V     AVX512VL    negate the value. Add this value to ymm2, and store the result in
+                                                                                                                                                                                         ymm1.
+                                                                                                                                                                                         Multiply packed FP16 values from zmm1 and zmm3/m512/m16bcst, and
+EVEX.512.66.MAP6.W0 9C /r VFNMADD132PH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                   A V/V     AVX512-FP16 negate the value. Add this value to zmm2, and store the result in
+                                                                                                                                                                                         zmm1.
+EVEX.128.66.MAP6.W0 AC /r VFNMADD213PH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                        A V/V     AVX512-FP16 Multiply packed FP16 values from xmm1 and xmm2, and negate the value.
+                                                                                                                                                                             AVX512VL    Add this value to xmm3/m128/m16bcst, and store the result in xmm1.
+EVEX.256.66.MAP6.W0 AC /r VFNMADD213PH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                        A V/V     AVX512-FP16 Multiply packed FP16 values from ymm1 and ymm2, and negate the value.
+                                                                                                                                                                             AVX512VL    Add this value to ymm3/m256/m16bcst, and store the result in ymm1.
+EVEX.512.66.MAP6.W0 AC /r VFNMADD213PH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                   A V/V     AVX512-FP16 Multiply packed FP16 values from zmm1 and zmm2, and negate the value.
+                                                                                                                                                                                         Add this value to zmm3/m512/m16bcst, and store the result in zmm1.
+                                                                                                                                                                             AVX512-FP16 Multiply packed FP16 values from xmm2 and xmm3/m128/m16bcst, and
+EVEX.128.66.MAP6.W0 BC /r VFNMADD231PH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                        A V/V     AVX512VL    negate the value. Add this value to xmm1, and store the result in
+                                                                                                                                                                                         xmm1.
+                                                                                                                                                                             AVX512-FP16 Multiply packed FP16 values from ymm2 and ymm3/m256/m16bcst, and
+EVEX.256.66.MAP6.W0 BC /r VFNMADD231PH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                        A V/V     AVX512VL    negate the value. Add this value to ymm1, and store the result in
+                                                                                                                                                                                         ymm1.
+                                                                                                                                                                                         Multiply packed FP16 values from zmm2 and zmm3/m512/m16bcst, and
+EVEX.512.66.MAP6.W0 BC /r VFNMADD231PH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                   A V/V     AVX512-FP16 negate the value. Add this value to zmm1, and store the result in
+                                                                                                                                                                                         zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1      Operand 2     Operand 3    Operand 4
+A     Full  ModRM:reg (r, w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction performs a packed multiply-add or negated multiply-add computation on FP16 values using three source operands and writes the results in the destination operand. The destination operand is also the first source operand. The “N” (negated)
+forms of this instruction add the negated infinite precision intermediate product to the corresponding remaining operand. The notation’ “132”, “213” and “231” indicate the use of the operands in ±A * B + C, where each digit corresponds to the operand
+number, with the destination being operand 1; see Table 5-2.
+
+The destination elements are updated according to the writemask.
+
+Notation         Operands
+132      dest = ± dest*src3+src2
+231      dest = ± src2*src3+dest
+213      dest = ± src2*dest+src3
+
+
+Table 5-2. VF[,N]MADD[132,213,231]PH Notation for Operands
+

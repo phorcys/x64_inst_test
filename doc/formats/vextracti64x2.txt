@@ -1,0 +1,44 @@
+  • Index
+  • December 2023
+
+VEXTRACTI128/VEXTRACTI32x4/VEXTRACTI64x2/VEXTRACTI32x8/VEXTRACTI64x4 — ExtractPacked Integer Values
+
+                           Opcode/Instruction                            Op/En 64/32 Bit Mode Support CPUID Feature Flag                                                   Description
+VEX.256.66.0F3A.W0 39 /r ib VEXTRACTI128 xmm1/m128, ymm2, imm8           A     V/V                    AVX2               Extract 128 bits of integer data from ymm2 and store results in xmm1/m128.
+EVEX.256.66.0F3A.W0 39 /r ib VEXTRACTI32X4 xmm1/m128 {k1}{z}, ymm2, imm8 C     V/V                    AVX512VL AVX512F   Extract 128 bits of double-word integer values from ymm2 and store results in xmm1/m128 subject to writemask k1.
+EVEX.512.66.0F3A.W0 39 /r ib VEXTRACTI32x4 xmm1/m128 {k1}{z}, zmm2, imm8 C     V/V                    AVX512F            Extract 128 bits of double-word integer values from zmm2 and store results in xmm1/m128 subject to writemask k1.
+EVEX.256.66.0F3A.W1 39 /r ib VEXTRACTI64X2 xmm1/m128 {k1}{z}, ymm2, imm8 B     V/V                    AVX512VL AVX512DQ  Extract 128 bits of quad-word integer values from ymm2 and store results in xmm1/m128 subject to writemask k1.
+EVEX.512.66.0F3A.W1 39 /r ib VEXTRACTI64X2 xmm1/m128 {k1}{z}, zmm2, imm8 B     V/V                    AVX512DQ           Extract 128 bits of quad-word integer values from zmm2 and store results in xmm1/m128 subject to writemask k1.
+EVEX.512.66.0F3A.W0 3B /r ib VEXTRACTI32X8 ymm1/m256 {k1}{z}, zmm2, imm8 D     V/V                    AVX512DQ           Extract 256 bits of double-word integer values from zmm2 and store results in ymm1/m256 subject to writemask k1.
+EVEX.512.66.0F3A.W1 3B /r ib VEXTRACTI64x4 ymm1/m256 {k1}{z}, zmm2, imm8 C     V/V                    AVX512F            Extract 256 bits of quad-word integer values from zmm2 and store results in ymm1/m256 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     N/A        ModRM:r/m (w)  ModRM:reg (r)  imm8      N/A
+B     Tuple2     ModRM:r/m (w)  ModRM:reg (r)  imm8      N/A
+C     Tuple4     ModRM:r/m (w)  ModRM:reg (r)  imm8      N/A
+D     Tuple8     ModRM:r/m (w)  ModRM:reg (r)  imm8      N/A
+
+Description ¶
+
+VEXTRACTI128/VEXTRACTI32x4 and VEXTRACTI64x2 extract 128-bits of doubleword integer values from the source operand (the second operand) and store to the low 128-bit of the destination operand (the first operand). The 128-bit data extraction occurs at an
+128-bit granular offset specified by imm8[0] (256-bit) or imm8[1:0] as the multiply factor. The destination may be either a vector register or an 128-bit memory location.
+
+VEXTRACTI32x4: The low 128-bit of the destination operand is updated at 32-bit granularity according to the writemask.
+
+VEXTRACTI64x2: The low 128-bit of the destination operand is updated at 64-bit granularity according to the writemask.
+
+VEXTRACTI32x8 and VEXTRACTI64x4 extract 256-bits of quadword integer values from the source operand (the second operand) and store to the low 256-bit of the destination operand (the first operand). The 256-bit data extraction occurs at an 256-bit
+granular offset specified by imm8[0] (256-bit) or imm8[0] as the multiply factor The destination may be either a vector register or a 256-bit memory location.
+
+VEXTRACTI32x8: The low 256-bit of the destination operand is updated at 32-bit granularity according to the writemask.
+
+VEXTRACTI64x4: The low 256-bit of the destination operand is updated at 64-bit granularity according to the writemask.
+
+VEX.vvvv and EVEX.vvvv are reserved and must be 1111b otherwise instructions will #UD.
+
+The high 7 bits (6 bits in EVEX.512) of the immediate are ignored.
+
+If VEXTRACTI128 is encoded with VEX.L= 0, an attempt to execute the instruction encoded with VEX.L= 0 will cause an #UD exception.
+

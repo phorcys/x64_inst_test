@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VADDPH — Add Packed FP16 Values
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32   Support                                   Description
+        CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature
+EVEX.128.NP.MAP5.W0 58 /r VADDPH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                                           A V/V     AVX512-FP16 Add packed FP16 value from xmm3/m128/m16bcst to xmm2,
+                                                                                                                                                                                          AVX512VL    and store result in xmm1 subject to writemask k1.
+EVEX.256.NP.MAP5.W0 58 /r VADDPH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                                           A V/V     AVX512-FP16 Add packed FP16 value from ymm3/m256/m16bcst to ymm2,
+                                                                                                                                                                                          AVX512VL    and store result in ymm1 subject to writemask k1.
+EVEX.512.NP.MAP5.W0 58 /r VADDPH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                                      A V/V     AVX512-FP16 Add packed FP16 value from zmm3/m512/m16bcst to zmm2,
+                                                                                                                                                                                                      and store result in zmm1 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1     Operand 2     Operand 3    Operand 4
+A     Full  ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction adds packed FP16 values from source operands and stores the packed FP16 result in the destination operand. The destination elements are updated according to the writemask.
+

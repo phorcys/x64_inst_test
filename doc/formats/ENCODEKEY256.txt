@@ -1,0 +1,21 @@
+  • Index
+  • December 2023
+
+ENCODEKEY256 — Encode 256-Bit Key With Key Locker
+
+                 Opcode/Instruction                   Op/En 64/32-bit Mode CPUID Feature Flag                                   Description
+F3 0F 38 FB 11:rrr:bbb ENCODEKEY256 r32, r32 <XMM0-6> A     V/V            AESKLE             Wrap a 256-bit AES key from XMM1:XMM0 into a key handle and store it in XMM0—3.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1     Operand 2        Operands 3—4           Operands 5—9
+A     N/A   ModRM:reg (w) ModRM:r/m (r) Implicit XMM0—1 (r, w)  Implicit XMM2—6 (w)
+
+Description ¶
+
+The ENCODEKEY256^1 instruction wraps a 256-bit AES key from the implicit operand XMM1:XMM0 into a key handle that is then stored in the implicit destination operands XMM0-3.
+
+The explicit source operand is a general-purpose register and specifies what handle restrictions should be built into the handle.
+
+The explicit destination operand is populated with information on the source of the key and its attributes. XMM4 through XMM6 are reserved for future usages and software should not rely upon them being zeroed.
+

@@ -1,0 +1,27 @@
+  • Index
+  • December 2023
+
+VCVTPS2PHX — Convert Packed Single Precision Floating-Point Values to Packed FP16 Values
+
+                       Opcode/Instruction                         Op /     64/32 Bit Mode    CPUID Feature Flag                                                                  Description
+                                                                   En         Support
+EVEX.128.66.MAP5.W0 1D /r VCVTPS2PHX xmm1{k1}{z}, xmm2/m128/     A      V/V                  AVX512-FP16        Convert four packed single precision floating-point values in xmm2/m128/m32bcst to packed FP16 values, and store the result in xmm1 subject to
+m32bcst                                                                                      AVX512VL           writemask k1.
+EVEX.256.66.MAP5.W0 1D /r VCVTPS2PHX xmm1{k1}{z}, ymm2/m256/     A      V/V                  AVX512-FP16        Convert eight packed single precision floating-point values in ymm2/m256/m32bcst to packed FP16 values, and store the result in xmm1 subject
+m32bcst                                                                                      AVX512VL           to writemask k1.
+EVEX.512.66.MAP5.W0 1D /r VCVTPS2PHX ymm1{k1}{z}, zmm2/m512/     A      V/V                  AVX512-FP16        Convert sixteen packed single precision floating-point values in zmm2 /m512/m32bcst to packed FP16 values, and store the result in ymm1
+m32bcst {er}                                                                                                    subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts packed single precision floating values in the source operand to FP16 values and stores to the destination operand.
+
+The VCVTPS2PHX instruction supports broadcasting.
+
+This instruction uses MXCSR.DAZ for handling FP32 inputs. FP16 outputs can be normal or denormal numbers, and are not conditionally flushed based on MXCSR settings.
+

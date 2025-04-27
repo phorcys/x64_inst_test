@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>PMADDWD
+		— Multiply and Add Packed Integers</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>PMADDWD
+		— Multiply and Add Packed Integers</h1>
+
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>NP 0F F5 /r<sup>1</sup> PMADDWD mm, mm/m64</td>
+<td>A</td>
+<td>V/V</td>
+<td>MMX</td>
+<td>Multiply the packed words in mm by the packed words in mm/m64, add adjacent doubleword results, and store in mm.</td></tr>
+<tr>
+<td>66 0F F5 /r PMADDWD xmm1, xmm2/m128</td>
+<td>A</td>
+<td>V/V</td>
+<td>SSE2</td>
+<td>Multiply the packed word integers in xmm1 by the packed word integers in xmm2/m128, add adjacent doubleword results, and store in xmm1.</td></tr>
+<tr>
+<td>VEX.128.66.0F.WIG F5 /r VPMADDWD xmm1, xmm2, xmm3/m128</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Multiply the packed word integers in xmm2 by the packed word integers in xmm3/m128, add adjacent doubleword results, and store in xmm1.</td></tr>
+<tr>
+<td>VEX.256.66.0F.WIG F5 /r VPMADDWD ymm1, ymm2, ymm3/m256</td>
+<td>B</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Multiply the packed word integers in ymm2 by the packed word integers in ymm3/m256, add adjacent doubleword results, and store in ymm1.</td></tr>
+<tr>
+<td>EVEX.128.66.0F.WIG F5 /r VPMADDWD xmm1 {k1}{z}, xmm2, xmm3/m128</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Multiply the packed word integers in xmm2 by the packed word integers in xmm3/m128, add adjacent doubleword results, and store in xmm1 under writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.66.0F.WIG F5 /r VPMADDWD ymm1 {k1}{z}, ymm2, ymm3/m256</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Multiply the packed word integers in ymm2 by the packed word integers in ymm3/m256, add adjacent doubleword results, and store in ymm1 under writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.66.0F.WIG F5 /r VPMADDWD zmm1 {k1}{z}, zmm2, zmm3/m512</td>
+<td>C</td>
+<td>V/V</td>
+<td>AVX512BW</td>
+<td>Multiply the packed word integers in zmm2 by the packed word integers in zmm3/m512, add adjacent doubleword results, and store in zmm1 under writemask k1.</td></tr></table>
+<blockquote>
+<p>1. See note in Section 2.5, “Intel® AVX and Intel® SSE Instruction Exception Classification,” in the Intel<sup>®</sup> 64 and IA-32 Architectures Software Developer’s Manual, Volume 2A, and Section 23.25.3, “Exception Conditions of Legacy SIMD Instructions Operating on MMX Registers,” in the Intel<sup>®</sup> 64 and IA-32 Architectures Software Developer’s Manual, Volume 3B.</p></blockquote>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple Type</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>N/A</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td>
+<td>N/A</td></tr>
+<tr>
+<td>B</td>
+<td>N/A</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr>
+<tr>
+<td>C</td>
+<td>Full Mem</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td></tr></table>
+<h2 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h2>
+<p>Multiplies the individual signed words of the destination operand (first operand) by the corresponding signed words of the source operand (second operand), producing temporary signed, doubleword results. The adjacent double-word results are then summed and stored in the destination operand. For example, the corresponding low-order words (15-0) and (31-16) in the source and destination operands are multiplied by one another and the double-word results are added together and stored in the low doubleword of the destination register (31-0). The same operation is performed on the other pairs of adjacent words. (<a href='/x86/pmaddwd#fig-4-11'>Figure 4-11</a> shows this operation when using 64-bit operands).</p>
+<p>The (V)PMADDWD instruction wraps around only in one situation: when the 2 pairs of words being operated on in a group are all 8000H. In this case, the result wraps around to 80000000H.</p>
+<p>In 64-bit mode and not encoded with VEX/EVEX, using a REX prefix in the form of REX.R permits this instruction to access additional registers (XMM8-XMM15).</p>
+<p>Legacy SSE version: The first source and destination operands are MMX registers. The second source operand is an MMX register or a 64-bit memory location.</p>
+<p>128-bit Legacy SSE version: The first source and destination operands are XMM registers. The second source operand is an XMM register or a 128-bit memory location. Bits (MAXVL-1:128) of the corresponding YMM destination register remain unchanged.</p>
+<p>VEX.128 encoded version: The first source and destination operands are XMM registers. The second source operand is an XMM register or a 128-bit memory location. Bits (MAXVL-1:128) of the destination YMM register are zeroed.</p>
+<p>VEX.256 encoded version: The second source operand can be an YMM register or a 256-bit memory location. The first source and destination operands are YMM registers.</p>
+<p>EVEX.512 encoded version: The second source operand can be an ZMM register or a 512-bit memory location. The first source and destination operands are ZMM registers.</p>
+<figure id="fig-4-11">
+<svg style="width: 455.616pt; height: 146.519976pt" viewBox="109.64 0.0 384.68 127.09998000000002">
+<g xmlns="http://www.w3.org/2000/svg" style="fill: none; stroke: none">
+<rect height="121.14" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="112.14" y="0.47998000000001184"></rect>
+<rect height="121.14" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="491.34000000000003" y="0.47998000000001184"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="379.68" x="112.14" y="0.0"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="379.68" x="112.14" y="121.62"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.24" x="169.74" y="66.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="241.5" y="66.89997999999997"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.24" x="169.5" y="84.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="169.5" y="66.65997999999996"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="72.0" x="241.74" y="66.89997999999997"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.24" x="241.74" y="66.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="313.5" y="66.89997999999997"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.24" x="241.5" y="84.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48" x="241.5" y="66.65997999999996"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="72.06" x="313.74" y="66.89997999999997"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.3" x="313.74" y="66.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="385.56" y="66.89997999999997"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.3" x="313.5" y="84.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="313.5" y="66.65997999999996"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="72.0" x="385.8" y="66.89997999999997"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.24" x="385.8" y="66.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="457.56" y="66.89997999999997"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.24" x="385.56" y="84.65996999999999"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="385.56" y="66.65997999999996"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.36" x="240.78" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="240.78" y="10.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="276.90000000000003" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="240.54" y="28.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="240.54" y="10.619979999999998"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.42" x="277.14" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.660000000000004" x="277.14" y="10.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="313.32" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.660000000000004" x="276.90000000000003" y="28.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="276.90000000000003" y="10.619979999999998"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.36" x="313.56" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="313.56" y="10.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="349.68" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="313.32" y="28.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="313.32" y="10.619979999999998"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.36" x="349.92" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="349.92" y="10.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="386.04" y="10.859980000000007"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="349.68" y="28.620000000000005"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="349.68" y="10.619979999999998"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.42" x="240.72" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.660000000000004" x="240.72" y="36.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="276.90000000000003" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.660000000000004" x="240.48000000000002" y="54.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="240.48000000000002" y="36.83997999999997"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.36" x="277.14" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="277.14" y="36.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="313.26" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="276.90000000000003" y="54.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="276.90000000000003" y="36.83997999999997"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.36" x="313.5" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="313.5" y="36.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="349.62" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="313.26" y="54.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="313.26" y="36.83997999999997"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="36.36" x="349.86" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="349.86" y="36.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.47998" x="385.98" y="37.07997999999998"></rect>
+<rect height="0.47998" style="fill: rgb(0%, 0%, 0%)" width="36.6" x="349.62" y="54.839999999999975"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="349.62" y="36.83997999999997"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="72.3" x="241.62" y="94.91998000000001"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.54" x="241.62" y="94.67997000000003"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="313.68" y="94.91998000000001"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="72.54" x="241.38" y="112.67997000000003"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="241.38" y="94.67998"></rect>
+<rect height="18.0" style="fill: rgb(100%, 100%, 100%)" width="73.32000000000001" x="313.8" y="94.91998000000001"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="73.56" x="313.8" y="94.67997000000003"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="386.88" y="94.91998000000001"></rect>
+<rect height="0.48001000000000005" style="fill: rgb(0%, 0%, 0%)" width="73.56" x="313.56" y="112.67997000000003"></rect>
+<rect height="18.240000000000002" style="fill: rgb(0%, 0%, 0%)" width="0.48001000000000005" x="313.56" y="94.67998"></rect>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="16.86740279999998" x="202.0808358" y="23.286334599999975">SRC</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="252.3" y="23.946080999999992">X3</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="287.87912839999996" y="23.946080999999992">X2</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="324.89823499999994" y="23.946080999999992">X1</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="361.3172174999999" y="23.946080999999992">X0</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="21.32638079999998" x="202.0808358" y="50.0465954">DEST</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="255.48000000000002" y="51.246081000000004">Y3</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="291.05912839999996" y="51.246081000000004">Y2</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="328.07823499999995" y="51.246081000000004">Y1</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.783381299999974" x="364.4972174999999" y="51.246081000000004">Y0</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.918266200000005pt; fill: #000" textLength="27.9045821" x="192.9604322" y="79.626081">X3 ∗ Y3</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.722649699999977" x="266.10046710000006" y="79.626081">X2</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="15.901817899999969" x="278.1" y="79.626081">∗ Y2</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="9.780184899999995" x="339.4170682" y="79.626081">X1</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="15.781885399999965" x="351.42" y="79.626081">∗ Y1</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="27.907948199999964" x="408.4170661" y="79.626081">X0 ∗ Y0</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="22.239752100000004" x="143.8205755" y="80.46604450000001">TEMP</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="21.32638079999998" x="203.1604199" y="105.3666902">DEST</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.917956000000004pt; fill: #000" textLength="66.5603888" x="318.3" y="108.48608100000001">(X1∗Y1)+(X0∗Y0)</text>
+<text lengthAdjust="spacingAndGlyphs" style="font-size: 8.918350099999998pt; fill: #000" textLength="66.53617400000002" x="246.4802418" y="108.84647510000002">(X3∗Y3)+(X2∗Y2)</text></g></svg>
+<figcaption><a href='/x86/pmaddwd#fig-4-11'>Figure 4-11</a>. PMADDWD Execution Model Using 64-bit Operands</figcaption></figure>
+<h2 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h2>
+<h3 id="pmaddwd--with-64-bit-operands-">PMADDWD (With 64-bit Operands)<a class="anchor" href="#pmaddwd--with-64-bit-operands-">
+			¶
+		</a></h3>
+<pre>DEST[31:0] := (DEST[15:0] ∗ SRC[15:0]) + (DEST[31:16] ∗ SRC[31:16]);
+DEST[63:32] := (DEST[47:32] ∗ SRC[47:32]) + (DEST[63:48] ∗ SRC[63:48]);
+</pre>
+<h3 id="pmaddwd--with-128-bit-operands-">PMADDWD (With 128-bit Operands)<a class="anchor" href="#pmaddwd--with-128-bit-operands-">
+			¶
+		</a></h3>
+<pre>DEST[31:0] := (DEST[15:0] ∗ SRC[15:0]) + (DEST[31:16] ∗ SRC[31:16]);
+DEST[63:32] := (DEST[47:32] ∗ SRC[47:32]) + (DEST[63:48] ∗ SRC[63:48]);
+DEST[95:64] := (DEST[79:64] ∗ SRC[79:64]) + (DEST[95:80] ∗ SRC[95:80]);
+DEST[127:96] := (DEST[111:96] ∗ SRC[111:96]) + (DEST[127:112] ∗ SRC[127:112]);
+</pre>
+<h3 id="vpmaddwd--vex-128-encoded-version-">VPMADDWD (VEX.128 Encoded Version)<a class="anchor" href="#vpmaddwd--vex-128-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[31:0] := (SRC1[15:0] * SRC2[15:0]) + (SRC1[31:16] * SRC2[31:16])
+DEST[63:32] := (SRC1[47:32] * SRC2[47:32]) + (SRC1[63:48] * SRC2[63:48])
+DEST[95:64] := (SRC1[79:64] * SRC2[79:64]) + (SRC1[95:80] * SRC2[95:80])
+DEST[127:96] := (SRC1[111:96] * SRC2[111:96]) + (SRC1[127:112] * SRC2[127:112])
+DEST[MAXVL-1:128] := 0
+</pre>
+<h3 id="vpmaddwd--vex-256-encoded-version-">VPMADDWD (VEX.256 Encoded Version)<a class="anchor" href="#vpmaddwd--vex-256-encoded-version-">
+			¶
+		</a></h3>
+<pre>DEST[31:0] := (SRC1[15:0] * SRC2[15:0]) + (SRC1[31:16] * SRC2[31:16])
+DEST[63:32] := (SRC1[47:32] * SRC2[47:32]) + (SRC1[63:48] * SRC2[63:48])
+DEST[95:64] := (SRC1[79:64] * SRC2[79:64]) + (SRC1[95:80] * SRC2[95:80])
+DEST[127:96] := (SRC1[111:96] * SRC2[111:96]) + (SRC1[127:112] * SRC2[127:112])
+DEST[159:128] := (SRC1[143:128] * SRC2[143:128]) + (SRC1[159:144] * SRC2[159:144])
+DEST[191:160] := (SRC1[175:160] * SRC2[175:160]) + (SRC1[191:176] * SRC2[191:176])
+DEST[223:192] := (SRC1[207:192] * SRC2[207:192]) + (SRC1[223:208] * SRC2[223:208])
+DEST[255:224] := (SRC1[239:224] * SRC2[239:224]) + (SRC1[255:240] * SRC2[255:240])
+DEST[MAXVL-1:256] := 0
+</pre>
+<h3 id="vpmaddwd--evex-encoded-versions-">VPMADDWD (EVEX Encoded Versions)<a class="anchor" href="#vpmaddwd--evex-encoded-versions-">
+			¶
+		</a></h3>
+<pre>(KL, VL) = (4, 128), (8, 256), (16, 512)
+FOR j := 0 TO KL-1
+    i := j * 32
+    IF k1[j] OR *no writemask*
+        THEN DEST[i+31:i] := (SRC2[i+31:i+16]* SRC1[i+31:i+16]) + (SRC2[i+15:i]*SRC1[i+15:i])
+        ELSE
+            IF *merging-masking* ; merging-masking
+                THEN *DEST[i+31:i] remains unchanged*
+                ELSE *zeroing-masking*
+                        ; zeroing-masking
+                    DEST[i+31:i] = 0
+            FI
+    FI;
+ENDFOR;
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h2 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h2>
+<pre>VPMADDWD __m512i _mm512_madd_epi16( __m512i a, __m512i b);
+</pre>
+<pre>VPMADDWD __m512i _mm512_mask_madd_epi16(__m512i s, __mmask32 k, __m512i a, __m512i b);
+</pre>
+<pre>VPMADDWD __m512i _mm512_maskz_madd_epi16( __mmask32 k, __m512i a, __m512i b);
+</pre>
+<pre>VPMADDWD __m256i _mm256_mask_madd_epi16(__m256i s, __mmask16 k, __m256i a, __m256i b);
+</pre>
+<pre>VPMADDWD __m256i _mm256_maskz_madd_epi16( __mmask16 k, __m256i a, __m256i b);
+</pre>
+<pre>VPMADDWD __m128i _mm_mask_madd_epi16(__m128i s, __mmask8 k, __m128i a, __m128i b);
+</pre>
+<pre>VPMADDWD __m128i _mm_maskz_madd_epi16( __mmask8 k, __m128i a, __m128i b);
+</pre>
+<pre>PMADDWD __m64 _mm_madd_pi16(__m64 m1, __m64 m2)
+</pre>
+<pre>(V)PMADDWD __m128i _mm_madd_epi16 ( __m128i a, __m128i b)
+</pre>
+<pre>VPMADDWD __m256i _mm256_madd_epi16 ( __m256i a, __m256i b)
+</pre>
+<h2 id="flags-affected">Flags Affected<a class="anchor" href="#flags-affected">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="numeric-exceptions">Numeric Exceptions<a class="anchor" href="#numeric-exceptions">
+			¶
+		</a></h2>
+<p>None.</p>
+<h2 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h2>
+<p>Non-EVEX-encoded instruction, see <span class="not-imported">Table 2-21</span>, “Type 4 Class Exception Conditions.”</p>
+<p>EVEX-encoded instruction, see Exceptions Type E4NF.nb in <span class="not-imported">Table 2-50</span>, “Type E4NF Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

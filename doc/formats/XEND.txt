@@ -1,0 +1,21 @@
+  • Index
+  • December 2023
+
+XEND — Transactional End
+
+Opcode/Instruction Op/En 64/32bit Mode Support  CPUID Feature Flag                Description
+NP 0F 01 D5 XEND   A     V/V                    RTM                Specifies the end of an RTM code region.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand2 Operand3 Operand4
+A     N/A        N/A      N/A      N/A
+
+Description ¶
+
+The instruction marks the end of an RTM code region. If this corresponds to the outermost scope (that is, including this XEND instruction, the number of XBEGIN instructions is the same as number of XEND instructions), the logical processor will attempt
+to commit the logical processor state atomically. If the commit fails, the logical processor will rollback all architectural register and memory updates performed during the RTM execution. The logical processor will resume execution at the fallback
+address computed from the outermost XBEGIN instruction. The EAX register is updated to reflect RTM abort information.
+
+Execution of XEND outside a transactional region causes a general-protection exception (#GP). Execution of XEND while in a suspend read address tracking region causes a transactional abort.
+

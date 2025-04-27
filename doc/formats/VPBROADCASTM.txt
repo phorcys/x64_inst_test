@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+VPBROADCASTM — Broadcast Mask to Vector Register
+
+                Opcode/Instruction                 Op/En 64/32 bit Mode Support CPUID Feature Flag                          Description
+EVEX.128.F3.0F38.W1 2A /r VPBROADCASTMB2Q xmm1, k1 RM    V/V                    AVX512VL AVX512CD  Broadcast low byte value in k1 to two locations in xmm1.
+EVEX.256.F3.0F38.W1 2A /r VPBROADCASTMB2Q ymm1, k1 RM    V/V                    AVX512VL AVX512CD  Broadcast low byte value in k1 to four locations in ymm1.
+EVEX.512.F3.0F38.W1 2A /r VPBROADCASTMB2Q zmm1, k1 RM    V/V                    AVX512CD           Broadcast low byte value in k1 to eight locations in zmm1.
+EVEX.128.F3.0F38.W0 3A /r VPBROADCASTMW2D xmm1, k1 RM    V/V                    AVX512VL AVX512CD  Broadcast low word value in k1 to four locations in xmm1.
+EVEX.256.F3.0F38.W0 3A /r VPBROADCASTMW2D ymm1, k1 RM    V/V                    AVX512VL AVX512CD  Broadcast low word value in k1 to eight locations in ymm1.
+EVEX.512.F3.0F38.W0 3A /r VPBROADCASTMW2D zmm1, k1 RM    V/V                    AVX512CD           Broadcast low word value in k1 to sixteen locations in zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Broadcasts the zero-extended 64/32 bit value of the low byte/word of the source operand (the second operand) to each 64/32 bit element of the destination operand (the first operand). The source operand is an opmask register. The destination operand is a
+ZMM register (EVEX.512), YMM register (EVEX.256), or XMM register (EVEX.128).
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

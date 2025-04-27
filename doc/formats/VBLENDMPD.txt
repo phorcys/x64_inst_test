@@ -1,0 +1,36 @@
+  • Index
+  • December 2023
+
+VBLENDMPD/VBLENDMPS — Blend Float64/Float32 Vectors Using an OpMask Control
+
+                           Opcode/Instruction                            Op/En 64/32 Bit Mode Support CPUID Feature Flag                                                              Description
+EVEX.128.66.0F38.W1 65 /r VBLENDMPD xmm1 {k1}{z}, xmm2, xmm3/m128/       A     V/V                    AVX512VL AVX512F   Blend double precision vector xmm2 and double precision vector xmm3/m128/m64bcst and store the result in xmm1, under control mask.
+m64bcst
+EVEX.256.66.0F38.W1 65 /r VBLENDMPD ymm1 {k1}{z}, ymm2, ymm3/m256/       A     V/V                    AVX512VL AVX512F   Blend double precision vector ymm2 and double precision vector ymm3/m256/m64bcst and store the result in ymm1, under control mask.
+m64bcst
+EVEX.512.66.0F38.W1 65 /r VBLENDMPD zmm1 {k1}{z}, zmm2, zmm3/m512/       A     V/V                    AVX512F            Blend double precision vector zmm2 and double precision vector zmm3/m512/m64bcst and store the result in zmm1, under control mask.
+m64bcst
+EVEX.128.66.0F38.W0 65 /r VBLENDMPS xmm1 {k1}{z}, xmm2, xmm3/m128/       A     V/V                    AVX512VL AVX512F   Blend single precision vector xmm2 and single precision vector xmm3/m128/m32bcst and store the result in xmm1, under control mask.
+m32bcst
+EVEX.256.66.0F38.W0 65 /r VBLENDMPS ymm1 {k1}{z}, ymm2, ymm3/m256/       A     V/V                    AVX512VL AVX512F   Blend single precision vector ymm2 and single precision vector ymm3/m256/m32bcst and store the result in ymm1, under control mask.
+m32bcst
+EVEX.512.66.0F38.W0 65 /r VBLENDMPS zmm1 {k1}{z}, zmm2, zmm3/m512/       A     V/V                    AVX512F            Blend single precision vector zmm2 and single precision vector zmm3/m512/m32bcst using k1 as select control and store the result in
+m32bcst                                                                                                                  zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     Full       ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+Performs an element-by-element blending between float64/float32 elements in the first source operand (the second operand) with the elements in the second source operand (the third operand) using an opmask register as select control. The blended result is
+written to the destination register.
+
+The destination and first source operands are ZMM/YMM/XMM registers. The second source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcasted from a 64-bit memory location.
+
+The opmask register is not used as a writemask for this instruction. Instead, the mask is used as an element selector: every element of the destination is conditionally selected between first source or second source using the value of the related mask
+bit (0 for first source operand, 1 for second source operand).
+
+If EVEX.z is set, the elements with corresponding mask bit value of 0 in the destination operand are zeroed.
+

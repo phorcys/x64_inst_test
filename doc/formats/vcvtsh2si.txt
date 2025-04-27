@@ -1,0 +1,26 @@
+  • Index
+  • December 2023
+
+VCVTSH2SI — Convert Low FP16 Value to Signed Integer
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID   Support                                Description
+              Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature
+EVEX.LLIG.F3.MAP5.W0 2D /r VCVTSH2SI r32, xmm1/m16 {er}                                                                                                                               A V/V^1   AVX512-FP16 Convert the low FP16 element in xmm1/m16 to a
+                                                                                                                                                                                                            signed integer and store the result in r32.
+EVEX.LLIG.F3.MAP5.W1 2D /r VCVTSH2SI r64, xmm1/m16 {er}                                                                                                                               A V/N.E.  AVX512-FP16 Convert the low FP16 element in xmm1/m16 to a
+                                                                                                                                                                                                            signed integer and store the result in r64.
+
+    1. Outside of 64b mode, the EVEX.W field is ignored. The instruction behaves as if W=0 was used.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1      Operand 2    Operand 3 Operand 4
+A     Scalar ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts the low FP16 element in the source operand to a signed integer in the destination general purpose register.
+
+When a conversion is inexact, the value returned is rounded according to the rounding control bits in the MXCSR register or the embedded rounding control bits. If a converted result cannot be represented in the destination format, the floating-point
+invalid exception is raised, and if this exception is masked, the integer indefinite value is returned.
+

@@ -1,0 +1,33 @@
+  • Index
+  • December 2023
+
+PSLLDQ — Shift Double Quadword Left Logical
+
+                   Opcode/Instruction                     Op/En 64/32 bit Mode Support CPUID Feature Flag                                    Description
+66 0F 73 /7 ib PSLLDQ xmm1, imm8                          A     V/V                    SSE2               Shift xmm1 left by imm8 bytes while shifting in 0s.
+VEX.128.66.0F.WIG 73 /7 ib VPSLLDQ xmm1, xmm2, imm8       B     V/V                    AVX                Shift xmm2 left by imm8 bytes while shifting in 0s and store result in xmm1.
+VEX.256.66.0F.WIG 73 /7 ib VPSLLDQ ymm1, ymm2, imm8       B     V/V                    AVX2               Shift ymm2 left by imm8 bytes while shifting in 0s and store result in ymm1.
+EVEX.128.66.0F.WIG 73 /7 ib VPSLLDQ xmm1,xmm2/ m128, imm8 C     V/V                    AVX512VL AVX512BW  Shift xmm2/m128 left by imm8 bytes while shifting in 0s and store result in xmm1.
+EVEX.256.66.0F.WIG 73 /7 ib VPSLLDQ ymm1, ymm2/m256, imm8 C     V/V                    AVX512VL AVX512BW  Shift ymm2/m256 left by imm8 bytes while shifting in 0s and store result in ymm1.
+EVEX.512.66.0F.WIG 73 /7 ib VPSLLDQ zmm1, zmm2/m512, imm8 C     V/V                    AVX512BW           Shift zmm2/m512 left by imm8 bytes while shifting in 0s and store result in zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type     Operand 1       Operand 2    Operand 3 Operand 4
+A     N/A        ModRM:r/m (r, w)  imm8           N/A       N/A
+B     N/A        VEX.vvvv (w)      ModRM:r/m (r)  imm8      N/A
+C     Full Mem   EVEX.vvvv (w)     ModRM:r/m (r)  imm8      N/A
+
+Description ¶
+
+Shifts the destination operand (first operand) to the left by the number of bytes specified in the count operand (second operand). The empty low-order bytes are cleared (set to all 0s). If the value specified by the count operand is greater than 15, the
+destination operand is set to all 0s. The count operand is an 8-bit immediate.
+
+128-bit Legacy SSE version: The source and destination operands are the same. Bits (MAXVL-1:128) of the corresponding YMM destination register remain unchanged.
+
+VEX.128 encoded version: The source and destination operands are XMM registers. Bits (MAXVL-1:128) of the destination YMM register are zeroed.
+
+VEX.256 encoded version: The source operand is YMM register. The destination operand is an YMM register. Bits (MAXVL-1:256) of the corresponding ZMM register are zeroed. The count operand applies to both the low and high 128-bit lanes.
+
+EVEX encoded versions: The source operand is a ZMM/YMM/XMM register or a 512/256/128-bit memory location. The destination operand is a ZMM/YMM/XMM register. The count operand applies to each 128-bit lanes.
+

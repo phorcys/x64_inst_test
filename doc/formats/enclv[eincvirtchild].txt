@@ -1,0 +1,52 @@
+  • Index
+  • December 2023
+
+EINCVIRTCHILD — Increment VIRTCHILDCNT in SECS
+
+      Opcode/Instruction       Op/En 64/32 bit Mode Support CPUID Feature Flag                         Description
+EAX = 01H ENCLV[EINCVIRTCHILD] IR    V/V                    EAX[5]             This leaf function increments the SECS VIRTCHILDCNT field.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                        RBX                              RCX
+IR    EINCVIRTCHILD (In) Return error code (Out) Address of an enclave page (In)  Address of an SECS page (In)
+
+Description ¶
+
+This instruction increments the SECS VIRTCHILDCNT field. This instruction can only be executed when the current privilege level is 0.
+
+The content of RCX is an effective address of an EPC page. The DS segment is used to create a linear address. Segment override is not supported.
+
+EINCVIRTCHILD Memory Parameter Semantics ¶
+
+EPCPAGE                                     SECS
+Read/Write access permitted by Non Enclave  Read access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EINCVIRTCHILD Faulting Conditions ¶
+
+A memory operand effective address is outside the DS segment limit (32b mode).  A page fault occurs in accessing memory operands.
+DS segment is unusable (32b mode).                                              RBX does not refer to an enclave page (REG, TCS, TRIM, SECS).
+A memory address is in a non-canonical form (64b mode).                         RCX does not refer to an SECS page.
+A memory operand is not properly aligned.                                       RBX does not refer to an enclave page associated with SECS referenced in RCX.
+
+Concurrency Restrictions ¶
+
+    Leaf         Parameter                        Base Concurrency Restrictions
+                                Access         On Conflict       SGX_CONFLICT VM Exit Qualification
+EINCVIRTCHILD Target [DS:RBX] Shared     SGX_EPC_PAGE_ CONFLICT
+              SECS [DS:RCX]   Concurrent
+
+
+Table 38-78. Base Concurrency Restrictions of EINCVIRTCHILD
+
+                                                            Additional Concurrency Restrictions
+    Leaf         Parameter    vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                      Access                On Conflict          Access    On Conflict    Access   On Conflict
+EINCVIRTCHILD Target [DS:RBX] Concurrent                                       Concurrent               Concurrent
+              SECS [DS:RCX]   Concurrent                                       Concurrent               Concurrent
+
+
+Table 38-79. Additional Concurrency Restrictions of EINCVIRTCHILD
+

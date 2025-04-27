@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+VCVTPH2PD — Convert Packed FP16 Values to FP64 Values
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/    Support                                     Description
+   64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature
+EVEX.128.NP.MAP5.W0 5A /r VCVTPH2PD xmm1{k1}{z}, xmm2/m32/m16bcst                                                                                                           A V/V     AVX512-FP16 Convert packed FP16 values in xmm2/m32/m16bcst to FP64
+                                                                                                                                                                                      AVX512VL    values, and store result in xmm1 subject to writemask k1.
+EVEX.256.NP.MAP5.W0 5A /r VCVTPH2PD ymm1{k1}{z}, xmm2/m64/m16bcst                                                                                                           A V/V     AVX512-FP16 Convert packed FP16 values in xmm2/m64/m16bcst to FP64
+                                                                                                                                                                                      AVX512VL    values, and store result in ymm1 subject to writemask k1.
+EVEX.512.NP.MAP5.W0 5A /r VCVTPH2PD zmm1{k1}{z}, xmm2/m128/m16bcst {sae}                                                                                                    A V/V     AVX512-FP16 Convert packed FP16 values in xmm2/m128/m16bcst to FP64
+                                                                                                                                                                                                  values, and store result in zmm1 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple    Operand 1      Operand 2    Operand 3 Operand 4
+A     Quarter ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts packed FP16 values to FP64 values in the destination register. The destination elements are updated according to the writemask.
+
+This instruction handles both normal and denormal FP16 inputs.
+

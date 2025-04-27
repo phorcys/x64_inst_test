@@ -1,0 +1,44 @@
+  • Index
+  • December 2023
+
+VPERMPD — Permute Double Precision Floating-Point Elements
+
+                         Opcode/Instruction                           Op / En    64/32 bit Mode       CPUID Feature                                                                 Description
+                                                                                     Support              Flag
+VEX.256.66.0F3A.W1 01 /r ib VPERMPD ymm1, ymm2/m256, imm8             A       V/V                   AVX2              Permute double precision floating-point elements in ymm2/m256 using indices in imm8 and store the result in ymm1.
+EVEX.256.66.0F3A.W1 01 /r ib VPERMPD ymm1 {k1}{z}, ymm2/m256/m64bcst, B       V/V                   AVX512VL AVX512F  Permute double precision floating-point elements in ymm2/m256/m64bcst using indexes in imm8 and store the result in ymm1 subject to
+imm8                                                                                                                  writemask k1.
+EVEX.512.66.0F3A.W1 01 /r ib VPERMPD zmm1 {k1}{z}, zmm2/m512/m64bcst, B       V/V                   AVX512F           Permute double precision floating-point elements in zmm2/m512/m64bcst using indices in imm8 and store the result in zmm1 subject to
+imm8                                                                                                                  writemask k1.
+EVEX.256.66.0F38.W1 16 /r VPERMPD ymm1 {k1}{z}, ymm2, ymm3/m256/      C       V/V                   AVX512VL AVX512F  Permute double precision floating-point elements in ymm3/m256/m64bcst using indexes in ymm2 and store the result in ymm1 subject to
+m64bcst                                                                                                               writemask k1.
+EVEX.512.66.0F38.W1 16 /r VPERMPD zmm1 {k1}{z}, zmm2, zmm3/m512/      C       V/V                   AVX512F           Permute double precision floating-point elements in zmm3/m512/m64bcst using indices in zmm2 and store the result in zmm1 subject to
+m64bcst                                                                                                               writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     N/A        ModRM:reg (w)  ModRM:r/m (r)  imm8           N/A
+B     Full       ModRM:reg (w)  ModRM:r/m (r)  imm8           N/A
+C     Full       ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+The imm8 version: Copies quadword elements of double precision floating-point values from the source operand (the second operand) to the destination operand (the first operand) according to the indices specified by the immediate operand (the third
+operand). Each two-bit value in the immediate byte selects a qword element in the source operand.
+
+VEX version: The source operand can be a YMM register or a memory location. Bits (MAXVL-1:256) of the corresponding destination register are zeroed.
+
+In EVEX.512 encoded version, The elements in the destination are updated using the writemask k1 and the imm8 bits are reused as control bits for the upper 256-bit half when the control bits are coming from immediate. The source operand can be a ZMM
+register, a 512-bit memory location or a 512-bit vector broadcasted from a 64-bit memory location.
+
+The imm8 versions: VEX.vvvv and EVEX.vvvv are reserved and must be 1111b otherwise instructions will #UD.
+
+The vector control version: Copies quadword elements of double precision floating-point values from the second source operand (the third operand) to the destination operand (the first operand) according to the indices in the first source operand (the
+second operand). The first 3 bits of each 64 bit element in the index operand selects which quadword in the second source operand to copy. The first and second operands are ZMM registers, the third operand can be a ZMM register, a 512-bit memory location
+or a 512-bit vector broadcasted from a 64-bit memory location. The elements in the destination are updated using the writemask k1.
+
+Note that this instruction permits a qword in the source operand to be copied to multiple locations in the destination operand.
+
+If VPERMPD is encoded with VEX.L= 0, an attempt to execute the instruction encoded with VEX.L= 0 will cause an #UD exception.
+

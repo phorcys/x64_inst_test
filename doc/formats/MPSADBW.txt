@@ -1,0 +1,46 @@
+  • Index
+  • December 2023
+
+MPSADBW — Compute Multiple Packed Sums of Absolute Difference
+
+                  Opcode/Instruction                   Op/   64/32-bit    CPUID Feature                                                                               Description
+                                                        En      Mode          Flag
+66 0F 3A 42 /r ib MPSADBW xmm1, xmm2/m128, imm8        RMI  V/V          SSE4_1          Sums absolute 8-bit integer difference of adjacent groups of 4 byte integers in xmm1 and xmm2/m128 and writes the results in xmm1. Starting offsets within xmm1 and
+                                                                                         xmm2/m128 are determined by imm8.
+VEX.128.66.0F3A.WIG 42 /r ib VMPSADBW xmm1, xmm2, xmm3 RVMI V/V          AVX             Sums absolute 8-bit integer difference of adjacent groups of 4 byte integers in xmm2 and xmm3/m128 and writes the results in xmm1. Starting offsets within xmm2 and
+/m128, imm8                                                                              xmm3/m128 are determined by imm8.
+VEX.256.66.0F3A.WIG 42 /r ib VMPSADBW ymm1, ymm2, ymm3 RVMI V/V          AVX2            Sums absolute 8-bit integer difference of adjacent groups of 4 byte integers in xmm2 and ymm3/m128 and writes the results in ymm1. Starting offsets within ymm2 and
+/m256, imm8                                                                              xmm3/m128 are determined by imm8.
+
+Instruction Operand Encoding ¶
+
+Op/En     Operand 1       Operand 2     Operand 3   Operand 4
+RMI   ModRM:reg (r, w)  ModRM:r/m (r) imm8          N/A
+RVMI  ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) imm8
+
+Description ¶
+
+(V)MPSADBW calculates packed word results of sum-absolute-difference (SAD) of unsigned bytes from two blocks of 32-bit dword elements, using two select fields in the immediate byte to select the offsets of the two blocks within the first source operand
+and the second operand. Packed SAD word results are calculated within each 128-bit lane. Each SAD word result is calculated between a stationary block_2 (whose offset within the second source operand is selected by a two bit select control, multiplied by
+32 bits) and a sliding block_1 at consecutive byte-granular position within the first source operand. The offset of the first 32-bit block of block_1 is selectable using a one bit select control, multiplied by 32 bits.
+
+128-bit Legacy SSE version: Imm8[1:0]*32 specifies the bit offset of block_2 within the second source operand. Imm[2]*32 specifies the initial bit offset of the block_1 within the first source operand. The first source operand and destination operand are
+the same. The first source and destination operands are XMM registers. The second source operand is either an XMM register or a 128-bit memory location. Bits (MAXVL-1:128) of the corresponding YMM destination register remain unchanged. Bits 7:3 of the
+immediate byte are ignored.
+
+VEX.128 encoded version: Imm8[1:0]*32 specifies the bit offset of block_2 within the second source operand. Imm[2]*32 specifies the initial bit offset of the block_1 within the first source operand. The first source and destination operands are XMM
+registers. The second source operand is either an XMM register or a 128-bit memory location. Bits (127:128) of the corresponding YMM register are zeroed. Bits 7:3 of the immediate byte are ignored.
+
+VEX.256 encoded version: The sum-absolute-difference (SAD) operation is repeated 8 times for MPSADW between the same block_2 (fixed offset within the second source operand) and a variable block_1 (offset is shifted by 8 bits for each SAD operation) in
+the first source operand. Each 16-bit result of eight SAD operations between block_2 and block_1 is written to the respective word in the lower 128 bits of the destination operand.
+
+Additionally, VMPSADBW performs another eight SAD operations on block_4 of the second source operand and block_3 of the first source operand. (Imm8[4:3]*32 + 128) specifies the bit offset of block_4 within the second source operand. (Imm[5]*32+128)
+specifies the initial bit offset of the block_3 within the first source operand. Each 16-bit result of eight SAD operations between block_4 and block_3 is written to the respective word in the upper 128 bits of the destination operand.
+
+The first source operand is a YMM register. The second source register can be a YMM register or a 256-bit memory location. The destination operand is a YMM register. Bits 7:6 of the immediate byte are ignored.
+
+Note: If VMPSADBW is encoded with VEX.L= 1, an attempt to execute the instruction encoded with VEX.L= 1 will cause an #UD exception.
+
+Imm[4:3]*32+128 128 255 224 192 Src2 Abs. Diff. Imm[5]*32+128 Src1 Sum 144 128 255 Destination Imm[1:0]*32 0 127 96 64 Src2 Abs. Diff. Imm[2]*32 Src1 Sum 16 0 127 Destination
+Figure 4-5. 256-bit VMPSADBW Operation
+

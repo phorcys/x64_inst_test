@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+VCVTTPD2UDQ — Convert With Truncation Packed Double Precision Floating-Point Values toPacked Unsigned Doubleword Integers
+
+                     Opcode Instruction                       Op/     64/32 Bit Mode     CPUID Feature                                                                        Description
+                                                               En        Support              Flag
+EVEX.128.0F.W1 78 /r VCVTTPD2UDQ xmm1 {k1}{z}, xmm2/m128/     A    V/V                  AVX512VL AVX512F Convert two packed double precision floating-point values in xmm2/m128/m64bcst to two unsigned doubleword integers in xmm1 using truncation subject
+m64bcst                                                                                                  to writemask k1.
+EVEX.256.0F.W1 78 02 /r VCVTTPD2UDQ xmm1 {k1}{z}, ymm2/m256/  A    V/V                  AVX512VL AVX512F Convert four packed double precision floating-point values in ymm2/m256/m64bcst to four unsigned doubleword integers in xmm1 using truncation subject
+m64bcst                                                                                                  to writemask k1.
+EVEX.512.0F.W1 78 /r VCVTTPD2UDQ ymm1 {k1}{z}, zmm2/m512/     A    V/V                  AVX512F          Convert eight packed double precision floating-point values in zmm2/m512/m64bcst to eight unsigned doubleword integers in ymm1 using truncation
+m64bcst{sae}                                                                                             subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Converts with truncation packed double precision floating-point values in the source operand (the second operand) to packed unsigned doubleword integers in the destination operand (the first operand).
+
+When a conversion is inexact, a truncated (round toward zero) value is returned. If a converted result cannot be represented in the destination format, the floating-point invalid exception is raised, and if this exception is masked, the integer value 2^w
+– 1 is returned, where w represents the number of bits in the destination format.
+
+The source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location, or a 512/256/128-bit vector broadcasted from a 64-bit memory location. The destination operand is a YMM/XMM/XMM (low 64 bits) register conditionally updated with writemask
+k1. The upper bits (MAXVL-1:256) of the corresponding destination are zeroed.
+
+Note: EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.
+

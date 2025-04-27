@@ -1,0 +1,26 @@
+  • Index
+  • December 2023
+
+VRCPSH — Compute Reciprocal of Scalar FP16 Value
+
+ Instruction En bit Mode Flag Support Instruction En bit Mode Flag Support 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction
+ En bit Mode Flag Op/ 64/32 CPUID Feature Instruction En bit Mode Flag 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En     Support                                                Description
+                                                        bit Mode Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                                             Compute the approximate reciprocal of the low FP16 value in xmm3/m16 and store
+EVEX.LLIG.66.MAP6.W0 4D /r VRCPSH xmm1{k1}{z}, xmm2, xmm3/m16                                                                                          A V/V     AVX512-FP16 the result in xmm1 subject to writemask k1. Bits 127:16 from xmm2 are copied to
+                                                                                                                                                                             xmm1[127:16].
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1     Operand 2     Operand 3    Operand 4
+A     Scalar ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction performs a SIMD computation of the approximate reciprocal of the low FP16 value in the second source operand (the third operand) and stores the result in the low word element of the destination operand (the first operand) according to
+the writemask k1. Bits 127:16 of the XMM register destination are copied from corresponding bits in the first source operand (the second operand). The maximum relative error for this approximation is less than 2^−11 + 2^−14.
+
+Bits 127:16 of the destination operand are copied from the corresponding bits of the first source operand. Bits MAXVL-1:128 of the destination operand are zeroed. The low FP16 element of the destination is updated according to the writemask.
+
+For special cases, see Table 5-28.
+

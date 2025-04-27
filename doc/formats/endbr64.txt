@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+ENDBR64 — Terminate an Indirect Branch in 64-bit Mode
+
+Opcode/Instruction  Op / En 64/32 bit Mode Support CPUID Feature Flag                Description
+F3 0F 1E FA ENDBR64 ZO      V/V                    CET_IBT            Terminate indirect branch in 64-bit mode.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type  Operand 1 Operand 2 Operand 3 Operand 4
+ZO    N/A         N/A       N/A       N/A       N/A
+
+Description ¶
+
+Terminate an indirect branch in 64 bit mode.
+

@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+SETSSBSY — Mark Shadow Stack Busy
+
+ Opcode/Instruction  Op/En 64/32 bit Mode Support CPUID Feature Flag                                Description
+F3 0F 01 E8 SETSSBSY ZO    V/V                    CET_SS             Set busy flag in supervisor shadow stack token reference by IA32_PL0_SSP.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+The SETSSBSY instruction verifies the presence of a non-busy supervisor shadow stack token at the address in the IA32_PL0_SSP MSR and marks it busy. Following successful execution of the instruction, the SSP is set to the value of the IA32_PL0_SSP MSR.
+

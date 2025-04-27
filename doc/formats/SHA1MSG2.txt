@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+SHA1MSG2 — Perform a Final Calculation for the Next Four SHA1 Message Dwords
+
+         Opcode/Instruction           Op/     64/32 bit Mode       CPUID Feature                                                                                   Description
+                                       En         Support              Flag
+NP 0F 38 CA /r SHA1MSG2 xmm1, xmm2/   RM   V/V                   SHA               Performs the final calculation for the next four SHA1 message dwords using intermediate results from xmm1 and the previous message dwords from xmm2/m128, storing the
+m128                                                                               result in xmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En     Operand 1       Operand 2    Operand 3
+RM    ModRM:reg (r, w)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+The SHA1MSG2 instruction is one of two SHA1 message scheduling instructions. The instruction performs the final calculation to derive the next four SHA1 message dwords.
+

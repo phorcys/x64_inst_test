@@ -1,0 +1,38 @@
+  • Index
+  • December 2023
+
+GETSEC[CAPABILITIES] — Report the SMX Capabilities
+
+      Opcode           Instruction                                                   Description
+NP 0F 37 (EAX = 0) GETSEC[CAPABILITIES] Report the SMX capabilities. The capabilities index is input in EBX with the result returned in EAX.
+
+Description ¶
+
+The GETSEC[CAPABILITIES] function returns a bit vector of supported GETSEC leaf functions. The CAPABILITIES leaf of GETSEC is selected with EAX set to 0 at entry. EBX is used as the selector for returning the bit vector field in EAX. GETSEC[CAPABILITIES]
+may be executed at all privilege levels, but the CR4.SMXE bit must be set or an undefined opcode exception (#UD) is returned.
+
+With EBX = 0 upon execution of GETSEC[CAPABILITIES], EAX returns the a bit vector representing status on the presence of a Intel^® TXT-capable chipset and the first 30 available GETSEC leaf functions. The format of the returned bit vector is provided in 
+Table 7-3.
+
+If bit 0 is set to 1, then an Intel^® TXT-capable chipset has been sampled present by the processor. If bits in the range of 1-30 are set, then the corresponding GETSEC leaf function is available. If the bit value at a given bit index is 0, then the
+GETSEC leaf function corresponding to that index is unsupported and attempted execution results in a #UD.
+
+Bit 31 of EAX indicates if further leaf indexes are supported. If the Extended Leafs bit 31 is set, then additional leaf functions are accessed by repeating GETSEC[CAPABILITIES] with EBX incremented by one. When the most significant bit of EAX is not
+set, then additional GETSEC leaf functions are not supported; indexing EBX to a higher value results in EAX returning zero.
+
+     Field       Bit position                             Description
+Chipset Present  0            Intel® TXT-capable chipset is present.
+Undefined        1            Reserved
+ENTERACCS        2            GETSEC[ENTERACCS] is available.
+EXITAC           3            GETSEC[EXITAC] is available.
+SENTER           4            GETSEC[SENTER] is available.
+SEXIT            5            GETSEC[SEXIT] is available.
+PARAMETERS       6            GETSEC[PARAMETERS] is available.
+SMCTRL           7            GETSEC[SMCTRL] is available.
+WAKEUP           8            GETSEC[WAKEUP] is available.
+Undefined        30:9         Reserved
+Extended Leafs   31           Reserved for extended information reporting of GETSEC capabilities.
+
+
+Table 7-3. GETSEC Capability Result Encoding (EBX = 0)
+

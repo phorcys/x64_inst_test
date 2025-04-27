@@ -1,0 +1,46 @@
+  • Index
+  • December 2023
+
+VGETEXPPD — Convert Exponents of Packed Double Precision Floating-Point Values to DoublePrecision Floating-Point Values
+
+                Opcode/Instruction                  Op/  64/32 Bit Mode  CPUID Feature                                                                               Description
+                                                    En      Support          Flag
+EVEX.128.66.0F38.W1 42 /r VGETEXPPD xmm1 {k1}{z},   A   V/V              AVX512VL      Convert the exponent of packed double precision floating-point values in the source operand to double precision floating-point results representing unbiased integer
+xmm2/m128/m64bcst                                                        AVX512F       exponents and stores the results in the destination register.
+EVEX.256.66.0F38.W1 42 /r VGETEXPPD ymm1 {k1}{z},   A   V/V              AVX512VL      Convert the exponent of packed double precision floating-point values in the source operand to double precision floating-point results representing unbiased integer
+ymm2/m256/m64bcst                                                        AVX512F       exponents and stores the results in the destination register.
+EVEX.512.66.0F38.W1 42 /r VGETEXPPD zmm1 {k1}{z},   A   V/V              AVX512F       Convert the exponent of packed double precision floating-point values in the source operand to double precision floating-point results representing unbiased integer
+zmm2/m512/m64bcst{sae}                                                                 exponents and stores the results in the destination under writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Extracts the biased exponents from the normalized double precision floating-point representation of each qword data element of the source operand (the second operand) as unbiased signed integer value, or convert the denormal representation of input data
+to unbiased negative integer values. Each integer value of the unbiased exponent is converted to double precision floating-point value and written to the corresponding qword elements of the destination operand (the first operand) as double precision
+floating-point numbers.
+
+The destination operand is a ZMM/YMM/XMM register and updated under the writemask. The source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location, or a 512/256/128-bit vector broadcasted from a 64-bit memory location.
+
+EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.
+
+Each GETEXP operation converts the exponent value into a floating-point number (permitting input value in denormal representation). Special cases of input values are listed in Table 5-15.
+
+The formula is:
+
+GETEXP(x) = floor(log[2](|x|))
+
+Notation floor(x) stands for the greatest integer not exceeding real number x.
+
+ Input Operand           Result                                Comments
+src1 = NaN       QNaN(src1)
+0 < |src1| < INF floor(log[2](|src1|))  If (SRC = SNaN) then #IE If (SRC = denormal) then #DE
+| src1| = +INF   +INF
+| src1| = 0      -INF
+
+
+Table 5-15. VGETEXPPD/SD Special Cases
+

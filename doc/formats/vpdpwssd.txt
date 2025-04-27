@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+VPDPWSSD — Multiply and Add Signed Word Integers
+
+                    Opcode/Instruction                     Op/    64/32 bit Mode    CPUID Feature                                                                          Description
+                                                            En       Support             Flag
+VEX.128.66.0F38.W0 52 /r VPDPWSSD xmm1, xmm2, xmm3/m128    A    V/V                AVX-VNNI         Multiply groups of 2 pairs signed words in xmm3/m128 with corresponding signed words of xmm2, summing those products and adding them to doubleword result
+                                                                                                    in xmm1.
+VEX.256.66.0F38.W0 52 /r VPDPWSSD ymm1, ymm2, ymm3/m256    A    V/V                AVX-VNNI         Multiply groups of 2 pairs signed words in ymm3/m256 with corresponding signed words of ymm2, summing those products and adding them to doubleword result
+                                                                                                    in ymm1.
+EVEX.128.66.0F38.W0 52 /r VPDPWSSD xmm1{k1}{z}, xmm2, xmm3 B    V/V                AVX512_VNNI      Multiply groups of 2 pairs signed words in xmm3/m128/m32bcst with corresponding signed words of xmm2, summing those products and adding them to doubleword
+/m128/m32bcst                                                                      AVX512VL         result in xmm1, under writemask k1.
+EVEX.256.66.0F38.W0 52 /r VPDPWSSD ymm1{k1}{z}, ymm2, ymm3 B    V/V                AVX512_VNNI      Multiply groups of 2 pairs signed words in ymm3/m256/m32bcst with corresponding signed words of ymm2, summing those products and adding them to doubleword
+/m256/m32bcst                                                                      AVX512VL         result in ymm1, under writemask k1.
+EVEX.512.66.0F38.W0 52 /r VPDPWSSD zmm1{k1}{z}, zmm2, zmm3 B    V/V                AVX512_VNNI      Multiply groups of 2 pairs signed words in zmm3/m512/m32bcst with corresponding signed words of zmm2, summing those products and adding them to doubleword
+/m512/m32bcst                                                                                       result in zmm1, under writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple     Operand 1       Operand 2     Operand 3   Operand 4
+A     N/A   ModRM:reg (r, w)  VEX.vvvv (r)  ModRM:r/m (r) N/A
+B     Full  ModRM:reg (r, w)  EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Multiplies the individual signed words of the first source operand by the corresponding signed words of the second source operand, producing intermediate signed, doubleword results. The adjacent doubleword results are then summed and accumulated in the
+destination operand.
+
+This instruction supports memory fault suppression.
+

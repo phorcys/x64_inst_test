@@ -1,0 +1,20 @@
+  • Index
+  • December 2023
+
+VMPTRLD — Load Pointer to Virtual-Machine Control Structure
+
+   Opcode/Instruction    Op/En                 Description
+NP 0F C7 /6 VMPTRLD m64  M     Loads the current VMCS pointer from memory.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1      Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (r)  NA        NA        NA
+
+Description ¶
+
+Marks the current-VMCS pointer valid and loads it with the physical address in the instruction operand. The instruction fails if its operand is not properly aligned, sets unsupported physical-address bits, or is equal to the VMXON pointer. In addition,
+the instruction fails if the 32 bits in memory referenced by the operand do not match the VMCS revision identifier supported by this processor.^1
+
+The operand of this instruction is always 64 bits and is always in memory.
+

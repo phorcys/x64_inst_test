@@ -1,0 +1,63 @@
+  • Index
+  • December 2023
+
+EDBGWR — Write to a Debug Enclave
+
+  Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                           Description
+EAX = 05H ENCLS[EDBGWR] IR    V/V                    SGX1               This leaf function writes a dword/quadword to a debug enclave.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                 RBX                                         RCX
+IR    EDBGWR (In) Return error code (Out) Data to be written to a debug enclave (In)  Address of Target memory in the EPC (In)
+
+Description ¶
+
+This leaf function copies the content in EBX/RBX to an EPC page belonging to a debug enclave. Eight bytes are written in 64-bit mode, four bytes are written in non-64-bit modes. The size of data cannot be overridden.
+
+The effective address of the target location inside the EPC is provided in the register RCX.
+
+EDBGWR Memory Parameter Semantics ¶
+
+EPCQW
+Write access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EDBGWR Faulting Conditions ¶
+
+RCX points into a page that is an SECS.                                         RCX does not resolve to a naturally aligned linear address.
+RCX points to a page that does not belong to an enclave that is in debug mode.  RCX points to a location inside a TCS that is not the FLAGS word.
+An operand causing any segment violation.                                       May page fault.
+CPL > 0.
+
+The error codes are:
+
+Error Code (see Table 38-4)                                   Description
+No Error                    EDBGWR successful.
+SGX_PAGE_NOT_DEBUGGABLE     The EPC page cannot be accessed because it is in the PENDING or MODIFIED state.
+
+
+Table 38-20. EDBGWR Return Value in RAX
+
+This instruction ignores the EPCM RWX attributes on the enclave page. Consequently, violation of EPCM RWX attributes via EDBGRD does not result in a #GP.
+
+Concurrency Restrictions ¶
+
+                            Leaf                                Parameter    Base Concurrency Restrictions
+                                                                                      On Conflict
+EDBGWR EDBGWR Target [DS:RCX] Shared EDBGWR Target [DS:RCX]  Target [DS:RCX]
+
+
+Table 38-21. Base Concurrency Restrictions of EDBGWR
+
+                                                                                                                       Additional Concurrency Restrictions
+ Leaf   Parameter     vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On      vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                   Conflict EMODPE, EMODPR, EMODT                                                                                       ETRACK, ETRACKC                           ETRACKC
+                                                         Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+EDBGWR Target       Concurrent                                                                                                                                                    Concurrent                                                  Concurrent
+       [DS:RCX]
+
+
+Table 38-22. Additional Concurrency Restrictions of EDBGWR
+

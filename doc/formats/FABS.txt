@@ -1,0 +1,28 @@
+  • Index
+  • December 2023
+
+FABS — Absolute Value
+
+Opcode  Mode Leg Mode              Description
+D9 E1                 Replace ST with its absolute value.
+
+Description ¶
+
+Clears the sign bit of ST(0) to create the absolute value of the operand. The following table shows the results obtained when creating the absolute value of various classes of numbers.
+
+ST(0) SRC  ST(0) DEST
+−∞         +∞
+−F         +F
+−0         +0
++0         +0
++F         +F
++∞         +∞
+NaN        NaN
+
+
+Table 3-17. Results Obtained from FABS
+
+    F Meansfinitefloating-pointvalue.
+
+This instruction’s operation is the same in non-64-bit modes and 64-bit mode.
+

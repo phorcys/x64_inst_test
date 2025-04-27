@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VCVTNE2PS2BF16 — Convert Two Packed Single Data to One Packed BF16 Data
+
+                             Opcode/Instruction                               Op/En 64/32 Bit Mode Support  CPUID Feature Flag                                                 Description
+EVEX.128.F2.0F38.W0 72 /r VCVTNE2PS2BF16 xmm1{k1}{z}, xmm2, xmm3/m128/m32bcst A     V/V                    AVX512VL AVX512_BF16 Convert packed single data from xmm2 and xmm3/m128/m32bcst to packed BF16 data in xmm1 with writemask k1.
+EVEX.256.F2.0F38.W0 72 /r VCVTNE2PS2BF16 ymm1{k1}{z}, ymm2, ymm3/m256/m32bcst A     V/V                    AVX512VL AVX512_BF16 Convert packed single data from ymm2 and ymm3/m256/m32bcst to packed BF16 data in ymm1 with writemask k1.
+EVEX.512.F2.0F38.W0 72 /r VCVTNE2PS2BF16 zmm1{k1}{z}, zmm2, zmm3/m512/m32bcst A     V/V                    AVX512F AVX512_BF16  Convert packed single data from zmm2 and zmm3/m512/m32bcst to packed BF16 data in zmm1 with writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2      Operand 3    Operand 4
+A     Full  ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+Converts two SIMD registers of packed single data into a single register of packed BF16 data.
+
+This instruction does not support memory fault suppression.
+
+This instruction uses “Round to nearest (even)” rounding mode. Output denormals are always flushed to zero and input denormals are always treated as zero. MXCSR is not consulted nor updated. No floating-point exceptions are generated.
+

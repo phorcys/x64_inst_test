@@ -1,0 +1,38 @@
+  • Index
+  • December 2023
+
+VRCPPH — Compute Reciprocals of Packed FP16 Values
+
+  Instruction En bit Mode Flag Support Instruction En bit Mode Flag Support 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode
+  Flag Op/ 64/32 CPUID Feature Instruction En bit Mode Flag 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64/32      Support                                         Description
+                                                                           CPUID Feature
+EVEX.128.66.MAP6.W0 4C /r VRCPPH xmm1{k1}{z}, xmm2/m128/m16bcst                                                                                                      A V/V     AVX512-FP16 Compute the approximate reciprocals of packed FP16 values in xmm2/
+                                                                                                                                                                               AVX512VL    m128/m16bcst and store the result in xmm1 subject to writemask k1.
+EVEX.256.66.MAP6.W0 4C /r VRCPPH ymm1{k1}{z}, ymm2/m256/m16bcst                                                                                                      A V/V     AVX512-FP16 Compute the approximate reciprocals of packed FP16 values in ymm2/
+                                                                                                                                                                               AVX512VL    m256/m16bcst and store the result in ymm1 subject to writemask k1.
+EVEX.512.66.MAP6.W0 4C /r VRCPPH zmm1{k1}{z}, zmm2/m512/m16bcst                                                                                                      A V/V     AVX512-FP16 Compute the approximate reciprocals of packed FP16 values in zmm2/
+                                                                                                                                                                                           m512/m16bcst and store the result in zmm1 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction performs a SIMD computation of the approximate reciprocals of 8/16/32 packed FP16 values in the source operand (the second operand) and stores the packed FP16 results in the destination operand. The maximum relative error for this
+approximation is less than 2^−11 + 2^−14.
+
+For special cases, see Table 5-28.
+
+  Input Value    Result Value       Comments
+0 ≤ X ≤ 2^-16    INF          Very small denormal
+−2^-16 ≤ X ≤ -0  −INF         Very small denormal
+X > +∞           +0
+X < −∞           −0
+[X = 2]-n        [2]^n
+X = −2^-n        −2^n
+
+
+Table 5-28. VRCPPH/VRCPSH Special Cases
+

@@ -1,0 +1,19 @@
+  • Index
+  • December 2023
+
+POPCNT — Return the Count of Number of Bits Set to 1
+
+      Opcode          Instruction     Op/En 64-Bit Mode Compat/Leg Mode   Description
+F3 0F B8 /r        POPCNT r16, r/m16  RM    Valid       Valid           POPCNT on r/m16
+F3 0F B8 /r        POPCNT r32, r/m32  RM    Valid       Valid           POPCNT on r/m32
+F3 REX.W 0F B8 /r  POPCNT r64, r/m64  RM    Valid       N.E.            POPCNT on r/m64
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1      Operand 2    Operand 3 Operand 4
+RM    ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction calculates the number of bits set to 1 in the second operand (source) and returns the count in the first operand (a destination register).
+

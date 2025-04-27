@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+SAVEPREVSSP — Save Previous Shadow Stack Pointer
+
+             Opcode/Instruction               Op/En 64/32 bit Mode Support CPUID Feature Flag                         Description
+F3 0F 01 EA (mod!=11, /5, RM=010) SAVEPREVSSP ZO    V/V                    CET_SS             Save a restore-shadow-stack token on previous shadow stack.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+Push a restore-shadow-stack token on the previous shadow stack at the next 8 byte aligned boundary. The previous SSP is obtained from the previous-ssp token at the top of the current shadow stack.
+

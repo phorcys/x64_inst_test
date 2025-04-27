@@ -1,0 +1,21 @@
+  • Index
+  • December 2023
+
+ENCODEKEY128 — Encode 128-Bit Key With Key Locker
+
+                       Opcode/Instruction                        Op/En 64/32-bit Mode CPUID Feature Flag                                   Description
+F3 0F 38 FA 11:rrr:bbb ENCODEKEY128 r32, r32, <XMM0-2>, <XMM4-6> A     V/V            AESKLE             Wrap a 128-bit AES key from XMM0 into a key handle and output handle in XMM0—2.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1     Operand 2         Operand 3          Operands 4—5        Operands 6—7
+A     N/A   ModRM:reg (w) ModRM:r/m (r) Implicit XMM0 (r, w)  Implicit XMM1—2 (w) Implicit XMM4—6 (w)
+
+Description ¶
+
+The ENCODEKEY128^1 instruction wraps a 128-bit AES key from the implicit operand XMM0 into a key handle that is then stored in the implicit destination operands XMM0-2.
+
+The explicit source operand specifies handle restrictions, if any.
+
+The explicit destination operand is populated with information on the source of the key and its attributes. XMM4 through XMM6 are reserved for future usages and software should not rely upon them being zeroed.
+

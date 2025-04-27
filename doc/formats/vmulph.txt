@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VMULPH — Multiply Packed FP16 Values
+
+Instruction En bit Mode Flag Support Instruction En bit Mode Flag Support 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64   Support                                     Description
+     /32 CPUID Feature Instruction En bit Mode Flag 64/32 CPUID Feature Instruction En bit Mode Flag CPUID Feature Instruction En bit Mode Flag Op/ 64/32 CPUID Feature
+EVEX.128.NP.MAP5.W0 59 /r VMULPH xmm1{k1}{z}, xmm2, xmm3/m128/m16bcst                                                                                                        A V/V     AVX512-FP16 Multiply packed FP16 values from xmm3/m128/m16bcst to xmm2
+                                                                                                                                                                                       AVX512VL    and store the result in xmm1 subject to writemask k1.
+EVEX.256.NP.MAP5.W0 59 /r VMULPH ymm1{k1}{z}, ymm2, ymm3/m256/m16bcst                                                                                                        A V/V     AVX512-FP16 Multiply packed FP16 values from ymm3/m256/m16bcst to ymm2
+                                                                                                                                                                                       AVX512VL    and store the result in ymm1 subject to writemask k1.
+EVEX.512.NP.MAP5.W0 59 /r VMULPH zmm1{k1}{z}, zmm2, zmm3/m512/m16bcst {er}                                                                                                   A V/V     AVX512-FP16 Multiply packed FP16 values in zmm3/m512/m16bcst with zmm2
+                                                                                                                                                                                                   and store the result in zmm1 subject to writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1     Operand 2     Operand 3    Operand 4
+A     Full  ModRM:reg (w)  VEX.vvvv (r) ModRM:r/m (r)  N/A
+
+Description ¶
+
+This instruction multiplies packed FP16 values from source operands and stores the packed FP16 result in the destination operand. The destination elements are updated according to the writemask.
+

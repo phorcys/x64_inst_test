@@ -1,0 +1,61 @@
+  • Index
+  • December 2023
+
+EMODPR — Restrict the Permissions of an EPC Page
+
+  Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                                              Description
+EAX = 0EH ENCLS[EMODPR] IR    V/V                    SGX2               This leaf function restricts the access rights associated with a EPC page in an initialized enclave.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                 RBX                       RCX
+IR    EMODPR (In) Return Error Code (Out) Address of a SECINFO (In) Address of the destination EPC page (In)
+
+Description ¶
+
+This leaf function restricts the access rights associated with an EPC page in an initialized enclave. THE RWX bits of the SECINFO parameter are treated as a permissions mask; supplying a value that does not restrict the page permissions will have no
+effect. This instruction can only be executed when current privilege level is 0.
+
+RBX contains the effective address of a SECINFO structure while RCX contains the effective address of an EPC page. The table below provides additional information on the memory parameter of the EMODPR leaf function.
+
+EMODPR Memory Parameter Semantics ¶
+
+SECINFO                               EPCPAGE
+Read access permitted by Non Enclave  Read/Write access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EMODPR Faulting Conditions ¶
+
+The operands are not properly aligned.    If unsupported security attributes are set.
+The Enclave is not initialized.           SECS is locked by another thread.
+The EPC page is locked by another thread. RCX does not contain an effective address of an EPC page in the running enclave.
+The EPC page is not valid.
+
+The error codes are:
+
+Error Code (see Table 38-4)                                   Description
+No Error                    EMODPR successful.
+SGX_PAGE_NOT_MODIFIABLE     The EPC page cannot be modified because it is in the PENDING or MODIFIED state.
+SGX_EPC_PAGE_CONFLICT       Page is being written by EADD, EAUG, ECREATE, ELDU/B, EMODT, or EWB.
+
+
+Table 38-31. EMODPR Return Value in RAX
+
+Concurrency Restrictions ¶
+
+                            Leaf                                Parameter    Base Concurrency Restrictions
+                                                                                      On Conflict
+EMODPR EMODPR Target [DS:RCX] Shared EMODPR Target [DS:RCX]  Target [DS:RCX]
+
+
+Table 38-32. Base Concurrency Restrictions of EMODPR
+
+                                                     Additional Concurrency Restrictions
+ Leaf     Parameter    vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                           Access                On Conflict              Access    On Conflict    Access   On Conflict
+EMODPR Target [DS:RCX] Exclusive      SGX_EPC_PAGE _CONFLICT            Concurrent               Concurrent
+
+
+Table 38-33. Additional Concurrency Restrictions of EMODPR
+

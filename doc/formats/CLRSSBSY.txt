@@ -1,0 +1,17 @@
+  • Index
+  • December 2023
+
+CLRSSBSY — Clear Busy Flag in a Supervisor Shadow Stack Token
+
+   Opcode/Instruction    Op / En 64/32 bit Mode Support CPUID Feature Flag                             Description
+F3 0F AE /6 CLRSSBSY m64 M       V/V                    CET_SS             Clear busy flag in supervisor shadow stack token reference by m64.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type      Operand 1     Operand 2 Operand 3 Operand 4
+M     N/A         ModRM:r/m (r, w)  N/A       N/A       N/A
+
+Description ¶
+
+Clear busy flag in supervisor shadow stack token reference by m64. Subsequent to marking the shadow stack as not busy the SSP is loaded with value 0.
+

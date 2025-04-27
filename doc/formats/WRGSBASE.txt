@@ -1,0 +1,25 @@
+  • Index
+  • December 2023
+
+WRFSBASE/WRGSBASE — Write FS/GS Segment Base
+
+      Opcode/Instruction       Op/En 64/32-bit Mode CPUID Feature Flag                               Description
+F3 0F AE /2 WRFSBASE r32       M     V/I            FSGSBASE           Load the FS base address with the 32-bit value in the source register.
+F3 REX.W 0F AE /2 WRFSBASE r64 M     V/I            FSGSBASE           Load the FS base address with the 64-bit value in the source register.
+F3 0F AE /3 WRGSBASE r32       M     V/I            FSGSBASE           Load the GS base address with the 32-bit value in the source register.
+F3 REX.W 0F AE /3 WRGSBASE r64 M     V/I            FSGSBASE           Load the GS base address with the 64-bit value in the source register.
+
+Instruction Operand Encoding ¶
+
+Op/En   Operand 1    Operand 2 Operand 3 Operand 4
+M     ModRM:r/m (r)  N/A       N/A       N/A
+
+Description ¶
+
+Loads the FS or GS segment base address with the general-purpose register indicated by the modR/M:r/m field.
+
+The source operand may be either a 32-bit or a 64-bit general-purpose register. The REX.W prefix indicates the operand size is 64 bits. If no REX.W prefix is used, the operand size is 32 bits; the upper 32 bits of the source register are ignored and
+upper 32 bits of the base address (for FS or GS) are cleared.
+
+This instruction is supported only in 64-bit mode.
+

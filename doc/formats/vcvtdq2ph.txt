@@ -1,0 +1,34 @@
+  • Index
+  • December 2023
+
+VCVTDQ2PH — Convert Packed Signed Doubleword Integers to Packed FP16 Values
+
+Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit
+Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag    Support                                             Description
+                                                                  Op/ 64/32 CPUID Feature
+                                                                                                                                                                      AVX512-FP16 Convert four packed signed doubleword integers from xmm2/m128/m32bcst to
+EVEX.128.NP.MAP5.W0 5B /r VCVTDQ2PH xmm1{k1}{z}, xmm2/m128/m32bcst                                                                                          A V/V     AVX512VL    four packed FP16 values, and store the result in xmm1 subject to writemask
+                                                                                                                                                                                  k1.
+                                                                                                                                                                      AVX512-FP16 Convert eight packed signed doubleword integers from ymm2/m256/m32bcst to
+EVEX.256.NP.MAP5.W0 5B /r VCVTDQ2PH xmm1{k1}{z}, ymm2/m256/m32bcst                                                                                          A V/V     AVX512VL    eight packed FP16 values, and store the result in xmm1 subject to writemask
+                                                                                                                                                                                  k1.
+                                                                                                                                                                                  Convert sixteen packed signed doubleword integers from zmm2/m512/m32bcst to
+EVEX.512.NP.MAP5.W0 5B /r VCVTDQ2PH ymm1{k1}{z}, zmm2/m512/m32bcst {er}                                                                                     A V/V     AVX512-FP16 sixteen packed FP16 values, and store the result in ymm1 subject to
+                                                                                                                                                                                  writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts four, eight, or sixteen packed signed doubleword integers in the source operand to four, eight, or sixteen packed FP16 values in the destination operand.
+
+EVEX encoded versions: The source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcast from a 32-bit memory location. The destination operand is a YMM/XMM register conditionally updated with
+writemask k1.
+
+EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.
+
+If the result of the convert operation is overflow and MXCSR.OM=0 then a SIMD exception will be raised with OE=1, PE=1.
+

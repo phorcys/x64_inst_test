@@ -1,0 +1,40 @@
+  • Index
+  • December 2023
+
+VREDUCESS — Perform a Reduction Transformation on a Scalar Float32 Value
+
+                                                Op/   64/32 bit     CPUID
+              Opcode/Instruction                En  Mode Support   Feature                                                                                      Description
+                                                                     Flag
+EVEX.LLIG.66.0F3A.W0 57 /r /ib VREDUCESS xmm1   A   V/V           AVX512DQ   Perform a reduction transformation on a scalar single-precision floating-point value in xmm3/m32 by subtracting a number of fraction bits specified by the imm8 field. Also,
+{k1}{z}, xmm2, xmm3/m32{sae}, imm8                                           upper single-precision floating-point values (bits[127:32]) from xmm2 are copied to xmm1[127:32]. Stores the result in xmm1 register.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple Type     Operand 1     Operand 2     Operand 3   Operand 4
+A     Tuple1 Scalar ModRM:reg (w) EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Perform a reduction transformation of the binary encoded single-precision floating-point value in the low dword element of the second source operand (the third operand) and store the reduced result in binary floating-point format to the low dword element
+of the destination operand (the first operand) under the writemask k1. Bits 127:32 of the destination operand are copied from respective dword elements of the first source operand (the second operand).
+
+The reduction transformation subtracts the integer part and the leading M fractional bits from the binary floating-point source value, where M is a unsigned integer specified by imm8[7:4], see Figure 5-28. Specifically, the reduction transformation can
+be expressed as:
+
+dest = src – (ROUND(2^M*src))*2^-M;
+
+where “Round()” treats “src”, “2^M”, and their product as binary floating-point numbers with normalized significand and biased exponents.
+
+The magnitude of the reduced result can be expressed by considering src= 2^p*man2,
+
+where ‘man2’ is the normalized significand and ‘p’ is the unbiased exponent
+
+Then if RC = RNE: 0<=|Reduced Result|<=2^p-M-1
+
+Then if RC ≠ RNE: 0<=|Reduced Result|<2^p-M
+
+This instruction might end up with a precision exception set. However, in case of SPE set (i.e., Suppress Precision Exception, which is imm8[3]=1), no precision exception is reported.
+
+Handling of special case of input values are listed in Table 5-29.
+

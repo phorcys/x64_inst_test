@@ -1,0 +1,38 @@
+  • Index
+  • December 2023
+
+VRANGESS — Range Restriction Calculation From a Pair of Scalar Float32 Values
+
+                   Opcode/Instruction                    Op/   64/32 bit Mode   CPUID Feature                                                                           Description
+                                                          En       Support          Flag
+EVEX.LLIG.66.0F3A.W0 51 /r VRANGESS xmm1 {k1}{z}, xmm2,  A    V/V               AVX512DQ      Calculate a RANGE operation output value from 2 single-precision floating-point values in xmm2 and xmm3/m32, store the output to xmm1 under writemask. Imm8
+xmm3/m32{sae}, imm8                                                                           specifies the comparison and sign of the range operation.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple Type     Operand 1     Operand 2     Operand 3   Operand 4
+A     Tuple1 Scalar ModRM:reg (w) EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+This instruction calculates a range operation output from two input single-precision floating-point values in the low dword element of the first source operand (the second operand) and second source operand (the third operand). The range output is
+written to the low dword element of the destination operand (the first operand) under the writemask k1.
+
+Bits7:4 of imm8 byte must be zero. The range operation output is performed in two parts, each configured by a two-bit control field within imm8[3:0]:
+
+  • Imm8[1:0] specifies the initial comparison operation to be one of max, min, max absolute value or min absolute value of the input value pair. Each comparison of two input values produces an intermediate result that combines with the sign selection
+    control (imm8[3:2]) to determine the final range operation output.
+  • Imm8[3:2] specifies the sign of the range operation output to be one of the following: from the first input value, from the comparison result, set or clear.
+
+The encodings of imm8[1:0] and imm8[3:2] are shown in Figure 5-27.
+
+Bits 128:31 of the destination operand are copied from the respective elements of the first source operand.
+
+When one or more of the input value is a NAN, the comparison operation may signal invalid exception (IE). Details with one of more input value is NAN is listed in Table 5-23. If the comparison raises an IE, the sign select control (imm8[3:2]) has no
+effect to the range operation output; this is indicated also in Table 5-23.
+
+When both input values are zeros of opposite signs, the comparison operation of MIN/MAX in the range compare operation is slightly different from the conceptually similar floating-point MIN/MAX operation that are found in the instructions VMAXPD/VMINPD.
+The details of MIN/MAX/MIN_ABS/MAX_ABS operation for VRANGEPD/PS/SD/SS for magnitude-0, opposite-signed input cases are listed in Table 5-24.
+
+Additionally, non-zero, equal-magnitude with opposite-sign input values perform MIN_ABS or MAX_ABS comparison operation with result listed in Table 5-25.
+

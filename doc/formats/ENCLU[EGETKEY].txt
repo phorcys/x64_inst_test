@@ -1,0 +1,105 @@
+  • Index
+  • December 2023
+
+EGETKEY — Retrieves a Cryptographic Key
+
+   Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                    Description
+EAX = 01H ENCLU[EGETKEY] IR    V/V                    SGX1               This leaf function retrieves a cryptographic key.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                  RBX                           RCX
+IR    EGETKEY (In) Return error code (Out) Address to a KEYREQUEST (In)  Address of the OUTPUTDATA (In)
+
+Description ¶
+
+The ENCLU[EGETKEY] instruction returns a 128-bit secret key from the processor specific key hierarchy. The register RBX contains the effective address of a KEYREQUEST structure, which the instruction interprets to determine the key being requested. The
+Requesting Keys section below provides a description of the keys that can be requested. The RCX register contains the effective address where the key will be returned. Both the addresses in RBX & RCX should be locations inside the enclave.
+
+EGETKEY derives keys using a processor unique value to create a specific key based on a number of possible inputs. This instruction leaf can only be executed inside an enclave.
+
+EEGETKEY Memory Parameter Semantics ¶
+
+KEYREQUEST           OUTPUTDATA
+Enclave read access  Enclave write access
+
+After validating the operands, the instruction determines which key is to be produced and performs the following actions:
+
+  • The instruction assembles the derivation data for the key based on the Table 38-66.
+  • Computes derived key using the derivation data and package specific value.
+  • Outputs the calculated key to the address in RCX.
+
+The instruction fails with #GP(0) if the operands are not properly aligned. Successful completion of the instruction will clear RFLAGS.{ZF, CF, AF, OF, SF, PF}. The instruction returns an error code if the user tries to request a key based on an invalid
+CPUSVN or ISVSVN (when the user request is accepted, see the table below), requests a key for which it has not been granted the attribute to request, or requests a key that is not supported by the hardware. These checks may be performed in any order.
+Thus, an indication by error number of one cause (for example, invalid attribute) does not imply that there are not also other errors. Different processors may thus give different error numbers for the same Enclave. The correctness of software should not
+rely on the order resulting from the checks documented in this section. In such cases the ZF flag is set and the corresponding error bit (SGX_INVALID_SVN, SGX_INVALID_ATTRIBUTE, SGX_INVALID_KEYNAME) is set in RAX and the data at the address specified by
+RCX is unmodified.
+
+Requesting Keys
+
+The KEYREQUEST structure (see Section 35.18.1) identifies the key to be provided. The Keyrequest.KeyName field identifies which type of key is requested.
+
+Deriving Keys
+
+Key derivation is based on a combination of the enclave specific values (see Table 38-66) and a processor key. Depending on the key being requested a field may either be included by definition or the value may be included from the KeyRequest. A “yes” in 
+Table 38-66 indicates the value for the field is included from its default location, identified in the source row, and a “request” indicates the values for the field is included from its corresponding KeyRequest field.
+
+                    Key Name                                  Attributes                               Owner Epoch        CPU SVN         ISV SVN        ISV     ISVEXT PRODID    ISVFAM ILYID     MRENCLAVE     MRSIGNER    CONFIG ID    CONFIGS VN     RAND
+                                                                                                                                                       PRODID
+                                  Y := SECS.ATTRIBUTES and SECS.MISCSELECT and SECS.CET_ATTRIB UTES;                 Y := CPUSVN
+Source         Key Dependent                                                                         CR_SGX OWNER    Register;         R := Req.ISV   SECS.     SECS.IS VEXTPR   SECS.IS VFAMIL  SECS.         SECS.        SECS.CO      SECS.CO       Req.
+               Constant           R := AttribMask & SECS.ATTRIBUTES and SECS.MISCSELECT and          EPOCH           R := Req.CPU SVN; SVN;           ISVID     ODID             YID             MRENCLAVE     MRSIGNER     NFIGID       NFIGSVN       KEYID
+                                  SECS.CET_ATTRIB UTES;
+EINITTOKEN     Yes                Request                                                            Yes             Request           Request        Yes       No               No              No            Yes          No           No            Request
+Report         Yes                Yes                                                                Yes             Yes               No             No        No               No              Yes           No           Yes          Yes           Request
+Seal           Yes                Request                                                            Yes             Request           Request        Request   Request          Request         Request       Request      Request      Request       Request
+Provisioning   Yes                Request                                                            No              Request           Request        Yes       No               No              No            Yes          No           No            Yes
+Provisioning   Yes                Request                                                            No              Request           Request        Request   Request          Request         No            Yes          Request      Request       Yes
+Seal
+
+
+Table 38-66. Key Derivation
+
+Keys that permit the specification of a CPU or ISV's code's, or enclave configuration's SVNs have additional requirements. The caller may not request a key for an SVN beyond the current CPU, ISV or enclave configuration's SVN, respectively.
+
+Several keys are access controlled. Access to the Provisioning Key and Provisioning Seal key requires the enclave's ATTRIBUTES.PROVISIONKEY be set. The EINITTOKEN Key requires ATTRIBUTES.EINITTOKEN_KEY be set and SECS.MRSIGNER equal IA32_SGXLEPUBKEYHASH.
+
+Some keys are derived based on a hardcode PKCS padding constant (352 byte string):
+
+HARDCODED_PKCS1_5_PADDING[15:0] := 0100H;
+
+HARDCODED_PKCS1_5_PADDING[2655:16] := SignExtend330Byte(-1); // 330 bytes of 0FFH
+
+HARDCODED_PKCS1_5_PADDING[2815:2656] := 2004000501020403650148866009060D30313000H;
+
+The error codes are:
+
+Error Code (see Table 38-4) Value                                            Description
+No Error                    0     EGETKEY successful.
+SGX_INVALID_ATTRIBUTE             The KEYREQUEST contains a KEYNAME for which the enclave is not authorized.
+SGX_INVALID_CPUSVN                If KEYREQUEST.CPUSVN is an unsupported platforms CPUSVN value.
+SGX_INVALID_ISVSVN                If KEYREQUEST software SVN (ISVSVN or CONFIGSVN) is greater than the enclave's corresponding SVN.
+SGX_INVALID_KEYNAME               If KEYREQUEST.KEYNAME is an unsupported value.
+
+
+Table 38-67. EGETKEY Return Value in RAX
+
+Concurrency Restrictions ¶
+
+ Leaf        Parameter                     Base Concurrency Restrictions
+                               Access   On Conflict SGX_CONFLICT VM Exit Qualification
+EGETKEY KEYREQUEST [DS:RBX]  Concurrent
+        OUTPUTDATA [DS:RCX]  Concurrent
+
+
+Table 38-68. Base Concurrency Restrictions of EGETKEY
+
+                                                          Additional Concurrency Restrictions
+ Leaf        Parameter      vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                    Access                On Conflict          Access    On Conflict    Access   On Conflict
+EGETKEY KEYREQUEST [DS:RBX] Concurrent                                       Concurrent               Concurrent
+        OUTPUTDATA [DS:RCX] Concurrent                                       Concurrent               Concurrent
+
+
+Table 38-69. Additional Concurrency Restrictions of EGETKEY
+

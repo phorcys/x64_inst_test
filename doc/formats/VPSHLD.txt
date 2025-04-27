@@ -1,0 +1,28 @@
+  • Index
+  • December 2023
+
+VPSHLD — Concatenate and Shift Packed Data Left Logical
+
+                               Opcode/Instruction                                Op/En 64/32 bit Mode Support  CPUID Feature Flag                                                       Description
+EVEX.128.66.0F3A.W1 70 /r /ib VPSHLDW xmm1{k1}{z}, xmm2, xmm3/m128, imm8         A     V/V                    AVX512_VBMI2 AVX512VL Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into xmm1.
+EVEX.256.66.0F3A.W1 70 /r /ib VPSHLDW ymm1{k1}{z}, ymm2, ymm3/m256, imm8         A     V/V                    AVX512_VBMI2 AVX512VL Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into ymm1.
+EVEX.512.66.0F3A.W1 70 /r /ib VPSHLDW zmm1{k1}{z}, zmm2, zmm3/m512, imm8         A     V/V                    AVX512_VBMI2          Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into zmm1.
+EVEX.128.66.0F3A.W0 71 /r /ib VPSHLDD xmm1{k1}{z}, xmm2, xmm3/m128/m32bcst, imm8 B     V/V                    AVX512_VBMI2 AVX512VL Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into xmm1.
+EVEX.256.66.0F3A.W0 71 /r /ib VPSHLDD ymm1{k1}{z}, ymm2, ymm3/m256/m32bcst, imm8 B     V/V                    AVX512_VBMI2 AVX512VL Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into ymm1.
+EVEX.512.66.0F3A.W0 71 /r /ib VPSHLDD zmm1{k1}{z}, zmm2, zmm3/m512/m32bcst, imm8 B     V/V                    AVX512_VBMI2          Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into zmm1.
+EVEX.128.66.0F3A.W1 71 /r /ib VPSHLDQ xmm1{k1}{z}, xmm2, xmm3/m128/m64bcst, imm8 B     V/V                    AVX512_VBMI2 AVX512VL Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into xmm1.
+EVEX.256.66.0F3A.W1 71 /r /ib VPSHLDQ ymm1{k1}{z}, ymm2, ymm3/m256/m64bcst, imm8 B     V/V                    AVX512_VBMI2 AVX512VL Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into ymm1.
+EVEX.512.66.0F3A.W1 71 /r /ib VPSHLDQ zmm1{k1}{z}, zmm2, zmm3/m512/m64bcst, imm8 B     V/V                    AVX512_VBMI2          Concatenate destination and source operands, extract result shifted to the left by constant value in imm8 into zmm1.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple     Operand 1      Operand 2      Operand 3    Operand 4
+A     Full Mem ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  imm8 (r)
+B     Full     ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  imm8 (r)
+
+Description ¶
+
+Concatenate packed data, extract result shifted to the left by constant value.
+
+This instruction supports memory fault suppression.
+

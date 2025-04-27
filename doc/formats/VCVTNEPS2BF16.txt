@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VCVTNEPS2BF16 — Convert Packed Single Data to Packed BF16 Data
+
+                          Opcode/Instruction                           Op/En 64/32 Bit Mode Support  CPUID Feature Flag                                        Description
+EVEX.128.F3.0F38.W0 72 /r VCVTNEPS2BF16 xmm1{k1}{z}, xmm2/m128/m32bcst A     V/V                    AVX512VL AVX512_BF16 Convert packed single data from xmm2/m128 to packed BF16 data in xmm1 with writemask k1.
+EVEX.256.F3.0F38.W0 72 /r VCVTNEPS2BF16 xmm1{k1}{z}, ymm2/m256/m32bcst A     V/V                    AVX512VL AVX512_BF16 Convert packed single data from ymm2/m256 to packed BF16 data in xmm1 with writemask k1.
+EVEX.512.F3.0F38.W0 72 /r VCVTNEPS2BF16 ymm1{k1}{z}, zmm2/m512/m32bcst A     V/V                    AVX512F AVX512_BF16  Convert packed single data from zmm2/m512 to packed BF16 data in ymm1 with writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Converts one SIMD register of packed single data into a single register of packed BF16 data.
+
+This instruction uses “Round to nearest (even)” rounding mode. Output denormals are always flushed to zero and input denormals are always treated as zero. MXCSR is not consulted nor updated.
+
+As the instruction operand encoding table shows, the EVEX.vvvv field is not used for encoding an operand. EVEX.vvvv is reserved and must be 0b1111 otherwise instructions will #UD.
+

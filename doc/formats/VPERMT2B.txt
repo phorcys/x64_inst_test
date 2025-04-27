@@ -1,0 +1,27 @@
+  • Index
+  • December 2023
+
+VPERMT2B — Full Permute of Bytes From Two Tables Overwriting a Table
+
+                       Opcode/Instruction                        Op /En 64/32 bit Mode Support  CPUID Feature Flag                                                       Description
+EVEX.128.66.0F38.W0 7D /r VPERMT2B xmm1 {k1}{z}, xmm2, xmm3/m128 A      V/V                    AVX512VL AVX512_VBMI Permute bytes in xmm3/m128 and xmm1 using byte indexes in xmm2 and store the byte results in xmm1 using writemask k1.
+EVEX.256.66.0F38.W0 7D /r VPERMT2B ymm1 {k1}{z}, ymm2, ymm3/m256 A      V/V                    AVX512VL AVX512_VBMI Permute bytes in ymm3/m256 and ymm1 using byte indexes in ymm2 and store the byte results in ymm1 using writemask k1.
+EVEX.512.66.0F38.W0 7D /r VPERMT2B zmm1 {k1}{z}, zmm2, zmm3/m512 A      V/V                    AVX512_VBMI          Permute bytes in zmm3/m512 and zmm1 using byte indexes in zmm2 and store the byte results in zmm1 using writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type     Operand 1       Operand 2     Operand 3   Operand 4
+A     Full Mem   ModRM:reg (r, w)  EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+Permutes byte values from two tables, comprising of the first operand (also the destination operand) and the third operand (the second source operand). The second operand (the first source operand) provides byte indices to select byte results from the
+two tables. The selected byte elements are written to the destination at byte granularity under the writemask k1.
+
+The first and second operands are ZMM/YMM/XMM registers. The second operand contains input indices to select elements from the two input tables in the 1st and 3rd operands. The first operand is also the destination of the result. The second source
+operand can be a ZMM/YMM/XMM register, or a 512/256/128-bit memory location. In each index byte, the id bit for table selection is bit 6/5/4, and bits [5:0]/[4:0]/[3:0] selects element within each input table.
+
+Note that these instructions permit a byte value in the source operands to be copied to more than one location in the destination operand. Also, the second table and the indices can be reused in subsequent iterations, but the first table is overwritten.
+
+Bits (MAX_VL-1:256/128) of the destination are zeroed for VL=256,128.
+

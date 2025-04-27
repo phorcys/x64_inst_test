@@ -1,0 +1,61 @@
+  • Index
+  • December 2023
+
+EMODT — Change the Type of an EPC Page
+
+  Opcode/Instruction   Op/En 64/32 bit Mode Support CPUID Feature Flag                          Description
+EAX = 0FH ENCLS[EMODT] IR    V/V                    SGX2               This leaf function changes the type of an existing EPC page.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                                RBX                        RCX
+IR    EMODT (In) Return Error Code (Out) Address of a SECINFO (In)  Address of the destination EPC page (In)
+
+Description ¶
+
+This leaf function modifies the type of an EPC page. The security attributes are configured to prevent access to the EPC page at its new type until a corresponding invocation of the EACCEPT leaf confirms the modification. This instruction can only be
+executed when current privilege level is 0.
+
+RBX contains the effective address of a SECINFO structure while RCX contains the effective address of an EPC page. The table below provides additional information on the memory parameter of the EMODT leaf function.
+
+EMODT Memory Parameter Semantics ¶
+
+SECINFO                               EPCPAGE
+Read access permitted by Non Enclave  Read/Write access permitted by Enclave
+
+The instruction faults if any of the following:
+
+EMODT Faulting Conditions ¶
+
+The operands are not properly aligned.    If unsupported security attributes are set.
+The Enclave is not initialized.           SECS is locked by another thread.
+The EPC page is locked by another thread. RCX does not contain an effective address of an EPC page in the running enclave.
+The EPC page is not valid.
+
+The error codes are:
+
+Error Code (see Table 38-4)                                   Description
+No Error                    EMODT successful.
+SGX_PAGE_NOT_MODIFIABLE     The EPC page cannot be modified because it is in the PENDING or MODIFIED state.
+SGX_EPC_PAGE_CONFLICT       Page is being written by EADD, EAUG, ECREATE, ELDU/B, EMODPR, or EWB.
+
+
+Table 38-34. EMODT Return Value in RAX
+
+Concurrency Restrictions ¶
+
+Leaf     Parameter                        Base Concurrency Restrictions
+                       Access         On Conflict       SGX_CONFLICT VM Exit Qualification
+EMODT Target [DS:RCX] Exclusive SGX_EPC_PAGE_ CONFLICT  EPC_PAGE_CONFLICT_ERROR
+
+
+Table 38-35. Base Concurrency Restrictions of EMODT
+
+                                                                        Additional Concurrency Restrictions
+Leaf      Parameter     vs. EACCEPT, EACCEPTCOPY, EMODPE, EM vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                                 Access                                  On Conflict                           Access    On Conflict    Access   On Conflict
+EMODT Target [DS:RCX]   Exclusive                SGX_EPC_PAGE _CONFLICT                                      Concurrent               Concurrent
+
+
+Table 38-36. Additional Concurrency Restrictions of EMODT
+

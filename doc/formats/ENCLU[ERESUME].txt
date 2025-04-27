@@ -1,0 +1,72 @@
+  • Index
+  • December 2023
+
+ERESUME — Re-Enters an Enclave
+
+   Opcode/Instruction    Op/En 64/32 bit Mode Support CPUID Feature Flag                              Description
+EAX = 03H ENCLU[ERESUME] IR    V/V                    SGX1               This leaf function is used to re-enter an enclave after an interrupt.
+
+Instruction Operand Encoding ¶
+
+Op/En RAX          RBX                    RCX
+IR    ERESUME (In) Address of a TCS (In)  Address of AEP (In)
+
+Description ¶
+
+The ENCLU[ERESUME] instruction resumes execution of an enclave that was interrupted due to an exception or interrupt, using the machine state previously stored in the SSA.
+
+ERESUME Memory Parameter Semantics ¶
+
+TCS
+Enclave read/write access
+
+The instruction faults if any of the following occurs:
+
+Address in RBX is not properly aligned.                    Any TCS.FLAGS’s must-be-zero bit is not zero.
+TCS pointed to by RBX is not valid or available or locked. Current 32/64 mode does not match the enclave mode in SECS.ATTRIBUTES.MODE64.
+The SECS is in use by another enclave.                     Either of TCS-specified FS and GS segment is not a subset of the current DS segment.
+Any one of DS, ES, CS, SS is not zero.                     If XSAVE available, CR4.OSXSAVE = 0, but SECS.ATTRIBUTES.XFRM ≠ 3.
+CR4.OSFXSR ≠ 1.                                            If CR4.OSXSAVE = 1, SECS.ATTRIBUTES.XFRM is not a subset of XCR0.
+Offsets 520-535 of the XSAVE area not 0.                   The bit vector stored at offset 512 of the XSAVE area must be a subset of SECS.ATTRIBUTES.XFRM.
+The SSA frame is not valid or in use.                      If SECS.ATTRIBUTES.AEXNOTIFY ≠ TCS.FLAGS.AEXNOTIFY and TCS.FLAGS.DBGOPTIN = 0.
+
+The following operations are performed by ERESUME:
+
+  • RSP and RBP are saved in the current SSA frame on EENTER and are automatically restored on EEXIT or an asynchronous exit due to any Interrupt event.
+  • The AEP contained in RCX is stored into the TCS for use by AEXs.FS and GS (including hidden portions) are saved and new values are constructed using TCS.OFSBASE/GSBASE (32 and 64-bit mode) and TCS.OFSLIMIT/GSLIMIT (32-bit mode only). The resulting
+    segments must be a subset of the DS segment.
+  • If CR4.OSXSAVE == 1, XCR0 is saved and replaced by SECS.ATTRIBUTES.XFRM. The effect of RFLAGS.TF depends on whether the enclave entry is opt-in or opt-out (see Section 40.1.2):
+      □ On opt-out entry, TF is saved and cleared (it is restored on EEXIT or AEX). Any attempt to set TF via a POPF instruction while inside the enclave clears TF (see Section 40.2.5).
+      □ On opt-out entry, TF is saved and cleared (it is restored on EEXIT or AEX). Any attempt to set TF via a POPF instruction while inside the enclave clears TF (see Section 40.2.5).
+      □ On opt-in entry, a single-step debug exception is pended on the instruction boundary immediately after EENTER (see Section 40.2.3).
+      □ On opt-in entry, a single-step debug exception is pended on the instruction boundary immediately after EENTER (see Section 40.2.3).
+  • All code breakpoints that do not overlap with ELRANGE are also suppressed. If the entry is an opt-out entry, all code and data breakpoints that overlap with the ELRANGE are suppressed.
+  • On opt-out entry, a number of performance monitoring counters and behaviors are modified or suppressed (see Section 40.2.3):
+      □ All performance monitoring activity on the current thread is suppressed except for incrementing and firing of FIXED_CTR1 and FIXED_CTR2.
+      □ All performance monitoring activity on the current thread is suppressed except for incrementing and firing of FIXED_CTR1 and FIXED_CTR2.
+      □ PEBS is suppressed.
+      □ PEBS is suppressed.
+      □ AnyThread counting on other threads is demoted to MyThread mode and IA32_PERF_GLOBAL_STATUS[60] on that thread is set.
+      □ AnyThread counting on other threads is demoted to MyThread mode and IA32_PERF_GLOBAL_STATUS[60] on that thread is set.
+      □ If the opt-out entry on a hardware thread results in suppression of any performance monitoring, then the processor sets IA32_PERF_GLOBAL_STATUS[60] and IA32_PERF_GLOBAL_STATUS[63].
+      □ If the opt-out entry on a hardware thread results in suppression of any performance monitoring, then the processor sets IA32_PERF_GLOBAL_STATUS[60] and IA32_PERF_GLOBAL_STATUS[63].
+
+Concurrency Restrictions ¶
+
+                          Leaf                             Parameter   Base Concurrency Restrictions
+                                                                                On Conflict
+ERESUME ERESUME TCS [DS:RBX] Shared ERESUME TCS [DS:RBX]  TCS [DS:RBX]
+
+
+Table 38-74. Base Concurrency Restrictions of ERESUME
+
+                                                                                                                       Additional Concurrency Restrictions
+ Leaf   Parameter    vs. EACCEPT, EACCEPTCOPY, vs. EADD, EEXTEND, EINIT vs. ETRACK, ETRACKC Access vs. ETRACK, ETRACKC Access On Conflict Access vs. ETRACK, ETRACKC Access On       vs. EADD, EEXTEND, EINIT vs. EADD, EEXTEND, EINIT vs.      vs. ETRACK,
+                                                                                   Conflict EMODPE, EMODPR, EMODT                                                                                       ETRACK, ETRACKC                           ETRACKC
+                                                        Access On Conflict Access On Conflict Access Access On Conflict Access On Conflict
+ERESUME TCS        Concurrent                                                                                                                                                     Concurrent                                                  Concurrent
+        [DS:RBX]
+
+
+Table 38-75. Additional Concurrency Restrictions of ERESUME
+

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VGETEXPPH
+		— Convert Exponents of Packed FP16 Values to FP16 Values</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VGETEXPPH
+		— Convert Exponents of Packed FP16 Values to FP16 Values</h1>
+
+<table>
+<tr>
+<th> Instruction En Bit Mode Flag
+Support  Instruction En Bit Mode Flag
+Support  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature </th>
+<th></th>
+<th>Support</th>
+<th></th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.128.66.MAP6.W0 42 /r VGETEXPPH xmm1{k1}{z}, xmm2/m128/m16bcst</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Convert the exponent of FP16 values in the source operand to FP16 results representing unbiased integer exponents and stores the results in the destination register subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.66.MAP6.W0 42 /r VGETEXPPH ymm1{k1}{z}, ymm2/m256/m16bcst</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Convert the exponent of FP16 values in the source operand to FP16 results representing unbiased integer exponents and stores the results in the destination register subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.66.MAP6.W0 42 /r VGETEXPPH zmm1{k1}{z}, zmm2/m512/m16bcst {sae}</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Convert the exponent of FP16 values in the source operand to FP16 results representing unbiased integer exponents and stores the results in the destination register subject to writemask k1.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Full</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>N/A</td>
+<td>N/A</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction extracts the biased exponents from the normalized FP16 representation of each word element of the source operand (the second operand) as unbiased signed integer value, or convert the denormal representation of input data to unbiased negative integer values. Each integer value of the unbiased exponent is converted to an FP16 value and written to the corresponding word elements of the destination operand (the first operand) as FP16 numbers.</p>
+<p>The destination elements are updated according to the writemask.</p>
+<p>Each GETEXP operation converts the exponent value into a floating-point number (permitting input value in denormal representation). Special cases of input values are listed in <a href='/x86/vfmsub132ph:vfnmsub132ph:vfmsub213ph:vfnmsub213ph:vfmsub231ph:vfnmsub231ph#tbl-5-6'>Table 5-6</a>.</p>
+<p>The formula is:</p>
+<p>GETEXP(x) = floor(log<sub>2</sub>(|x|))</p>
+<p>Notation <strong>floor(x)</strong> stands for maximal integer not exceeding real number x.</p>
+<p>Software usage of VGETEXPxx and VGETMANTxx instructions generally involve a combination of GETEXP operation and GETMANT operation (see VGETMANTPH). Thus, the VGETEXPPH instruction does not require software to handle SIMD floating-point exceptions.</p>
+<figure id="tbl-5-16">
+<table>
+<tr>
+<th>Input Operand</th>
+<th>Result</th>
+<th>Comments</th></tr>
+<tr>
+<td>src1 = NaN</td>
+<td>QNaN(src1)</td>
+<td rowspan="4">If (SRC = SNaN), then #IE. If (SRC = denormal), then #DE.</td></tr>
+<tr>
+<td>0 &lt; |src1| &lt; INF</td>
+<td>floor(log<sub>2</sub>(|src1|))</td></tr>
+<tr>
+<td>| src1| = +INF</td>
+<td>+INF</td></tr>
+<tr>
+<td>| src1| = 0</td>
+<td>-INF</td></tr></table>
+<figcaption><a href='/x86/vgetexpph#tbl-5-16'>Table 5-16</a>. VGETEXPPH/VGETEXPSH Special Cases</figcaption></figure>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<pre>def normalize_exponent_tiny_fp16(src):
+    jbit := 0
+    // src &amp; dst are FP16 numbers with sign(1b), exp(5b) and fraction (10b) fields
+    dst.exp := 1 // write bits 14:10
+    dst.fraction := src.fraction // copy bits 9:0
+    while jbit == 0:
+        jbit := dst.fraction[9] // msb of the fraction
+        dst.fraction := dst.fraction &lt;&lt; 1
+        dst.exp := dst.exp - 1
+    dst.fraction := 0
+    return dst
+def getexp_fp16(src):
+    src.sign := 0 // make positive
+    exponent_all_ones := (src[14:10] == 0x1F)
+    exponent_all_zeros := (src[14:10] == 0)
+    mantissa_all_zeros := (src[9:0] == 0)
+    zero := exponent_all_zeros and mantissa_all_zeros
+    signaling_bit := src[9]
+    nan := exponent_all_ones and not(mantissa_all_zeros)
+    snan := nan and not(signaling_bit)
+    qnan := nan and signaling_bit
+    positive_infinity := not(negative) and exponent_all_ones and mantissa_all_zeros
+    denormal := exponent_all_zeros and not(mantissa_all_zeros)
+    if nan:
+        if snan:
+            MXCSR.IE := 1
+        return qnan(src)
+                // convert snan to a qnan
+    if positive_infinity:
+        return src
+    if zero:
+        return -INF
+    if denormal:
+        tmp := normalize_exponent_tiny_fp16(src)
+        MXCSR.DE := 1
+    else:
+        tmp := src
+    tmp := SAR(tmp, 10) // shift arithmetic right
+    tmp := tmp - 15 // subtract bias
+    return convert_integer_to_fp16(tmp)
+</pre>
+<h4 id="vgetexpph-dest-k1---src">VGETEXPPH dest{k1}, src<a class="anchor" href="#vgetexpph-dest-k1---src">
+			¶
+		</a></h4>
+<pre>VL = 128, 256 or 512
+KL := VL/16
+FOR i := 0 to KL-1:
+    IF k1[i] or *no writemask*:
+        IF SRC is memory and (EVEX.b = 1):
+            tsrc := src.fp16[0]
+        ELSE:
+            tsrc := src.fp16[i]
+        DEST.fp16[i] := getexp_fp16(tsrc)
+    ELSE IF *zeroing*:
+        DEST.fp16[i] := 0
+    //else DEST.fp16[i] remains unchanged
+DEST[MAXVL-1:VL] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VGETEXPPH __m128h _mm_getexp_ph (__m128h a);
+</pre>
+<pre>VGETEXPPH __m128h _mm_mask_getexp_ph (__m128h src, __mmask8 k, __m128h a);
+</pre>
+<pre>VGETEXPPH __m128h _mm_maskz_getexp_ph (__mmask8 k, __m128h a);
+</pre>
+<pre>VGETEXPPH __m256h _mm256_getexp_ph (__m256h a);
+</pre>
+<pre>VGETEXPPH __m256h _mm256_mask_getexp_ph (__m256h src, __mmask16 k, __m256h a);
+</pre>
+<pre>VGETEXPPH __m256h _mm256_maskz_getexp_ph (__mmask16 k, __m256h a);
+</pre>
+<pre>VGETEXPPH __m512h _mm512_getexp_ph (__m512h a);
+</pre>
+<pre>VGETEXPPH __m512h _mm512_mask_getexp_ph (__m512h src, __mmask32 k, __m512h a);
+</pre>
+<pre>VGETEXPPH __m512h _mm512_maskz_getexp_ph (__mmask32 k, __m512h a);
+</pre>
+<pre>VGETEXPPH __m512h _mm512_getexp_round_ph (__m512h a, const int sae);
+</pre>
+<pre>VGETEXPPH __m512h _mm512_mask_getexp_round_ph (__m512h src, __mmask32 k, __m512h a, const int sae);
+</pre>
+<pre>VGETEXPPH __m512h _mm512_maskz_getexp_round_ph (__mmask32 k, __m512h a, const int sae);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Invalid, Denormal.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>EVEX-encoded instructions, see <span class="not-imported">Table 2-46</span>, “Type E2 Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VCVTQQ2PS — Convert Packed Quadword Integers to Packed Single Precision Floating-PointValues
+
+                        Opcode/Instruction                         Op/En 64/32 Bit Mode Support CPUID Feature Flag                                                              Description
+EVEX.128.0F.W1 5B /r VCVTQQ2PS xmm1 {k1}{z}, xmm2/m128/m64bcst     A     V/V                    AVX512VL AVX512DQ  Convert two packed quadword integers from xmm2/mem to packed single precision floating-point values in xmm1 with writemask k1.
+EVEX.256.0F.W1 5B /r VCVTQQ2PS xmm1 {k1}{z}, ymm2/m256/m64bcst     A     V/V                    AVX512VL AVX512DQ  Convert four packed quadword integers from ymm2/mem to packed single precision floating-point values in xmm1 with writemask k1.
+EVEX.512.0F.W1 5B /r VCVTQQ2PS ymm1 {k1}{z}, zmm2/m512/m64bcst{er} A     V/V                    AVX512DQ           Convert eight packed quadword integers from zmm2/mem to eight packed single precision floating-point values in ymm1 with writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Converts packed quadword integers in the source operand (second operand) to packed single precision floating-point values in the destination operand (first operand).
+
+The source operand is a ZMM/YMM/XMM register or a 512/256/128-bit memory location. The destination operation is a YMM/XMM/XMM (lower 64 bits) register conditionally updated with writemask k1.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+

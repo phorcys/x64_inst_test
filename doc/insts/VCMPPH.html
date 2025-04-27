@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:x86="http://www.felixcloutier.com/x86"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="style.css"></link><title>VCMPPH
+		— Compare Packed FP16 Values</title></head><body><header><nav><ul><li><a href='/x86/'>Index</a></li><li>December 2023</li></ul></nav></header><h1>VCMPPH
+		— Compare Packed FP16 Values</h1>
+
+<table>
+<tr>
+<th> Instruction En Bit Mode Flag
+Support  Instruction En Bit Mode Flag
+Support  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag  64/32 CPUID Feature Instruction En Bit Mode Flag  CPUID Feature Instruction En Bit Mode Flag  Op/ 64/32 CPUID Feature </th>
+<th></th>
+<th>Support</th>
+<th></th>
+<th>Description</th></tr>
+<tr>
+<td>EVEX.128.NP.0F3A.W0 C2 /r /ib VCMPPH k1{k2}, xmm2, xmm3/m128/m16bcst, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Compare packed FP16 values in xmm3/m128/m16bcst and xmm2 using bits 4:0 of imm8 as a comparison predicate subject to writemask k2, and store the result in mask register k1.</td></tr>
+<tr>
+<td>EVEX.256.NP.0F3A.W0 C2 /r /ib VCMPPH k1{k2}, ymm2, ymm3/m256/m16bcst, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16 AVX512VL</td>
+<td>Compare packed FP16 values in ymm3/m256/m16bcst and ymm2 using bits 4:0 of imm8 as a comparison predicate subject to writemask k2, and store the result in mask register k1.</td></tr>
+<tr>
+<td>EVEX.512.NP.0F3A.W0 C2 /r /ib VCMPPH k1{k2}, zmm2, zmm3/m512/m16bcst {sae}, imm8</td>
+<td>A</td>
+<td>V/V</td>
+<td>AVX512-FP16</td>
+<td>Compare packed FP16 values in zmm3/m512/m16bcst and zmm2 using bits 4:0 of imm8 as a comparison predicate subject to writemask k2, and store the result in mask register k1.</td></tr></table>
+<h2 id="instruction-operand-encoding">Instruction Operand Encoding<a class="anchor" href="#instruction-operand-encoding">
+			¶
+		</a></h2>
+<table>
+<tr>
+<th>Op/En</th>
+<th>Tuple</th>
+<th>Operand 1</th>
+<th>Operand 2</th>
+<th>Operand 3</th>
+<th>Operand 4</th></tr>
+<tr>
+<td>A</td>
+<td>Full</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8 (r)</td></tr></table>
+<h3 id="description">Description<a class="anchor" href="#description">
+			¶
+		</a></h3>
+<p>This instruction compares packed FP16 values from source operands and stores the result in the destination mask operand. The comparison predicate operand (immediate byte bits 4:0) specifies the type of comparison performed on each of the pairs of packed values. The destination elements are updated according to the writemask.</p>
+<h3 id="operation">Operation<a class="anchor" href="#operation">
+			¶
+		</a></h3>
+<pre>CASE (imm8 &amp; 0x1F) OF
+0: CMP_OPERATOR := EQ_OQ;
+1: CMP_OPERATOR := LT_OS;
+2: CMP_OPERATOR := LE_OS;
+3: CMP_OPERATOR := UNORD_Q;
+4: CMP_OPERATOR := NEQ_UQ;
+5: CMP_OPERATOR := NLT_US;
+6: CMP_OPERATOR := NLE_US;
+7: CMP_OPERATOR := ORD_Q;
+8: CMP_OPERATOR := EQ_UQ;
+9: CMP_OPERATOR := NGE_US;
+10: CMP_OPERATOR := NGT_US;
+11: CMP_OPERATOR := FALSE_OQ;
+12: CMP_OPERATOR := NEQ_OQ;
+13: CMP_OPERATOR := GE_OS;
+14: CMP_OPERATOR := GT_OS;
+15: CMP_OPERATOR := TRUE_UQ;
+16: CMP_OPERATOR := EQ_OS;
+17: CMP_OPERATOR := LT_OQ;
+18: CMP_OPERATOR := LE_OQ;
+19: CMP_OPERATOR := UNORD_S;
+20: CMP_OPERATOR := NEQ_US;
+21: CMP_OPERATOR := NLT_UQ;
+22: CMP_OPERATOR := NLE_UQ;
+23: CMP_OPERATOR := ORD_S;
+24: CMP_OPERATOR := EQ_US;
+25: CMP_OPERATOR := NGE_UQ;
+26: CMP_OPERATOR := NGT_UQ;
+27: CMP_OPERATOR := FALSE_OS;
+28: CMP_OPERATOR := NEQ_OS;
+29: CMP_OPERATOR := GE_OQ;
+30: CMP_OPERATOR := GT_OQ;
+31: CMP_OPERATOR := TRUE_US;
+ESAC
+</pre>
+<h4 id="vcmpph--evex-encoded-versions-">VCMPPH (EVEX Encoded Versions)<a class="anchor" href="#vcmpph--evex-encoded-versions-">
+			¶
+		</a></h4>
+<pre>VL = 128, 256 or 512
+KL := VL/16
+FOR j := 0 TO KL-1:
+    IF k2[j] OR *no writemask*:
+        IF EVEX.b = 1:
+            tsrc2 := SRC2.fp16[0]
+        ELSE:
+            tsrc2 := SRC2.fp16[j]
+        DEST.bit[j] := SRC1.fp16[j] CMP_OPERATOR tsrc2
+    ELSE
+        DEST.bit[j] := 0
+DEST[MAXKL-1:KL] := 0
+</pre>
+<h3 id="intel-c-c++-compiler-intrinsic-equivalent">Intel C/C++ Compiler Intrinsic Equivalent<a class="anchor" href="#intel-c-c++-compiler-intrinsic-equivalent">
+			¶
+		</a></h3>
+<pre>VCMPPH ___mmask8 _mm_cmp_ph_mask (__m128h a, __m128h b, const int imm8);
+</pre>
+<pre>VCMPPH ___mmask8 _mm_mask_cmp_ph_mask (__mmask8 k1, __m128h a, __m128h b, const int imm8);
+</pre>
+<pre>VCMPPH ___mmask16 _mm256_cmp_ph_mask (__m256h a, __m256h b, const int imm8);
+</pre>
+<pre>VCMPPH ___mmask16 _mm256_mask_cmp_ph_mask (__mmask16 k1, __m256h a, __m256h b, const int imm8);
+</pre>
+<pre>VCMPPH ___mmask32 _mm512_cmp_ph_mask (__m512h a, __m512h b, const int imm8);
+</pre>
+<pre>VCMPPH ___mmask32 _mm512_mask_cmp_ph_mask (__mmask32 k1, __m512h a, __m512h b, const int imm8);
+</pre>
+<pre>VCMPPH ___mmask32 _mm512_cmp_round_ph_mask (__m512h a, __m512h b, const int imm8, const int sae);
+</pre>
+<pre>VCMPPH ___mmask32 _mm512_mask_cmp_round_ph_mask (__mmask32 k1, __m512h a, __m512h b, const int imm8, const int sae);
+</pre>
+<h3 class="exceptions" id="simd-floating-point-exceptions">SIMD Floating-Point Exceptions<a class="anchor" href="#simd-floating-point-exceptions">
+			¶
+		</a></h3>
+<p>Invalid, Denormal.</p>
+<h3 class="exceptions" id="other-exceptions">Other Exceptions<a class="anchor" href="#other-exceptions">
+			¶
+		</a></h3>
+<p>EVEX-encoded instructions, see <span class="not-imported">Table 2-46</span>, “Type E2 Class Exception Conditions.”</p><footer><p>
+		This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be
+		inc<span style="opacity: 0.2">omp</span>lete or b<sub>r</sub>oke<sub>n</sub> in various obvious or non-obvious
+		ways. Refer to <a href="https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4">Intel® 64 and IA-32 Architectures Software Developer’s Manual</a> for anything serious.
+	</p></footer></body></html>

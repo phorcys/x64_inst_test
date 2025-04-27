@@ -1,0 +1,28 @@
+  • Index
+  • December 2023
+
+VPBLENDMB/VPBLENDMW — Blend Byte/Word Vectors Using an Opmask Control
+
+                       Opcode/Instruction                         Op/En 64/32 bit Mode Support CPUID Feature Flag                                                Description
+EVEX.128.66.0F38.W0 66 /r VPBLENDMB xmm1 {k1}{z}, xmm2, xmm3/m128 A     V/V                    AVX512VL AVX512BW  Blend byte integer vector xmm2 and byte vector xmm3/m128 and store the result in xmm1, under control mask.
+EVEX.256.66.0F38.W0 66 /r VPBLENDMB ymm1 {k1}{z}, ymm2, ymm3/m256 A     V/V                    AVX512VL AVX512BW  Blend byte integer vector ymm2 and byte vector ymm3/m256 and store the result in ymm1, under control mask.
+EVEX.512.66.0F38.W0 66 /r VPBLENDMB zmm1 {k1}{z}, zmm2, zmm3/m512 A     V/V                    AVX512BW           Blend byte integer vector zmm2 and byte vector zmm3/m512 and store the result in zmm1, under control mask.
+EVEX.128.66.0F38.W1 66 /r VPBLENDMW xmm1 {k1}{z}, xmm2, xmm3/m128 A     V/V                    AVX512VL AVX512BW  Blend word integer vector xmm2 and word vector xmm3/m128 and store the result in xmm1, under control mask.
+EVEX.256.66.0F38.W1 66 /r VPBLENDMW ymm1 {k1}{z}, ymm2, ymm3/m256 A     V/V                    AVX512VL AVX512BW  Blend word integer vector ymm2 and word vector ymm3/m256 and store the result in ymm1, under control mask.
+EVEX.512.66.0F38.W1 66 /r VPBLENDMW zmm1 {k1}{z}, zmm2, zmm3/m512 A     V/V                    AVX512BW           Blend word integer vector zmm2 and word vector zmm3/m512 and store the result in zmm1, under control mask.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2      Operand 3    Operand 4
+A     Full Mem   ModRM:reg (w)  EVEX.vvvv (r)  ModRM:r/m (r)  N/A
+
+Description ¶
+
+Performs an element-by-element blending of byte/word elements between the first source operand byte vector register and the second source operand byte vector from memory or register, using the instruction mask as selector. The result is written into the
+destination byte vector register.
+
+The destination and first source operands are ZMM/YMM/XMM registers. The second source operand can be a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit memory location.
+
+The mask is not used as a writemask for this instruction. Instead, the mask is used as an element selector: every element of the destination is conditionally selected between first source or second source using the value of the related mask bit (0 for
+first source, 1 for second source).
+

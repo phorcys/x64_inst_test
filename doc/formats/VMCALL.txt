@@ -1,0 +1,21 @@
+  • Index
+  • December 2023
+
+VMCALL — Call to VM Monitor
+
+Opcode/Instruction  Op/En               Description
+0F 01 C1 VMCALL     ZO    Call to VM monitor by causing VM exit.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    NA         NA         NA         NA
+
+Description ¶
+
+This instruction allows guest software can make a call for service into an underlying VM monitor. The details of the programming interface for such calls are VMM-specific; this instruction does nothing more than cause a VM exit, registering the
+appropriate exit reason.
+
+Use of this instruction in VMX root operation invokes an SMM monitor (see Section 32.15.2). This invocation will activate the dual-monitor treatment of system-management interrupts (SMIs) and system-management mode (SMM) if it is not already active (see
+Section 32.15.6).
+

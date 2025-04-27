@@ -1,0 +1,43 @@
+  • Index
+  • December 2023
+
+VGATHERPF1DPS/VGATHERPF1QPS/VGATHERPF1DPD/VGATHERPF1QPD — Sparse PrefetchPacked SP/DP Data Values With Signed Dword, Signed Qword Indices Using T1 Hint
+
+                   Opcode/Instruction                    Op/En 64/32 bit Mode Support CPUID Feature Flag                                                           Description
+EVEX.512.66.0F38.W0 C6 /2 /vsib VGATHERPF1DPS vm32z {k1} A     V/V                    AVX512PF           Using signed dword indices, prefetch sparse byte memory locations containing single-precision data using opmask k1 and T1 hint.
+EVEX.512.66.0F38.W0 C7 /2 /vsib VGATHERPF1QPS vm64z {k1} A     V/V                    AVX512PF           Using signed qword indices, prefetch sparse byte memory locations containing single-precision data using opmask k1 and T1 hint.
+EVEX.512.66.0F38.W1 C6 /2 /vsib VGATHERPF1DPD vm32y {k1} A     V/V                    AVX512PF           Using signed dword indices, prefetch sparse byte memory locations containing double precision data using opmask k1 and T1 hint.
+EVEX.512.66.0F38.W1 C7 /2 /vsib VGATHERPF1QPD vm64z {k1} A     V/V                    AVX512PF           Using signed qword indices, prefetch sparse byte memory locations containing double precision data using opmask k1 and T1 hint.
+
+Instruction Operand Encoding ¶
+
+Op/En   Tuple Type                       Operand 1                     Operand 2 Operand 3 Operand 4
+A     Tuple1 Scalar  BaseReg (R): VSIB:base, VectorReg(R): VSIB:index  N/A       N/A       N/A
+
+Description ¶
+
+The instruction conditionally prefetches up to sixteen 32-bit or eight 64-bit integer byte data elements. The elements are specified via the VSIB (i.e., the index register is an zmm, holding packed indices). Elements will only be prefetched if their
+corresponding mask bit is one.
+
+Lines prefetched are loaded into to a location in the cache hierarchy specified by a locality hint (T1):
+
+  • T1 (temporal data)—prefetch data into the second level cache.
+
+[PS data] For dword indices, the instruction will prefetch sixteen memory locations. For qword indices, the instruction will prefetch eight values.
+
+[PD data] For dword and qword indices, the instruction will prefetch eight memory locations.
+
+Note that:
+
+(1) The prefetches may happen in any order (or not at all). The instruction is a hint.
+
+(2) The mask is left unchanged.
+
+(3) Not valid with 16-bit effective addresses. Will deliver a #UD fault.
+
+(4) No FP nor memory faults may be produced by this instruction.
+
+(5) Prefetches do not handle cache line splits
+
+(6) A #UD is signaled if the memory operand is encoded without the SIB byte.
+

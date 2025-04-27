@@ -1,0 +1,30 @@
+  • Index
+  • December 2023
+
+VCVTUDQ2PH — Convert Packed Unsigned Doubleword Integers to Packed FP16 Values
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit
+Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID Feature Instruction En Bit Mode Flag Op   Support                                            Description
+                                                                    / 64/32 CPUID Feature
+EVEX.128.F2.MAP5.W0 7A /r VCVTUDQ2PH xmm1{k1}{z}, xmm2/m128/m32bcst                                                                                           A V/V     AVX512-FP16 Convert four packed unsigned doubleword integers from xmm2/m128/m32bcst to
+                                                                                                                                                                        AVX512VL    packed FP16 values, and store the result in xmm1 subject to writemask k1.
+                                                                                                                                                                        AVX512-FP16 Convert eight packed unsigned doubleword integers from ymm2/m256/m32bcst
+EVEX.256.F2.MAP5.W0 7A /r VCVTUDQ2PH xmm1{k1}{z}, ymm2/m256/m32bcst                                                                                           A V/V     AVX512VL    to packed FP16 values, and store the result in xmm1 subject to writemask
+                                                                                                                                                                                    k1.
+                                                                                                                                                                                    Convert sixteen packed unsigned doubleword integers from zmm2/m512/m32bcst
+EVEX.512.F2.MAP5.W0 7A /r VCVTUDQ2PH ymm1{k1}{z}, zmm2/m512/m32bcst {er}                                                                                      A V/V     AVX512-FP16 to packed FP16 values, and store the result in ymm1 subject to writemask
+                                                                                                                                                                                    k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full  ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction converts packed unsigned doubleword integers in the source operand to packed FP16 values in the destination operand. The destination elements are updated according to the writemask.
+
+EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.
+
+If the result of the convert operation is overflow and MXCSR.OM=0 then a SIMD exception will be raised with OE=1, PE=1.
+

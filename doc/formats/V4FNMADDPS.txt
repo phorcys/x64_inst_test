@@ -1,0 +1,29 @@
+  • Index
+  • December 2023
+
+V4FMADDPS/V4FNMADDPS — Packed Single Precision Floating-Point Fused Multiply-Add(4-Iterations)
+
+                   Opcode/Instruction                     Op/En    64/32 bit Mode     CPUID Feature                                                                         Description
+                                                                      Support              Flag
+EVEX.512.F2.0F38.W0 9A /r V4FMADDPS zmm1{k1}{z}, zmm2+3,  A     V/V                  AVX512_4FMAPS    Multiply packed single-precision floating-point values from source register block indicated by zmm2 by values from m128 and accumulate the result in
+m128                                                                                                  zmm1.
+EVEX.512.F2.0F38.W0 AA /r V4FNMADDPS zmm1{k1}{z}, zmm2+3, A     V/V                  AVX512_4FMAPS    Multiply and negate packed single-precision floating-point values from source register block indicated by zmm2 by values from m128 and accumulate the
+m128                                                                                                  result in zmm1.
+
+Instruction Operand Encoding ¶
+
+     Op/En Tuple Operand 1 Operand 2 Operand 3 Operand 4
+A Tuple1_4X ModRM:reg (r, w) EVEX.vvvv (r) ModRM:r/m (r) N/A
+
+Description ¶
+
+This instruction computes 4 sequential packed fused single-precision floating-point multiply-add instructions with a sequentially selected memory operand in each of the four steps.
+
+In the above box, the notation of “+3” is used to denote that the instruction accesses 4 source registers based on that operand; sources are consecutive, start in a multiple of 4 boundary, and contain the encoded register operand.
+
+This instruction supports memory fault suppression. The entire memory operand is loaded if any of the 16 lowest significant mask bits is set to 1 or if a “no masking” encoding is used.
+
+The tuple type Tuple1_4X implies that four 32-bit elements (16 bytes) are referenced by the memory operation portion of this instruction.
+
+Rounding is performed at every FMA (fused multiply and add) boundary. Exceptions are also taken sequentially. Pre- and post-computational exceptions of the first FMA take priority over the pre- and post-computational exceptions of the second FMA, etc.
+

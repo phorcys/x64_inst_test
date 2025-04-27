@@ -1,0 +1,23 @@
+  • Index
+  • December 2023
+
+VFPCLASSSH — Test Types of Scalar FP16 Values
+
+ Instruction En Bit Mode Flag Support Instruction En Bit Mode Flag Support 64/32 CPUID Feature Instruction En Bit Mode Flag CPUID
+ Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature Instruction En Bit Mode Flag 64/32 CPUID Feature Instruction En Bit     Support                                                         Description
+                           Mode Flag CPUID Feature Instruction En Bit Mode Flag Op/ 64/32 CPUID Feature
+                                                                                                                                                          Test the input for the following categories: NaN, +0, -0, +Infinity, -Infinity, denormal, finite
+EVEX.LLIG.NP.0F3A.W0 67 /r /ib VFPCLASSSH k1{k2}, xmm1/m16, imm8                                                                    A V/V     AVX512-FP16 negative. The immediate field provides a mask bit for each of these category tests. The masked test
+                                                                                                                                                          results are OR-ed together to form a mask result.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple    Operand 1      Operand 2    Operand 3 Operand 4
+A     Scalar ModRM:reg (w)  ModRM:r/m (r)  imm8 (r)  N/A
+
+Description ¶
+
+This instruction checks the low FP16 value in the source operand for special categories, specified by the set bits in the imm8 byte. Each set bit in imm8 specifies a category of floating-point values that the input data element is classified against; see
+Table 5-9 for the categories. The classified results of all specified categories of an input value are ORed together to form the final boolean result for the input element. The result is written to the low bit in the destination mask register according
+to the writemask. The other bits in the destination mask register are zeroed.
+

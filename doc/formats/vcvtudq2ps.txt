@@ -1,0 +1,27 @@
+  • Index
+  • December 2023
+
+VCVTUDQ2PS — Convert Packed Unsigned Doubleword Integers to Packed Single PrecisionFloating-Point Values
+
+                       Opcode/Instruction                        Op/En    64/32 Bit Mode     CPUID Feature                                                                      Description
+                                                                             Support              Flag
+EVEX.128.F2.0F.W0 7A /r VCVTUDQ2PS xmm1 {k1}{z}, xmm2/m128/      A     V/V                  AVX512VL AVX512F Convert four packed unsigned doubleword integers from xmm2/m128/m32bcst to packed single precision floating-point values in xmm1 with writemask
+m32bcst                                                                                                      k1.
+EVEX.256.F2.0F.W0 7A /r VCVTUDQ2PS ymm1 {k1}{z}, ymm2/m256/      A     V/V                  AVX512VL AVX512F Convert eight packed unsigned doubleword integers from ymm2/m256/m32bcst to packed single precision floating-point values in zmm1 with writemask
+m32bcst                                                                                                      k1.
+EVEX.512.F2.0F.W0 7A /r VCVTUDQ2PS zmm1 {k1}{z}, zmm2/m512/      A     V/V                  AVX512F          Convert sixteen packed unsigned doubleword integers from zmm2/m512/m32bcst to sixteen packed single precision floating-point values in zmm1 with
+m32bcst{er}                                                                                                  writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En Tuple Type   Operand 1      Operand 2    Operand 3 Operand 4
+A     Full       ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+Converts packed unsigned doubleword integers in the source operand (second operand) to single precision floating-point values in the destination operand (first operand).
+
+The source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcasted from a 32-bit memory location. The destination operand is a ZMM/YMM/XMM register conditionally updated with writemask k1.
+
+Note: EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.
+

@@ -1,0 +1,18 @@
+  • Index
+  • December 2023
+
+CLI — Clear Interrupt Flag
+
+Opcode Instruction Op/En 64-bit Mode Compat/Leg Mode                               Description
+FA     CLI         ZO    Valid       Valid           Clear interrupt flag; interrupts disabled when interrupt flag cleared.
+
+Instruction Operand Encoding ¶
+
+Op/En Operand 1  Operand 2  Operand 3  Operand 4
+ZO    N/A        N/A        N/A        N/A
+
+Description ¶
+
+In most cases, CLI clears the IF flag in the EFLAGS register and no other flags are affected. Clearing the IF flag causes the processor to ignore maskable external interrupts. The IF flag and the CLI and STI instruction have no effect on the generation
+of exceptions and NMI interrupts.
+

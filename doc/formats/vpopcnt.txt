@@ -1,0 +1,29 @@
+  • Index
+  • December 2023
+
+VPOPCNT — Return the Count of Number of Bits Set to 1 in BYTE/WORD/DWORD/QWORD
+
+                       Opcode/Instruction                         Op/En 64/32 bit Mode Support    CPUID Feature Flag                                                   Description
+EVEX.128.66.0F38.W0 54 /r VPOPCNTB xmm1{k1}{z}, xmm2/m128         A     V/V                    AVX512_BITALG AVX512VL    Counts the number of bits set to one in xmm2/m128 and puts the result in xmm1 with writemask k1.
+EVEX.256.66.0F38.W0 54 /r VPOPCNTB ymm1{k1}{z}, ymm2/m256         A     V/V                    AVX512_BITALG AVX512VL    Counts the number of bits set to one in ymm2/m256 and puts the result in ymm1 with writemask k1.
+EVEX.512.66.0F38.W0 54 /r VPOPCNTB zmm1{k1}{z}, zmm2/m512         A     V/V                    AVX512_BITALG             Counts the number of bits set to one in zmm2/m512 and puts the result in zmm1 with writemask k1.
+EVEX.128.66.0F38.W1 54 /r VPOPCNTW xmm1{k1}{z}, xmm2/m128         A     V/V                    AVX512_BITALG AVX512VL    Counts the number of bits set to one in xmm2/m128 and puts the result in xmm1 with writemask k1.
+EVEX.256.66.0F38.W1 54 /r VPOPCNTW ymm1{k1}{z}, ymm2/m256         A     V/V                    AVX512_BITALG AVX512VL    Counts the number of bits set to one in ymm2/m256 and puts the result in ymm1 with writemask k1.
+EVEX.512.66.0F38.W1 54 /r VPOPCNTW zmm1{k1}{z}, zmm2/m512         A     V/V                    AVX512_BITALG             Counts the number of bits set to one in zmm2/m512 and puts the result in zmm1 with writemask k1.
+EVEX.128.66.0F38.W0 55 /r VPOPCNTD xmm1{k1}{z}, xmm2/m128/m32bcst B     V/V                    AVX512_VPOPCNTDQ AVX512VL Counts the number of bits set to one in xmm2/m128/m32bcst and puts the result in xmm1 with writemask k1.
+EVEX.256.66.0F38.W0 55 /r VPOPCNTD ymm1{k1}{z}, ymm2/m256/m32bcst B     V/V                    AVX512_VPOPCNTDQ AVX512VL Counts the number of bits set to one in ymm2/m256/m32bcst and puts the result in ymm1 with writemask k1.
+EVEX.512.66.0F38.W0 55 /r VPOPCNTD zmm1{k1}{z}, zmm2/m512/m32bcst B     V/V                    AVX512_VPOPCNTDQ          Counts the number of bits set to one in zmm2/m512/m32bcst and puts the result in zmm1 with writemask k1.
+EVEX.128.66.0F38.W1 55 /r VPOPCNTQ xmm1{k1}{z}, xmm2/m128/m64bcst B     V/V                    AVX512_VPOPCNTDQ AVX512VL Counts the number of bits set to one in xmm2/m128/m32bcst and puts the result in xmm1 with writemask k1.
+EVEX.256.66.0F38.W1 55 /r VPOPCNTQ ymm1{k1}{z}, ymm2/m256/m64bcst B     V/V                    AVX512_VPOPCNTDQ AVX512VL Counts the number of bits set to one in ymm2/m256/m32bcst and puts the result in ymm1 with writemask k1.
+EVEX.512.66.0F38.W1 55 /r VPOPCNTQ zmm1{k1}{z}, zmm2/m512/m64bcst B     V/V                    AVX512_VPOPCNTDQ          Counts the number of bits set to one in zmm2/m512/m64bcst and puts the result in zmm1 with writemask k1.
+
+Instruction Operand Encoding ¶
+
+Op/En  Tuple     Operand 1      Operand 2    Operand 3 Operand 4
+A     Full Mem ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+B     Full     ModRM:reg (w)  ModRM:r/m (r)  N/A       N/A
+
+Description ¶
+
+This instruction counts the number of bits set to one in each byte, word, dword or qword element of its source (e.g., zmm2 or memory) and places the results in the destination register (zmm1). This instruction supports memory fault suppression.
+

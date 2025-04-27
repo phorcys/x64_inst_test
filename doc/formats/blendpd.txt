@@ -1,0 +1,30 @@
+  • Index
+  • December 2023
+
+BLENDPD — Blend Packed Double Precision Floating-Point Values
+
+                       Opcode/Instruction                         Op/En 64/32-bit Mode CPUID Feature Flag                                                               Description
+66 0F 3A 0D /r ib BLENDPD xmm1, xmm2/m128, imm8                   RMI   V/V            SSE4_1             Select packed double precision floating-point values from xmm1 and xmm2/m128 from mask specified in imm8 and store the values into xmm1.
+VEX.128.66.0F3A.WIG 0D /r ib VBLENDPD xmm1, xmm2, xmm3/m128, imm8 RVMI  V/V            AVX                Select packed double precision floating-point Values from xmm2 and xmm3/m128 from mask in imm8 and store the values in xmm1.
+VEX.256.66.0F3A.WIG 0D /r ib VBLENDPD ymm1, ymm2, ymm3/m256, imm8 RVMI  V/V            AVX                Select packed double precision floating-point Values from ymm2 and ymm3/m256 from mask in imm8 and store the values in ymm1.
+
+Instruction Operand Encoding ¶
+
+Op/En     Operand 1       Operand 2     Operand 3   Operand 4
+RMI   ModRM:reg (r, w)  ModRM:r/m (r) imm8          N/A
+RVMI  ModRM:reg (w)     VEX.vvvv (r)  ModRM:r/m (r) imm8[3:0]
+
+Description ¶
+
+Double-precision floating-point values from the second source operand (third operand) are conditionally merged with values from the first source operand (second operand) and written to the destination operand (first operand). The immediate bits [3:0]
+determine whether the corresponding double precision floating-point value in the destination is copied from the second source or first source. If a bit in the mask, corresponding to a word, is ”1”, then the double precision floating-point value in the
+second source operand is copied, else the value in the first source operand is copied.
+
+128-bit Legacy SSE version: The second source can be an XMM register or an 128-bit memory location. The destination is not distinct from the first source XMM register and the upper bits (MAXVL-1:128) of the corresponding YMM register destination are
+unmodified.
+
+VEX.128 encoded version: the first source operand is an XMM register. The second source operand is an XMM register or 128-bit memory location. The destination operand is an XMM register. The upper bits (MAXVL-1:128) of the corresponding YMM register
+destination are zeroed.
+
+VEX.256 encoded version: The first source operand is a YMM register. The second source operand can be a YMM register or a 256-bit memory location. The destination operand is a YMM register.
+

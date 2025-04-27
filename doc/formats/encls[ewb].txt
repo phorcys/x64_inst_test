@@ -1,0 +1,55 @@
+  • Index
+  • December 2023
+
+EWB — Invalidate an EPC Page and Write out to Main Memory
+
+ Opcode/Instruction  Op/En 64/32 bit Mode Support CPUID Feature Flag                                  Description
+EAX = 0BH ENCLS[EWB] IR    V/V                    SGX1               This leaf function invalidates an EPC page and writes it out to main memory.
+
+Instruction Operand Encoding ¶
+
+Op/En EAX                       RBX                         RCX                           RDX
+IR    EWB (In) Error code (Out) Address of an PAGEINFO (In) Address of the EPC page (In)  Address of a VA slot (In)
+
+Description ¶
+
+This leaf function copies a page from the EPC to regular main memory. As part of the copying process, the page is cryptographically protected. This instruction can only be executed when current privilege level is 0.
+
+The table below provides additional information on the memory parameter of EPA leaf function.
+
+EWB Memory Parameter Semantics ¶
+
+PAGEINFO            PAGEINFO.SRCPGE     PAGEINFO.PCMD       EPCPAGE        VASLOT
+Non-EPC R/W access  Non-EPC R/W access  Non-EPC R/W access  EPC R/W access EPC R/W access
+
+The error codes are:
+
+Error Code (see Table 38-4)                         Description
+No Error                     EWB successful.
+SGX_PAGE_NOT_BLOCKED         If page is not marked as blocked.
+SGX_NOT_TRACKED              If EWB is racing with ETRACK instruction.
+SGX_VA_SLOT_OCCUPIED         Version array slot contained valid entry.
+SGX_CHILD_PRESENT            Child page present while attempting to page out enclave.
+
+
+Table 38-51. EWB Return Value in RAX
+
+Concurrency Restrictions ¶
+
+Leaf    Parameter                   Base Concurrency Restrictions
+                       Access   On Conflict SGX_CONFLICT VM Exit Qualification
+EWB  Source [DS:RCX]  Exclusive #GP         EPC_PAGE_CONFLICT_EXCEPTION
+     VA [DS:RDX]      Shared    #GP
+
+
+Table 38-52. Base Concurrency Restrictions of EWB
+
+                                                   Additional Concurrency Restrictions
+Leaf    Parameter    vs. EACCEPT, EACCEPTCOPY, EMODPE, EMODPR, EMODT  vs. EADD, EEXTEND, EINIT  vs. ETRACK, ETRACKC
+                             Access                On Conflict          Access    On Conflict    Access   On Conflict
+EWB  Source [DS:RCX] Concurrent                                       Concurrent               Concurrent
+     VA [DS:RDX]     Concurrent                                       Concurrent               Exclusive
+
+
+Table 38-53. Additional Concurrency Restrictions of EWB
+

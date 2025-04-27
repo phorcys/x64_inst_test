@@ -1,0 +1,31 @@
+  • Index
+  • December 2023
+
+BNDSTX — Store Extended Bounds Using Address Translation
+
+    Opcode/Instruction      Op/En 64/32 bit Mode Support CPUID Feature Flag                                                                       Description
+NP 0F 1B /r BNDSTX mib, bnd MR    V/V                    MPX                Store the bounds in bnd and the pointer value in the index register of mib to a bound table entry (BTE) with address translation using the base of mib.
+
+Instruction Operand Encoding ¶
+
+Op/En                   Operand 1                      Operand 2    Operand 3
+MR    SIB.base (r): Address of pointer SIB.index(r)  ModRM:reg (r)  N/A
+
+Description ¶
+
+BNDSTX uses the linear address constructed from the displacement and base register of the SIB-addressing form of the memory operand (mib) to perform address translation to store to a bound table entry. The bounds in the source operand bnd are written to
+the lower and upper bounds in the BTE. The content of the index register of mib is written to the pointer value field in the BTE.
+
+This instruction does not cause memory access to the linear address of mib nor the effective address referenced by the base, and does not read or write any flags.
+
+Segment overrides apply to the linear address computation with the base of mib, and are used during address translation to generate the address of the bound table entry. By default, the address of the BTE is assumed to be linear address. There are no
+segmentation checks performed on the base of mib.
+
+The base of mib will not be checked for canonical address violation as it does not access memory.
+
+Any encoding of this instruction that does not specify base or index register will treat those registers as zero (constant). The reg-reg form of this instruction will remain a NOP.
+
+The scale field of the SIB byte has no effect on these instructions and is ignored.
+
+The bound register may be partially updated on memory faults. The order in which memory operands are loaded is implementation specific.
+
