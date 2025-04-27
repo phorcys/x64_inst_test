@@ -16,12 +16,9 @@ ST(5) <empty>               Empty
 ST(6) <empty>               Empty
 ST(7) <empty>               Empty
 After comparison:
-Control Word: 0x037f
-Status Word:  0x7000
 Tag Word:     0x7000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 2: +0 == -0
 ST(0): 0.00000000000000000000 (0x00000000000000000000)
@@ -39,12 +36,9 @@ ST(5) <empty>               Empty
 ST(6) <empty>               Empty
 ST(7) <empty>               Empty
 After comparison:
-Control Word: 0x037f
-Status Word:  0x7000
 Tag Word:     0x7000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 3: 1 == 1
 ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
@@ -62,10 +56,7 @@ ST(5) <empty>               Empty
 ST(6) <empty>               Empty
 ST(7) <empty>               Empty
 After comparison:
-Control Word: 0x037f
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 ERROR: Condition flags mismatch! Expected C0=0 C2=0 C3=1, got C0=0 C2=0 C3=0

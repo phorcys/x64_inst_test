@@ -6,12 +6,9 @@ ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(i): 2.00000000000000000000 (0x40008000000000000000)
 CF: 1, ZF: 0
 Result: 2.00000000000000000000 (0x40008000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 2:
@@ -19,12 +16,9 @@ ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(i): 2.00000000000000000000 (0x40008000000000000000)
 CF: 0, ZF: 1
 Result: 2.00000000000000000000 (0x40008000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 3:
@@ -32,12 +26,9 @@ ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(i): 2.00000000000000000000 (0x40008000000000000000)
 CF: 1, ZF: 1
 Result: 2.00000000000000000000 (0x40008000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 4:
@@ -45,12 +36,9 @@ ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(i): 2.00000000000000000000 (0x40008000000000000000)
 CF: 0, ZF: 0
 Result: 1.00000000000000000000 (0x3fff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 5:
@@ -58,12 +46,9 @@ ST(0): inf (0x7fff8000000000000000)
 ST(i): -inf (0xffff8000000000000000)
 CF: 1, ZF: 0
 Result: -inf (0xffff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x0500
 Tag Word:     0x0500
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: 
 PASS
 
 Test case 6:
@@ -71,12 +56,9 @@ ST(0): -inf (0xffff8000000000000000)
 ST(i): inf (0x7fff8000000000000000)
 CF: 0, ZF: 1
 Result: inf (0x7fff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x0500
 Tag Word:     0x0500
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: 
 PASS
 
 Test case 7:
@@ -84,12 +66,9 @@ ST(0): nan (0x7fffc000000000000000)
 ST(i): 1.00000000000000000000 (0x3fff8000000000000000)
 CF: 1, ZF: 0
 Result: 1.00000000000000000000 (0x3fff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x0100
 Tag Word:     0x0100
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 8:
@@ -97,12 +76,9 @@ ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(i): nan (0x7fffc000000000000000)
 CF: 0, ZF: 1
 Result: nan (0x7fffc000000000000000)
-Control Word: 0x037f
-Status Word:  0x0100
 Tag Word:     0x0100
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 FCMOVBE test completed

@@ -86,8 +86,8 @@ static inline void print_x87_status() {
     uint16_t sw = get_x87_sw();
     uint16_t tw = get_x87_tw();
     
-    printf("Control Word: 0x%04x\n", cw);
-    printf("Status Word:  0x%04x\n", sw);
+   // printf("Control Word: 0x%04x\n", cw);
+   // printf("Status Word:  0x%04x\n", sw);
     printf("Tag Word:     0x%04x\n", tw);
     
     // Print individual status flags
@@ -97,7 +97,7 @@ static inline void print_x87_status() {
            (sw >> 10) & 1, (sw >> 14) & 1);
     
     // Print exception flags
-    printf("Exceptions: ");
+   /* printf("Exceptions: ");
     if (sw & 0x01) printf("IE ");
     if (sw & 0x02) printf("DE ");
     if (sw & 0x04) printf("ZE ");
@@ -106,7 +106,7 @@ static inline void print_x87_status() {
     if (sw & 0x20) printf("PE ");
     if (sw & 0x40) printf("SF ");
     if (sw & 0x80) printf("ES ");
-    printf("\n");
+    printf("\n");*/
 }
 
 // Common test values

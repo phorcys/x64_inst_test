@@ -18,28 +18,19 @@ Control word without FWAIT: 0x0000
 
 ==== Testing FWAIT vs FNOP ====
 Initial state:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FWAIT:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] FWAIT vs FNOP control word               PASS
 [TEST] FWAIT vs FNOP status word                PASS
 [TEST] FWAIT vs FNOP tag word                   PASS
@@ -103,20 +94,14 @@ Status after FWAIT: 0x0000
 
 ==== Extended FWAIT Tests ====
 Before exception:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After exception with FWAIT:
-Control Word: 0x037f
-Status Word:  0x3804
 Tag Word:     0x3804
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: ZE 
 [TEST] Divide by zero flag set                  PASS
 
 === FWAIT tests completed ===

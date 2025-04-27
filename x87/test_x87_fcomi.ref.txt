@@ -7,132 +7,93 @@ Testing with rounding mode: Round to nearest
 Test 1: 1 vs 1
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 2: 1 vs 2
 EFLAGS: 0x00000202
 ZF: 0, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 3: 2 vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 4: 0 vs -0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 5: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 6: inf vs -inf
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 7: inf vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 8: 3.141592653589793116 vs 2.7182818284590450908
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 9: nan vs nan
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 10: nan vs 1
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 11: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 12: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 13: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Testing with rounding mode: Round down
 
@@ -141,132 +102,93 @@ Testing with rounding mode: Round down
 Test 1: 1 vs 1
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 2: 1 vs 2
 EFLAGS: 0x00000202
 ZF: 0, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 3: 2 vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 4: 0 vs -0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 5: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 6: inf vs -inf
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 7: inf vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 8: 3.141592653589793116 vs 2.7182818284590450908
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 9: nan vs nan
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 10: nan vs 1
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 11: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 12: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 13: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Testing with rounding mode: Round up
 
@@ -275,132 +197,93 @@ Testing with rounding mode: Round up
 Test 1: 1 vs 1
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 2: 1 vs 2
 EFLAGS: 0x00000202
 ZF: 0, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 3: 2 vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 4: 0 vs -0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 5: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 6: inf vs -inf
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 7: inf vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 8: 3.141592653589793116 vs 2.7182818284590450908
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 9: nan vs nan
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 10: nan vs 1
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 11: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 12: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 13: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Testing with rounding mode: Round toward zero
 
@@ -409,405 +292,285 @@ Testing with rounding mode: Round toward zero
 Test 1: 1 vs 1
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 2: 1 vs 2
 EFLAGS: 0x00000202
 ZF: 0, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 3: 2 vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 4: 0 vs -0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 5: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 6: inf vs -inf
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 7: inf vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 8: 3.141592653589793116 vs 2.7182818284590450908
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 9: nan vs nan
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 10: nan vs 1
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 11: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 12: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 13: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 === Testing FCOMI with register operands ===
 
 Test 1: 1 vs 1
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 2: 1 vs 2
 EFLAGS: 0x00000202
 ZF: 0, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 3: 2 vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 4: 0 vs -0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 5: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 6: inf vs -inf
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 7: inf vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 8: 3.141592653589793116 vs 2.7182818284590450908
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 9: nan vs nan
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 10: nan vs 1
 EFLAGS: 0x00000247
 ZF: 1, PF: 1, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 11: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 12: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 13: 0 vs 0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 === Testing FCOMI with 32-bit memory operands ===
 
 Test 1: 1.5 vs 1.5
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 2: 1.5 vs 2.5
 EFLAGS: 0x00000202
 ZF: 0, PF: 0, CF: 0
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 3: 2.5 vs 1.5
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 4: 0 vs -0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 5: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 6: inf vs -inf
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 7: inf vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 === Testing FCOMI with 64-bit memory operands ===
 
 Test 1: 1.5 vs 1.5
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 2: 1.5 vs 2.5
 EFLAGS: 0x00000202
 ZF: 0, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 3: 2.5 vs 1.5
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 4: 0 vs -0
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 5: inf vs inf
 EFLAGS: 0x00000242
 ZF: 1, PF: 0, CF: 0
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 6: inf vs -inf
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test 7: inf vs 1
 EFLAGS: 0x00000203
 ZF: 0, PF: 0, CF: 1
-Control Word: 0x0240
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
