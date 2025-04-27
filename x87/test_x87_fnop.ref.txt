@@ -3,59 +3,41 @@
 ==== Testing FNOP Basic ====
 Basic FNOP test
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 ==== Testing FNOP with Stack ====
 Before FNOP (stack not empty):
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 Top of stack: 1.00000000000000000000 (0x3fff8000000000000000)
 [TEST] Stack contents unchanged                 PASS
 
 ==== Testing FNOP Register Preservation ====
 Before FNOP (all registers loaded):
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 ST0: 1.23456789000000000003 (0x3fff9e0652141ef0dbf6)
 [TEST] Register content preserved               PASS
 ST1: 2.46913578000000000006 (0x40009e0652141ef0dbf6)
@@ -82,200 +64,140 @@ Without FNOP: 4.14159265358979
 
 Test 1: Full stack
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 2: Empty stack
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 3: Pending exceptions
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3804
 Tag Word:     0x3804
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: ZE 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3804
 Tag Word:     0x3804
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: ZE 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 4: Denormal operands
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3802
 Tag Word:     0x3802
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: DE 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3802
 Tag Word:     0x3802
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: DE 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 5: All exceptions masked
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 6: No exceptions masked
 Before FNOP:
-Control Word: 0x0340
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x0340
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 7: Precision control changed
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 8: Infinity control changed
 Before FNOP:
-Control Word: 0x077f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x077f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 9: Stack overflow
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3a41
 Tag Word:     0x3a41
 Top: 7
 C0: 0, C1: 1, C2: 0, C3: 0
-Exceptions: IE SF 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3a41
 Tag Word:     0x3a41
 Top: 7
 C0: 0, C1: 1, C2: 0, C3: 0
-Exceptions: IE SF 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
 
 Test 10: Stack underflow
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x0841
 Tag Word:     0x0841
 Top: 1
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE SF 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0841
 Tag Word:     0x0841
 Top: 1
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE SF 
 [TEST] Control word unchanged                   PASS
 [TEST] Status word unchanged                    PASS
 [TEST] Tag word unchanged                       PASS
@@ -296,102 +218,75 @@ XCR0 after:  0x0000000000000003
 
 Iteration 1
 After state 1 + FNOP:
-Control Word: 0x037f
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] State 1 control word preserved           PASS
 [TEST] State 1 status word preserved            PASS
 [TEST] State 1 tag word preserved               PASS
 
 After state 2 + FNOP:
-Control Word: 0x077f
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] State 2 control word preserved           PASS
 [TEST] State 2 status word preserved            PASS
 [TEST] State 2 tag word preserved               PASS
 
 After state 3 + FNOP:
-Control Word: 0x037f
-Status Word:  0x0061
 Tag Word:     0x0061
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE PE SF 
 [TEST] State 3 control word preserved           PASS
 [TEST] State 3 status word preserved            PASS
 [TEST] State 3 tag word preserved               PASS
 
 Iteration 2
 After state 1 + FNOP:
-Control Word: 0x037f
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] State 1 control word preserved           PASS
 [TEST] State 1 status word preserved            PASS
 [TEST] State 1 tag word preserved               PASS
 
 After state 2 + FNOP:
-Control Word: 0x077f
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] State 2 control word preserved           PASS
 [TEST] State 2 status word preserved            PASS
 [TEST] State 2 tag word preserved               PASS
 
 After state 3 + FNOP:
-Control Word: 0x037f
-Status Word:  0x0061
 Tag Word:     0x0061
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE PE SF 
 [TEST] State 3 control word preserved           PASS
 [TEST] State 3 status word preserved            PASS
 [TEST] State 3 tag word preserved               PASS
 
 Iteration 3
 After state 1 + FNOP:
-Control Word: 0x037f
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] State 1 control word preserved           PASS
 [TEST] State 1 status word preserved            PASS
 [TEST] State 1 tag word preserved               PASS
 
 After state 2 + FNOP:
-Control Word: 0x077f
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] State 2 control word preserved           PASS
 [TEST] State 2 status word preserved            PASS
 [TEST] State 2 tag word preserved               PASS
 
 After state 3 + FNOP:
-Control Word: 0x037f
-Status Word:  0x0061
 Tag Word:     0x0061
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE PE SF 
 [TEST] State 3 control word preserved           PASS
 [TEST] State 3 status word preserved            PASS
 [TEST] State 3 tag word preserved               PASS
@@ -400,118 +295,79 @@ Exceptions: IE PE SF
 
 Test 1: Divide by zero
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3804
 Tag Word:     0x3804
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: ZE 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3804
 Tag Word:     0x3804
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: ZE 
 [TEST] Exception flags unchanged                PASS
 
 Test 2: Invalid operation
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3801
 Tag Word:     0x3801
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3801
 Tag Word:     0x3801
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 [TEST] Exception flags unchanged                PASS
 
 Test 3: Overflow
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Exception flags unchanged                PASS
 
 Test 4: Underflow
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Exception flags unchanged                PASS
 
 Test 5: Precision
 Before FNOP:
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x3800
 Tag Word:     0x3800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Exception flags unchanged                PASS
 
 ==== Testing FNOP vs FWAIT ====
 Initial state:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FNOP:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 After FWAIT:
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] FNOP vs FWAIT control word               PASS
 [TEST] FNOP vs FWAIT status word                PASS
 [TEST] FNOP vs FWAIT tag word                   PASS

@@ -5,156 +5,117 @@ Test case 1:
 Operand A: 1.00000000000000000000 (0x3fff8000000000000000)
 Operand B: 2.00000000000000000000 (0x40008000000000000000)
 Result: 3.00000000000000000000 (0x4000c000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 2:
 Operand A: -1.00000000000000000000 (0xbfff8000000000000000)
 Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 3:
 Operand A: 0.00000000000000000000 (0x00000000000000000000)
 Operand B: -0.00000000000000000000 (0x80000000000000000000)
 Result: 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 4:
 Operand A: inf (0x7fff8000000000000000)
 Operand B: inf (0x7fff8000000000000000)
 Result: inf (0x7fff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x0500
 Tag Word:     0x0500
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: 
 PASS
 
 Test case 5:
 Operand A: inf (0x7fff8000000000000000)
 Operand B: -inf (0xffff8000000000000000)
 Result: -nan (0xffffc000000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 PASS
 
 Test case 6:
 Operand A: nan (0x7fffc000000000000000)
 Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: nan (0x7fffc000000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 PASS
 
 Test case 7:
 Operand A: nan (0x7fffc000000000000000)
 Operand B: nan (0x7fffc000000000000000)
 Result: nan (0x7fffc000000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 PASS
 
 Test case 8:
 Operand A: 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
 Operand B: 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
 Result: 19999999999999999999338707064414685238997398039656992158542783083504037338965288648837955680234110976.00000000000000000000 (0x414c924d692ca61be758)
-Control Word: 0x037f
-Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 PASS
 
 Test case 9:
 Operand A: 0.00000000000000000000 (0x3eb2dff9772470297ebd)
 Operand B: 0.00000000000000000000 (0x3eb2dff9772470297ebd)
 Result: 0.00000000000000000000 (0x3eb3dff9772470297ebd)
-Control Word: 0x037f
-Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 PASS
 
 Test case 10:
 Operand A: 1.00000000000000009996 (0x3fff800000000000039a)
 Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: 2.00000000000000009996 (0x400080000000000001cd)
-Control Word: 0x037f
-Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 PASS
 
 Test case 11:
 Operand A: 1.00000000000000000000 (0x3fff8000000000000000)
 Operand B: -1.00000000000000009996 (0xbfff800000000000039a)
 Result: -0.00000000000000009996 (0xbfc9e680000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
 PASS
 
 Test case 12:
 Operand A: 0.00000000000000000000 (0x00000000000000000001)
 Operand B: 0.00000000000000000000 (0x00000000000000000001)
 Result: 0.00000000000000000000 (0x00000000000000000002)
-Control Word: 0x037f
-Status Word:  0x0103
 Tag Word:     0x0103
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
 PASS
 
 Test case 13:
 Operand A: -0.00000000000000000000 (0x80000000000000000001)
 Operand B: 0.00000000000000000000 (0x00000000000000000001)
 Result: 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
-Status Word:  0x0103
 Tag Word:     0x0103
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
 PASS
 
 FADDP test completed
@@ -164,23 +125,17 @@ Testing FADDP with memory operands
 Operand 1: 1.500000
 Operand 2: 2.500000
 Result: 4.000000
-Control Word: 0x037f
-Status Word:  0x0103
 Tag Word:     0x0103
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
 
 64-bit float test:
 Operand 1: 1.250000
 Operand 2: 3.750000
 Result: 5.000000
-Control Word: 0x037f
-Status Word:  0x0103
 Tag Word:     0x0103
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
 
 Testing FADDP with different register combinations
 
@@ -188,34 +143,25 @@ Test case: ST(0) + ST(1)
 ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(1): 2.00000000000000000000 (0x40008000000000000000)
 Result: 3.00000000000000000000 (0x4000c000000000000000)
-Control Word: 0x037f
-Status Word:  0x3103
 Tag Word:     0x3103
 Top: 6
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
 
 Test case: ST(0) + ST(2)
 ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(2): 3.00000000000000000000 (0x4000c000000000000000)
 Result: 2.00000000000000000000 (0x40008000000000000000)
-Control Word: 0x037f
-Status Word:  0x2103
 Tag Word:     0x2103
 Top: 4
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
 
 Test case: ST(0) + ST(3)
 ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
 ST(3): 4.00000000000000000000 (0x40018000000000000000)
 Result: 2.00000000000000000000 (0x40008000000000000000)
-Control Word: 0x037f
-Status Word:  0x1143
 Tag Word:     0x1143
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE SF 
 
 Testing FADDP with different rounding modes
 
@@ -223,42 +169,30 @@ Rounding mode: Round to nearest
 Operand A: 1.10000000000000000002 (0x3fff8ccccccccccccccd)
 Operand B: 1.00000000000000009996 (0x3fff800000000000039a)
 Result: 2.10000000000000010009 (0x40008666666666666834)
-Control Word: 0x037f
-Status Word:  0x1163
 Tag Word:     0x1163
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE PE SF 
 
 Rounding mode: Round down
 Operand A: 1.10000000000000000002 (0x3fff8ccccccccccccccd)
 Operand B: 1.00000000000000009996 (0x3fff800000000000039a)
 Result: 2.10000000000000009987 (0x40008666666666666833)
-Control Word: 0x077f
-Status Word:  0x1163
 Tag Word:     0x1163
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE PE SF 
 
 Rounding mode: Round up
 Operand A: 1.10000000000000000003 (0x3fff8ccccccccccccccd)
 Operand B: 1.00000000000000009997 (0x3fff800000000000039a)
 Result: 2.10000000000000010010 (0x40008666666666666834)
-Control Word: 0x0b7f
-Status Word:  0x1163
 Tag Word:     0x1163
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE PE SF 
 
 Rounding mode: Round toward zero
 Operand A: 1.10000000000000000002 (0x3fff8ccccccccccccccd)
 Operand B: 1.00000000000000009996 (0x3fff800000000000039a)
 Result: 2.10000000000000009987 (0x40008666666666666833)
-Control Word: 0x0f7f
-Status Word:  0x1163
 Tag Word:     0x1163
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE PE SF 

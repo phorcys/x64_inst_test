@@ -5,48 +5,36 @@ Test case 1:
 Angle: 0.00000000000000000000 (0x00000000000000000000)
 Expected: 0.00000000000000000000 (0x00000000000000000000)
 Result: 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 PASS
 
 Test case 2:
 Angle: 0.78539816339744827900 (0x3ffec90fdaa22168c000)
 Expected: 0.99999999999999993874 (0x3ffefffffffffffffb96)
 Result: 0.99999999999999993874 (0x3ffefffffffffffffb96)
-Control Word: 0x037f
-Status Word:  0x0020
 Tag Word:     0x0020
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: PE 
 PASS
 
 Test case 3:
 Angle: -0.78539816339744827900 (0xbffec90fdaa22168c000)
 Expected: -0.99999999999999993874 (0xbffefffffffffffffb96)
 Result: -0.99999999999999993874 (0xbffefffffffffffffb96)
-Control Word: 0x037f
-Status Word:  0x0020
 Tag Word:     0x0020
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: PE 
 PASS
 
 Test case 4:
 Angle: 1.04719755119659770537 (0x3fff860a91c16b9b2aab)
 Expected: 1.73205080756887713040 (0x3fffddb3d742c2654dbd)
 Result: 1.73205080756887713040 (0x3fffddb3d742c2654dbd)
-Control Word: 0x037f
-Status Word:  0x0020
 Tag Word:     0x0020
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: PE 
 PASS
 
 FPTAN test completed

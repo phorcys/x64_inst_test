@@ -2,130 +2,91 @@
 
 Test case 1: 正数 (1.00)
 Expected flags: 0x0000, Actual flags: 0x0000
-Control Word: 0x037f
-Status Word:  0x3c00
 Tag Word:     0x3c00
 Top: 7
 C0: 0, C1: 0, C2: 1, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 2: 负数 (-1.00)
 Expected flags: 0x0200, Actual flags: 0x0200
-Control Word: 0x037f
-Status Word:  0x3e00
 Tag Word:     0x3e00
 Top: 7
 C0: 0, C1: 1, C2: 1, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 3: 正零 (0.00)
 Expected flags: 0x4000, Actual flags: 0x4000
-Control Word: 0x037f
-Status Word:  0x7800
 Tag Word:     0x7800
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
   [PASS]
 
 Test case 4: 负零 (-0.00)
 Expected flags: 0x4200, Actual flags: 0x4200
-Control Word: 0x037f
-Status Word:  0x7a00
 Tag Word:     0x7a00
 Top: 7
 C0: 0, C1: 1, C2: 0, C3: 1
-Exceptions: 
   [PASS]
 
 Test case 5: 正无穷 (inf)
 Expected flags: 0x0100, Actual flags: 0x0100
-Control Word: 0x037f
-Status Word:  0x3d00
 Tag Word:     0x3d00
 Top: 7
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 6: 负无穷 (-inf)
 Expected flags: 0x0300, Actual flags: 0x0300
-Control Word: 0x037f
-Status Word:  0x3f00
 Tag Word:     0x3f00
 Top: 7
 C0: 1, C1: 1, C2: 1, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 7: NaN (nan)
 Expected flags: 0x0100, Actual flags: 0x0100
-Control Word: 0x037f
-Status Word:  0x3900
 Tag Word:     0x3900
 Top: 7
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 8: 非规格化数 (0.00)
 Expected flags: 0x0000, Actual flags: 0x0000
-Control Word: 0x037f
-Status Word:  0x3c02
 Tag Word:     0x3c02
 Top: 7
 C0: 0, C1: 0, C2: 1, C3: 0
-Exceptions: DE 
   [PASS]
 
 Test case 9: 更小的非规格化数 (0.00)
 Expected flags: 0x0000, Actual flags: 0x0000
-Control Word: 0x037f
-Status Word:  0x3c02
 Tag Word:     0x3c02
 Top: 7
 C0: 0, C1: 0, C2: 1, C3: 0
-Exceptions: DE 
   [PASS]
 
 Test case 10: 正规格化数 (0.00)
 Expected flags: 0x0000, Actual flags: 0x0000
-Control Word: 0x037f
-Status Word:  0x3c00
 Tag Word:     0x3c00
 Top: 7
 C0: 0, C1: 0, C2: 1, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 11: 负规格化数 (-0.00)
 Expected flags: 0x0200, Actual flags: 0x0200
-Control Word: 0x037f
-Status Word:  0x3e00
 Tag Word:     0x3e00
 Top: 7
 C0: 0, C1: 1, C2: 1, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 12: SNaN (-nan)
 Expected flags: 0x0300, Actual flags: 0x0300
-Control Word: 0x037f
-Status Word:  0x3b00
 Tag Word:     0x3b00
 Top: 7
 C0: 1, C1: 1, C2: 0, C3: 0
-Exceptions: 
   [PASS]
 
 Test case 13: QNaN (nan)
 Expected flags: 0x0100, Actual flags: 0x0100
-Control Word: 0x037f
-Status Word:  0x3900
 Tag Word:     0x3900
 Top: 7
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
   [PASS]

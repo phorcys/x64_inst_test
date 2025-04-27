@@ -6,57 +6,42 @@ Operation: 2.000000 / 8.000000
 Result: inf
 Stack depth before: 0, after: 0
 Status Word: 0x0000
-Control Word: 0x037f
-Status Word:  0x0504
 Tag Word:     0x0504
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: ZE 
 
 Test 2: Divide by zero
 Operation: 0.000000 / 1.000000
 Result: -inf
 Stack depth before: 0, after: 0
 Status Word: 0x0504
-Control Word: 0x037f
-Status Word:  0x052e
 Tag Word:     0x052e
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: DE ZE OE PE 
 
 Test 3: Zero divided by zero
 Operation: 0.000000 / 0.000000
 Result: -0.000000
 Stack depth before: 0, after: 0
 Status Word: 0x052e
-Control Word: 0x037f
-Status Word:  0x052e
 Tag Word:     0x052e
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: DE ZE OE PE 
 
 Test 4: Infinity divided
 Operation: 2.000000 / inf
 Result: inf
 Stack depth before: 0, after: 0
 Status Word: 0x052e
-Control Word: 0x037f
-Status Word:  0x052e
 Tag Word:     0x052e
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: DE ZE OE PE 
 
 Test 5: Divide by infinity
 Operation: nan / 2.000000
 Result: -inf
 Stack depth before: 0, after: 0
 Status Word: 0x052e
-Control Word: 0x037f
-Status Word:  0x052f
 Tag Word:     0x052f
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: IE DE ZE OE PE 

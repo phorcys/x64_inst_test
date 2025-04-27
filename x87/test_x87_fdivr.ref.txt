@@ -5,53 +5,38 @@ Test 1: Normal reverse division
 Operation: 8.000000 / 2.000000 (reversed)
 Result: 0.000000
 Status Word: 0x0000
-Control Word: 0x037f
-Status Word:  0x0004
 Tag Word:     0x0004
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: ZE 
 
 Test 2: Divide zero by value
 Operation: 1.000000 / 0.000000 (reversed)
 Result: 0.000000
 Status Word: 0x0000
-Control Word: 0x037f
-Status Word:  0x0006
 Tag Word:     0x0006
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: DE ZE 
 
 Test 3: Zero divided by zero
 Operation: 0.000000 / 0.000000 (reversed)
 Result: 0.000000
 Status Word: 0x0000
-Control Word: 0x037f
-Status Word:  0x0007
 Tag Word:     0x0007
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE ZE 
 
 Test 4: Infinity divided
 Operation: inf / 2.000000 (reversed)
 Result: 0.000000
 Status Word: 0x0000
-Control Word: 0x037f
-Status Word:  0x0507
 Tag Word:     0x0507
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: IE DE ZE 
 
 Test 5: Divide by infinity
 Operation: 2.000000 / nan (reversed)
 Result: 0.000000
 Status Word: 0x0000
-Control Word: 0x037f
-Status Word:  0x0107
 Tag Word:     0x0107
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE ZE 

@@ -44,12 +44,9 @@ Test 1: Minimum control word (all unmasked) (CW=0x0000)
 Set CW:    0x0000
 Saved CW:  0x0040
 Exceptions: 0x0
-Control Word: 0x0040
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word saved correctly             FAIL
   [FAIL DETAIL] x87/test_x87_fstcw.c:129
 [TEST] Correct exceptions raised                FAIL
@@ -59,12 +56,9 @@ Test 2: Single bit set (IE unmasked) (CW=0x0001)
 Set CW:    0x0001
 Saved CW:  0x0041
 Exceptions: 0x0
-Control Word: 0x0041
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word saved correctly             FAIL
   [FAIL DETAIL] x87/test_x87_fstcw.c:129
 [TEST] Correct exceptions raised                FAIL
@@ -74,12 +68,9 @@ Test 3: Max value - 1 (CW=0x7FFF)
 Set CW:    0x7FFF
 Saved CW:  0x1F7F
 Exceptions: 0x0
-Control Word: 0x1f7f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word saved correctly             FAIL
   [FAIL DETAIL] x87/test_x87_fstcw.c:129
 [TEST] Correct exceptions raised                PASS
@@ -88,12 +79,9 @@ Test 4: Maximum control word (CW=0xFFFF)
 Set CW:    0xFFFF
 Saved CW:  0x1F7F
 Exceptions: 0x0
-Control Word: 0x1f7f
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word saved correctly             FAIL
   [FAIL DETAIL] x87/test_x87_fstcw.c:129
 [TEST] Correct exceptions raised                PASS
@@ -102,12 +90,9 @@ Test 5: Alternating bits (CW=0x5555)
 Set CW:    0x5555
 Saved CW:  0x1555
 Exceptions: 0x0
-Control Word: 0x1555
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word saved correctly             FAIL
   [FAIL DETAIL] x87/test_x87_fstcw.c:129
 [TEST] Correct exceptions raised                FAIL
@@ -117,12 +102,9 @@ Test 6: Alternating bits (inverse) (CW=0xAAAA)
 Set CW:    0xAAAA
 Saved CW:  0x0A6A
 Exceptions: 0x0
-Control Word: 0x0a6a
-Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Control word saved correctly             FAIL
   [FAIL DETAIL] x87/test_x87_fstcw.c:129
 [TEST] Correct exceptions raised                FAIL
@@ -218,12 +200,9 @@ Set CW: 0x0C00, Saved CW: 0x0C40
 
 ==== Testing FSTCW with Exceptions ====
 After exception:
-Control Word: 0x037f
-Status Word:  0x3804
 Tag Word:     0x3804
 Top: 7
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: ZE 
 Saved control word: 0x037F
 [TEST] Exception flags preserved                FAIL
   [FAIL DETAIL] x87/test_x87_fstcw.c:183

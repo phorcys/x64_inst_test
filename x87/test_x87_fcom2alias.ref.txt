@@ -5,221 +5,158 @@ Testing FCOM2alias instruction
 Test case 1:
 ST(0): 0
 ST(2): 0
-Control Word: 0x0240
-Status Word:  0x6800
 Tag Word:     0x6800
 Top: 5
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 2:
 ST(0): 0
 ST(2): -0
-Control Word: 0x0240
-Status Word:  0x6800
 Tag Word:     0x6800
 Top: 5
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 3:
 ST(0): 1
 ST(2): 1
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 4:
 ST(0): 1
 ST(2): -1
-Control Word: 0x0240
-Status Word:  0x2800
 Tag Word:     0x2800
 Top: 5
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 5:
 ST(0): inf
 ST(2): inf
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 6:
 ST(0): inf
 ST(2): -inf
-Control Word: 0x0240
-Status Word:  0x2800
 Tag Word:     0x2800
 Top: 5
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 7:
 ST(0): nan
 ST(2): nan
 NAN comparison - Status Word: 0x6d01
 Exception Flags: IE 
-Control Word: 0x0240
-Status Word:  0x6d00
 Tag Word:     0x6d00
 Top: 5
 C0: 1, C1: 0, C2: 1, C3: 1
-Exceptions: 
 
 Test case 8:
 ST(0): nan
 ST(2): 1
 NAN comparison - Status Word: 0x2900
 Exception Flags: 
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 9:
 ST(0): 3.141592653589793116
 ST(2): 2.7182818284590450908
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 10:
 ST(0): 1.0000000000000000159e+100
 ST(2): 1.00000000000000002e-100
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 11:
 ST(0): 1.00000000000000002e-100
 ST(2): 1.0000000000000000159e+100
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 === Testing FCOM2alias with 32-bit memory operands ===
 
 Test case 1:
 ST(0): 1.5
 m32: 1.5
-Control Word: 0x0040
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 2:
 ST(0): 1.5
 m32: -1.5
-Control Word: 0x0040
-Status Word:  0x2800
 Tag Word:     0x2800
 Top: 5
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 3:
 ST(0): 1e+10
 m32: 1.000000013e-10
-Control Word: 0x0040
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 4:
 ST(0): 1.000000013e-10
 m32: 1e+10
-Control Word: 0x0040
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 5:
 ST(0): nan
 m32: 1
 NAN comparison - Status Word: 0x2900
 Exception Flags: 
-Control Word: 0x0040
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 === Testing FCOM2alias with 64-bit memory operands ===
 
 Test case 1:
 ST(0): 1.5
 m64: 1.5
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 2:
 ST(0): 1.5
 m64: -1.5
-Control Word: 0x0240
-Status Word:  0x2800
 Tag Word:     0x2800
 Top: 5
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 3:
 ST(0): 1.0000000000000000159e+100
 m64: 1.00000000000000002e-100
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 4:
 ST(0): 1.00000000000000002e-100
 m64: 1.0000000000000000159e+100
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 5:
 ST(0): nan
 m64: 1
 NAN comparison - Status Word: 0x2900
 Exception Flags: 
-Control Word: 0x0240
-Status Word:  0x2900
 Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 

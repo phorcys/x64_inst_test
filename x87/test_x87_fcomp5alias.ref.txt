@@ -7,12 +7,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5000
 Tag Word:     0x5000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 2: +0 == -0
 ST(0): 0.00000000000000000000 (0x00000000000000000000)
@@ -21,12 +18,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5000
 Tag Word:     0x5000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 3: 1 == 1
 ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
@@ -35,12 +29,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5000
 Tag Word:     0x5000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 4: 1 > -1
 ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
@@ -49,12 +40,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1100
 Tag Word:     0x1100
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 5: -1 < 1
 ST(0): -1.00000000000000000000 (0xbfff8000000000000000)
@@ -63,12 +51,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1000
 Tag Word:     0x1000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 6: +INF == +INF
 ST(0): inf (0x7fff8000000000000000)
@@ -77,12 +62,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5000
 Tag Word:     0x5000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 7: +INF > -INF
 ST(0): inf (0x7fff8000000000000000)
@@ -91,12 +73,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1100
 Tag Word:     0x1100
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 8: -INF < +INF
 ST(0): -inf (0xffff8000000000000000)
@@ -105,12 +84,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1000
 Tag Word:     0x1000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 9: NAN unordered
 ST(0): nan (0x7fffc000000000000000)
@@ -119,12 +95,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5501
 Tag Word:     0x5501
 Top: 2
 C0: 1, C1: 0, C2: 1, C3: 1
-Exceptions: IE 
 
 Test case 10: NAN unordered
 ST(0): nan (0x7fffc000000000000000)
@@ -133,12 +106,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5501
 Tag Word:     0x5501
 Top: 2
 C0: 1, C1: 0, C2: 1, C3: 1
-Exceptions: IE 
 
 Test case 11: denormal == denormal
 ST(0): 0.00000000000000000000 (0x00000000000000000001)
@@ -147,12 +117,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5002
 Tag Word:     0x5002
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: DE 
 
 Test case 12: π > e
 ST(0): 3.14159265358979323851 (0x4000c90fdaa22168c235)
@@ -161,12 +128,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1100
 Tag Word:     0x1100
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 13: e < π
 ST(0): 2.71828182845904523543 (0x4000adf85458a2bb4a9b)
@@ -175,12 +139,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1000
 Tag Word:     0x1000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 14: large > small
 ST(0): 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
@@ -189,12 +150,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1100
 Tag Word:     0x1100
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 15: small < large
 ST(0): 0.00000000000000000000 (0x3eb2dff9772470297ebd)
@@ -203,12 +161,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x1000
 Tag Word:     0x1000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 
 Test case 16: large == large
 ST(0): 1000000000000000000008997324079559193870523944273290747938260082321265646596180935755849152083750497190350372508614274835903592556184672983913096260520748646287327135641843653294084255107606016789726652932370030551382947620994540294772781889620606179267611627097410650567187386105690089424915104006144.00000000000000000000 (0x43e3bf21e44003acdd2d)
@@ -217,12 +172,9 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5000
 Tag Word:     0x5000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 
 
 Test case 17: small == small
 ST(0): 0.00000000000000000000 (0x3c1aab70fe17c79ac6ca)
@@ -231,9 +183,6 @@ Before comparison - Stack contents:
 Loading values into stack...
 Performing comparison...
 After comparison:
-Control Word: 0x037f
-Status Word:  0x5000
 Tag Word:     0x5000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: 

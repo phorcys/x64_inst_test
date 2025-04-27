@@ -16,12 +16,9 @@ Tag Word:
 
 ==== Testing FLDENV (stack state) ====
 After FLDENV:
-Control Word: 0x0040
-Status Word:  0x3000
 Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
 [TEST] Stack pointer loaded correctly           PASS
 [TEST] Tag word loaded correctly                PASS
 
