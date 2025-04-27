@@ -1,10 +1,10 @@
 === Testing TZCNT instruction ===
 
 16-bit tests:
-tzcntw 0x0000 => 0x0000 (expected 0x0000)
-  Flags: CF=0 ZF=1 PASS
+tzcntw 0x0000 => 0x0010 (expected 0x0000)
+  Flags: CF=1 ZF=0 FAIL
 tzcntw 0x0001 => 0x0000 (expected 0x0000)
-  Flags: CF=0 ZF=0 PASS
+  Flags: CF=0 ZF=1 PASS
 tzcntw 0x0002 => 0x0001 (expected 0x0001)
   Flags: CF=0 ZF=0 PASS
 tzcntw 0x8000 => 0x000f (expected 0x000f)
@@ -13,10 +13,10 @@ tzcntw 0xaaaa => 0x0001 (expected 0x0001)
   Flags: CF=0 ZF=0 PASS
 
 32-bit tests:
-tzcntl 0x00000000 => 0x00000000 (expected 0x00000000)
-  Flags: CF=0 ZF=1 PASS
+tzcntl 0x00000000 => 0x00000020 (expected 0x00000000)
+  Flags: CF=1 ZF=0 FAIL
 tzcntl 0x00000001 => 0x00000000 (expected 0x00000000)
-  Flags: CF=0 ZF=0 PASS
+  Flags: CF=0 ZF=1 PASS
 tzcntl 0x00000002 => 0x00000001 (expected 0x00000001)
   Flags: CF=0 ZF=0 PASS
 tzcntl 0x80000000 => 0x0000001f (expected 0x0000001f)
@@ -25,10 +25,10 @@ tzcntl 0xaaaaaaaa => 0x00000001 (expected 0x00000001)
   Flags: CF=0 ZF=0 PASS
 
 64-bit tests:
-tzcntq 0x0000000000000000 => 0x0000000000000000 (expected 0x0000000000000000)
-  Flags: CF=0 ZF=1 PASS
+tzcntq 0x0000000000000000 => 0x0000000000000040 (expected 0x0000000000000000)
+  Flags: CF=1 ZF=0 FAIL
 tzcntq 0x0000000000000001 => 0x0000000000000000 (expected 0x0000000000000000)
-  Flags: CF=0 ZF=0 PASS
+  Flags: CF=0 ZF=1 PASS
 tzcntq 0x0000000000000002 => 0x0000000000000001 (expected 0x0000000000000001)
   Flags: CF=0 ZF=0 PASS
 tzcntq 0x8000000000000000 => 0x000000000000003f (expected 0x000000000000003f)
