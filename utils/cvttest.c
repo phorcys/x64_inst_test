@@ -64,32 +64,32 @@ static const unsigned int mode_encodings[] = {
 
 void set_rounding_mode(RoundingMode mode) {
     unsigned int fcsr;
-    asm volatile("movfcsr2gr %0, $r0" : "=r"(fcsr));
+    asm volatile("movfcsr2gr %0, $fcsr3" : "=r"(fcsr));
     fcsr = (fcsr & ~(0x7 << 2)) | (mode_encodings[mode] << 2);
-    asm volatile("movgr2fcsr $r0, %0" : : "r"(fcsr));
+    asm volatile("movgr2fcsr $fcsr3, %0" : : "r"(fcsr));
 }
 
 int32_t cvt_f32_i32(float f) {
     int32_t res;
-    asm volatile("fcvt.w.s %0, %1" : "=r"(res) : "f"(f));
+    asm volatile("ftint.w.s $ft3, %1 ;movfr2gr.s %0,$ft3 \n" : "=r"(res) : "f"(f));
     return res;
 }
 
 int64_t cvt_f32_i64(float f) {
     int64_t res;
-    asm volatile("fcvt.l.s %0, %1" : "=r"(res) : "f"(f));
+    asm volatile("ftint.l.s $ft3, %1 ;movfr2gr.d %0,$ft3" : "=r"(res) : "f"(f));
     return res;
 }
 
 int32_t cvt_f64_i32(double d) {
     int32_t res;
-    asm volatile("fcvt.w.d %0, %1" : "=r"(res) : "f"(d));
+    asm volatile("ftint.w.d $ft3, %1 ;movfr2gr.s %0,$ft3" : "=r"(res) : "f"(d));
     return res;
 }
 
 int64_t cvt_f64_i64(double d) {
     int64_t res;
-    asm volatile("fcvt.l.d %0, %1" : "=r"(res) : "f"(d));
+    asm volatile("ftint.l.d $ft3, %1 ;movfr2gr.d %0,$ft3" : "=r"(res) : "f"(d));
     return res;
 }
 #else
@@ -111,11 +111,8 @@ const char* get_special_name_d(double d) {
 void print_result(const char* type, const char* name, RoundingMode mode, int64_t val) {
     printf("%-6s %-12s [%-3s] => ", type, name, mode_names[mode]);
     
-    if (val == INT64_MIN) {  // 特殊值标记
-        printf("0x%016lx\n", (uint64_t)val);
-    } else {
-        printf("%-20ld\n", val);
-    }
+    printf("0x%016lx\n", val);
+
 }
 
 void test_float(float f) {
@@ -128,8 +125,8 @@ void test_float(float f) {
 
     for (RoundingMode m = RNE; m < MODE_COUNT; m++) {
         set_rounding_mode(m);
-        print_result("F32", name, m, cvt_f32_i32(f));
-        print_result("F32", name, m, cvt_f32_i64(f));
+        print_result("F32-I32", name, m, cvt_f32_i32(f));
+        print_result("F32-I64", name, m, cvt_f32_i64(f));
     }
 }
 
@@ -143,19 +140,19 @@ void test_double(double d) {
 
     for (RoundingMode m = RNE; m < MODE_COUNT; m++) {
         set_rounding_mode(m);
-        print_result("F64", name, m, cvt_f64_i32(d));
-        print_result("F64", name, m, cvt_f64_i64(d));
+        print_result("F64-I32", name, m, cvt_f64_i32(d));
+        print_result("F64-I64", name, m, cvt_f64_i64(d));
     }
 }
 
 int main() {
     float test_floats[] = {
-        0.0f, -0.0f, 1.5f, -1.5f, 2.5f, -2.5f,
+        0.0f, -0.0f, 1.4012984643e-45, -1.4012984643e-45, 
         2147483647.0f, -2147483648.0f, INFINITY, -INFINITY, NAN, -NAN
     };
 
     double test_doubles[] = {
-        0.0, -0.0, 1.5, -1.5, 2.5, -2.5,
+        0.0, -0.0, 4.940656e-324, -4.940656e-324,
         2147483647.0, -2147483648.0, 9223372036854775807.0,
         -9223372036854775808.0, INFINITY, -INFINITY, NAN, -NAN
     };
