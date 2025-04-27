@@ -5,6 +5,7 @@ Test case 1:
 Angle: 0.00000000000000000000 (0x00000000000000000000)
 Expected: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: 1.00000000000000000000 (0x3fff8000000000000000)
+C2 flag (out of range): 0
 Control Word: 0x037f
 Status Word:  0x4000
 Tag Word:     0x4000
@@ -17,6 +18,7 @@ Test case 2:
 Angle: 1.57079632679489655800 (0x3fffc90fdaa22168c000)
 Expected: 0.00000000000000006123 (0x3fc98d313198a2e03707)
 Result: 0.00000000000000006123 (0x3fc98d30000000000000)
+C2 flag (out of range): 0
 Control Word: 0x037f
 Status Word:  0x4020
 Tag Word:     0x4020
@@ -29,6 +31,7 @@ Test case 3:
 Angle: 3.14159265358979311600 (0x4000c90fdaa22168c000)
 Expected: -1.00000000000000000000 (0xbfff8000000000000000)
 Result: -1.00000000000000000000 (0xbfff8000000000000000)
+C2 flag (out of range): 0
 Control Word: 0x037f
 Status Word:  0x0020
 Tag Word:     0x0020
@@ -41,12 +44,208 @@ Test case 4:
 Angle: 6.28318530717958623200 (0x4001c90fdaa22168c000)
 Expected: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: 1.00000000000000000000 (0x3fff8000000000000000)
+C2 flag (out of range): 0
 Control Word: 0x037f
 Status Word:  0x0020
 Tag Word:     0x0020
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: PE 
+PASS
+
+Test case 5:
+Angle: -0.00000000000000000000 (0x80000000000000000000)
+Expected: 1.00000000000000000000 (0x3fff8000000000000000)
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x4020
+Tag Word:     0x4020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: PE 
+PASS
+
+Test case 6:
+Angle: -1.57079632679489655800 (0xbfffc90fdaa22168c000)
+Expected: 0.00000000000000006123 (0x3fc98d313198a2e03707)
+Result: 0.00000000000000006123 (0x3fc98d30000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x4020
+Tag Word:     0x4020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: PE 
+PASS
+
+Test case 7:
+Angle: -3.14159265358979311600 (0xc000c90fdaa22168c000)
+Expected: -1.00000000000000000000 (0xbfff8000000000000000)
+Result: -1.00000000000000000000 (0xbfff8000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0020
+Tag Word:     0x0020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 8:
+Angle: 0.78539816339744827900 (0x3ffec90fdaa22168c000)
+Expected: 0.70710678118654754607 (0x3ffeb504f333f9de6614)
+Result: 0.70710678118654754607 (0x3ffeb504f333f9de6614)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0020
+Tag Word:     0x0020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 9:
+Angle: 4.71238898038468967400 (0x400196cbe3f9990e9000)
+Expected: -0.00000000000000018370 (0xbfcad3c9ca64f450528b)
+Result: -0.00000000000000018369 (0xbfcad3c8000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0020
+Tag Word:     0x0020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 10:
+Angle: 10000000000.00000000000000000000 (0x40209502f90000000000)
+Expected: 0.87311962267685600117 (0x3ffedf84c480e498cc19)
+Result: 0.87311962268313222528 (0x3ffedf84c480eb7f65b5)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0020
+Tag Word:     0x0020
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 11:
+Angle: 100000000000000000000.00000000000000000000 (0x4041ad78ebc5ac620000)
+Expected: 0.76397040444172830038 (0x3ffec393907e3069eb22)
+Result: 100000000000000000000.00000000000000000000 (0x4041ad78ebc5ac620000)
+C2 flag (out of range): 1
+Control Word: 0x037f
+Status Word:  0x0420
+Tag Word:     0x0420
+Top: 0
+C0: 0, C1: 0, C2: 1, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 12:
+Angle: 9223372036854775808.00000000000000000000 (0x403e8000000000000000)
+Expected: 0.01180007651280023668 (0x3ff8c1551bad9e19f383)
+Result: 9223372036854775808.00000000000000000000 (0x403e8000000000000000)
+C2 flag (out of range): 1
+Control Word: 0x037f
+Status Word:  0x0420
+Tag Word:     0x0420
+Top: 0
+C0: 0, C1: 0, C2: 1, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 13:
+Angle: -9223372036854775808.00000000000000000000 (0xc03e8000000000000000)
+Expected: 0.01180007651280023668 (0x3ff8c1551bad9e19f383)
+Result: -9223372036854775808.00000000000000000000 (0xc03e8000000000000000)
+C2 flag (out of range): 1
+Control Word: 0x037f
+Status Word:  0x0420
+Tag Word:     0x0420
+Top: 0
+C0: 0, C1: 0, C2: 1, C3: 0
+Exceptions: PE 
+PASS
+
+Test case 14:
+Angle: inf (0x7fff8000000000000000)
+Expected: -nan (0xffffc000000000000000)
+Result: -nan (0xffffc000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0121
+Tag Word:     0x0121
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE PE 
+PASS
+
+Test case 15:
+Angle: -inf (0xffff8000000000000000)
+Expected: -nan (0xffffc000000000000000)
+Result: -nan (0xffffc000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0121
+Tag Word:     0x0121
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE PE 
+PASS
+
+Test case 16:
+Angle: nan (0x7fffc000000000000000)
+Expected: nan (0x7fffc000000000000000)
+Result: nan (0x7fffc000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0121
+Tag Word:     0x0121
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE PE 
+PASS
+
+Test case 17:
+Angle: -nan (0xffffc000000000000000)
+Expected: -nan (0xffffc000000000000000)
+Result: -nan (0xffffc000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x0121
+Tag Word:     0x0121
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE PE 
+PASS
+
+Test case 18:
+Angle: 0.00000000000000000000 (0x00000000000000000001)
+Expected: 1.00000000000000000000 (0x3fff8000000000000000)
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x4023
+Tag Word:     0x4023
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: IE DE PE 
+PASS
+
+Test case 19:
+Angle: -0.00000000000000000000 (0x80000000000000000001)
+Expected: 1.00000000000000000000 (0x3fff8000000000000000)
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
+C2 flag (out of range): 0
+Control Word: 0x037f
+Status Word:  0x4023
+Tag Word:     0x4023
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: IE DE PE 
 PASS
 
 FCOS test completed

@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <math.h>
 #include <fenv.h>
 
@@ -39,6 +40,7 @@
 #define X87_SW_C3        0x4000  // 条件码3
 #define X87_SW_TOP_MASK  0x3800  // TOP位掩码
 #define X87_SW_TOP_SHIFT 11      // TOP位移量
+#define X87_SW_TOP_EMPTY 0x3800  // 空栈时的TOP值(7 << 11)
 
 
 // Print 80-bit float value
@@ -126,5 +128,54 @@ static inline void print_x87_status() {
 #define X86_EFLAGS_PF   0x00000004  // 奇偶标志  
 #define X86_EFLAGS_ZF   0x00000040  // 零标志
 #define X86_EFLAGS_NONE 0x00000000  // 无标志
+
+// Print x87 register stack contents
+static inline void print_x87_stack() {
+    struct x87_env {
+        uint32_t cw;     // Control word
+        uint32_t sw;     // Status word
+        uint32_t tw;     // Tag word
+        uint32_t ip;     // Instruction pointer
+        uint32_t cs;     // Code segment
+        uint32_t op;     // Opcode
+        uint32_t dp;     // Data pointer
+        uint32_t ds;     // Data segment
+        uint8_t st[8][10]; // 80-bit FP registers (ST0-ST7)
+    } env;
+
+    // Save x87 environment
+    asm volatile ("fnstenv %0" : "=m" (env));
+
+    uint16_t top = (env.sw >> 11) & 0x7; // Get TOP from status word
+    uint16_t tags = env.tw;              // Get tag word
+
+    printf("x87 Register Stack (TOP=%d):\n", top);
+    printf("Reg  Value                  Tag\n");
+    printf("-------------------------------\n");
+
+    for (int i = 0; i < 8; i++) {
+        int phys_reg = (i + top) % 8; // Physical register mapping
+        int tag = (tags >> (2*phys_reg)) & 0x3;
+        
+        printf("ST(%d) ", i);
+        
+        // Print register value if not empty
+        if (tag != 0x3) {
+            long double val;
+            memcpy(&val, &env.st[phys_reg], 10);
+            print_float80(val);
+        } else {
+            printf("<empty>               ");
+        }
+
+        // Print tag description
+        switch (tag) {
+            case 0x0: printf("Valid\n"); break;
+            case 0x1: printf("Zero\n"); break;
+            case 0x2: printf("Special (NaN/Inf/Denorm)\n"); break;
+            case 0x3: printf("Empty\n"); break;
+        }
+    }
+}
 
 #endif // X87_H

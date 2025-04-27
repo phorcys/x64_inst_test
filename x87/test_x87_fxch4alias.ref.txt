@@ -73,9 +73,9 @@ After FXCH4alias:
   ST(3): -nan (expected -nan)
   ST(4): nan (expected nan)
 Control Word: 0x037f
-Status Word:  0x0002
-Tag Word:     0x0002
+Status Word:  0x0000
+Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: DE 
+Exceptions: 
   [PASS] FXCH4alias correct

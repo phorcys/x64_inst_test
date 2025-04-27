@@ -1,78 +1,93 @@
-#include "x87.h"
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
+#include <math.h>
+#include <float.h>
+#include "x87.h"
 
-// Test FCMOVU instruction
 void test_fcmovu() {
-    long double src = 0.0L, dst = 0.0L;
-    
-    printf("=== Testing FCMOVU ===\n");
-    
-    // Test 1: PF=1 (should move)
-    asm volatile (
-        "fldz\n\t"          // st(0) = 0.0
-        "fldz\n\t"          // st(0) = 0.0, st(1) = 0.0
-        "fcomi %%st(1)\n\t" // Compare st(0) and st(1) (0.0 == 0.0, PF=1)
-        "fcmovu %%st(1), %%st(0)\n\t" // Should move st(1) to st(0)
-        "fstpt %0\n\t"       // Store result (80-bit)
-        "fstpt %1\n\t"       // Pop stack (80-bit)
-        : "=m" (dst), "=m" (src)
-        :
-        : "cc"
-    );
-    
-    printf("Test 1 (PF=1):\n");
-    printf("Expected: 0.0, Actual: %.20Lf\n", dst);
-    print_x87_status();
-    
-    // Test 2: PF=0 (should not move)
-    asm volatile (
-        "fldz\n\t"          // st(0) = 0.0
-        "fld1\n\t"          // st(0) = 1.0, st(1) = 0.0
-        "fcomi %%st(1)\n\t" // Compare st(0) and st(1) (1.0 != 0.0, PF=0)
-        "fcmovu %%st(1), %%st(0)\n\t" // Should NOT move
-        "fstpt %0\n\t"       // Store result (80-bit)
-        "fstpt %1\n\t"       // Pop stack (80-bit)
-        : "=m" (dst), "=m" (src)
-        :
-        : "cc"
-    );
-    
-    printf("\nTest 2 (PF=0):\n");
-    printf("Expected: 1.0, Actual: %.20Lf\n", dst);
-    print_x87_status();
-    
-    // Test 3: With various float values (same as FCMOVNU)
-    long double values[] = {POS_ZERO, NEG_ZERO, POS_ONE, NEG_ONE, 
-                           POS_INF, NEG_INF, POS_NAN, NEG_NAN,
-                           POS_DENORM, NEG_DENORM, PI, E};
-    int num_values = sizeof(values)/sizeof(values[0]);
-    
-    for (int i = 0; i < num_values; i++) {
-        for (int j = 0; j < num_values; j++) {
-            if (i != j) continue; // Skip unequal values (we want PF=1 cases)
-            
-            asm volatile (
-                "fldt %2\n\t"      // Load src value
-                "fldt %3\n\t"      // Load dst value
-                "fcomi %%st(1)\n\t" // Compare (should set PF=1 since i == j)
-                "fcmovu %%st(1), %%st(0)\n\t"
-                "fstpt %0\n\t"  // Store result (80-bit)
-                "fstpt %1\n\t"  // Pop stack (80-bit)
-                : "=m" (dst), "=m" (src)
-                : "m" (values[i]), "m" (values[j])
-                : "cc"
-            );
-            
-            printf("\nTest 3.%d.%d (%Lf == %Lf):\n", i+1, j+1, values[i], values[j]);
-            printf("Expected: %Lf, Actual: %.20Lf\n", values[i], dst);
-            print_x87_status();
+    printf("Testing FCMOVU instruction\n");
+    printf("FCMOVU moves ST(i) to ST(0) if PF=1\n");
+
+    struct {
+        long double st0;
+        long double sti;
+        uint8_t pf;
+        long double expected;
+    } test_cases[] = {
+        {1.0L, 2.0L, 1, 2.0L},    // PF=1, 应该移动
+        {1.0L, 2.0L, 0, 1.0L},    // PF=0, 不应该移动
+        {POS_INF, NEG_INF, 1, NEG_INF},
+        {NEG_INF, POS_INF, 0, NEG_INF},
+        {POS_NAN, 1.0L, 1, 1.0L},
+        {1.0L, POS_NAN, 0, 1.0L}
+    };
+
+    for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
+        long double st0 = test_cases[i].st0;
+        long double sti = test_cases[i].sti;
+        long double result;
+        uint8_t pf = test_cases[i].pf;
+
+        // 设置PF标志
+        asm volatile (
+            "pushfq\n\t"
+            "andl $0xfffffffb, (%%rsp)\n\t"  // 清除PF
+            "orb %b[flag], (%%rsp)\n\t"      // 设置PF
+            "popfq"
+            : 
+            : [flag] "q" (pf << 2)
+            : "memory"
+        );
+
+        // 测试FCMOVU指令
+        asm volatile (
+            "fwait\n\t"          // 确保同步
+            "fldt %[sti]\n\t"    // 加载到ST(1)
+            "fldt %[st0]\n\t"    // 加载到ST(0)
+            "fcmovu %%st(1), %%st(0)\n\t" // 条件移动
+            "fstpt %[res]\n\t"   // 存储结果
+            "fstp %%st(0)\n\t"   // 弹出ST(0)保持栈平衡
+            "fwait\n\t"          // 确保完成
+            : [res] "=m" (result)
+            : [st0] "m" (st0), [sti] "m" (sti)
+        );
+
+        printf("\nTest case %zu:\n", i+1);
+        printf("ST(0): ");
+        print_float80(st0);
+        printf("ST(i): ");
+        print_float80(sti);
+        printf("PF: %d\n", pf);
+        printf("Result: ");
+        print_float80(result);
+        print_x87_status();
+
+        // 验证结果
+        int passed = 1;
+        if (isnan(test_cases[i].expected)) {
+            if (!isnan(result)) {
+                printf("FAIL: Expected NaN but got ");
+                print_float80(result);
+                passed = 0;
+            }
+        } else if (result != test_cases[i].expected) {
+            printf("FAIL: Expected ");
+            print_float80(test_cases[i].expected);
+            printf("       Got ");
+            print_float80(result);
+            passed = 0;
+        }
+
+        if (passed) {
+            printf("PASS\n");
         }
     }
+
+    printf("\nFCMOVU test completed\n");
 }
 
 int main() {
+    init_x87_env();
     test_fcmovu();
     return 0;
 }

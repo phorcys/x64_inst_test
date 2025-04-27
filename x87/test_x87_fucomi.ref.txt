@@ -9,7 +9,7 @@ Tag Word:     0x3000
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
-EFLAGS: 0x4a1f4200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 2: Equal positive
@@ -21,7 +21,7 @@ Tag Word:     0x2000
 Top: 4
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
-EFLAGS: 0x4a1f4200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 3: Equal negative
@@ -33,7 +33,7 @@ Tag Word:     0x1000
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
-EFLAGS: 0x4a1f4200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 4: Positive less than
@@ -45,7 +45,7 @@ Tag Word:     0x0041
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f0200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 5: Positive greater than
@@ -57,7 +57,7 @@ Tag Word:     0x3041
 Top: 6
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f0300
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 6: Negative greater than
@@ -69,7 +69,7 @@ Tag Word:     0x2041
 Top: 4
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f0300
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 7: Negative less than
@@ -81,7 +81,7 @@ Tag Word:     0x1041
 Top: 2
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f0200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 8: Infinity equal
@@ -93,7 +93,7 @@ Tag Word:     0x0541
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f4200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 9: Negative infinity equal
@@ -105,7 +105,7 @@ Tag Word:     0x3541
 Top: 6
 C0: 1, C1: 0, C2: 1, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f4200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 10: Infinity greater
@@ -117,7 +117,7 @@ Tag Word:     0x2541
 Top: 4
 C0: 1, C1: 0, C2: 1, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f0300
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 11: Finite less than infinity
@@ -129,7 +129,7 @@ Tag Word:     0x1541
 Top: 2
 C0: 1, C1: 0, C2: 1, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f0200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 12: NaN unordered
@@ -141,7 +141,7 @@ Tag Word:     0x0141
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f4700
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 13: Finite vs NaN unordered
@@ -153,7 +153,7 @@ Tag Word:     0x3141
 Top: 6
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f4700
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 14: NaN vs NaN unordered
@@ -165,7 +165,7 @@ Tag Word:     0x2341
 Top: 4
 C0: 1, C1: 1, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f4700
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 15: Max vs min
@@ -177,7 +177,7 @@ Tag Word:     0x1141
 Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: IE SF 
-EFLAGS: 0x4a1f0300
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0
 
 Test 16: Denormals equal
@@ -189,5 +189,5 @@ Tag Word:     0x0143
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: IE DE SF 
-EFLAGS: 0x4a1f4200
+EFLAGS: 0x00000000
 CF: 0, PF: 0, ZF: 0

@@ -1,100 +1,93 @@
-#include "x87.h"
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
+#include <math.h>
+#include <float.h>
+#include "x87.h"
 
-// Test FCMOVNE instruction
 void test_fcmovne() {
-    long double src = 0.0L, dst = 0.0L;
-    
-    printf("=== Testing FCMOVNE ===\n");
-    
-    // Test 1: ZF=0 (should move)
-    asm volatile (
-        "fldz\n\t"          // st(0) = 0.0
-        "fld1\n\t"          // st(0) = 1.0, st(1) = 0.0
-        "fcomi %%st(1)\n\t" // Compare st(0) and st(1) (1.0 != 0.0, ZF=0)
-        "fcmovne %%st(1), %%st(0)\n\t" // Should move st(1) to st(0)
-        "fstpt %0\n\t"       // Store result (80-bit)
-        "fstpt %1\n\t"       // Pop stack (80-bit)
-        : "=m" (dst), "=m" (src)
-        :
-        : "cc"
-    );
-    
-    printf("Test 1 (ZF=0):\n");
-    printf("Expected: 0.0, Actual: %.20Lf\n", dst);
-    print_x87_status();
-    
-    // Test 2: ZF=1 (should not move)
-    asm volatile (
-        "fldz\n\t"          // st(0) = 0.0
-        "fldz\n\t"          // st(0) = 0.0, st(1) = 0.0
-        "fcomi %%st(1)\n\t" // Compare st(0) and st(1) (0.0 == 0.0, ZF=1)
-        "fcmovne %%st(1), %%st(0)\n\t" // Should NOT move
-        "fstpt %0\n\t"       // Store result (80-bit)
-        "fstpt %1\n\t"       // Pop stack (80-bit)
-        : "=m" (dst), "=m" (src)
-        :
-        : "cc"
-    );
-    
-    printf("\nTest 2 (ZF=1):\n");
-    printf("Expected: 0.0, Actual: %.20Lf\n", dst);
-    print_x87_status();
-    
-        // Test 3: With various float values (excluding NaN cases which are handled separately)
-        long double values[] = {POS_ZERO, NEG_ZERO, POS_ONE, NEG_ONE, 
-                               POS_INF, NEG_INF, POS_DENORM, NEG_DENORM, PI, E};
-        int num_values = sizeof(values)/sizeof(values[0]);
+    printf("Testing FCMOVNE instruction\n");
+    printf("FCMOVNE moves ST(i) to ST(0) if ZF=0\n");
 
-        // Special NaN tests
-        printf("\n=== Special NaN Tests ===\n");
-        long double nan_values[] = {POS_NAN, NEG_NAN};
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < num_values; j++) {
-                asm volatile (
-                    "fldt %2\n\t"      // Load NaN value
-                    "fldt %3\n\t"      // Load comparison value
-                    "fcomi %%st(1)\n\t" // Compare (should set ZF=0 for NaN)
-                    "fcmovne %%st(1), %%st(0)\n\t"
-                    "fstpt %0\n\t"  // Store result (80-bit)
-                    "fstpt %1\n\t"  // Pop stack (80-bit)
-                    : "=m" (dst), "=m" (src)
-                    : "m" (nan_values[i]), "m" (values[j])
-                    : "cc"
-                );
-                
-                printf("\nNaN Test %d.%d (NaN vs %Lf):\n", i+1, j+1, values[j]);
-                printf("Result: %.20Lf\n", dst);
-                print_x87_status();
+    struct {
+        long double st0;
+        long double sti;
+        uint8_t zf;
+        long double expected;
+    } test_cases[] = {
+        {1.0L, 2.0L, 0, 2.0L},    // ZF=0, 应该移动
+        {1.0L, 2.0L, 1, 1.0L},    // ZF=1, 不应该移动
+        {POS_INF, NEG_INF, 0, NEG_INF},
+        {NEG_INF, POS_INF, 1, NEG_INF},
+        {POS_NAN, 1.0L, 0, 1.0L},
+        {1.0L, POS_NAN, 1, 1.0L}
+    };
+
+    for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
+        long double st0 = test_cases[i].st0;
+        long double sti = test_cases[i].sti;
+        long double result;
+        uint8_t zf = test_cases[i].zf;
+
+        // 设置ZF标志
+        asm volatile (
+            "pushfq\n\t"
+            "andl $0xffffffbf, (%%rsp)\n\t"  // 清除ZF
+            "orb %b[flag], (%%rsp)\n\t"      // 设置ZF
+            "popfq"
+            : 
+            : [flag] "q" (zf << 6)
+            : "memory"
+        );
+
+        // 测试FCMOVNE指令
+        asm volatile (
+            "fwait\n\t"          // 确保同步
+            "fldt %[sti]\n\t"    // 加载到ST(1)
+            "fldt %[st0]\n\t"    // 加载到ST(0)
+            "fcmovne %%st(1), %%st(0)\n\t" // 条件移动
+            "fstpt %[res]\n\t"   // 存储结果
+            "fstp %%st(0)\n\t"   // 弹出ST(0)保持栈平衡
+            "fwait\n\t"          // 确保完成
+            : [res] "=m" (result)
+            : [st0] "m" (st0), [sti] "m" (sti)
+        );
+
+        printf("\nTest case %zu:\n", i+1);
+        printf("ST(0): ");
+        print_float80(st0);
+        printf("ST(i): ");
+        print_float80(sti);
+        printf("ZF: %d\n", zf);
+        printf("Result: ");
+        print_float80(result);
+        print_x87_status();
+
+        // 验证结果
+        int passed = 1;
+        if (isnan(test_cases[i].expected)) {
+            if (!isnan(result)) {
+                printf("FAIL: Expected NaN but got ");
+                print_float80(result);
+                passed = 0;
             }
+        } else if (result != test_cases[i].expected) {
+            printf("FAIL: Expected ");
+            print_float80(test_cases[i].expected);
+            printf("       Got ");
+            print_float80(result);
+            passed = 0;
         }
-    
-    for (int i = 0; i < num_values; i++) {
-        for (int j = 0; j < num_values; j++) {
-            if (i == j) continue; // Skip equal values
-            
-            asm volatile (
-                "fldt %2\n\t"      // Load src value
-                "fldt %3\n\t"      // Load dst value
-                "fcomi %%st(1)\n\t" // Compare (should set ZF=0 since i != j)
-                "fcmovne %%st(1), %%st(0)\n\t"
-                "fstpt %0\n\t"  // Store result (80-bit)
-                "fstpt %1\n\t"  // Pop stack (80-bit)
-                : "=m" (dst), "=m" (src)
-                : "m" (values[i]), "m" (values[j])
-                : "cc"
-            );
-            
-            printf("\nTest 3.%d.%d (%Lf != %Lf):\n", i+1, j+1, values[i], values[j]);
-            printf("Expected: %Lf, Actual: %.20Lf\n", values[i], dst);
-            print_x87_status();
+
+        if (passed) {
+            printf("PASS\n");
         }
     }
+
+    printf("\nFCMOVNE test completed\n");
 }
 
 int main() {
+    init_x87_env();
     test_fcmovne();
     return 0;
 }

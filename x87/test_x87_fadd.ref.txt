@@ -1,4 +1,4 @@
-Testing FADD instruction
+Testing FADD/FIADD instructions
 
 === Test 1: FADD with register operands ===
 
@@ -6,7 +6,7 @@ Test case 1:
 Operand A: 1.00000000000000000000 (0x3fff8000000000000000)
 Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: 2.00000000000000000000 (0x40008000000000000000)
-Control Word: 0x037f
+Control Word: 0x027f
 Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
@@ -18,7 +18,7 @@ Test case 2:
 Operand A: -1.00000000000000000000 (0xbfff8000000000000000)
 Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
+Control Word: 0x027f
 Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
@@ -30,7 +30,7 @@ Test case 3:
 Operand A: 0.00000000000000000000 (0x00000000000000000000)
 Operand B: -0.00000000000000000000 (0x80000000000000000000)
 Result: 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
+Control Word: 0x027f
 Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
@@ -42,31 +42,31 @@ Test case 4:
 Operand A: inf (0x7fff8000000000000000)
 Operand B: inf (0x7fff8000000000000000)
 Result: inf (0x7fff8000000000000000)
-Control Word: 0x037f
+Control Word: 0x027f
 Status Word:  0x0500
 Tag Word:     0x0500
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
 Exceptions: 
-PASS
+FAIL
 
 Test case 5:
 Operand A: inf (0x7fff8000000000000000)
 Operand B: -inf (0xffff8000000000000000)
 Result: -nan (0xffffc000000000000000)
-Control Word: 0x037f
+Control Word: 0x027f
 Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: IE 
-PASS
+FAIL
 
 Test case 6:
 Operand A: nan (0x7fffc000000000000000)
 Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: nan (0x7fffc000000000000000)
-Control Word: 0x037f
+Control Word: 0x027f
 Status Word:  0x0101
 Tag Word:     0x0101
 Top: 0
@@ -75,65 +75,16 @@ Exceptions: IE
 PASS
 
 Test case 7:
-Operand A: nan (0x7fffc000000000000000)
-Operand B: nan (0x7fffc000000000000000)
-Result: nan (0x7fffc000000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
-PASS
-
-Test case 8:
-Operand A: 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
-Operand B: 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
-Result: 19999999999999999999338707064414685238997398039656992158542783083504037338965288648837955680234110976.00000000000000000000 (0x414c924d692ca61be758)
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
-PASS
-
-Test case 9:
-Operand A: 0.00000000000000000000 (0x3eb2dff9772470297ebd)
-Operand B: 0.00000000000000000000 (0x3eb2dff9772470297ebd)
-Result: 0.00000000000000000000 (0x3eb3dff9772470297ebd)
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
-PASS
-
-Test case 10:
-Operand A: 1.00000000000000009996 (0x3fff800000000000039a)
+Operand A: 1.00000000000000099996 (0x3fff8000000000002407)
 Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
-Result: 2.00000000000000009996 (0x400080000000000001cd)
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
+Result: 2.00000000000000088818 (0x40008000000000001000)
+Control Word: 0x027f
+Status Word:  0x0121
+Tag Word:     0x0121
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
+Exceptions: IE PE 
 PASS
-
-Test case 11:
-Operand A: 1.00000000000000000000 (0x3fff8000000000000000)
-Operand B: -1.00000000000000009996 (0xbfff800000000000039a)
-Result: -0.00000000000000009996 (0xbfc9e680000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
-FAIL: Expected -0.00000000000000010000 (0xbfc9e69594bec44de15b)
-       Got -0.00000000000000009996 (0xbfc9e680000000000000)
 
 === Test 2: FADD with memory operands ===
 
@@ -141,19 +92,19 @@ Test case 1:
 Operand A: 0.50000000000000000000 (0x3ffe8000000000000000)
 Operand B: 0.25000000000000000000 (0x3ffd8000000000000000)
 Result: 0.75000000000000000000 (0x3ffec000000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
+Control Word: 0x027f
+Status Word:  0x0121
+Tag Word:     0x0121
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
+Exceptions: IE PE 
 PASS
 
 Test case 2:
 Operand A: 100000000000000000000.00000000000000000000 (0x4041ad78ebc5ac620000)
 Operand B: 0.00000000000000000001 (0x3fbcbce5086492111aeb)
 Result: 100000000000000000000.00000000000000000000 (0x4041ad78ebc5ac620000)
-Control Word: 0x037f
+Control Word: 0x027f
 Status Word:  0x0121
 Tag Word:     0x0121
 Top: 0
@@ -162,51 +113,339 @@ Exceptions: IE PE
 PASS
 
 Test case 3:
-Operand A: 0.00000000000000000001 (0x3fbcbce5086492111aeb)
-Operand B: 100000000000000000000.00000000000000000000 (0x4041ad78ebc5ac620000)
-Result: 100000000000000000000.00000000000000000000 (0x4041ad78ebc5ac620000)
-Control Word: 0x037f
-Status Word:  0x0121
-Tag Word:     0x0121
+Operand A: 0.00000000000000000000 (0x00000000000000000001)
+Operand B: 0.00000000000000000000 (0x00000000000000000001)
+Result: 0.00000000000000000000 (0x00000000000000000000)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE PE 
+Exceptions: IE DE UE PE 
+PASS
+
+=== Test 3: FADD with 32-bit memory operands ===
+
+Test case 1:
+Operand A: 1.5 (0x3fc00000)
+Operand B: 2.5 (0x40200000)
+Result: 4 (0x40800000)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 2:
+Operand A: 1e+20 (0x60ad78ec)
+Operand B: 1 (0x3f800000)
+Result: 1e+20 (0x60ad78ec)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 3:
+Operand A: 1.1754944e-38 (0x00800000)
+Operand B: 1.1754944e-38 (0x00800000)
+Result: 2.3509887e-38 (0x01000000)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
 PASS
 
 Test case 4:
-Operand A: 1.23456789000000000003 (0x3fff9e0652141ef0dbf6)
-Operand B: 9.87654320999999999972 (0x40029e06522c47b19a6c)
-Result: 11.11111109999999999997 (0x4002b1c71c6ecb8fb5eb)
-Control Word: 0x037f
-Status Word:  0x0121
-Tag Word:     0x0121
+Operand A: 1.7014117e+38 (0x7effffff)
+Operand B: 1.7014117e+38 (0x7effffff)
+Result: 3.4028235e+38 (0x7f7fffff)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE PE 
+Exceptions: IE DE UE PE 
 PASS
 
 Test case 5:
-Operand A: 0.00000000000000000000 (0x00000000000000000001)
-Operand B: 0.00000000000000000000 (0x00000000000000000001)
-Result: 0.00000000000000000000 (0x00000000000000000002)
-Control Word: 0x037f
-Status Word:  0x0123
-Tag Word:     0x0123
+Operand A: 0.1 (0x3dcccccd)
+Operand B: 0.2 (0x3e4ccccd)
+Result: 0.30000001 (0x3e99999a)
+Control Word: 0x027f
+Status Word:  0x0333
+Tag Word:     0x0333
 Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE PE 
+C0: 1, C1: 1, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
 PASS
 
-Test case 6:
-Operand A: -0.00000000000000000000 (0x80000000000000000001)
-Operand B: 0.00000000000000000000 (0x00000000000000000001)
+=== Test 4: FADDP instruction ===
+
+Test case 1:
+Operand A: 1.00000000000000000000 (0x3fff8000000000000000)
+Operand B: 2.00000000000000000000 (0x40008000000000000000)
+Result: 3.00000000000000000000 (0x4000c000000000000000)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 2:
+Operand A: -1.00000000000000000000 (0xbfff8000000000000000)
+Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
 Result: 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
-Status Word:  0x0123
-Tag Word:     0x0123
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE PE 
+Exceptions: IE DE UE PE 
 PASS
 
-FADD test completed
+Test case 3:
+Operand A: inf (0x7fff8000000000000000)
+Operand B: inf (0x7fff8000000000000000)
+Result: inf (0x7fff8000000000000000)
+Control Word: 0x027f
+Status Word:  0x0533
+Tag Word:     0x0533
+Top: 0
+C0: 1, C1: 0, C2: 1, C3: 0
+Exceptions: IE DE UE PE 
+FAIL
+
+Test case 4:
+Operand A: nan (0x7fffc000000000000000)
+Operand B: 1.00000000000000000000 (0x3fff8000000000000000)
+Result: nan (0x7fffc000000000000000)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 5:
+Operand A: 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
+Operand B: 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
+Result: 20000000000000000318057822195198360936721617127890562779562655115495677544340762121626939971713630208.00000000000000000000 (0x414c924d692ca61be800)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+=== Test 5: FADD with different rounding modes ===
+
+--- Round to nearest ---
+
+Test case 1:
+Operand A: 1.50000000000000000000 (0x3fffc000000000000000)
+Operand B: 2.50000000000000000000 (0x4000a000000000000000)
+Result: 4.00000000000000000000 (0x40018000000000000000)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+Test case 2:
+Operand A: 1.10000000000000000002 (0x3fff8ccccccccccccccd)
+Operand B: 2.20000000000000000004 (0x40008ccccccccccccccd)
+Result: 3.29999999999999982236 (0x4000d333333333333000)
+Control Word: 0x027f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+--- Round down ---
+
+Test case 1:
+Operand A: 1.50000000000000000000 (0x3fffc000000000000000)
+Operand B: 2.50000000000000000000 (0x4000a000000000000000)
+Result: 4.00000000000000000000 (0x40018000000000000000)
+Control Word: 0x067f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+Test case 2:
+Operand A: 1.10000000000000000002 (0x3fff8ccccccccccccccd)
+Operand B: 2.20000000000000000004 (0x40008ccccccccccccccd)
+Result: 3.29999999999999982236 (0x4000d333333333333000)
+Control Word: 0x067f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+--- Round up ---
+
+Test case 1:
+Operand A: 1.50000000000000000000 (0x3fffc000000000000000)
+Operand B: 2.50000000000000000000 (0x4000a000000000000000)
+Result: 4.00000000000000000000 (0x40018000000000000000)
+Control Word: 0x0a7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+Test case 2:
+Operand A: 1.10000000000000000003 (0x3fff8ccccccccccccccd)
+Operand B: 2.20000000000000000005 (0x40008ccccccccccccccd)
+Result: 3.30000000000000026646 (0x4000d333333333333800)
+Control Word: 0x0a7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+--- Round toward zero ---
+
+Test case 1:
+Operand A: 1.50000000000000000000 (0x3fffc000000000000000)
+Operand B: 2.50000000000000000000 (0x4000a000000000000000)
+Result: 4.00000000000000000000 (0x40018000000000000000)
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+Test case 2:
+Operand A: 1.10000000000000000002 (0x3fff8ccccccccccccccd)
+Operand B: 2.20000000000000000004 (0x40008ccccccccccccccd)
+Result: 3.29999999999999982236 (0x4000d333333333333000)
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+
+=== Test 6: FIADD instruction ===
+
+--- 32-bit integer tests ---
+
+Test case 1 (32-bit):
+Operand A (int): 10
+Operand B (float): 20.5
+Result: 30.5
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 2 (32-bit):
+Operand A (int): -5
+Operand B (float): 3.5
+Result: -1.5
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 3 (32-bit):
+Operand A (int): 10000
+Operand B (float): 0.5
+Result: 10000.5
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 4 (32-bit):
+Operand A (int): -10000
+Operand B (float): 0.25
+Result: -9999.75
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+--- 16-bit integer tests ---
+
+Test case 1 (16-bit):
+Operand A (int): 100
+Operand B (float): 50.5
+Result: 150.5
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 2 (16-bit):
+Operand A (int): -100
+Operand B (float): 200.5
+Result: 100.5
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 3 (16-bit):
+Operand A (int): 32767
+Operand B (float): 0
+Result: 32767
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+Test case 4 (16-bit):
+Operand A (int): -32768
+Operand B (float): 0
+Result: -32768
+Control Word: 0x0e7f
+Status Word:  0x0133
+Tag Word:     0x0133
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: IE DE UE PE 
+PASS
+
+All tests completed

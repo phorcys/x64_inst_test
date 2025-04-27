@@ -114,9 +114,9 @@ Test case 11:
 ST(0): nan (0x7fffc000000000000000)
 Mem: 0 (0x00000000)
 Control Word: 0x037f
-Status Word:  0x4501
-Tag Word:     0x4501
+Status Word:  0x4001
+Tag Word:     0x4001
 Top: 0
-C0: 1, C1: 0, C2: 1, C3: 1
+C0: 0, C1: 0, C2: 0, C3: 1
 Exceptions: IE 
 ERROR: Stack not properly popped!

@@ -33,6 +33,7 @@ void test_fxch4alias() {
         uint16_t sw;
         
         __asm__ __volatile__ (
+            "fninit\n\t"
             "fldl %[v5]\n\t"    // ST(0)=v5
             "fldl %[v4]\n\t"    // ST(0)=v4, ST(1)=v5
             "fldl %[v3]\n\t"    // ST(0)=v3, ST(1)=v4, ST(2)=v5

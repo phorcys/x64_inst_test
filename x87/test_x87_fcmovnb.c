@@ -2,80 +2,80 @@
 #include <stdint.h>
 #include <math.h>
 #include <float.h>
-#include <fenv.h>
 #include "x87.h"
 
 void test_fcmovnb() {
     printf("Testing FCMOVNB instruction\n");
     printf("FCMOVNB moves ST(i) to ST(0) if CF=0\n");
 
-    // 测试用例: 数值对和预期的CF标志状态
     struct {
-        long double src;
-        long double dst;
-        int cf;  // 预期的CF标志状态
+        long double st0;
+        long double sti;
+        uint8_t cf;
+        long double expected;
     } test_cases[] = {
-        {1.0L, 2.0L, 0},  // CF=0
-        {1.0L, 2.0L, 1},  // CF=1
-        {POS_INF, NEG_INF, 0},
-        {POS_NAN, NEG_NAN, 1},
-        {1e100L, -1e100L, 0},
-        {1e-100L, -1e-100L, 1},
-        {POS_DENORM, NEG_DENORM, 0},
-        {3.14159265358979323846L, -3.14159265358979323846L, 1},
-        {0.0L, -0.0L, 0},
-        {1.0000000000000001L, -1.0000000000000001L, 1}
+        {1.0L, 2.0L, 0, 2.0L},    // CF=0, 应该移动
+        {1.0L, 2.0L, 1, 1.0L},    // CF=1, 不应该移动
+        {POS_INF, NEG_INF, 0, NEG_INF},
+        {NEG_INF, POS_INF, 1, NEG_INF},
+        {POS_NAN, 1.0L, 0, 1.0L},
+        {1.0L, POS_NAN, 1, 1.0L}
     };
 
     for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
-        long double src = test_cases[i].src;
-        long double dst = test_cases[i].dst;
-        int expected_cf = test_cases[i].cf;
+        long double st0 = test_cases[i].st0;
+        long double sti = test_cases[i].sti;
         long double result;
+        uint8_t cf = test_cases[i].cf;
 
-        // 加载操作数到x87栈 (ST(0)=src, ST(1)=dst)
-        asm volatile ("fldt %0\n\t" : : "m" (src));
-        asm volatile ("fldt %0\n\t" : : "m" (dst));
-        
-        // 设置标志位并执行条件移动
+        // 设置CF标志
         asm volatile (
-            "clc\n\t"  // 默认清除CF
-            "test %[cf], %[cf]\n\t"  // 根据expected_cf设置CF
-            "fcmovnb %%st(1), %%st(0)\n\t"  // 条件移动
-            "fstpt %[result]\n\t"  // 存储结果
-            : [result] "=m" (result)
-            : [cf] "r" (expected_cf)
-            : "memory", "cc", "st", "st(1)"
+            "pushfq\n\t"
+            "andl $0xfffffffe, (%%rsp)\n\t"  // 清除CF
+            "orb %b[cf], (%%rsp)\n\t"        // 设置CF
+            "popfq"
+            : 
+            : [cf] "q" (cf)
+            : "memory"
+        );
+
+        // 测试FCMOVNB指令
+        asm volatile (
+            "fwait\n\t"          // 确保同步
+            "fldt %[sti]\n\t"    // 加载到ST(1)
+            "fldt %[st0]\n\t"    // 加载到ST(0)
+            "fcmovnb %%st(1), %%st(0)\n\t" // 条件移动
+            "fstpt %[res]\n\t"   // 存储结果
+            "fstp %%st(0)\n\t"   // 弹出ST(0)保持栈平衡
+            "fwait\n\t"          // 确保完成
+            : [res] "=m" (result)
+            : [st0] "m" (st0), [sti] "m" (sti)
         );
 
         printf("\nTest case %zu:\n", i+1);
-        printf("Source: ");
-        print_float80(src);
-        printf("Destination: ");
-        print_float80(dst);
-        printf("Expected CF: %d\n", expected_cf);
+        printf("ST(0): ");
+        print_float80(st0);
+        printf("ST(i): ");
+        print_float80(sti);
+        printf("CF: %d\n", cf);
         printf("Result: ");
         print_float80(result);
         print_x87_status();
 
-        // 验证结果 - 暂时放宽验证条件
+        // 验证结果
         int passed = 1;
-        if (expected_cf && isnan(src) && isnan(result)) {
-            // 对于CF=1且源是NaN的情况，结果也是NaN就认为通过
-            passed = 1;
-        } else if (!expected_cf && isnan(dst) && isnan(result)) {
-            // 对于CF=0且目标是NaN的情况，结果也是NaN就认为通过
-            passed = 1;
-        } else if (expected_cf && result == src) {
-            // CF=1时结果等于源值
-            passed = 1;
-        } else if (!expected_cf) {
-            // CF=0时暂时不验证，标记为通过
-            passed = 1;
-        } else {
-            passed = 0;
-            printf("FAIL: Unexpected result ");
+        if (isnan(test_cases[i].expected)) {
+            if (!isnan(result)) {
+                printf("FAIL: Expected NaN but got ");
+                print_float80(result);
+                passed = 0;
+            }
+        } else if (result != test_cases[i].expected) {
+            printf("FAIL: Expected ");
+            print_float80(test_cases[i].expected);
+            printf("       Got ");
             print_float80(result);
+            passed = 0;
         }
 
         if (passed) {
@@ -87,6 +87,7 @@ void test_fcmovnb() {
 }
 
 int main() {
+    init_x87_env();
     test_fcmovnb();
     return 0;
 }

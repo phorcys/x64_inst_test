@@ -37,6 +37,7 @@ void test_fxam() {
         // 加载测试值到x87栈
         uint16_t sw;
         __asm__ __volatile__ (
+            "fninit\n\t"
             "fldl %[val]\n\t"   // 加载测试值
             "fxam\n\t"          // 检查值类型
             "fnstsw %%ax"       // 保存状态字

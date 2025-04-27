@@ -52,10 +52,10 @@ void test_fucomi() {
         );
 
         print_x87_status();
-        printf("EFLAGS: 0x%08x\n", eflags);
+        printf("EFLAGS: 0x%08x\n", eflags & 0x8d5); // Only show relevant flags
         printf("CF: %d, PF: %d, ZF: %d\n",
                (eflags >> 0) & 1,  // CF
-               (eflags >> 2) & 1,  // PF
+               (eflags >> 2) & 1,  // PF 
                (eflags >> 6) & 1); // ZF
     }
 }

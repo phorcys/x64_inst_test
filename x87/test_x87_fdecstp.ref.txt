@@ -1,6 +1,7 @@
 Testing FDECSTP instruction
-FDECSTP decrements stack pointer by 1
+FDECSTP decrements stack pointer by 1 (0→7)
 
+Test 1: Basic decrement
 Initial state:
 Control Word: 0x037f
 Status Word:  0x2000
@@ -8,7 +9,6 @@ Tag Word:     0x2000
 Top: 4
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
-
 After FDECSTP:
 Control Word: 0x037f
 Status Word:  0x1800
@@ -16,6 +16,20 @@ Tag Word:     0x1800
 Top: 3
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
-PASS: Stack pointer correctly decremented
+PASS: Stack pointer correctly decremented (4→3)
+
+Test 2: Boundary case (0→7)
+PASS: Stack pointer correctly wrapped (0→7)
+
+Test 3: Multiple decrements and register preservation
+After 1 FDECSTP: TOP=7
+After 2 FDECSTP: TOP=6
+After 3 FDECSTP: TOP=5
+After 4 FDECSTP: TOP=4
+After 5 FDECSTP: TOP=3
+After 6 FDECSTP: TOP=2
+After 7 FDECSTP: TOP=1
+After 8 FDECSTP: TOP=0
+PASS: All registers preserved
 
 FDECSTP test completed

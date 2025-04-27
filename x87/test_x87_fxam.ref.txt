@@ -93,39 +93,39 @@ Exceptions: DE
 Test case 10: 正规格化数 (0.00)
 Expected flags: 0x0000, Actual flags: 0x0000
 Control Word: 0x037f
-Status Word:  0x3c02
-Tag Word:     0x3c02
+Status Word:  0x3c00
+Tag Word:     0x3c00
 Top: 7
 C0: 0, C1: 0, C2: 1, C3: 0
-Exceptions: DE 
+Exceptions: 
   [PASS]
 
 Test case 11: 负规格化数 (-0.00)
 Expected flags: 0x0200, Actual flags: 0x0200
 Control Word: 0x037f
-Status Word:  0x3e02
-Tag Word:     0x3e02
+Status Word:  0x3e00
+Tag Word:     0x3e00
 Top: 7
 C0: 0, C1: 1, C2: 1, C3: 0
-Exceptions: DE 
+Exceptions: 
   [PASS]
 
 Test case 12: SNaN (-nan)
 Expected flags: 0x0300, Actual flags: 0x0300
 Control Word: 0x037f
-Status Word:  0x3b02
-Tag Word:     0x3b02
+Status Word:  0x3b00
+Tag Word:     0x3b00
 Top: 7
 C0: 1, C1: 1, C2: 0, C3: 0
-Exceptions: DE 
+Exceptions: 
   [PASS]
 
 Test case 13: QNaN (nan)
 Expected flags: 0x0100, Actual flags: 0x0100
 Control Word: 0x037f
-Status Word:  0x3902
-Tag Word:     0x3902
+Status Word:  0x3900
+Tag Word:     0x3900
 Top: 7
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: DE 
+Exceptions: 
   [PASS]

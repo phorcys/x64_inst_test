@@ -88,9 +88,9 @@ After FXCH7alias:
   ST(6): -0.318310 (expected -0.318310)
   ST(7): 3.141593 (expected 3.141593)
 Control Word: 0x037f
-Status Word:  0x0002
-Tag Word:     0x0002
+Status Word:  0x0000
+Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: DE 
+Exceptions: 
   [PASS] FXCH7alias correct

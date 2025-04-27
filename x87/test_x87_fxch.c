@@ -33,6 +33,7 @@ void test_fxch() {
         uint16_t sw;
         
         __asm__ __volatile__ (
+            "fninit\n\t"
             "fldl %[v2]\n\t"    // 加载val2到ST(0)
             "fldl %[v1]\n\t"    // 加载val1到ST(0), val2变为ST(1)
             "fxch %%st(1)\n\t"  // 交换ST(0)和ST(1)

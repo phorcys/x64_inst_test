@@ -101,9 +101,9 @@ Exchange results:
   ST(0): 1.000000 (expected 1.000000)
   ST(1): -nan (expected -nan)
 Control Word: 0x037f
-Status Word:  0x0002
-Tag Word:     0x0002
+Status Word:  0x0000
+Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: DE 
+Exceptions: 
   [PASS] Values exchanged correctly

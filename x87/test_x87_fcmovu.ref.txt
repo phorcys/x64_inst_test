@@ -1,126 +1,82 @@
-=== Testing FCMOVU ===
-Test 1 (PF=1):
-Expected: 0.0, Actual: 0.00000000000000000000
+Testing FCMOVU instruction
+FCMOVU moves ST(i) to ST(0) if PF=1
+
+Test case 1:
+ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
+ST(i): 2.00000000000000000000 (0x40008000000000000000)
+PF: 1
+Result: 2.00000000000000000000 (0x40008000000000000000)
 Control Word: 0x037f
 Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
+PASS
 
-Test 2 (PF=0):
-Expected: 1.0, Actual: 1.00000000000000000000
+Test case 2:
+ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
+ST(i): 2.00000000000000000000 (0x40008000000000000000)
+PF: 0
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
 Control Word: 0x037f
 Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
+PASS
 
-Test 3.1.1 (0.000000 == 0.000000):
-Expected: 0.000000, Actual: 0.00000000000000000000
-Control Word: 0x037f
-Status Word:  0x0000
-Tag Word:     0x0000
-Top: 0
-C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
-
-Test 3.2.2 (-0.000000 == -0.000000):
-Expected: -0.000000, Actual: -0.00000000000000000000
-Control Word: 0x037f
-Status Word:  0x0000
-Tag Word:     0x0000
-Top: 0
-C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
-
-Test 3.3.3 (1.000000 == 1.000000):
-Expected: 1.000000, Actual: 1.00000000000000000000
-Control Word: 0x037f
-Status Word:  0x0000
-Tag Word:     0x0000
-Top: 0
-C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
-
-Test 3.4.4 (-1.000000 == -1.000000):
-Expected: -1.000000, Actual: -1.00000000000000000000
-Control Word: 0x037f
-Status Word:  0x0000
-Tag Word:     0x0000
-Top: 0
-C0: 0, C1: 0, C2: 0, C3: 0
-Exceptions: 
-
-Test 3.5.5 (inf == inf):
-Expected: inf, Actual: inf
+Test case 3:
+ST(0): inf (0x7fff8000000000000000)
+ST(i): -inf (0xffff8000000000000000)
+PF: 1
+Result: -inf (0xffff8000000000000000)
 Control Word: 0x037f
 Status Word:  0x0500
 Tag Word:     0x0500
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
 Exceptions: 
+PASS
 
-Test 3.6.6 (-inf == -inf):
-Expected: -inf, Actual: -inf
+Test case 4:
+ST(0): -inf (0xffff8000000000000000)
+ST(i): inf (0x7fff8000000000000000)
+PF: 0
+Result: -inf (0xffff8000000000000000)
 Control Word: 0x037f
 Status Word:  0x0500
 Tag Word:     0x0500
 Top: 0
 C0: 1, C1: 0, C2: 1, C3: 0
 Exceptions: 
+PASS
 
-Test 3.7.7 (nan == nan):
-Expected: nan, Actual: nan
+Test case 5:
+ST(0): nan (0x7fffc000000000000000)
+ST(i): 1.00000000000000000000 (0x3fff8000000000000000)
+PF: 1
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
 Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
+Status Word:  0x0100
+Tag Word:     0x0100
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
+Exceptions: 
+PASS
 
-Test 3.8.8 (-nan == -nan):
-Expected: -nan, Actual: -nan
+Test case 6:
+ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
+ST(i): nan (0x7fffc000000000000000)
+PF: 0
+Result: 1.00000000000000000000 (0x3fff8000000000000000)
 Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
+Status Word:  0x0100
+Tag Word:     0x0100
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
+Exceptions: 
+PASS
 
-Test 3.9.9 (0.000000 == 0.000000):
-Expected: 0.000000, Actual: 0.00000000000000000000
-Control Word: 0x037f
-Status Word:  0x0103
-Tag Word:     0x0103
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
-
-Test 3.10.10 (-0.000000 == -0.000000):
-Expected: -0.000000, Actual: -0.00000000000000000000
-Control Word: 0x037f
-Status Word:  0x0103
-Tag Word:     0x0103
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
-
-Test 3.11.11 (3.141593 == 3.141593):
-Expected: 3.141593, Actual: 3.14159265358979323851
-Control Word: 0x037f
-Status Word:  0x0103
-Tag Word:     0x0103
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
-
-Test 3.12.12 (2.718282 == 2.718282):
-Expected: 2.718282, Actual: 2.71828182845904523543
-Control Word: 0x037f
-Status Word:  0x0103
-Tag Word:     0x0103
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
+FCMOVU test completed

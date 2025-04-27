@@ -41,6 +41,7 @@ void test_fxtract() {
         uint16_t sw;
         
         __asm__ __volatile__ (
+            "fninit\n\t"
             "fldl %[val]\n\t"    // 加载测试值
             "fxtract\n\t"       // 分解指数和有效数
             "fstpl %[sig]\n\t"  // 保存有效数(原ST(0))

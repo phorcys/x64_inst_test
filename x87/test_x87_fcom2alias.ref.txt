@@ -1,9 +1,11 @@
-Testing FCOM2alias (ST(0) vs ST(2)):
+Testing FCOM2alias instruction
+
+=== Testing FCOM2alias with register operands (ST(0) vs ST(2)) ===
 
 Test case 1:
-ST(0): 0.00000000000000000000 (0x00000000000000000000)
-ST(2): 0.00000000000000000000 (0x00000000000000000000)
-Control Word: 0x037f
+ST(0): 0
+ST(2): 0
+Control Word: 0x0240
 Status Word:  0x6800
 Tag Word:     0x6800
 Top: 5
@@ -11,111 +13,213 @@ C0: 0, C1: 0, C2: 0, C3: 1
 Exceptions: 
 
 Test case 2:
-ST(0): 0.00000000000000000000 (0x00000000000000000000)
-ST(2): -0.00000000000000000000 (0x80000000000000000000)
-Control Word: 0x037f
-Status Word:  0x5000
-Tag Word:     0x5000
-Top: 2
+ST(0): 0
+ST(2): -0
+Control Word: 0x0240
+Status Word:  0x6800
+Tag Word:     0x6800
+Top: 5
 C0: 0, C1: 0, C2: 0, C3: 1
 Exceptions: 
 
 Test case 3:
-ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
-ST(2): 1.00000000000000000000 (0x3fff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x3900
-Tag Word:     0x3900
-Top: 7
+ST(0): 1
+ST(2): 1
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: 
 
 Test case 4:
-ST(0): 1.00000000000000000000 (0x3fff8000000000000000)
-ST(2): -1.00000000000000000000 (0xbfff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x2000
-Tag Word:     0x2000
-Top: 4
+ST(0): 1
+ST(2): -1
+Control Word: 0x0240
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
 
 Test case 5:
-ST(0): inf (0x7fff8000000000000000)
-ST(2): inf (0x7fff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x0900
-Tag Word:     0x0900
-Top: 1
+ST(0): inf
+ST(2): inf
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: 
 
 Test case 6:
-ST(0): inf (0x7fff8000000000000000)
-ST(2): -inf (0xffff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x3000
-Tag Word:     0x3000
-Top: 6
+ST(0): inf
+ST(2): -inf
+Control Word: 0x0240
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
 
 Test case 7:
-ST(0): nan (0x7fffc000000000000000)
-ST(2): nan (0x7fffc000000000000000)
-Control Word: 0x037f
-Status Word:  0x5d01
-Tag Word:     0x5d01
-Top: 3
+ST(0): nan
+ST(2): nan
+NAN comparison - Status Word: 0x6d01
+Exception Flags: IE 
+Control Word: 0x0240
+Status Word:  0x6d00
+Tag Word:     0x6d00
+Top: 5
 C0: 1, C1: 0, C2: 1, C3: 1
-Exceptions: IE 
+Exceptions: 
 
 Test case 8:
-ST(0): nan (0x7fffc000000000000000)
-ST(2): 1.00000000000000000000 (0x3fff8000000000000000)
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
-Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
-
-Test case 9:
-ST(0): 0.00000000000000000000 (0x00000000000000000001)
-ST(2): 0.00000000000000000000 (0x00000000000000000001)
-Control Word: 0x037f
-Status Word:  0x2903
-Tag Word:     0x2903
+ST(0): nan
+ST(2): 1
+NAN comparison - Status Word: 0x2900
+Exception Flags: 
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
 Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
+Exceptions: 
+
+Test case 9:
+ST(0): 3.141592653589793116
+ST(2): 2.7182818284590450908
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
 
 Test case 10:
-ST(0): 3.14159265358979323851 (0x4000c90fdaa22168c235)
-ST(2): 2.71828182845904523543 (0x4000adf85458a2bb4a9b)
-Control Word: 0x037f
-Status Word:  0x1103
-Tag Word:     0x1103
-Top: 2
+ST(0): 1.0000000000000000159e+100
+ST(2): 1.00000000000000002e-100
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
+Exceptions: 
 
 Test case 11:
-ST(0): 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
-ST(2): 0.00000000000000000000 (0x3eb2dff9772470297ebd)
-Control Word: 0x037f
-Status Word:  0x3903
-Tag Word:     0x3903
-Top: 7
+ST(0): 1.00000000000000002e-100
+ST(2): 1.0000000000000000159e+100
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
+Exceptions: 
 
-Test case 12:
-ST(0): 0.00000000000000000000 (0x3eb2dff9772470297ebd)
-ST(2): 9999999999999999999669353532207342619498699019828496079271391541752018669482644324418977840117055488.00000000000000000000 (0x414b924d692ca61be758)
-Control Word: 0x037f
-Status Word:  0x2103
-Tag Word:     0x2103
-Top: 4
+=== Testing FCOM2alias with 32-bit memory operands ===
+
+Test case 1:
+ST(0): 1.5
+m32: 1.5
+Control Word: 0x0040
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
+Exceptions: 
+
+Test case 2:
+ST(0): 1.5
+m32: -1.5
+Control Word: 0x0040
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 3:
+ST(0): 1e+10
+m32: 1.000000013e-10
+Control Word: 0x0040
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 4:
+ST(0): 1.000000013e-10
+m32: 1e+10
+Control Word: 0x0040
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 5:
+ST(0): nan
+m32: 1
+NAN comparison - Status Word: 0x2900
+Exception Flags: 
+Control Word: 0x0040
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+=== Testing FCOM2alias with 64-bit memory operands ===
+
+Test case 1:
+ST(0): 1.5
+m64: 1.5
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 2:
+ST(0): 1.5
+m64: -1.5
+Control Word: 0x0240
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 3:
+ST(0): 1.0000000000000000159e+100
+m64: 1.00000000000000002e-100
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 4:
+ST(0): 1.00000000000000002e-100
+m64: 1.0000000000000000159e+100
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test case 5:
+ST(0): nan
+m64: 1
+NAN comparison - Status Word: 0x2900
+Exception Flags: 
+Control Word: 0x0240
+Status Word:  0x2900
+Tag Word:     0x2900
+Top: 5
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 

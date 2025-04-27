@@ -36,6 +36,7 @@ void test_fxch7alias() {
         uint16_t sw;
         
         __asm__ __volatile__ (
+            "fninit\n\t"
             "fldl %[v8]\n\t"    // ST(0)=v8
             "fldl %[v7]\n\t"    // ST(0)=v7, ST(1)=v8
             "fldl %[v6]\n\t"    // ST(0)=v6, ST(1)=v7, ST(2)=v8

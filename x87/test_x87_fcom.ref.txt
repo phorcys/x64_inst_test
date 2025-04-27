@@ -1,144 +1,425 @@
-=== Testing FCOM ===
+Testing FCOM instruction
 
-Test 1: Equal values
-Values: 1.000000 vs 1.000000
-Status Word: 0x7000
-C0 (Unordered): 0
-C2 (Equal): 1
-C3 (Greater): 0
-Control Word: 0x037f
-Status Word:  0x4000
-Tag Word:     0x4000
+=== Testing FCOM with different rounding modes ===
+
+Rounding mode: Round to nearest
+Comparing 1.1000000000000000888 vs 1
+Control Word: 0x0240
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing 1.5 vs 1
+Control Word: 0x0240
+Status Word:  0x2000
+Tag Word:     0x2000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing 1.8999999999999999112 vs 1
+Control Word: 0x0240
+Status Word:  0x1000
+Tag Word:     0x1000
+Top: 2
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.1000000000000000888 vs -1
+Control Word: 0x0240
+Status Word:  0x0100
+Tag Word:     0x0100
 Top: 0
-C0: 0, C1: 0, C2: 0, C3: 1
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.5 vs -1
+Control Word: 0x0240
+Status Word:  0x3100
+Tag Word:     0x3100
+Top: 6
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.8999999999999999112 vs -1
+Control Word: 0x0240
+Status Word:  0x2100
+Tag Word:     0x2100
+Top: 4
+C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: 
 
-Test 2: First less than second
-Values: 1.000000 vs 2.000000
-Status Word: 0x3000
-C0 (Unordered): 0
-C2 (Equal): 0
-C3 (Greater): 0
-Control Word: 0x037f
+Rounding mode: Round down
+Comparing 1.1000000000000000888 vs 1
+Control Word: 0x0640
+Status Word:  0x1000
+Tag Word:     0x1000
+Top: 2
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing 1.5 vs 1
+Control Word: 0x0640
 Status Word:  0x0000
 Tag Word:     0x0000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 0
 Exceptions: 
-
-Test 3: First greater than second
-Values: 2.000000 vs 1.000000
-Status Word: 0x3100
-C0 (Unordered): 1
-C2 (Equal): 0
-C3 (Greater): 0
-Control Word: 0x037f
+Comparing 1.8999999999999999111 vs 1
+Control Word: 0x0640
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.1000000000000000889 vs -1
+Control Word: 0x0640
+Status Word:  0x2100
+Tag Word:     0x2100
+Top: 4
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.5 vs -1
+Control Word: 0x0640
+Status Word:  0x1100
+Tag Word:     0x1100
+Top: 2
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.8999999999999999112 vs -1
+Control Word: 0x0640
 Status Word:  0x0100
 Tag Word:     0x0100
 Top: 0
 C0: 1, C1: 0, C2: 0, C3: 0
 Exceptions: 
 
-Test 4: Positive and negative zero
-Values: 0.000000 vs -0.000000
-Status Word: 0x7000
-C0 (Unordered): 0
-C2 (Equal): 1
-C3 (Greater): 0
-Control Word: 0x037f
+Rounding mode: Round up
+Comparing 1.1000000000000000889 vs 1
+Control Word: 0x0a40
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing 1.5 vs 1
+Control Word: 0x0a40
+Status Word:  0x2000
+Tag Word:     0x2000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing 1.8999999999999999112 vs 1
+Control Word: 0x0a40
+Status Word:  0x1000
+Tag Word:     0x1000
+Top: 2
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.1000000000000000888 vs -1
+Control Word: 0x0a40
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.5 vs -1
+Control Word: 0x0a40
+Status Word:  0x3100
+Tag Word:     0x3100
+Top: 6
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.8999999999999999111 vs -1
+Control Word: 0x0a40
+Status Word:  0x2100
+Tag Word:     0x2100
+Top: 4
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Rounding mode: Round toward zero
+Comparing 1.1000000000000000888 vs 1
+Control Word: 0x0e40
+Status Word:  0x1000
+Tag Word:     0x1000
+Top: 2
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing 1.5 vs 1
+Control Word: 0x0e40
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing 1.8999999999999999111 vs 1
+Control Word: 0x0e40
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.1000000000000000888 vs -1
+Control Word: 0x0e40
+Status Word:  0x2100
+Tag Word:     0x2100
+Top: 4
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.5 vs -1
+Control Word: 0x0e40
+Status Word:  0x1100
+Tag Word:     0x1100
+Top: 2
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+Comparing -1.8999999999999999111 vs -1
+Control Word: 0x0e40
+Status Word:  0x0100
+Tag Word:     0x0100
+Top: 0
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+=== Testing FCOM with register operands ===
+
+--- Testing with ST(0) vs ST(1) ---
+Control Word: 0x0240
+Status Word:  0x3100
+Tag Word:     0x3100
+Top: 6
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 1: 1 vs 1
+Control Word: 0x0240
+Status Word:  0x6000
+Tag Word:     0x6000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 2: 1 vs 2
+Control Word: 0x0240
+Status Word:  0x1100
+Tag Word:     0x1100
+Top: 2
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3: 2 vs 1
+Control Word: 0x0240
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: 0 vs -0
+Control Word: 0x0240
+Status Word:  0x7000
+Tag Word:     0x7000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 5: inf vs inf
+Control Word: 0x0240
+Status Word:  0x6000
+Tag Word:     0x6000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 6: inf vs -inf
+Control Word: 0x0240
+Status Word:  0x1000
+Tag Word:     0x1000
+Top: 2
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 7: inf vs 1
+Control Word: 0x0240
+Status Word:  0x0000
+Tag Word:     0x0000
+Top: 0
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 8: 3.141592653589793116 vs 2.7182818284590450908
+Control Word: 0x0240
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 9: nan vs nan
+Control Word: 0x0240
+Status Word:  0xe581
+Tag Word:     0xe581
+Top: 4
+C0: 1, C1: 0, C2: 1, C3: 1
+Exceptions: IE ES 
+
+Test 10: nan vs 1
+Control Word: 0x0240
+Status Word:  0xd581
+Tag Word:     0xd581
+Top: 2
+C0: 1, C1: 0, C2: 1, C3: 1
+Exceptions: IE ES 
+
+Test 11: 0 vs 0
+Control Word: 0x0240
 Status Word:  0x4000
 Tag Word:     0x4000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 1
 Exceptions: 
 
-Test 5: Positive infinities
-Values: inf vs inf
-Status Word: 0x7000
-C0 (Unordered): 0
-C2 (Equal): 1
-C3 (Greater): 0
-Control Word: 0x037f
-Status Word:  0x0500
-Tag Word:     0x0500
-Top: 0
-C0: 1, C1: 0, C2: 1, C3: 0
+Test 12: 0 vs 0
+Control Word: 0x0240
+Status Word:  0x7000
+Tag Word:     0x7000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 1
 Exceptions: 
 
-Test 6: Positive vs negative infinity
-Values: inf vs -inf
-Status Word: 0x3100
-C0 (Unordered): 1
-C2 (Equal): 0
-C3 (Greater): 0
-Control Word: 0x037f
-Status Word:  0x0500
-Tag Word:     0x0500
-Top: 0
-C0: 1, C1: 0, C2: 1, C3: 0
+Test 13: 0 vs 0
+Control Word: 0x0240
+Status Word:  0x6000
+Tag Word:     0x6000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 1
 Exceptions: 
 
-Test 7: Infinity vs finite
-Values: inf vs 1.000000
-Status Word: 0x3100
-C0 (Unordered): 1
-C2 (Equal): 0
-C3 (Greater): 0
-Control Word: 0x037f
-Status Word:  0x0500
-Tag Word:     0x0500
-Top: 0
-C0: 1, C1: 0, C2: 1, C3: 0
-Exceptions: 
-
-Test 8: NaN values
-Values: nan vs nan
-Status Word: 0x7501
-C0 (Unordered): 1
-C2 (Equal): 1
-C3 (Greater): 1
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
-Top: 0
+Test 14: 0 vs 1
+Control Word: 0x0240
+Status Word:  0x1100
+Tag Word:     0x1100
+Top: 2
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
+Exceptions: 
 
-Test 9: NaN vs finite
-Values: nan vs 1.000000
-Status Word: 0x7501
-C0 (Unordered): 1
-C2 (Equal): 1
-C3 (Greater): 1
-Control Word: 0x037f
-Status Word:  0x0101
-Tag Word:     0x0101
+Test 15: 1 vs 0
+Control Word: 0x0240
+Status Word:  0x0000
+Tag Word:     0x0000
 Top: 0
-C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE 
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
 
-Test 10: Denormal values
-Values: 0.000000 vs 0.000000
-Status Word: 0x7003
-C0 (Unordered): 0
-C2 (Equal): 1
-C3 (Greater): 1
-Control Word: 0x037f
-Status Word:  0x4003
-Tag Word:     0x4003
+=== Testing FCOM with 32-bit memory operands ===
+
+Test 1: 1.5 vs 1.5
+Control Word: 0x0040
+Status Word:  0x7800
+Tag Word:     0x7800
+Top: 7
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 2: 1.5 vs 2.5
+Control Word: 0x0040
+Status Word:  0x3100
+Tag Word:     0x3100
+Top: 6
+C0: 1, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 3: 2.5 vs 1.5
+Control Word: 0x0040
+Status Word:  0x2800
+Tag Word:     0x2800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: 0 vs -0
+Control Word: 0x0040
+Status Word:  0x6000
+Tag Word:     0x6000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 5: inf vs inf
+Control Word: 0x0040
+Status Word:  0x5800
+Tag Word:     0x5800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 6: inf vs -inf
+Control Word: 0x0040
+Status Word:  0x1000
+Tag Word:     0x1000
+Top: 2
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 7: inf vs 1
+Control Word: 0x0040
+Status Word:  0x0800
+Tag Word:     0x0800
+Top: 1
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+=== Testing FCOM with 64-bit memory operands ===
+
+Test 1: 1.5 vs 1.5
+Control Word: 0x0240
+Status Word:  0x4000
+Tag Word:     0x4000
 Top: 0
 C0: 0, C1: 0, C2: 0, C3: 1
-Exceptions: IE DE 
+Exceptions: 
 
-Test 11: PI vs E
-Values: 3.141593 vs 2.718282
-Status Word: 0x3103
-C0 (Unordered): 1
-C2 (Equal): 0
-C3 (Greater): 1
-Control Word: 0x037f
-Status Word:  0x0103
-Tag Word:     0x0103
-Top: 0
+Test 2: 1.5 vs 2.5
+Control Word: 0x0240
+Status Word:  0x3900
+Tag Word:     0x3900
+Top: 7
 C0: 1, C1: 0, C2: 0, C3: 0
-Exceptions: IE DE 
+Exceptions: 
+
+Test 3: 2.5 vs 1.5
+Control Word: 0x0240
+Status Word:  0x3000
+Tag Word:     0x3000
+Top: 6
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 4: 0 vs -0
+Control Word: 0x0240
+Status Word:  0x6800
+Tag Word:     0x6800
+Top: 5
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 5: inf vs inf
+Control Word: 0x0240
+Status Word:  0x6000
+Tag Word:     0x6000
+Top: 4
+C0: 0, C1: 0, C2: 0, C3: 1
+Exceptions: 
+
+Test 6: inf vs -inf
+Control Word: 0x0240
+Status Word:  0x1800
+Tag Word:     0x1800
+Top: 3
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
+
+Test 7: inf vs 1
+Control Word: 0x0240
+Status Word:  0x1000
+Tag Word:     0x1000
+Top: 2
+C0: 0, C1: 0, C2: 0, C3: 0
+Exceptions: 
