@@ -88,6 +88,17 @@ test-%:
 		rm -f test_res.txt; \
 	done
 
+testn-%:
+	@for exe in $(filter $*/%,$(EXES)); do \
+		$$TRANSLATOR ./$$exe > test_res.txt; \
+		if diff -q test_res.txt $$exe.ref.txt >/dev/null; then \
+			echo "\033[32m$$exe: PASSED\033[0m"; \
+		else \
+			echo "\033[31m$$exe: FAILED\033[0m"; \
+		fi; \
+		rm -f test_res.txt; \
+	done
+
 %:
 	@:
 
