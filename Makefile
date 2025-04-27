@@ -26,6 +26,12 @@ all: $(EXES)
 		$(CC) $(MMX_CFLAGS) -o $@ $<; \
 	elif echo "$@" | grep -q '^sse/'; then \
 		$(CC) $(SSE_CFLAGS) -o $@ $<; \
+	elif [ "$@" = "x87/test_x87_ficom" ]; then \
+		$(CC) $(X87_CFLAGS) -c x87/ficom_asm.s -o x87/ficom_asm.o; \
+		$(CC) $(X87_CFLAGS) -o $@ $< x87/ficom_asm.o -lm; \
+	elif [ "$@" = "x87/test_x87_ficomp" ]; then \
+		$(CC) $(X87_CFLAGS) -c x87/ficomp_asm.s -o x87/ficomp_asm.o; \
+		$(CC) $(X87_CFLAGS) -o $@ $< x87/ficomp_asm.o -lm; \
 	elif echo "$@" | grep -q '^x87/'; then \
 		$(CC) $(X87_CFLAGS) -o $@ $< -lm; \
 	else \
