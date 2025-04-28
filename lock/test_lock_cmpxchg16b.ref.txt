@@ -1,0 +1,31 @@
+=== Basic Functionality Tests ===
+Before (equal):
+  Value: 0x11111111111111112222222222222222
+  Flags: ZF=0
+After (equal):
+  Value: 0x11111111111111112222222222222222
+  Flags: ZF=0
+Expected: :
+  Value: 0x22222222222222221111111111111111
+  Flags: ZF=0
+
+Before (not equal):
+  Value: 0x55555555555555556666666666666666
+  Flags: ZF=0
+After (not equal):
+  Value: 0x55555555555555556666666666666666
+  Flags: ZF=0
+Expected: :
+  Value: 0x66666666666666665555555555555555
+  Flags: ZF=0
+
+=== Boundary Value Tests ===
+All zeros test: PASS
+Result:
+  Value: 0xffffffffffffffffffffffffffffffff
+  Flags: ZF=1
+
+All ones test: PASS
+Result:
+  Value: 0x00000000000000000000000000000000
+  Flags: ZF=1
