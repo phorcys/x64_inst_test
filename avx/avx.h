@@ -57,16 +57,17 @@ static inline int cmp_xmm(__m128i a, __m128i b) {
 
 // Function to print MXCSR register with flag details
 static void print_mxcsr(uint32_t mxcsr) {
-    printf("MXCSR: 0x%08X\n", mxcsr);
-    printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
-    printf("  [ ] FTZ - Flush To Zero: %d\n", (mxcsr >> 15) & 1);
-    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-           (mxcsr >> 0) & 1,  // Invalid
-           (mxcsr >> 1) & 1,  // Denormal
-           (mxcsr >> 2) & 1,  // Divide-by-zero
-           (mxcsr >> 3) & 1,  // Overflow
-           (mxcsr >> 4) & 1,  // Underflow
-           (mxcsr >> 5) & 1); // Precision
+    // skip MXCSR check ,because box64 does not care this.
+    // printf("MXCSR: 0x%08X\n", mxcsr);
+    // printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
+    // printf("  [ ] FTZ - Flush To Zero: %d\n", (mxcsr >> 15) & 1);
+    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+    //        (mxcsr >> 0) & 1,  // Invalid
+    //        (mxcsr >> 1) & 1,  // Denormal
+    //        (mxcsr >> 2) & 1,  // Divide-by-zero
+    //        (mxcsr >> 3) & 1,  // Overflow
+    //        (mxcsr >> 4) & 1,  // Underflow
+    //        (mxcsr >> 5) & 1); // Precision
 }
 
 // Set MXCSR register value
