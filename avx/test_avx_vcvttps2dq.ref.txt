@@ -1,0 +1,24 @@
+============================
+VCVTTPS2DQ Instruction Tests
+============================
+
+VCVTTPS2DQ Test (Register Operand):
+  Input: 1.5, Expected: 1, Result: 1 - PASS
+  Input: -1.5, Expected: -1, Result: -1 - PASS
+  Input: 2.5, Expected: 2, Result: 2 - PASS
+  Input: -2.5, Expected: -2, Result: -2 - PASS
+  Input: 3.5, Expected: 3, Result: 3 - PASS
+  Input: -3.5, Expected: -3, Result: -3 - PASS
+  Input: 4.5, Expected: 4, Result: 4 - PASS
+  Input: -4.5, Expected: -4, Result: -4 - PASS
+
+VCVTTPS2DQ Test (Memory Operand):
+  Input: 10.1, Expected: 10, Result: 10 - PASS
+  Input: -10.1, Expected: -10, Result: -10 - PASS
+  Input: 20.2, Expected: 20, Result: 20 - PASS
+  Input: -20.2, Expected: -20, Result: -20 - PASS
+  Input: 30.3, Expected: 30, Result: 30 - PASS
+  Input: -30.3, Expected: -30, Result: -30 - PASS
+  Input: 40.4, Expected: 40, Result: 40 - PASS
+  Input: -40.4, Expected: -40, Result: -40 - PASS
+

@@ -1,10 +1,12 @@
-#ifndef AVX_TEST_H
-#define AVX_TEST_H
+#ifndef AVX_H
+#define AVX_H
+
 
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include <immintrin.h>
+#include <math.h>
 
 // 打印256位向量
 static inline void print_ymm(const char* name, __m256i ymm) {
@@ -53,4 +55,66 @@ static inline int cmp_xmm(__m128i a, __m128i b) {
     return memcmp(buf1, buf2, 16) == 0;
 }
 
-#endif // AVX_TEST_H
+// Function to print MXCSR register with flag details
+static void print_mxcsr(uint32_t mxcsr) {
+    printf("MXCSR: 0x%08X\n", mxcsr);
+    printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
+    printf("  [ ] FTZ - Flush To Zero: %d\n", (mxcsr >> 15) & 1);
+    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+           (mxcsr >> 0) & 1,  // Invalid
+           (mxcsr >> 1) & 1,  // Denormal
+           (mxcsr >> 2) & 1,  // Divide-by-zero
+           (mxcsr >> 3) & 1,  // Overflow
+           (mxcsr >> 4) & 1,  // Underflow
+           (mxcsr >> 5) & 1); // Precision
+}
+
+// Set MXCSR register value
+static void set_mxcsr(uint32_t mxcsr) {
+    __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr));
+}
+
+// Get MXCSR register value
+static uint32_t get_mxcsr() {
+    uint32_t mxcsr;
+    __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
+    return mxcsr;
+}
+
+// Floating point comparison with tolerance and ULPs
+static int float_equal_ulp(float a, float b, float tolerance, int max_ulps) {
+    if (isnan(a) && isnan(b)) return 1;
+    if (fabsf(a - b) <= tolerance) return 1;
+    
+    int32_t ai = *(int32_t*)&a;
+    int32_t bi = *(int32_t*)&b;
+    if ((ai < 0) != (bi < 0)) return 0; // Different signs
+    return abs(ai - bi) <= max_ulps;
+}
+
+// Floating point comparison with tolerance (default 4 ULPs)
+static int float_equal(float a, float b, float tolerance) {
+    return float_equal_ulp(a, b, tolerance, 4);
+}
+
+// Double precision comparison with tolerance
+static int double_equal(double a, double b, double tolerance) {
+    return (fabs(a - b) <= tolerance);
+}
+
+// Helper to print 128-bit vector
+static void print_vector128(const char* name, __m128 vec) {
+    float f[4];
+    _mm_storeu_ps(f, vec);
+    printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", name, f[0], f[1], f[2], f[3]);
+}
+
+// Helper to print 256-bit vector
+static void print_vector256(const char* name, __m256 vec) {
+    float f[8];
+    _mm256_storeu_ps(f, vec);
+    printf("%s: [%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f]\n", 
+           name, f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
+}
+
+#endif // AVX_H

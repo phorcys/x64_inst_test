@@ -1,0 +1,151 @@
+====================
+VCVTSS2SI TEST SUITE
+====================
+
+Testing with rounding mode: Round to nearest
+
+Test: Positive float
+Input float: 123.456001 (0x42F6E979)
+Expected integer: 123 (0x0000007B)
+Actual result:  123 (0x0000007B)
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Negative float
+Input float: -123.456001 (0xC2F6E979)
+Expected integer: -123 (0xFFFFFF85)
+Actual result:  -123 (0xFFFFFF85)
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+Testing with rounding mode: Round toward -inf
+
+Test: Positive float (Memory operand)
+Input float: 123.456001 (0x42F6E979)
+Expected integer: 123 (0x0000007B)
+Actual result:  123 (0x0000007B)
+MXCSR: 0x00003FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Negative float (Memory operand)
+Input float: -123.456001 (0xC2F6E979)
+Expected integer: -124 (0xFFFFFF84)
+Actual result:  -124 (0xFFFFFF84)
+MXCSR: 0x00003FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+Testing with rounding mode: Round toward +inf
+
+Test: Positive float
+Input float: 123.456001 (0x42F6E979)
+Expected integer: 124 (0x0000007C)
+Actual result:  124 (0x0000007C)
+MXCSR: 0x00005FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Negative float
+Input float: -123.456001 (0xC2F6E979)
+Expected integer: -123 (0xFFFFFF85)
+Actual result:  -123 (0xFFFFFF85)
+MXCSR: 0x00005FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+Testing with rounding mode: Round toward zero
+
+Test: Positive float (Memory operand)
+Input float: 123.456001 (0x42F6E979)
+Expected integer: 123 (0x0000007B)
+Actual result:  123 (0x0000007B)
+MXCSR: 0x00007FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Negative float (Memory operand)
+Input float: -123.456001 (0xC2F6E979)
+Expected integer: -123 (0xFFFFFF85)
+Actual result:  -123 (0xFFFFFF85)
+MXCSR: 0x00007FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Max representable integer
+Input float: 2147483520.000000 (0x4EFFFFFF)
+Expected integer: 2147483520 (0x7FFFFF80)
+Actual result:  2147483520 (0x7FFFFF80)
+MXCSR: 0x00007FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Min representable integer
+Input float: -2147483520.000000 (0xCEFFFFFF)
+Expected integer: -2147483520 (0x80000080)
+Actual result:  -2147483520 (0x80000080)
+MXCSR: 0x00007FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: NaN input
+Input float: nan (0x7FC00000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:  -2147483648 (0x80000000)
+MXCSR: 0x00007FA1
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Positive infinity
+Input float: inf (0x7F800000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:  -2147483648 (0x80000000)
+MXCSR: 0x00007FA1
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
+
+Test: Negative infinity
+Input float: -inf (0xFF800000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:  -2147483648 (0x80000000)
+MXCSR: 0x00007FA1
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:1
+TEST PASSED
+
