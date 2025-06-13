@@ -56,34 +56,34 @@ static inline int cmp_xmm(__m128i a, __m128i b) {
 }
 
 // Function to print MXCSR register with flag details
-static void print_mxcsr(uint32_t mxcsr) {
-    // skip MXCSR check ,because box64 does not care this.
-    // printf("MXCSR: 0x%08X\n", mxcsr);
-    // printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
-    // printf("  [ ] FTZ - Flush To Zero: %d\n", (mxcsr >> 15) & 1);
-    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-    //        (mxcsr >> 0) & 1,  // Invalid
-    //        (mxcsr >> 1) & 1,  // Denormal
-    //        (mxcsr >> 2) & 1,  // Divide-by-zero
-    //        (mxcsr >> 3) & 1,  // Overflow
-    //        (mxcsr >> 4) & 1,  // Underflow
-    //        (mxcsr >> 5) & 1); // Precision
+static void __attribute__((unused)) print_mxcsr(uint32_t mxcsr) {
+    // 输出MXCSR状态
+    printf("MXCSR: 0x%08X\n", mxcsr);
+    printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
+    printf("  [ ] FTZ - Flush To Zero: %d\n", (mxcsr >> 15) & 1);
+    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+           (mxcsr >> 0) & 1,  // Invalid
+           (mxcsr >> 1) & 1,  // Denormal
+           (mxcsr >> 2) & 1,  // Divide-by-zero
+           (mxcsr >> 3) & 1,  // Overflow
+           (mxcsr >> 4) & 1,  // Underflow
+           (mxcsr >> 5) & 1); // Precision
 }
 
 // Set MXCSR register value
-static void set_mxcsr(uint32_t mxcsr) {
+static void __attribute__((unused)) set_mxcsr(uint32_t mxcsr) {
     __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr));
 }
 
 // Get MXCSR register value
-static uint32_t get_mxcsr() {
+static uint32_t __attribute__((unused)) get_mxcsr() {
     uint32_t mxcsr;
     __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
     return mxcsr;
 }
 
 // Floating point comparison with tolerance and ULPs
-static int float_equal_ulp(float a, float b, float tolerance, int max_ulps) {
+static int __attribute__((unused)) float_equal_ulp(float a, float b, float tolerance, int max_ulps) {
     if (isnan(a) && isnan(b)) return 1;
     if (fabsf(a - b) <= tolerance) return 1;
     
@@ -94,24 +94,24 @@ static int float_equal_ulp(float a, float b, float tolerance, int max_ulps) {
 }
 
 // Floating point comparison with tolerance (default 4 ULPs)
-static int float_equal(float a, float b, float tolerance) {
+static int __attribute__((unused)) float_equal(float a, float b, float tolerance) {
     return float_equal_ulp(a, b, tolerance, 4);
 }
 
 // Double precision comparison with tolerance
-static int double_equal(double a, double b, double tolerance) {
+static int __attribute__((unused)) double_equal(double a, double b, double tolerance) {
     return (fabs(a - b) <= tolerance);
 }
 
 // Helper to print 128-bit vector
-static void print_vector128(const char* name, __m128 vec) {
+static void __attribute__((unused)) print_vector128(const char* name, __m128 vec) {
     float f[4];
     _mm_storeu_ps(f, vec);
     printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", name, f[0], f[1], f[2], f[3]);
 }
 
 // Helper to print 256-bit vector
-static void print_vector256(const char* name, __m256 vec) {
+static void __attribute__((unused)) print_vector256(const char* name, __m256 vec) {
     float f[8];
     _mm256_storeu_ps(f, vec);
     printf("%s: [%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f]\n", 

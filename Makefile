@@ -4,7 +4,7 @@
 DIRS := mmx lock sse sse2 sse3 sse4 avx crypt arith x87
 
 # Default CFLAGS
-CC := gcc-14
+CC := clang
 CFLAGS := -Wall -Wextra -O0 -march=core2 -pthread -D_GNU_SOURCE
 MMX_CFLAGS := -Wall -Wextra -O0 -mmmx -pthread -D_GNU_SOURCE -lm
 SSE_CFLAGS := -Wall -Wextra -O0 -msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2 -mlzcnt \
