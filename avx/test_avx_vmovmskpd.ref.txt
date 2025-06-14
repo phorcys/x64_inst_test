@@ -10,6 +10,30 @@ After:  mask=0x6
   PASS: 256-bit vmovmskpd
 
 Testing vmovmskpd with special values:
-Before: src=[nan, -inf]
-After:  mask=0x2
-  PASS: Special values handled correctly
+
+Test case 1:
+Before: [0.000000, nan, 0.000000, -nan, 0.000000, nan, 0.000000, -0.000000]
+After:  mask=0xa
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+  PASS: Special values case 1
+
+Test case 2:
+Before: [0.000000, 0.000000, 0.000000, -0.000000, 0.000000, 0.000000, -nan, -nan]
+After:  mask=0xa
+MXCSR: 0x00001F82
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:1 Z:0 O:0 U:0 P:0
+  FAIL: Special values case 2
+
+Test case 3:
+Before: [-124.475288, 0.000000, -0.000000, -61108445964240441135231770507360600064.000000, -0.000000, 61108445964240441135231770507360600064.000000, -124.475288, -0.000000]
+After:  mask=0xa
+MXCSR: 0x00001F82
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:1 Z:0 O:0 U:0 P:0
+  FAIL: Special values case 3

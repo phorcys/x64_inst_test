@@ -117,7 +117,6 @@ void test_vmaskmovps() {
         __m128 reg = _mm_setzero_ps();
         
         printf("\nTesting vmaskmovps with unaligned memory:\n");
-        printf("Address: %p (unaligned)\n", &data[1]);
         
         reg = _mm_maskload_ps((float*)&data[1], _mm_castps_si128(mask));
         

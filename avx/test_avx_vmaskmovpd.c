@@ -113,7 +113,6 @@ void test_vmaskmovpd() {
         __m128d reg = _mm_setzero_pd();
         
         printf("\nTesting vmaskmovpd with unaligned memory:\n");
-        printf("Address: %p (unaligned)\n", &data[1]);
         
         __asm__ __volatile__(
             "vmaskmovpd %1, %2, %0"

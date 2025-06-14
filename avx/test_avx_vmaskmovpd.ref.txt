@@ -15,7 +15,6 @@ Result: [nan, inf]
   PASS: INFINITY value correctly loaded
 
 Testing vmaskmovpd with unaligned memory:
-Address: 0x7ffdb3c87308 (unaligned)
 Result: [2.00, 3.00]
   PASS: Unaligned access works
 

@@ -37,14 +37,12 @@ void test_vmovntdq() {
         }
     }
     
-    // 测试256位版本 (暂时注释，需要进一步调试)
-    /*
+    // 测试256位版本
     {
-        uint32_t src[8] = {0x11111111, 0x22222222, 0x33333333, 0x44444444,
-                          0x55555555, 0x66666666, 0x77777777, 0x88888888};
-        uint32_t* dst = (uint32_t*)_mm_malloc(8*sizeof(uint32_t), 32);
-        memset(dst, 0, 8*sizeof(uint32_t));
-        __m256i reg = _mm256_loadu_si256((__m256i*)src);
+        uint32_t src[8] ALIGNED(32) = {0x11111111, 0x22222222, 0x33333333, 0x44444444,
+                                     0x55555555, 0x66666666, 0x77777777, 0x88888888};
+        uint32_t dst[8] ALIGNED(32) = {0};
+        __m256i reg = _mm256_load_si256((__m256i*)src);
         
         printf("\nTesting vmovntdq (256-bit):\n");
         printf("Before: src=[0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
@@ -64,14 +62,12 @@ void test_vmovntdq() {
                dst[4], dst[5], dst[6], dst[7]);
         
         // 验证结果
-        if(memcmp(src, dst, 8*sizeof(uint32_t)) == 0) {
+        if(memcmp(src, dst, sizeof(src)) == 0) {
             printf("  PASS: 256-bit vmovntdq\n");
         } else {
             printf("  FAIL: 256-bit vmovntdq\n");
         }
-        _mm_free(dst);
     }
-    */
 }
 
 int main() {

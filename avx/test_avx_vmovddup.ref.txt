@@ -1,15 +1,58 @@
 === Testing vmovddup ===
-Testing vmovddup (128-bit):
-Before: src=[1.00, 2.00]
-After:  dst=[1.00, 1.00]
-  PASS: 128-bit vmovddup
+Testing vmovddup (128-bit register):
+Before: [0.000000, 1.875000, 0.000000, 2.000000]
+After : [0.000000, 1.875000, 0.000000, 1.875000]
+  PASS: 128-bit vmovddup (register)
 
-Testing vmovddup (256-bit):
-Before: src=[1.00, 2.00, 3.00, 4.00]
-After:  dst=[1.00, 1.00, 3.00, 3.00]
-  PASS: 256-bit vmovddup
+Testing vmovddup (128-bit memory):
+Before: [0.000000, 2.125000, 0.000000, 2.250000]
+After : [0.000000, 2.125000, 0.000000, 2.125000]
+  PASS: 128-bit vmovddup (memory)
+
+Testing vmovddup (256-bit register):
+Before: [0.000000, 1.875000, 0.000000, 2.000000, 0.000000, 2.125000, 0.000000, 2.250000]
+After : [0.000000, 1.875000, 0.000000, 1.875000, 0.000000, 2.125000, 0.000000, 2.125000]
+  PASS: 256-bit vmovddup (register)
+
+Testing vmovddup (256-bit memory):
+Before: [0.000000, 2.312500, 0.000000, 2.375000, 0.000000, 2.437500, 0.000000, 2.500000]
+After : [0.000000, 2.312500, 0.000000, 2.312500, 0.000000, 2.437500, 0.000000, 2.437500]
+  PASS: 256-bit vmovddup (memory)
 
 Testing vmovddup with special values:
-Before: src=[nan, inf]
-After:  dst=[nan, nan]
-  PASS: Special values handled correctly
+
+Test case 1:
+Before: [0.000000, nan, 0.000000, nan]
+After : [0.000000, nan, 0.000000, nan]
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+  PASS: Special values case 1
+
+Test case 2:
+Before: [0.000000, 0.000000, 0.000000, -0.000000]
+After : [0.000000, 0.000000, 0.000000, 0.000000]
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+  PASS: Special values case 2
+
+Test case 3:
+Before: [-124.475288, 0.000000, -0.000000, 61108445964240441135231770507360600064.000000]
+After : [-124.475288, 0.000000, -124.475288, 0.000000]
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+  PASS: Special values case 3
+
+Test case 4:
+Before: [-124.475288, -0.000000, -0.000000, -61108445964240441135231770507360600064.000000]
+After : [-124.475288, -0.000000, -124.475288, -0.000000]
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+  PASS: Special values case 4
