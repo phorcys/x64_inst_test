@@ -1,6 +1,8 @@
 #ifndef AVX_H
 #define AVX_H
 
+// 内存对齐宏
+#define ALIGNED(n) __attribute__((aligned(n)))
 
 #include <stdio.h>
 #include <stdint.h>

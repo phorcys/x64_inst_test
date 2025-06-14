@@ -1,0 +1,15 @@
+=== Testing vmovsldup ===
+Testing vmovsldup (128-bit):
+Before: src=[1.00, 2.00, 3.00, 4.00]
+After:  dst=[1.00, 1.00, 3.00, 3.00]
+  PASS: 128-bit vmovsldup
+
+Testing vmovsldup (256-bit):
+Before: src=[1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00]
+After:  dst=[1.00, 1.00, 3.00, 3.00, 5.00, 5.00, 7.00, 7.00]
+  PASS: 256-bit vmovsldup
+
+Testing vmovsldup with special values:
+Before: src=[nan, inf, -inf, 0.000000]
+After:  dst=[nan, nan, -inf, -inf]
+  PASS: Special values handled correctly

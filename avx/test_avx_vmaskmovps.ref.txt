@@ -1,0 +1,27 @@
+=== Testing vmaskmovps ===
+Testing vmaskmovps (128-bit):
+Before: reg=[0.00, 0.00, 0.00, 0.00]
+After:  reg=[1.00, 0.00, 3.00, 0.00]
+  PASS: 128-bit vmaskmovps
+
+Testing vmaskmovps (256-bit):
+Before: reg=[0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+After:  reg=[1.00, 0.00, 3.00, 0.00, 0.00, 6.00, 0.00, 8.00]
+  PASS: 256-bit vmaskmovps
+
+Testing vmaskmovps with special values:
+Result: [nan, inf, -inf, 0.000000]
+  PASS: NaN value correctly loaded
+  PASS: +INFINITY value correctly loaded
+  PASS: -INFINITY value correctly loaded
+  PASS: 0 value not loaded (mask=0)
+
+Testing vmaskmovps with unaligned memory:
+Address: 0x7ffd045abb24 (unaligned)
+Result: [2.00, 3.00, 4.00, 5.00]
+  PASS: Unaligned access works
+
+Testing vmaskmovps with complex mask (256-bit):
+Before: reg=[10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00]
+After:  reg=[1.00, 0.00, 3.00, 0.00, 0.00, 6.00, 0.00, 8.00]
+  PASS: Complex mask pattern works
