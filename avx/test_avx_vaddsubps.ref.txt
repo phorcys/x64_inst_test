@@ -1,0 +1,29 @@
+--- Testing vaddsubps (packed single-precision add/sub) ---
+Test 1: 256-bit register-register
+Input1:   Input1: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+Input2:   Input2: 0.500000 1.500000 2.500000 3.500000 4.500000 5.500000 6.500000 7.500000 
+Expected: Expected: 0.500000 3.500000 0.500000 7.500000 0.500000 11.500000 0.500000 15.500000 
+Result:   Result: 0.500000 3.500000 0.500000 7.500000 0.500000 11.500000 0.500000 15.500000 
+[PASS] Test 1: 256-bit register-register
+
+Test 2: 128-bit register-register
+Input1:   Input1: 10.000000 20.000000 30.000000 40.000000 
+Input2:   Input2: 1.000000 2.000000 3.000000 4.000000 
+Expected: Expected: 9.000000 22.000000 27.000000 44.000000 
+Result:   Result: 9.000000 22.000000 27.000000 44.000000 
+[PASS] Test 2: 128-bit register-register
+
+Test 3: Boundary values
+Input1:   Input1: inf -inf nan 0.000000 -100.000000 100.000000 0.000000 -0.000000 
+Input2:   Input2: 1.000000 1.000000 1.000000 1.000000 50.000000 -50.000000 0.000000 0.000000 
+Expected: Expected: inf -inf nan 1.000000 -150.000000 50.000000 0.000000 0.000000 
+Result:   Result: inf -inf nan 1.000000 -150.000000 50.000000 0.000000 0.000000 
+Expected (hex): Expected: 0x7F800000 0xFF800000 0x7FC00000 0x3F800000 0xC3160000 0x42480000 0x00000000 0x00000000 
+Result (hex):   Result: 0x7F800000 0xFF800000 0x7FC00000 0x3F800000 0xC3160000 0x42480000 0x00000000 0x00000000 
+[PASS] Test 3: Boundary values
+
+--- Test Summary ---
+Total tests: 3
+Passed tests: 3
+Failed tests: 0
+All vaddsubps tests passed!

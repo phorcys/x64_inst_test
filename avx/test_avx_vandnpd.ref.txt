@@ -1,0 +1,18 @@
+--- Testing vandnpd (packed double-precision bitwise AND NOT) ---
+Test 1: 256-bit register-register
+256-bit register-register test:
+Expected: 0x0000000000000000 0x0000000055555555 0xffffffff00000000 0x5555555555555555 
+Result: 0x0000000000000000 0x0000000055555555 0xffffffff00000000 0x5555555555555555 
+[PASS] Test 1: 256-bit register-register
+
+Test 2: 128-bit register-register
+128-bit register-register test:
+Expected: 0xaaaaaaaaaaaaaaaa 0x0000000000000000 
+Result: 0xaaaaaaaaaaaaaaaa 0x0000000000000000 
+[PASS] Test 2: 128-bit register-register
+
+--- Test Summary ---
+Total tests: 2
+Passed tests: 2
+Failed tests: 0
+All vandnpd tests passed!

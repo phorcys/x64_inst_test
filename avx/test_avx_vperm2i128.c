@@ -2,19 +2,32 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <float.h>
 
 // 测试单个imm8组合的辅助函数
-static void test_case(__m256i ymm1, __m256i ymm2, __m256i* result, unsigned imm8, uint8_t* buf1, uint8_t* buf2);
+static int test_case(__m256i ymm1, __m256i ymm2, __m256i* result, unsigned imm8, uint8_t* buf1, uint8_t* buf2);
 
 // 测试VPERM2I128指令
-void test_vperm2i128() {
+int test_vperm2i128() {
+    int passed = 0;
+    int total = 0;
+    
     printf("=== Testing VPERM2I128 ===\n");
+    printf("This test covers 128-bit and 256-bit AVX versions\n");
+    printf("=== Testing VPERM2I128 ===\n");
+    printf("This test covers 128-bit and 256-bit AVX versions\n");
+
+    // 保存MXCSR状态
+    uint32_t original_mxcsr = get_mxcsr();
+    printf("Original MXCSR: 0x%08X\n", original_mxcsr);
+    print_mxcsr(original_mxcsr);
 
     // 准备测试数据
     __m256i ymm1, ymm2, result;
     uint8_t buf1[32], buf2[32];
     
-    // 初始化数据
+    // 测试1: 常规数据
+    printf("\n--- Test 1: Regular data ---\n");
     for(int i=0; i<32; i++) {
         buf1[i] = i;
         buf2[i] = 32 + i;
@@ -22,7 +35,6 @@ void test_vperm2i128() {
     ymm1 = _mm256_loadu_si256((__m256i*)buf1);
     ymm2 = _mm256_loadu_si256((__m256i*)buf2);
 
-    // 测试关键imm8组合
     const unsigned test_imm8[] = {
         0x00, 0x01, 0x02, 0x03,  // 所有src1组合
         0x10, 0x11, 0x12, 0x13,  // 所有src2组合
@@ -32,7 +44,33 @@ void test_vperm2i128() {
     const size_t num_tests = sizeof(test_imm8)/sizeof(test_imm8[0]);
     
     for(size_t i = 0; i < num_tests; i++) {
-        test_case(ymm1, ymm2, &result, test_imm8[i], buf1, buf2);
+        if (test_case(ymm1, ymm2, &result, test_imm8[i], buf1, buf2)) {
+            passed++;
+        }
+        total++;
+    }
+
+    // 测试2: 特殊值 (NaN, Inf)
+    printf("\n--- Test 2: Special values (NaN, Inf) ---\n");
+    double special_vals[] = {
+        0.0, -0.0, DBL_MAX, -DBL_MAX, DBL_MIN, -DBL_MIN,
+        INFINITY, -INFINITY, NAN
+    };
+    
+    // 填充特殊值到测试缓冲区
+    for (int i = 0; i < 16; i++) {
+        ((double*)buf1)[i] = special_vals[i % 9];
+        ((double*)buf2)[i] = special_vals[(i+4) % 9];
+    }
+    
+    ymm1 = _mm256_loadu_si256((__m256i*)buf1);
+    ymm2 = _mm256_loadu_si256((__m256i*)buf2);
+    
+    for(size_t i = 0; i < num_tests; i++) {
+        if (test_case(ymm1, ymm2, &result, test_imm8[i], buf1, buf2)) {
+            passed++;
+        }
+        total++;
     }
 
     // 测试内存操作数
@@ -47,10 +85,18 @@ void test_vperm2i128() {
     );
     
     print_ymm("Memory operand result", result);
+    
+    // 恢复MXCSR
+    set_mxcsr(original_mxcsr);
+    printf("Restored MXCSR: 0x%08X\n", get_mxcsr());
+    
+    printf("\n--- VPERM2I128 Test Summary ---\n");
+    printf("Passed: %d/%d\n", passed, total);
+    return passed == total ? 0 : 1;
 }
 
 // 测试单个imm8组合的辅助函数实现
-static void test_case(__m256i ymm1, __m256i ymm2, __m256i* result, unsigned imm8, uint8_t* buf1, uint8_t* buf2) {
+static int test_case(__m256i ymm1, __m256i ymm2, __m256i* result, unsigned imm8, uint8_t* buf1, uint8_t* buf2) {
     printf("\n--- Testing imm8=0x%02x ---\n", imm8);
     
     switch(imm8) {
@@ -84,10 +130,11 @@ static void test_case(__m256i ymm1, __m256i ymm2, __m256i* result, unsigned imm8
             asm volatile("vperm2i128 $0x55, %1, %2, %0" : "=x"(*result) : "x"(ymm2), "x"(ymm1)); break;
         default:
             printf("Unsupported imm8 value: 0x%02x\n", imm8);
-            return;
+            return 0;
     }
 
     // 打印结果
+    printf("\n[Test Case] imm8=0x%02x\n", imm8);
     print_ymm("Result", *result);
 
     // 验证结果
@@ -116,15 +163,34 @@ static void test_case(__m256i ymm1, __m256i ymm2, __m256i* result, unsigned imm8
     uint8_t actual[32];
     memcpy(actual, result, 32);
     
-    if(memcmp(actual, expected, 32) == 0) {
-        printf("Test passed for imm8=0x%02x\n", imm8);
+    // 详细输出比较结果
+    printf("Byte-by-byte comparison:\n");
+    int all_match = 1;
+    for (int i = 0; i < 32; i++) {
+        printf("Byte %02d: Actual=0x%02X, Expected=0x%02X - %s\n",
+               i, actual[i], expected[i],
+               actual[i] == expected[i] ? "OK" : "MISMATCH");
+        
+        if (actual[i] != expected[i]) {
+            all_match = 0;
+        }
+    }
+    
+    // 输出MXCSR状态
+    uint32_t current_mxcsr = get_mxcsr();
+    printf("Current MXCSR: 0x%08X\n", current_mxcsr);
+    print_mxcsr(current_mxcsr);
+    
+    if (all_match) {
+        printf("[PASS] Test passed for imm8=0x%02x\n", imm8);
     } else {
-        printf("Test FAILED for imm8=0x%02x\n", imm8);
+        printf("[FAIL] Test failed for imm8=0x%02x\n", imm8);
         print_ymm("Expected", *(__m256i*)expected);
     }
+    
+    return all_match;
 }
 
 int main() {
-    test_vperm2i128();
-    return 0;
+    return test_vperm2i128();
 }

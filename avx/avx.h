@@ -50,6 +50,26 @@ static inline void print_double_vec(const char* name, double* vec, int count) {
     printf("\n");
 }
 
+// 以十六进制形式打印双精度浮点向量
+static inline void print_double_vec_hex(const char* name, double* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        uint64_t *val = (uint64_t*)&vec[i];
+        printf("0x%016lx ", *val);
+    }
+    printf("\n");
+}
+
+// 以十六进制形式打印单精度浮点向量
+static inline void print_hex_float_vec(const char* name, float* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        uint32_t *val = (uint32_t*)&vec[i];
+        printf("0x%08X ", *val);
+    }
+    printf("\n");
+}
+
 // 打印32位整数向量
 static inline void print_int32_vec(const char* name, int32_t* vec, int count) {
     printf("%s: ", name);

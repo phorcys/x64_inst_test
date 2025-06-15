@@ -1,0 +1,23 @@
+--- Testing vhaddps (horizontal add packed single-precision) ---
+Test 1: 256-bit register-register
+Expected: Expected: 3.000000 7.000000 19.000000 23.000000 11.000000 15.000000 27.000000 31.000000 
+Result:   Result: 3.000000 7.000000 19.000000 23.000000 11.000000 15.000000 27.000000 31.000000 
+[PASS] Test 1: 256-bit register-register
+
+Test 2: 128-bit register-register
+Expected: Expected: 30.000000 70.000000 110.000000 150.000000 
+Result:   Result: 30.000000 70.000000 110.000000 150.000000 
+[PASS] Test 2: 128-bit register-register
+
+Test 3: Boundary values
+Expected: Expected: -nan nan 3.000000 7.000000 -0.000000 15.000000 11.000000 15.000000 
+Result:   Result: -nan nan 3.000000 7.000000 0.000000 15.000000 11.000000 15.000000 
+[PASS] Boundary values output check
+--- MXCSR State After Operation ---
+MXCSR: 0x00001F81
+Flags: I:1 D:1 Z:1 O:1 U:1 P:1
+--- Test Summary ---
+Total tests: 3
+Passed tests: 3
+Failed tests: 0
+All vhaddps tests passed!

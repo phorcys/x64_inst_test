@@ -1,0 +1,21 @@
+--- Testing vdpps (dot product of packed single-precision) ---
+Test 1: 256-bit register-register
+Expected: Expected: 5.000000 5.000000 5.000000 5.000000 13.000000 13.000000 13.000000 13.000000 
+Result:   Result: 5.000000 5.000000 5.000000 5.000000 13.000000 13.000000 13.000000 13.000000 
+[PASS] Test 1: 256-bit register-register
+
+--- MXCSR State After Operation ---
+MXCSR: 0x00001F80
+Flags: I:1 D:1 Z:1 O:1 U:1 P:1
+Test 2: Boundary values
+Result: Result: -nan -nan -nan -nan -nan -nan -nan -nan 
+--- MXCSR State After Boundary Test ---
+MXCSR: 0x00001FA9
+Flags: I:1 D:1 Z:1 O:1 U:1 P:1
+[PASS] Test 2: Boundary values (invalid operation detected)
+
+--- Test Summary ---
+Total tests: 2
+Passed tests: 2
+Failed tests: 0
+All vdpps tests passed!
