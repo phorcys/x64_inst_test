@@ -1,0 +1,2 @@
+=== Testing vpgatherqq (256-bit) ===
+AVX2 not supported - skipping test

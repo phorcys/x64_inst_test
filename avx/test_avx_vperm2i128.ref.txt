@@ -1,0 +1,60 @@
+=== Testing VPERM2I128 ===
+
+--- Testing imm8=0x00 ---
+Result: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
+Test passed for imm8=0x00
+
+--- Testing imm8=0x01 ---
+Result: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
+Test passed for imm8=0x01
+
+--- Testing imm8=0x02 ---
+Result: 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
+Test passed for imm8=0x02
+
+--- Testing imm8=0x03 ---
+Result: 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
+Test passed for imm8=0x03
+
+--- Testing imm8=0x10 ---
+Result: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+Test passed for imm8=0x10
+
+--- Testing imm8=0x11 ---
+Result: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+Test passed for imm8=0x11
+
+--- Testing imm8=0x12 ---
+Result: 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+Test passed for imm8=0x12
+
+--- Testing imm8=0x13 ---
+Result: 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+Test passed for imm8=0x13
+
+--- Testing imm8=0x08 ---
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
+Test passed for imm8=0x08
+
+--- Testing imm8=0x80 ---
+Result: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test passed for imm8=0x80
+
+--- Testing imm8=0x20 ---
+Result: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 
+Test passed for imm8=0x20
+
+--- Testing imm8=0x31 ---
+Result: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 
+Test passed for imm8=0x31
+
+--- Testing imm8=0x44 ---
+Result: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 
+Test passed for imm8=0x44
+
+--- Testing imm8=0x55 ---
+Result: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+Test passed for imm8=0x55
+
+--- Testing memory operand ---
+Memory operand result: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 

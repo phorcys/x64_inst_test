@@ -1,0 +1,16 @@
+=== Testing VPBROADCASTB ===
+Test1 - 128bit broadcast:
+Expected: ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab 
+Result  : ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab 
+Match: YES
+
+Test2 - 256bit broadcast:
+Expected: ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab 
+Result  : ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab ab 
+Match: YES
+
+Test3 - Memory broadcast:
+Expected: cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd 
+Result  : cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd cd 
+Match: YES
+

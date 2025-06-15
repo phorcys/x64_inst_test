@@ -1,0 +1,3 @@
+--- Testing vextracti128 (extract 128-bit integer data from 256-bit register) ---
+Extract low128 test passed
+Extract high128 test passed

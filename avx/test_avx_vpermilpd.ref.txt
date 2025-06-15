@@ -1,0 +1,11 @@
+=== Testing VPERMILPD (256-bit) ===
+Source: 1.100000 2.200000 3.300000 4.400000 
+Control: 0x00000005
+Result: 2.200000 1.100000 4.400000 3.300000 
+Test PASSED
+
+=== Testing VPERMILPS (128-bit) ===
+Source: 1.100000 2.200000 
+Control: 0x00000001
+Result: 2.200000 1.100000 
+Test PASSED

@@ -41,6 +41,33 @@ static inline void print_float_vec(const char* name, float* vec, int count) {
     printf("\n");
 }
 
+// 打印双精度浮点向量
+static inline void print_double_vec(const char* name, double* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        printf("%f ", vec[i]);
+    }
+    printf("\n");
+}
+
+// 打印32位整数向量
+static inline void print_int32_vec(const char* name, int32_t* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        printf("%d ", vec[i]);
+    }
+    printf("\n");
+}
+
+// 打印64位整数向量
+static inline void print_int64_vec(const char* name, int64_t* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        printf("%ld ", vec[i]);
+    }
+    printf("\n");
+}
+
 // 比较两个256位向量是否相等
 static inline int cmp_ymm(__m256i a, __m256i b) {
     uint8_t buf1[32], buf2[32];

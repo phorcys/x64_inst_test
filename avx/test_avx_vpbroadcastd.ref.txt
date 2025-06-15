@@ -1,0 +1,27 @@
+=== Testing VPBROADCASTD ===
+Test1 - 128bit broadcast:
+Expected: 12345678 12345678 12345678 12345678 
+Result  : 12345678 12345678 12345678 12345678 
+Match: YES
+
+Test2 - 256bit broadcast:
+Expected: 12345678 12345678 12345678 12345678 12345678 12345678 12345678 12345678 
+Result  : 12345678 12345678 12345678 12345678 12345678 12345678 12345678 12345678 
+Match: YES
+
+Test3 - Edge case 0x00000000:
+Result  : 00000000 00000000 00000000 00000000 
+Match: YES
+
+Test4 - Edge case 0xffffffff:
+Result  : ffffffff ffffffff ffffffff ffffffff 
+Match: YES
+
+Test5 - Edge case 0x80000000:
+Result  : 80000000 80000000 80000000 80000000 
+Match: YES
+
+Test6 - Edge case 0x7fffffff:
+Result  : 7fffffff 7fffffff 7fffffff 7fffffff 
+Match: YES
+

@@ -1,0 +1,14 @@
+--- Testing vbroadcastf128 (broadcast 128-bit memory to 256-bit register) ---
+--- Float32 Test ---
+Source: 1.100000 2.200000 3.300000 4.400000 
+Result: 1.100000 2.200000 3.300000 4.400000 1.100000 2.200000 3.300000 4.400000 
+
+--- Float64 Test ---
+Source: 1.100000 2.200000 
+Result: 1.100000 2.200000 1.100000 2.200000 
+
+--- Boundary Test ---
+Expected: inf -inf nan 0.000000 inf -inf nan 0.000000 
+Result: inf -inf nan 0.000000 inf -inf nan 0.000000 
+
+vbroadcastf128 all tests passed

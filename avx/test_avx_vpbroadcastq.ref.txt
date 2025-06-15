@@ -1,0 +1,27 @@
+=== Testing VPBROADCASTQ ===
+Test1 - 128bit broadcast:
+Expected: 123456789ABCDEF0 123456789ABCDEF0 
+Result  : 123456789abcdef0 123456789abcdef0 
+Match: YES
+
+Test2 - 256bit broadcast:
+Expected: 123456789ABCDEF0 123456789ABCDEF0 123456789ABCDEF0 123456789ABCDEF0 
+Result  : 123456789abcdef0 123456789abcdef0 123456789abcdef0 123456789abcdef0 
+Match: YES
+
+Test3 - Edge case 0x0000000000000000:
+Result  : 0000000000000000 0000000000000000 
+Match: YES
+
+Test4 - Edge case 0xffffffffffffffff:
+Result  : ffffffffffffffff ffffffffffffffff 
+Match: YES
+
+Test5 - Edge case 0x8000000000000000:
+Result  : 8000000000000000 8000000000000000 
+Match: YES
+
+Test6 - Edge case 0x7fffffffffffffff:
+Result  : 7fffffffffffffff 7fffffffffffffff 
+Match: YES
+
