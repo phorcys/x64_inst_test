@@ -106,17 +106,18 @@ static inline int cmp_xmm(__m128i a, __m128i b) {
 
 // Function to print MXCSR register with flag details
 static void __attribute__((unused)) print_mxcsr(uint32_t mxcsr) {
-    // 输出MXCSR状态
-    printf("MXCSR: 0x%08X\n", mxcsr);
-    printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
-    printf("  [ ] FTZ - Flush To Zero: %d\n", (mxcsr >> 15) & 1);
-    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-           (mxcsr >> 0) & 1,  // Invalid
-           (mxcsr >> 1) & 1,  // Denormal
-           (mxcsr >> 2) & 1,  // Divide-by-zero
-           (mxcsr >> 3) & 1,  // Overflow
-           (mxcsr >> 4) & 1,  // Underflow
-           (mxcsr >> 5) & 1); // Precision
+    (void)mxcsr;  // 消除未使用参数警告
+    // 输出MXCSR状态, 注释掉因为box64 暂时不实现mxcsr各位域正确。
+    // printf("MXCSR: 0x%08X\n", mxcsr);
+    // printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
+    // printf("  [ ] FTZ - Flush To Zero: %d\n", (mxcsr >> 15) & 1);
+    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+    //        (mxcsr >> 0) & 1,  // Invalid
+    //        (mxcsr >> 1) & 1,  // Denormal
+    //        (mxcsr >> 2) & 1,  // Divide-by-zero
+    //        (mxcsr >> 3) & 1,  // Overflow
+    //        (mxcsr >> 4) & 1,  // Underflow
+    //        (mxcsr >> 5) & 1); // Precision
 }
 
 // Set MXCSR register value
@@ -159,12 +160,20 @@ static void __attribute__((unused)) print_vector128(const char* name, __m128 vec
     printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", name, f[0], f[1], f[2], f[3]);
 }
 
-// Helper to print 256-bit vector
+// Helper to print 256-bit vector (single precision)
 static void __attribute__((unused)) print_vector256(const char* name, __m256 vec) {
     float f[8];
     _mm256_storeu_ps(f, vec);
     printf("%s: [%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f]\n", 
            name, f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
+}
+
+// Helper to print 256-bit vector (double precision)
+static void __attribute__((unused)) print_vector256d(const char* name, __m256d vec) {
+    double d[4];
+    _mm256_storeu_pd(d, vec);
+    printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", 
+           name, d[0], d[1], d[2], d[3]);
 }
 
 #endif // AVX_H

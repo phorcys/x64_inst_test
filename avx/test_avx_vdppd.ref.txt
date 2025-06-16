@@ -14,8 +14,16 @@ Expected: Expected: nan 0.000000
 Result:   Result: nan 0.000000 
 [PASS] Test 3: Boundary values
 
+Test 4: High elements only (0x22)
+Expected: Expected: 0.000000 1.000000 
+Result:   Result: 0.000000 1.000000 
+[PASS] Test 4: High elements only (0x22)
+
+--- MXCSR State After Operations ---
+MXCSR: 0x00001F80
+Flags: I:1 D:1 Z:1 O:1 U:1 P:1
 --- Test Summary ---
-Total tests: 3
-Passed tests: 3
+Total tests: 4
+Passed tests: 4
 Failed tests: 0
 All vdppd tests passed!

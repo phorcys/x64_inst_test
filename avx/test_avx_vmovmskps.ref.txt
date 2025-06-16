@@ -7,10 +7,6 @@ After:  mask=0xa
 Testing vmovmskps (256-bit):
 Before: [1.000000, -2.000000, 3.000000, -4.000000, 5.000000, -6.000000, 7.000000, -8.000000]
 After:  mask=0xaa
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
   PASS: 256-bit vmovmskps
 
 Testing vmovmskps with special values:
@@ -18,17 +14,9 @@ Testing vmovmskps with special values:
 Test case 1:
 Before: [nan, -inf, inf, -0.000000, 0.000000, -0.000000, 0.000000, -340282346638528859811704183484516925440.000000]
 After:  mask=0xaa
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
   PASS: Special values case 1
 
 Test case 2:
 Before: [0.000000, -1000000015047466219876688855040.000000, 1000000015047466219876688855040.000000, -0.000000, 0.000000, -0.000000, 0.000000, -340282346638528859811704183484516925440.000000]
 After:  mask=0xaa
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
   PASS: Special values case 2

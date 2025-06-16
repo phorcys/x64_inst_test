@@ -84,7 +84,7 @@ void test_vmovmskpd() {
             int mask;
             
             printf("\nTest case %zu:\n", i+1);
-            print_vector256("Before", reg);
+            print_vector256d("Before", reg);
             
             __asm__ __volatile__(
                 "vmovmskpd %1, %0"

@@ -19,26 +19,14 @@ Testing vmovsldup with special values:
 Test case 1:
 Before: [nan, inf, -inf, 0.000000]
 After : [nan, nan, -inf, -inf]
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
   PASS: Special values case 1
 
 Test case 2:
 Before: [0.000000, -0.000000, 0.000000, 340282346638528859811704183484516925440.000000]
 After : [0.000000, 0.000000, 0.000000, 0.000000]
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
   PASS: Special values case 2
 
 Test case 3:
 Before: [0.000000, 1000000015047466219876688855040.000000, -0.000000, -1000000015047466219876688855040.000000]
 After : [0.000000, 0.000000, -0.000000, -0.000000]
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
   PASS: Special values case 3

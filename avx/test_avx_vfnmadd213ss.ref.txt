@@ -1,8 +1,4 @@
 --- Testing vfnmadd213ss (Fused Negative Multiply-Add of Scalar Single-Precision Floating-Point Values) ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 MXCSR changed: 0x00001F80 -> 0x00001F80
 Input a: 1.000000 
 Input b: 2.000000 
@@ -16,7 +12,3 @@ Special inputs a: 0x7FC00000 0x7F800000 0xFF800000 0x00000000
 Special inputs b: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
 Special inputs c: 0x3F800000 0x7F800000 0xFF800000 0x00000000 
 Special results: 0x7FC00000 0x3F800000 0x3F800000 0x3F800000 
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0

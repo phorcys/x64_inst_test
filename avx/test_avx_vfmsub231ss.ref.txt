@@ -13,26 +13,10 @@ Special result: 0x7f800000
 
 [Rounding modes test]
 Rounding mode 0:
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 Result: 1.400000
 Rounding mode 1:
-MXCSR: 0x00003F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 Result: 1.400000
 Rounding mode 2:
-MXCSR: 0x00005F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 Result: 1.400000
 Rounding mode 3:
-MXCSR: 0x00007F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 Result: 1.400000

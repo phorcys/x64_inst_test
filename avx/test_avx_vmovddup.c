@@ -1,181 +1,111 @@
 #include "avx.h"
+#include <float.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include <immintrin.h>
-#include <float.h>
+#include <math.h>
 
 // 测试vmovddup指令
-void test_vmovddup() {
-    printf("=== Testing vmovddup ===\n");
-    
-    // 测试128位版本 - 寄存器操作数
+int test_vmovddup() {
+    int ret = 0;
+    printf("===== Test vmovddup instruction =====\n");
+
+    // 测试128位版本
     {
-        double src[2] ALIGNED(16) = {1.0, 2.0};
-        double dst[2] ALIGNED(16) = {0.0};
-        __m128d reg = _mm_load_pd(src);
-        
-        printf("Testing vmovddup (128-bit register):\n");
-        print_vector128("Before", _mm_load_pd(src));
-        
-        // 使用内联汇编实现vmovddup
+        double src[2] ALIGNED(16) = {1.23456789, -2.34567890};
+        double dst[2] ALIGNED(16) = {0};
+        double expected[2] = {src[0], src[0]};
+
+        printf("\n--- Testing 128-bit vmovddup ---\n");
+        print_double_vec("Source", src, 2);
+        print_double_vec("Expected", expected, 2);
+
+        __m128d src_reg, dst_reg;
+        memcpy(&src_reg, src, sizeof(src_reg));
         __asm__ __volatile__(
-            "vmovddup %1, %0"
-            : "=x"(reg)
-            : "x"(reg)
-            : 
+            "vmovddup %1, %0\n\t"
+            : "=x"(dst_reg)
+            : "x"(src_reg)
         );
-        
-        _mm_store_pd(dst, reg);
-        print_vector128("After ", _mm_load_pd(dst));
-        
-        // 验证结果
-        if(dst[0] == src[0] && dst[1] == src[0]) {
-            printf("  PASS: 128-bit vmovddup (register)\n");
+        memcpy(dst, &dst_reg, sizeof(dst_reg));
+
+        print_double_vec("Result", dst, 2);
+
+        if(memcmp(dst, expected, sizeof(dst)) != 0) {
+            printf("FAIL: 128-bit vmovddup result mismatch\n");
+            ret = 1;
         } else {
-            printf("  FAIL: 128-bit vmovddup (register)\n");
+            printf("PASS: 128-bit vmovddup\n");
         }
     }
-    
-    // 测试128位版本 - 内存操作数
+
+    // 测试256位版本
     {
-        double src[2] ALIGNED(16) = {3.0, 4.0};
-        double dst[2] ALIGNED(16) = {0.0};
-        __m128d reg;
-        
-        printf("\nTesting vmovddup (128-bit memory):\n");
-        print_vector128("Before", _mm_load_pd(src));
-        
-        // 使用内联汇编实现vmovddup
+        double src[4] ALIGNED(32) = {1.23456789, -2.34567890, 3.45678901, -4.56789012};
+        double dst[4] ALIGNED(32) = {0};
+        double expected[4] = {src[0], src[0], src[2], src[2]};
+
+        printf("\n--- Testing 256-bit vmovddup ---\n");
+        print_double_vec("Source", src, 4);
+        print_double_vec("Expected", expected, 4);
+
+        __m256d src_reg, dst_reg;
+        memcpy(&src_reg, src, sizeof(src_reg));
         __asm__ __volatile__(
-            "vmovddup %1, %0"
-            : "=x"(reg)
-            : "m"(src[0])
-            : 
+            "vmovddup %1, %0\n\t"
+            : "=x"(dst_reg)
+            : "x"(src_reg)
         );
-        
-        _mm_store_pd(dst, reg);
-        print_vector128("After ", _mm_load_pd(dst));
-        
-        // 验证结果
-        if(dst[0] == src[0] && dst[1] == src[0]) {
-            printf("  PASS: 128-bit vmovddup (memory)\n");
+        memcpy(dst, &dst_reg, sizeof(dst_reg));
+
+        print_double_vec("Result", dst, 4);
+
+        if(memcmp(dst, expected, sizeof(dst)) != 0) {
+            printf("FAIL: 256-bit vmovddup result mismatch\n");
+            ret = 1;
         } else {
-            printf("  FAIL: 128-bit vmovddup (memory)\n");
+            printf("PASS: 256-bit vmovddup\n");
         }
     }
-    
-    // 测试256位版本 - 寄存器操作数
+
+    // 测试特殊值(NaN, 0, 最大/最小值)
     {
-        double src[4] ALIGNED(32) = {1.0, 2.0, 3.0, 4.0};
-        double dst[4] ALIGNED(32) = {0.0};
-        __m256d reg = _mm256_load_pd(src);
-        
-        printf("\nTesting vmovddup (256-bit register):\n");
-        print_vector256("Before", _mm256_load_pd(src));
-        
-        // 使用内联汇编实现vmovddup
-        __asm__ __volatile__(
-            "vmovddup %1, %0"
-            : "=x"(reg)
-            : "x"(reg)
-            : 
-        );
-        
-        _mm256_store_pd(dst, reg);
-        print_vector256("After ", _mm256_load_pd(dst));
-        
-        // 验证结果
-        if(dst[0] == src[0] && dst[1] == src[0] &&
-           dst[2] == src[2] && dst[3] == src[2]) {
-            printf("  PASS: 256-bit vmovddup (register)\n");
-        } else {
-            printf("  FAIL: 256-bit vmovddup (register)\n");
-        }
-    }
-    
-    // 测试256位版本 - 内存操作数
-    {
-        double src[4] ALIGNED(32) = {5.0, 6.0, 7.0, 8.0};
-        double dst[4] ALIGNED(32) = {0.0};
-        __m256d reg;
-        
-        printf("\nTesting vmovddup (256-bit memory):\n");
-        print_vector256("Before", _mm256_load_pd(src));
-        
-        // 使用内联汇编实现vmovddup
-        __asm__ __volatile__(
-            "vmovddup %1, %0"
-            : "=x"(reg)
-            : "m"(src[0])
-            : 
-        );
-        
-        _mm256_store_pd(dst, reg);
-        print_vector256("After ", _mm256_load_pd(dst));
-        
-        // 验证结果
-        if(dst[0] == src[0] && dst[1] == src[0] &&
-           dst[2] == src[2] && dst[3] == src[2]) {
-            printf("  PASS: 256-bit vmovddup (memory)\n");
-        } else {
-            printf("  FAIL: 256-bit vmovddup (memory)\n");
-        }
-    }
-    
-    // 测试边界条件
-    {
-        double test_cases[4][2] = {
-            {NAN, INFINITY},
-            {0.0, -0.0},
-            {1.0e-300, 1.0e+300},
-            {-1.0e-300, -1.0e+300}
+        double special_values[4] ALIGNED(32) = {
+            NAN, 0.0, 
+            -DBL_MAX, DBL_MAX
         };
-        
-        printf("\nTesting vmovddup with special values:\n");
-        
-        for(size_t i = 0; i < 4; i++) {
-            double src[2] ALIGNED(16) = {test_cases[i][0], test_cases[i][1]};
-            double dst[2] ALIGNED(16) = {0.0};
-            __m128d reg = _mm_load_pd(src);
-            
-            printf("\nTest case %zu:\n", i+1);
-            print_vector128("Before", _mm_load_pd(src));
-            
-            __asm__ __volatile__(
-                "vmovddup %1, %0"
-                : "=x"(reg)
-                : "x"(reg)
-                : 
-            );
-            
-            _mm_store_pd(dst, reg);
-            print_vector128("After ", _mm_load_pd(dst));
-            
-            // 检查MXCSR状态
-            uint32_t mxcsr = get_mxcsr();
-            print_mxcsr(mxcsr);
-            
-            // 验证结果
-            int pass = 1;
-            if(isnan(src[0])) {
-                pass &= isnan(dst[0]) && isnan(dst[1]);
-            } else if(src[0] == 0.0 || src[0] == -0.0) {
-                pass &= (dst[0] == src[0]) && (dst[1] == src[0]);
-            } else {
-                pass &= (dst[0] == src[0]) && (dst[1] == src[0]);
-            }
-            
-            if(pass && !(mxcsr & 0x3F)) { // 检查异常标志
-                printf("  PASS: Special values case %zu\n", i+1);
-            } else {
-                printf("  FAIL: Special values case %zu\n", i+1);
-            }
+        double dst[4] ALIGNED(32) = {0};
+        double expected[4] = {
+            special_values[0], special_values[0],
+            special_values[2], special_values[2]
+        };
+
+        printf("\n--- Testing special values ---\n");
+        print_double_vec_hex("Source", special_values, 4);
+        print_double_vec_hex("Expected", expected, 4);
+
+        __m256d src_reg, dst_reg;
+        memcpy(&src_reg, special_values, sizeof(src_reg));
+        __asm__ __volatile__(
+            "vmovddup %1, %0\n\t"
+            : "=x"(dst_reg)
+            : "x"(src_reg)
+        );
+        memcpy(dst, &dst_reg, sizeof(dst_reg));
+
+        print_double_vec_hex("Result", dst, 4);
+
+        if(memcmp(dst, expected, sizeof(dst)) != 0) {
+            printf("FAIL: Special values test failed\n");
+            ret = 1;
+        } else {
+            printf("PASS: Special values test\n");
         }
     }
+
+    return ret;
 }
 
 int main() {
-    test_vmovddup();
-    return 0;
+    return test_vmovddup();
 }

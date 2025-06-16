@@ -1,58 +1,19 @@
-=== Testing vmovddup ===
-Testing vmovddup (128-bit register):
-Before: [0.000000, 1.875000, 0.000000, 2.000000]
-After : [0.000000, 1.875000, 0.000000, 1.875000]
-  PASS: 128-bit vmovddup (register)
+===== Test vmovddup instruction =====
 
-Testing vmovddup (128-bit memory):
-Before: [0.000000, 2.125000, 0.000000, 2.250000]
-After : [0.000000, 2.125000, 0.000000, 2.125000]
-  PASS: 128-bit vmovddup (memory)
+--- Testing 128-bit vmovddup ---
+Source: 1.234568 -2.345679 
+Expected: 1.234568 1.234568 
+Result: 1.234568 1.234568 
+PASS: 128-bit vmovddup
 
-Testing vmovddup (256-bit register):
-Before: [0.000000, 1.875000, 0.000000, 2.000000, 0.000000, 2.125000, 0.000000, 2.250000]
-After : [0.000000, 1.875000, 0.000000, 1.875000, 0.000000, 2.125000, 0.000000, 2.125000]
-  PASS: 256-bit vmovddup (register)
+--- Testing 256-bit vmovddup ---
+Source: 1.234568 -2.345679 3.456789 -4.567890 
+Expected: 1.234568 1.234568 3.456789 3.456789 
+Result: 1.234568 1.234568 3.456789 3.456789 
+PASS: 256-bit vmovddup
 
-Testing vmovddup (256-bit memory):
-Before: [0.000000, 2.312500, 0.000000, 2.375000, 0.000000, 2.437500, 0.000000, 2.500000]
-After : [0.000000, 2.312500, 0.000000, 2.312500, 0.000000, 2.437500, 0.000000, 2.437500]
-  PASS: 256-bit vmovddup (memory)
-
-Testing vmovddup with special values:
-
-Test case 1:
-Before: [0.000000, nan, 0.000000, nan]
-After : [0.000000, nan, 0.000000, nan]
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
-  PASS: Special values case 1
-
-Test case 2:
-Before: [0.000000, 0.000000, 0.000000, -0.000000]
-After : [0.000000, 0.000000, 0.000000, 0.000000]
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
-  PASS: Special values case 2
-
-Test case 3:
-Before: [-124.475288, 0.000000, -0.000000, 61108445964240441135231770507360600064.000000]
-After : [-124.475288, 0.000000, -124.475288, 0.000000]
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
-  PASS: Special values case 3
-
-Test case 4:
-Before: [-124.475288, -0.000000, -0.000000, -61108445964240441135231770507360600064.000000]
-After : [-124.475288, -0.000000, -124.475288, -0.000000]
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
-  PASS: Special values case 4
+--- Testing special values ---
+Source: 0x7ff8000000000000 0x0000000000000000 0xffefffffffffffff 0x7fefffffffffffff 
+Expected: 0x7ff8000000000000 0x7ff8000000000000 0xffefffffffffffff 0xffefffffffffffff 
+Result: 0x7ff8000000000000 0x7ff8000000000000 0xffefffffffffffff 0xffefffffffffffff 
+PASS: Special values test
