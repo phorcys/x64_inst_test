@@ -11,7 +11,7 @@ Test all:
 
 TRANSLATOR=[path to box64/lat] make test
 
-Test only mmx/sse/lock
+Test only mmx/sse/sse2/sse3/sse4/avx/lock
 
 TRANSLATOR=[path to box64/lat] make test-mmx
 
@@ -21,16 +21,17 @@ just make test
 
 ## rebuild ref
 make genref
+make genref-avx
 
 ## rebuild testsuits
 make clean;make;make genref
 
 ## test specify tests
-make genref-mmx
 make test-mmx
-
-make genref-sse
 make test-sse
+
+## test specify tests without show diff
+make testn-mmx
 
 # Notes
 All LLM generated stuff is NOT guaranteed.
