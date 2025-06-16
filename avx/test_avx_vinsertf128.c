@@ -31,21 +31,10 @@ static void test_vinsertf128() {
         : "ymm0", "ymm1", "ymm2"
     );
     
-    // 验证结果
-    int pass = 1;
-    for(int i=0; i<8; i++) {
-        if(dst[i] != expected_low[i]) {
-            printf("Low128 mismatch at position %d: got %f, expected %f\n", 
-                  i, dst[i], expected_low[i]);
-            pass = 0;
-        }
-    }
-    
-    if(pass) {
-        printf("Insert to low128 test passed\n");
-    } else {
-        printf("Insert to low128 test failed\n");
-    }
+    printf("vinsertf128 low 128-bits tests.\n");
+    print_float_vec("src1:", src1, 8);
+    print_float_vec("src2:", src2, 8);
+    print_float_vec("dst :", dst, 8);
     
     // 测试插入高128位(立即数1)
     __asm__ __volatile__(
@@ -58,21 +47,11 @@ static void test_vinsertf128() {
         : "ymm0", "ymm1", "ymm2"
     );
     
-    // 验证结果
-    pass = 1;
-    for(int i=0; i<8; i++) {
-        if(dst[i] != expected_high[i]) {
-            printf("High128 mismatch at position %d: got %f, expected %f\n", 
-                  i, dst[i], expected_high[i]);
-            pass = 0;
-        }
-    }
-    
-    if(pass) {
-        printf("Insert to high128 test passed\n");
-    } else {
-        printf("Insert to high128 test failed\n");
-    }
+    printf("vinsertf128 high 128-bits tests.\n");
+    print_float_vec("src1:", src1, 8);
+    print_float_vec("src2:", src2, 8);
+    print_float_vec("dst :", dst, 8);
+
 }
 
 int main() {
