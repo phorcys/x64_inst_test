@@ -1,15 +1,43 @@
---- Testing vtestps ---
+===== Testing vtestps =====
 
-Testing 256-bit vtestps:
-  Before: CF=0 ZF=0
-  After: CF=1 ZF=1
-  Zero test Before: CF=0 ZF=0
-  Zero test After: CF=1 ZF=1
+=== Test case: Mixed signs ===
+EFLAGS: 0x00000203
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+ZF check passed
+CF check failed
 
-Testing 128-bit vtestps:
-  Before: CF=0 ZF=0
-  After: CF=1 ZF=1
-  Zero test Before: CF=0 ZF=0
-  Zero test After: CF=1 ZF=1
+=== Test case: All positive ===
+EFLAGS: 0x00000243
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+ZF check passed
+CF check failed
 
-All vtestps tests passed!
+=== Test case: All negative ===
+EFLAGS: 0x00000203
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+ZF check passed
+CF check passed

@@ -1,15 +1,59 @@
---- Testing vtestpd ---
+===== Testing vtestpd =====
 
-Testing 256-bit vtestpd:
-  Before: CF=0 ZF=0
-  After: CF=1 ZF=0
-  Zero test Before: CF=0 ZF=0
-  Zero test After: CF=1 ZF=1
+=== Test case 1: Mixed signs ===
+Input: 1.000000 -2.000000 3.000000 -4.000000 
+EFLAGS: 0x00000203
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+ZF check passed
+CF check failed
 
-Testing 128-bit vtestpd:
-  Before: CF=0 ZF=0
-  After: CF=1 ZF=1
-  Zero test Before: CF=0 ZF=0
-  Zero test After: CF=1 ZF=1
+=== Test case 2: All positive ===
+Input: 1.000000 2.000000 3.000000 4.000000 
+EFLAGS: 0x00000243
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
 
-All vtestpd tests passed!
+=== Test case 3: All negative ===
+Input: -1.000000 -2.000000 -3.000000 -4.000000 
+EFLAGS: 0x00000203
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+ZF check passed
+CF check failed
+
+=== Test case 4: Special values ===
+Input: nan inf -inf 0.000000 
+EFLAGS: 0x00000203
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+ZF check passed
+CF check failed

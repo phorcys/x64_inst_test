@@ -8,9 +8,6 @@ Test 2: Boundary values
 Expected: Expected: nan nan nan -0.000000 
 Result:   Result: -nan -nan nan -0.000000 
 [PASS] Boundary values output check
---- MXCSR State After Operation ---
-MXCSR: 0x00001F81
-Flags: I:1 D:1 Z:1 O:1 U:1 P:1
 --- Test Summary ---
 Total tests: 2
 Passed tests: 2

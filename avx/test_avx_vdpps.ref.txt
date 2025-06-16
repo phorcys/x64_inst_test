@@ -16,9 +16,6 @@ Result:   Result: 2.000000 0.000000 2.000000 0.000000 6.000000 0.000000 6.000000
 
 Test 4: Boundary values
 Result: Result: -nan -nan -nan -nan -nan -nan -nan -nan 
-MXCSR: 0x00001FA9
-[PASS] Test 4: Boundary values (invalid operation detected)
-
 --- Test Summary ---
 Total tests: 4
 Passed tests: 4

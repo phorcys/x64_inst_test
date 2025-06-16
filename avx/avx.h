@@ -132,6 +132,20 @@ static uint32_t __attribute__((unused)) get_mxcsr() {
     return mxcsr;
 }
 
+// Print EFLAGS register
+static inline void print_eflags(uint32_t eflags) {
+    printf("EFLAGS: 0x%08X\n", eflags);
+    printf("  [%c] CF - Carry Flag\n", (eflags & (1 << 0)) ? 'X' : ' ');
+    printf("  [%c] PF - Parity Flag\n", (eflags & (1 << 2)) ? 'X' : ' ');
+    printf("  [%c] AF - Auxiliary Flag\n", (eflags & (1 << 4)) ? 'X' : ' ');
+    printf("  [%c] ZF - Zero Flag\n", (eflags & (1 << 6)) ? 'X' : ' ');
+    printf("  [%c] SF - Sign Flag\n", (eflags & (1 << 7)) ? 'X' : ' ');
+    printf("  [%c] TF - Trap Flag\n", (eflags & (1 << 8)) ? 'X' : ' ');
+    printf("  [%c] IF - Interrupt Flag\n", (eflags & (1 << 9)) ? 'X' : ' ');
+    printf("  [%c] DF - Direction Flag\n", (eflags & (1 << 10)) ? 'X' : ' ');
+    printf("  [%c] OF - Overflow Flag\n", (eflags & (1 << 11)) ? 'X' : ' ');
+}
+
 // Floating point comparison with tolerance and ULPs
 static int __attribute__((unused)) float_equal_ulp(float a, float b, float tolerance, int max_ulps) {
     if (isnan(a) && isnan(b)) return 1;

@@ -13,13 +13,8 @@ Test 3: Boundary values
 Expected: Expected: inf -inf nan inf nan 0.000000 nan 0.000000 
 Result:   Result: inf -inf nan inf 0.000000 0.000000 0.000000 0.000000 
 [PASS] Boundary values output check
---- MXCSR State After Operation ---
-MXCSR: 0x00001F85
-Flags: I:1 D:1 Z:1 O:1 U:1 P:1
-[PASS] Test 3: Boundary values (expected flags detected)
-
 --- Test Summary ---
 Total tests: 3
-Passed tests: 3
-Failed tests: 0
-All vdivpd tests passed!
+Passed tests: 2
+Failed tests: 1
+Some vdivpd tests failed

@@ -3,7 +3,6 @@ VCVTTPS2DQ Instruction Tests
 ============================
 
 VCVTTPS2DQ Test (Register Operand):
-MXCSR before: 0x00001F80
   Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
   Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
   Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
@@ -14,7 +13,6 @@ MXCSR before: 0x00001F80
   Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
-MXCSR: 0x00001FA1
   Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
   Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
   Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
@@ -27,7 +25,6 @@ MXCSR: 0x00001FA1
 
 Testing with MXCSR rounding mode 0
 VCVTTPS2DQ Test (Register Operand):
-MXCSR before: 0x00001FA1
   Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
   Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
   Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
@@ -38,7 +35,6 @@ MXCSR before: 0x00001FA1
   Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
-MXCSR: 0x00001FA1
   Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
   Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
   Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
@@ -51,7 +47,6 @@ MXCSR: 0x00001FA1
 
 Testing with MXCSR rounding mode 1
 VCVTTPS2DQ Test (Register Operand):
-MXCSR before: 0x00003FA1
   Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
   Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
   Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
@@ -62,7 +57,6 @@ MXCSR before: 0x00003FA1
   Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
-MXCSR: 0x00003FA1
   Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
   Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
   Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
@@ -75,7 +69,6 @@ MXCSR: 0x00003FA1
 
 Testing with MXCSR rounding mode 2
 VCVTTPS2DQ Test (Register Operand):
-MXCSR before: 0x00005FA1
   Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
   Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
   Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
@@ -86,7 +79,6 @@ MXCSR before: 0x00005FA1
   Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
-MXCSR: 0x00005FA1
   Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
   Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
   Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
@@ -99,7 +91,6 @@ MXCSR: 0x00005FA1
 
 Testing with MXCSR rounding mode 3
 VCVTTPS2DQ Test (Register Operand):
-MXCSR before: 0x00007FA1
   Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
   Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
   Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
@@ -110,7 +101,6 @@ MXCSR before: 0x00007FA1
   Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
-MXCSR: 0x00007FA1
   Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
   Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
   Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
