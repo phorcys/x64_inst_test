@@ -35,7 +35,7 @@ static int test_vtestps() {
     
     // 测试1: 正常值
     uint64_t flags1_before, flags1_after;
-    __asm__ __volatile__("pushfq\n\tpop %0" : "=r" (flags1_before) :: "memory");
+    __asm__ __volatile__("pushq 0\n\t popfq\n\tpushfq\n\tpop %0" : "=r" (flags1_before) :: "memory");
     __asm__ __volatile__(
         "vmovaps %0, %%ymm0\n\t"
         "vmovaps %1, %%ymm1\n\t"
@@ -50,7 +50,7 @@ static int test_vtestps() {
     
     // 测试2: 全零测试
     uint64_t flags2_before, flags2_after;
-    __asm__ __volatile__("pushfq\n\tpop %0" : "=r" (flags2_before) :: "memory");
+    __asm__ __volatile__("pushq 0\n\t popfq\n\tpushfq\n\tpop %0" : "=r" (flags2_before) :: "memory");
     __asm__ __volatile__(
         "vmovaps %0, %%ymm0\n\t"
         "vmovaps %1, %%ymm1\n\t"
@@ -68,7 +68,7 @@ static int test_vtestps() {
     
     // 测试1: 正常值
     uint64_t flags3_before, flags3_after;
-    __asm__ __volatile__("pushfq\n\tpop %0" : "=r" (flags3_before) :: "memory");
+    __asm__ __volatile__("pushq 0\n\t popfq\n\tpushfq\n\tpop %0" : "=r" (flags3_before) :: "memory");
     __asm__ __volatile__(
         "vmovaps %0, %%xmm0\n\t"
         "vmovaps %1, %%xmm1\n\t"
@@ -83,7 +83,7 @@ static int test_vtestps() {
     
     // 测试2: 全零测试
     uint64_t flags4_before, flags4_after;
-    __asm__ __volatile__("pushfq\n\tpop %0" : "=r" (flags4_before) :: "memory");
+    __asm__ __volatile__("pushq 0\n\t popfq\n\tpushfq\n\tpop %0" : "=r" (flags4_before) :: "memory");
     __asm__ __volatile__(
         "vmovaps %0, %%xmm0\n\t"
         "vmovaps %1, %%xmm1\n\t"

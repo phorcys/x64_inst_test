@@ -113,12 +113,12 @@ static void sigsegv_handler(int sig) {
 int main() {
     signal(SIGSEGV, sigsegv_handler);
     
-    printf("=== AVX Support Check ===\n");
-    if (!check_avx_support()) {
-        printf("ERROR: CPU does not support AVX instructions\n");
-        return 1;
-    }
-    printf("AVX supported\n");
+    // printf("=== AVX Support Check ===\n");
+    // if (!check_avx_support()) {
+    //     printf("ERROR: CPU does not support AVX instructions\n");
+    //     return 1;
+    // }
+    // printf("AVX supported\n");
 
     if (setjmp(jmp_env)) {
         printf("ERROR: SIGSEGV caught\n");

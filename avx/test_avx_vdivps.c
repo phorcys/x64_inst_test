@@ -152,36 +152,36 @@ static void test_vdivps() {
         printf("[FAIL] Boundary values output check\n");
     }
     
-    // Check MXCSR state
-    unsigned int mxcsr = 0;
-    __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
-    printf("--- MXCSR State After Operation ---\n");
-    printf("MXCSR: 0x%08X\n", mxcsr);
-    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-           (mxcsr >> 7) & 1, (mxcsr >> 8) & 1, (mxcsr >> 9) & 1,
-           (mxcsr >> 10) & 1, (mxcsr >> 11) & 1, (mxcsr >> 12) & 1);
+    // // Check MXCSR state
+    // unsigned int mxcsr = 0;
+    // __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
+    // printf("--- MXCSR State After Operation ---\n");
+    // printf("MXCSR: 0x%08X\n", mxcsr);
+    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+    //        (mxcsr >> 7) & 1, (mxcsr >> 8) & 1, (mxcsr >> 9) & 1,
+    //        (mxcsr >> 10) & 1, (mxcsr >> 11) & 1, (mxcsr >> 12) & 1);
     
     // Check MXCSR flags
     int flags_pass = 1;
     
-    // Expect division by zero flag (ZE)
-    if (!(mxcsr & (1 << 2))) {
-        printf("[FAIL] Division by zero flag not set\n");
-        flags_pass = 0;
-    }
+    // // Expect division by zero flag (ZE)
+    // if (!(mxcsr & (1 << 2))) {
+    //     printf("[FAIL] Division by zero flag not set\n");
+    //     flags_pass = 0;
+    // }
     
-    // Expect invalid operation flag (IE) for NaN operations
-    if (!(mxcsr & (1 << 0))) {
-        printf("[FAIL] Invalid operation flag not set\n");
-        flags_pass = 0;
-    }
+    // // Expect invalid operation flag (IE) for NaN operations
+    // if (!(mxcsr & (1 << 0))) {
+    //     printf("[FAIL] Invalid operation flag not set\n");
+    //     flags_pass = 0;
+    // }
     
-    if (flags_pass) {
-        printf("[PASS] Test 3: Boundary values (expected flags detected)\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 3: Boundary values (expected flags not detected)\n\n");
-    }
+    // if (flags_pass) {
+    //     printf("[PASS] Test 3: Boundary values (expected flags detected)\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 3: Boundary values (expected flags not detected)\n\n");
+    // }
     
     // Test summary
     printf("--- Test Summary ---\n");

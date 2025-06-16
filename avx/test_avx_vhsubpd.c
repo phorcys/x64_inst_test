@@ -108,14 +108,14 @@ static void test_vhsubpd() {
         printf("[FAIL] Boundary values output check\n");
     }
     
-    // Check MXCSR state
-    unsigned int mxcsr = 0;
-    __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
-    printf("--- MXCSR State After Operation ---\n");
-    printf("MXCSR: 0x%08X\n", mxcsr);
-    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-           (mxcsr >> 7) & 1, (mxcsr >> 8) & 1, (mxcsr >> 9) & 1,
-           (mxcsr >> 10) & 1, (mxcsr >> 11) & 1, (mxcsr >> 12) & 1);
+    // // Check MXCSR state
+    // unsigned int mxcsr = 0;
+    // __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
+    // printf("--- MXCSR State After Operation ---\n");
+    // printf("MXCSR: 0x%08X\n", mxcsr);
+    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+    //        (mxcsr >> 7) & 1, (mxcsr >> 8) & 1, (mxcsr >> 9) & 1,
+    //        (mxcsr >> 10) & 1, (mxcsr >> 11) & 1, (mxcsr >> 12) & 1);
     
     // Test summary
     printf("--- Test Summary ---\n");
