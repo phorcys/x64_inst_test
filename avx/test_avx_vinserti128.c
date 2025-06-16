@@ -33,7 +33,7 @@ static void test_vinserti128() {
     
     printf("vinsertf128 low 128-bits tests.\n");
     print_int32_vec("src1:", src1, 8);
-    print_int32_vec("src2:", src2, 8);
+    print_int32_vec("src2:", src2, 4);
     print_int32_vec("dst :", dst, 8);
     
     int32_t src11[8] = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -52,7 +52,7 @@ static void test_vinserti128() {
     
     printf("vinsertf128 low 128-bits tests.\n");
     print_int32_vec("src1:", src11, 8);
-    print_int32_vec("src2:", src21, 8);
+    print_int32_vec("src2:", src21, 4);
     print_int32_vec("dst :", dst1, 8);
 }
 
