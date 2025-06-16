@@ -1,0 +1,15 @@
+--- Testing vtestps ---
+
+Testing 256-bit vtestps:
+  Before: CF=0 ZF=0
+  After: CF=1 ZF=1
+  Zero test Before: CF=0 ZF=0
+  Zero test After: CF=1 ZF=1
+
+Testing 128-bit vtestps:
+  Before: CF=0 ZF=0
+  After: CF=1 ZF=1
+  Zero test Before: CF=0 ZF=0
+  Zero test After: CF=1 ZF=1
+
+All vtestps tests passed!

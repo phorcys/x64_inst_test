@@ -4,16 +4,14 @@
 #include <limits.h>
 #include "avx.h"
 
-// 测试VCVTDQ2PS指令：将32位整数转换为单精度浮点
-int main() {
-    printf("Starting VCVTDQ2PS test...\n");
+// vcvtdq2ps 指令测试
+static int test_vcvtdq2ps() {
+    printf("--- Testing vcvtdq2ps ---\n");
     
-    // 设置MXCSR寄存器为默认状态
-    uint32_t initial_mxcsr = get_mxcsr();
-    printf("Initial MXCSR: 0x%08X\n", initial_mxcsr);
+    int total_errors = 0;
     
     // 测试数据 - 各种边界值
-    int32_t int_data[8] = {
+    ALIGNED(32) int32_t int_data[8] = {
         0,                      // 零
         1,                      // 最小正整数
         -1,                     // 最大负整数
@@ -24,26 +22,23 @@ int main() {
         0x7FFFFFFF              // 最大正数（同INT_MAX）
     };
     
+    // 内存操作数测试
+    ALIGNED(32) int32_t mem_data[4] = {100, -200, 300, -400};
+    
+    ALIGNED(32) float flt_result128[4] = {0};
+    ALIGNED(32) float flt_result256[8] = {0};
+    
     // 128位版本测试
-    printf("\n[Testing VCVTDQ2PS (128-bit)]\n");
-    __m128i int_vec128;
-    __m128 flt_vec128;
-    float flt_result128[4];
-    
-    // 加载整数数据到128位向量
-    memcpy(&int_vec128, int_data, sizeof(__m128i));
-    
-    // 执行指令
-    asm volatile (
-        "vcvtdq2ps %1, %0"
-        : "=x" (flt_vec128)
-        : "x" (int_vec128)
+    __asm__ __volatile__(
+        "vmovdqa %1, %%xmm0\n\t"        // 加载整数数据到xmm0
+        "vcvtdq2ps %%xmm0, %%xmm1\n\t"  // 转换为单精度浮点数
+        "vmovups %%xmm1, %0\n\t"        // 存储结果
+        : "=m" (flt_result128)
+        : "m" (int_data)
+        : "xmm0", "xmm1"
     );
     
-    // 存储结果
-    _mm_storeu_ps(flt_result128, flt_vec128);
-    
-    // 打印并验证结果
+    printf("\n[Testing VCVTDQ2PS (128-bit)]\n");
     for (int i = 0; i < 4; i++) {
         float expected = (float)int_data[i];
         printf("Element %d: int=0x%08X (%d) => float=%.6f (expected %.6f)",
@@ -57,25 +52,16 @@ int main() {
     }
     
     // 256位版本测试
-    printf("\n[Testing VCVTDQ2PS (256-bit)]\n");
-    __m256i int_vec256;
-    __m256 flt_vec256;
-    float flt_result256[8];
-    
-    // 加载整数数据到256位向量
-    memcpy(&int_vec256, int_data, sizeof(__m256i));
-    
-    // 执行指令
-    asm volatile (
-        "vcvtdq2ps %1, %0"
-        : "=x" (flt_vec256)
-        : "x" (int_vec256)
+    __asm__ __volatile__(
+        "vmovdqa %1, %%ymm0\n\t"        // 加载整数数据到ymm0
+        "vcvtdq2ps %%ymm0, %%ymm1\n\t"  // 转换为单精度浮点数
+        "vmovups %%ymm1, %0\n\t"        // 存储结果
+        : "=m" (flt_result256)
+        : "m" (int_data)
+        : "ymm0", "ymm1"
     );
     
-    // 存储结果
-    _mm256_storeu_ps(flt_result256, flt_vec256);
-    
-    // 打印并验证结果
+    printf("\n[Testing VCVTDQ2PS (256-bit)]\n");
     for (int i = 0; i < 8; i++) {
         float expected = (float)int_data[i];
         printf("Element %d: int=0x%08X (%d) => float=%.6f (expected %.6f)",
@@ -88,14 +74,49 @@ int main() {
         }
     }
     
-    // // 检查MXCSR状态变化
-    // uint32_t final_mxcsr = get_mxcsr();
-    // printf("\nFinal MXCSR: 0x%08X\n", final_mxcsr);
-    // if (initial_mxcsr != final_mxcsr) {
-    //     printf("MXCSR changed during operation!\n");
-    //     print_mxcsr(final_mxcsr);
-    // }
+    // 测试MXCSR寄存器状态
+    uint32_t initial_mxcsr = get_mxcsr();
+    printf("\nInitial MXCSR: 0x%08X\n", initial_mxcsr);
     
-    printf("\nVCVTDQ2PS test completed.\n");
-    return 0;
+    // 执行转换后检查MXCSR
+    uint32_t final_mxcsr = get_mxcsr();
+    printf("Final MXCSR: 0x%08X\n", final_mxcsr);
+    
+    if (initial_mxcsr != final_mxcsr) {
+        printf("MXCSR changed during operation!\n");
+        print_mxcsr(final_mxcsr);
+        total_errors++;
+    }
+
+    // 测试内存操作数
+    ALIGNED(32) float mem_result[4] = {0};
+    __asm__ __volatile__(
+        "vcvtdq2ps %1, %%xmm0\n\t"
+        "vmovups %%xmm0, %0\n\t"
+        : "=m" (mem_result)
+        : "m" (*mem_data)
+        : "xmm0"
+    );
+
+    printf("\n[Testing Memory Operand]\n");
+    for (int i = 0; i < 4; i++) {
+        float expected = (float)mem_data[i];
+        printf("Element %d: int=%d => float=%.6f (expected %.6f)",
+               i, mem_data[i], mem_result[i], expected);
+        
+        if (float_equal(mem_result[i], expected, 1e-6)) {
+            printf(" [PASS]\n");
+        } else {
+            printf(" [FAIL]\n");
+            total_errors++;
+        }
+    }
+
+    return total_errors;
+}
+
+int main() {
+    int errors = test_vcvtdq2ps();
+    printf("\nTotal errors: %d\n", errors);
+    return errors;
 }

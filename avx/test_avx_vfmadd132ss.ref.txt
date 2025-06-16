@@ -1,0 +1,10 @@
+=============================
+VFMADD132SS Instruction Tests
+=============================
+
+VFMADD132SS Test (Register-Register Operand):
+  a=1.0, b=5.0, c=9.0, Expected: 14.0, Result: 14.0 - PASS
+
+VFMADD132SS Test (Register-Memory Operand):
+  a=-1.0, b=0.5, c=1.0, Expected: 0.5, Result: 0.5 - PASS
+

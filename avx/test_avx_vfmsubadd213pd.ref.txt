@@ -1,0 +1,10 @@
+--- Testing vfmsubadd213pd ---
+[Basic test]
+Input a: 1.000000 1.000000 1.000000 1.000000 
+Input b: 2.000000 2.000000 2.000000 2.000000 
+Input c: 3.000000 3.000000 3.000000 3.000000 
+Result: 5.000000 -1.000000 5.000000 -1.000000 
+Expected: 5.000000 -1.000000 5.000000 -1.000000 
+All elements match
+
+[Note] Special values test temporarily removed

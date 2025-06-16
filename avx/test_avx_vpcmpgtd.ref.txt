@@ -1,0 +1,3 @@
+--- Testing vpcmpgtd ---
+vpcmpgtd (256-bit) test passed!
+vpcmpgtd (128-bit) test passed!

@@ -1,0 +1,51 @@
+
+Test: vcmppd EQ (equal)
+Operand A: 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Operand B: 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Expected: 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result  : 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result: PASS
+
+Test: vcmppd NEQ (not equal)
+Operand A: 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Operand B: 0x0000000000000000 0x4008000000000000 0x4000000000000000 0x4014000000000000 
+Expected: 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result  : 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result: PASS
+
+Test: vcmppd LT (less than)
+Operand A: 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Operand B: 0x4000000000000000 0x3ff0000000000000 0x4010000000000000 0x4008000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0x0000000000000000 
+Result: PASS
+
+Test: vcmppd UNORD (unordered)
+Operand A: 0x3ff0000000000000 0x7ff8000000000000 0x4008000000000000 0x7ff8000000000000 
+Operand B: 0x7ff8000000000000 0x4000000000000000 0x7ff8000000000000 0x7ff8000000000000 
+Expected: 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result  : 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result: PASS
+
+Test: vcmppd ORD (ordered)
+Operand A: 0x3ff0000000000000 0x7ff8000000000000 0x4008000000000000 0x4010000000000000 
+Operand B: 0x4000000000000000 0x4000000000000000 0x7ff8000000000000 0x4010000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 0x0000000000000000 0xffffffffffffffff 
+Result  : 0xffffffffffffffff 0x0000000000000000 0x0000000000000000 0xffffffffffffffff 
+Result: PASS
+
+Test: vcmppd EQ with inf
+Operand A: 0x7ff0000000000000 0xfff0000000000000 0x7ff0000000000000 0xfff0000000000000 
+Operand B: 0x4059000000000000 0xc059000000000000 0x7ff0000000000000 0xfff0000000000000 
+Expected: 0x0000000000000000 0x0000000000000000 0xffffffffffffffff 0xffffffffffffffff 
+Result  : 0x0000000000000000 0x0000000000000000 0xffffffffffffffff 0xffffffffffffffff 
+Result: PASS
+
+Test: vcmppd with memory operand
+Operand A: 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Operand B (mem): 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Expected: 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result  : 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
+Result: PASS
+
+Summary: 7/7 tests passed

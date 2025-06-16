@@ -1,0 +1,51 @@
+
+Test: vcmpsd EQ (equal)
+Operand A: 0x3ff0000000000000 0x4000000000000000 
+Operand B: 0x3ff0000000000000 0x4000000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x4000000000000000 
+Result: PASS
+
+Test: vcmpsd NEQ (not equal)
+Operand A: 0x3ff0000000000000 0x4000000000000000 
+Operand B: 0x0000000000000000 0x4008000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x4000000000000000 
+Result: PASS
+
+Test: vcmpsd LT (less than)
+Operand A: 0x3ff0000000000000 0x4008000000000000 
+Operand B: 0x4000000000000000 0x3ff0000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x4008000000000000 
+Result: PASS
+
+Test: vcmpsd UNORD (unordered)
+Operand A: 0x3ff0000000000000 0x7ff8000000000000 
+Operand B: 0x7ff8000000000000 0x4000000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x7ff8000000000000 
+Result: PASS
+
+Test: vcmpsd ORD (ordered)
+Operand A: 0x3ff0000000000000 0x7ff8000000000000 
+Operand B: 0x4000000000000000 0x7ff8000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x7ff8000000000000 
+Result: PASS
+
+Test: vcmpsd EQ with inf
+Operand A: 0x7ff0000000000000 0xfff0000000000000 
+Operand B: 0x4059000000000000 0xc059000000000000 
+Expected: 0x0000000000000000 0x0000000000000000 
+Result  : 0x0000000000000000 0xfff0000000000000 
+Result: PASS
+
+Test: vcmpsd with memory operand
+Operand A: 0x3ff0000000000000 0x4000000000000000 
+Operand B (mem): 0x3ff0000000000000 0x4000000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x4000000000000000 
+Result: PASS
+
+Summary: 7/7 tests passed

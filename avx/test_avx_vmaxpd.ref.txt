@@ -1,0 +1,15 @@
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+--- Testing vmaxpd ---
+Element 0 OK: got inf (0x7ff0000000000000)
+Element 1 OK: got NaN as expected
+Element 2 OK: got inf (0x7ff0000000000000)
+Element 3 OK: got 0.000000 (0x0)
+vmaxpd (256-bit) test passed!
+Element 0 (128-bit) OK: got 1.000000 (0x3ff0000000000000)
+Element 1 (128-bit) OK: got 3.000000 (0x4008000000000000)
+vmaxpd (128-bit) test passed!
+All vmaxpd tests passed!
+vmaxpd (128-bit) test passed!

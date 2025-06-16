@@ -1,5 +1,4 @@
-Starting VCVTDQ2PD test...
-Initial MXCSR: 0x00001F80
+--- Testing vcvtdq2pd ---
 
 [Testing VCVTDQ2PD (128-bit)]
 Element 0: int=0x00000000 (0) => double=0.000000 (expected 0.000000) [PASS]
@@ -11,4 +10,13 @@ Element 1: int=0x00000001 (1) => double=1.000000 (expected 1.000000) [PASS]
 Element 2: int=0xFFFFFFFF (-1) => double=-1.000000 (expected -1.000000) [PASS]
 Element 3: int=0x7FFFFFFF (2147483647) => double=2147483647.000000 (expected 2147483647.000000) [PASS]
 
-VCVTDQ2PD test completed.
+Initial MXCSR: 0x00001F80
+Final MXCSR: 0x00001F80
+
+[Testing Memory Operand]
+Element 0: int=100 => double=100.000000 (expected 100.000000) [PASS]
+Element 1: int=-200 => double=-200.000000 (expected -200.000000) [PASS]
+Element 2: int=300 => double=300.000000 (expected 300.000000) [PASS]
+Element 3: int=-400 => double=-400.000000 (expected -400.000000) [PASS]
+
+Total errors: 0

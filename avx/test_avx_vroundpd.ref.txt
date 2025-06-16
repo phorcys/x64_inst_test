@@ -1,0 +1,52 @@
+===========================
+VROUNDPD Instruction Tests
+===========================
+
+VROUNDPD Test (Register Operand, Mode 0):
+  Input: 1.5, Expected: 2.0, Result: 2.0 - PASS
+  Input: -1.5, Expected: -2.0, Result: -2.0 - PASS
+  Input: 2.5, Expected: 2.0, Result: 2.0 - PASS
+  Input: -2.5, Expected: -2.0, Result: -2.0 - PASS
+
+VROUNDPD Test (Register Operand, Mode 1):
+  Input: 1.5, Expected: 1.0, Result: 1.0 - PASS
+  Input: -1.5, Expected: -2.0, Result: -2.0 - PASS
+  Input: 2.5, Expected: 2.0, Result: 2.0 - PASS
+  Input: -2.5, Expected: -3.0, Result: -3.0 - PASS
+
+VROUNDPD Test (Register Operand, Mode 2):
+  Input: 1.5, Expected: 2.0, Result: 2.0 - PASS
+  Input: -1.5, Expected: -1.0, Result: -1.0 - PASS
+  Input: 2.5, Expected: 3.0, Result: 3.0 - PASS
+  Input: -2.5, Expected: -2.0, Result: -2.0 - PASS
+
+VROUNDPD Test (Register Operand, Mode 3):
+  Input: 1.5, Expected: 1.0, Result: 1.0 - PASS
+  Input: -1.5, Expected: -1.0, Result: -1.0 - PASS
+  Input: 2.5, Expected: 2.0, Result: 2.0 - PASS
+  Input: -2.5, Expected: -2.0, Result: -2.0 - PASS
+
+VROUNDPD Test (Memory Operand, Mode 0):
+  Input: 10.1, Expected: 10.0, Result: 10.0 - PASS
+  Input: -10.1, Expected: -10.0, Result: -10.0 - PASS
+  Input: 20.2, Expected: 20.0, Result: 20.0 - PASS
+  Input: -20.2, Expected: -20.0, Result: -20.0 - PASS
+
+VROUNDPD Test (Memory Operand, Mode 1):
+  Input: 10.1, Expected: 10.0, Result: 10.0 - PASS
+  Input: -10.1, Expected: -11.0, Result: -11.0 - PASS
+  Input: 20.2, Expected: 20.0, Result: 20.0 - PASS
+  Input: -20.2, Expected: -21.0, Result: -21.0 - PASS
+
+VROUNDPD Test (Memory Operand, Mode 2):
+  Input: 10.1, Expected: 11.0, Result: 11.0 - PASS
+  Input: -10.1, Expected: -10.0, Result: -10.0 - PASS
+  Input: 20.2, Expected: 21.0, Result: 21.0 - PASS
+  Input: -20.2, Expected: -20.0, Result: -20.0 - PASS
+
+VROUNDPD Test (Memory Operand, Mode 3):
+  Input: 10.1, Expected: 10.0, Result: 10.0 - PASS
+  Input: -10.1, Expected: -10.0, Result: -10.0 - PASS
+  Input: 20.2, Expected: 20.0, Result: 20.0 - PASS
+  Input: -20.2, Expected: -20.0, Result: -20.0 - PASS
+

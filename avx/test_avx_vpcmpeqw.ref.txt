@@ -1,0 +1,3 @@
+--- Testing vpcmpeqw ---
+vpcmpeqw (256-bit) test passed!
+vpcmpeqw (128-bit) test passed!

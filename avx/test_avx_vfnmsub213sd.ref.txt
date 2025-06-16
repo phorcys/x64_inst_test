@@ -1,0 +1,32 @@
+Starting vfnmsub213sd tests
+Testing vfnmsub213sd
+Test 1: -(a*b) - c
+a: 1.000000
+b: 2.000000
+c: 3.000000
+result: -5.000000
+result (hex): 0xc014000000000000 
+
+Test 2: Special values
+a: inf
+b: 2.000000
+c: 1.000000
+result: -inf
+result (hex): 0xfff0000000000000 
+
+Testing with FTZ/DAZ enabled
+Testing vfnmsub213sd
+Test 1: -(a*b) - c
+a: 1.000000
+b: 2.000000
+c: 3.000000
+result: -5.000000
+result (hex): 0xc014000000000000 
+
+Test 2: Special values
+a: inf
+b: 2.000000
+c: 1.000000
+result: -inf
+result (hex): 0xfff0000000000000 
+vfnmsub213sd tests completed
