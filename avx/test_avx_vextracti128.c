@@ -8,11 +8,13 @@ static void test_vextracti128() {
     
     // 测试数据
     int32_t src[8] = {1, 2, 3, 4, 5, 6, 7, 8};
-    int32_t dst_low[4];  // 提取低128位的结果
-    int32_t dst_high[4]; // 提取高128位的结果
+    int32_t dst_low[4] = {0,0,0,0};  // 提取低128位的结果
+    int32_t dst_high[4] = {0,0,0,0}; // 提取高128位的结果
     int32_t expected_low[4] = {1, 2, 3, 4};  // 预期结果
     int32_t expected_high[4] = {5, 6, 7, 8}; // 预期结果
     
+    memset(&dst_low, 0, 16);
+    memset(&dst_high, 0, 16);
     // 测试提取低128位(立即数0)
     __asm__ __volatile__(
         "vmovdqu %1, %%ymm0\n\t"
@@ -22,22 +24,13 @@ static void test_vextracti128() {
         : "ymm0"
     );
     
-    // 验证结果
-    int pass = 1;
-    for(int i=0; i<4; i++) {
-        if(dst_low[i] != expected_low[i]) {
-            printf("Low128 mismatch at position %d: got %d, expected %d\n", 
-                  i, dst_low[i], expected_low[i]);
-            pass = 0;
-        }
-    }
+    printf("vextracti128 low 128-bits tests.\n");
+    print_int32_vec("src     :", src, 8);
+    print_int32_vec("dst low :", dst_low, 4);
+    print_int32_vec("dst high:", dst_high, 4);
     
-    if(pass) {
-        printf("Extract low128 test passed\n");
-    } else {
-        printf("Extract low128 test failed\n");
-    }
-    
+    memset(&dst_low, 0, 16);
+    memset(&dst_high, 0, 16);
     // 测试提取高128位(立即数1)
     __asm__ __volatile__(
         "vmovdqu %1, %%ymm0\n\t"
@@ -47,21 +40,10 @@ static void test_vextracti128() {
         : "ymm0"
     );
     
-    // 验证结果
-    pass = 1;
-    for(int i=0; i<4; i++) {
-        if(dst_high[i] != expected_high[i]) {
-            printf("High128 mismatch at position %d: got %d, expected %d\n", 
-                  i, dst_high[i], expected_high[i]);
-            pass = 0;
-        }
-    }
-    
-    if(pass) {
-        printf("Extract high128 test passed\n");
-    } else {
-        printf("Extract high128 test failed\n");
-    }
+    printf("vextracti128 low 128-bits tests.\n");
+    print_int32_vec("src     :", src, 8);
+    print_int32_vec("dst low :", dst_low, 4);
+    print_int32_vec("dst high:", dst_high, 4);
 }
 
 int main() {

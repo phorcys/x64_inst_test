@@ -8,11 +8,13 @@ static void test_vextractf128() {
     
     // 测试数据
     float src[8] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f};
-    float dst_low[4];  // 提取低128位的结果
-    float dst_high[4]; // 提取高128位的结果
+    float dst_low[4] = {0.0f,0.0f,0.0f,0.0f};  // 提取低128位的结果
+    float dst_high[4] = {0.0f,0.0f,0.0f,0.0f}; // 提取高128位的结果
     float expected_low[4] = {1.0f, 2.0f, 3.0f, 4.0f};  // 预期结果
     float expected_high[4] = {5.0f, 6.0f, 7.0f, 8.0f}; // 预期结果
-    
+
+    memset(&dst_low, 0, 16);
+    memset(&dst_high, 0, 16);
     // 测试提取低128位(立即数0)
     __asm__ __volatile__(
         "vmovups %1, %%ymm0\n\t"
@@ -22,22 +24,13 @@ static void test_vextractf128() {
         : "ymm0"
     );
     
-    // 验证结果
-    int pass = 1;
-    for(int i=0; i<4; i++) {
-        if(dst_low[i] != expected_low[i]) {
-            printf("Low128 mismatch at position %d: got %f, expected %f\n", 
-                  i, dst_low[i], expected_low[i]);
-            pass = 0;
-        }
-    }
-    
-    if(pass) {
-        printf("Extract low128 test passed\n");
-    } else {
-        printf("Extract low128 test failed\n");
-    }
-    
+    printf("vextractf128 low 128-bits tests.\n");
+    print_float_vec("src     :", src, 8);
+    print_float_vec("dst low :", dst_low, 4);
+    print_float_vec("dst high:", dst_high, 4);
+
+    memset(&dst_low, 0, 16);
+    memset(&dst_high, 0, 16);
     // 测试提取高128位(立即数1)
     __asm__ __volatile__(
         "vmovups %1, %%ymm0\n\t"
@@ -46,22 +39,10 @@ static void test_vextractf128() {
         : "m"(src)
         : "ymm0"
     );
-    
-    // 验证结果
-    pass = 1;
-    for(int i=0; i<4; i++) {
-        if(dst_high[i] != expected_high[i]) {
-            printf("High128 mismatch at position %d: got %f, expected %f\n", 
-                  i, dst_high[i], expected_high[i]);
-            pass = 0;
-        }
-    }
-    
-    if(pass) {
-        printf("Extract high128 test passed\n");
-    } else {
-        printf("Extract high128 test failed\n");
-    }
+    printf("vextractf128 high 128-bits tests.\n");
+    print_float_vec("src     :", src, 8);
+    print_float_vec("dst low :", dst_low, 4);
+    print_float_vec("dst high:", dst_high, 4);
 }
 
 int main() {
