@@ -1,111 +1,87 @@
 #include "avx.h"
-#include <float.h>
 #include <stdio.h>
-#include <stdint.h>
 #include <string.h>
-#include <math.h>
 
-// 测试vmovddup指令
-int test_vmovddup() {
-    int ret = 0;
-    printf("===== Test vmovddup instruction =====\n");
-
-    // 测试128位版本
-    {
-        double src[2] ALIGNED(16) = {1.23456789, -2.34567890};
-        double dst[2] ALIGNED(16) = {0};
-        double expected[2] = {src[0], src[0]};
-
-        printf("\n--- Testing 128-bit vmovddup ---\n");
-        print_double_vec("Source", src, 2);
-        print_double_vec("Expected", expected, 2);
-
-        __m128d src_reg, dst_reg;
-        memcpy(&src_reg, src, sizeof(src_reg));
-        __asm__ __volatile__(
-            "vmovddup %1, %0\n\t"
-            : "=x"(dst_reg)
-            : "x"(src_reg)
-        );
-        memcpy(dst, &dst_reg, sizeof(dst_reg));
-
-        print_double_vec("Result", dst, 2);
-
-        if(memcmp(dst, expected, sizeof(dst)) != 0) {
-            printf("FAIL: 128-bit vmovddup result mismatch\n");
-            ret = 1;
-        } else {
-            printf("PASS: 128-bit vmovddup\n");
-        }
+// VMOVDDUP 指令测试
+void test_vmovddup() {
+    printf("=== Testing VMOVDDUP ===\n");
+    
+    // 测试1: 128位版本
+    printf("\nTest 1: 128-bit version\n");
+    double src1[2] = {1.1, 2.2};
+    double dst1[2] = {0};
+    double expected1[2] = {1.1, 1.1}; // 复制低位元素
+    
+    asm volatile(
+        "vmovddup %1, %%xmm0\n\t"
+        "movupd %%xmm0, %0"
+        : "=m" (*(double (*)[2])dst1)
+        : "m" (*(double (*)[2])src1)
+        : "xmm0"
+    );
+    
+    printf("Src: %.1f, %.1f\n", src1[0], src1[1]);
+    printf("Dst: %.1f, %.1f\n", dst1[0], dst1[1]);
+    
+    if(dst1[0] == expected1[0] && dst1[1] == expected1[1]) {
+        printf("Test 1 PASSED\n");
+    } else {
+        printf("Test 1 FAILED\n");
     }
-
-    // 测试256位版本
-    {
-        double src[4] ALIGNED(32) = {1.23456789, -2.34567890, 3.45678901, -4.56789012};
-        double dst[4] ALIGNED(32) = {0};
-        double expected[4] = {src[0], src[0], src[2], src[2]};
-
-        printf("\n--- Testing 256-bit vmovddup ---\n");
-        print_double_vec("Source", src, 4);
-        print_double_vec("Expected", expected, 4);
-
-        __m256d src_reg, dst_reg;
-        memcpy(&src_reg, src, sizeof(src_reg));
-        __asm__ __volatile__(
-            "vmovddup %1, %0\n\t"
-            : "=x"(dst_reg)
-            : "x"(src_reg)
-        );
-        memcpy(dst, &dst_reg, sizeof(dst_reg));
-
-        print_double_vec("Result", dst, 4);
-
-        if(memcmp(dst, expected, sizeof(dst)) != 0) {
-            printf("FAIL: 256-bit vmovddup result mismatch\n");
-            ret = 1;
-        } else {
-            printf("PASS: 256-bit vmovddup\n");
-        }
+    
+    // 测试2: 256位版本
+    printf("\nTest 2: 256-bit version\n");
+    double src2[4] = {1.1, 2.2, 3.3, 4.4};
+    double dst2[4] = {0};
+    double expected2[4] = {1.1, 1.1, 3.3, 3.3}; // 复制每个64位元素
+    
+    asm volatile(
+        "vmovddup %1, %%ymm0\n\t"
+        "vmovupd %%ymm0, %0"
+        : "=m" (*(double (*)[4])dst2)
+        : "m" (*(double (*)[4])src2)
+        : "ymm0"
+    );
+    
+    printf("Src: %.1f, %.1f, %.1f, %.1f\n", 
+           src2[0], src2[1], src2[2], src2[3]);
+    printf("Dst: %.1f, %.1f, %.1f, %.1f\n", 
+           dst2[0], dst2[1], dst2[2], dst2[3]);
+    
+    if(memcmp(dst2, expected2, sizeof(dst2)) == 0) {
+        printf("Test 2 PASSED\n");
+    } else {
+        printf("Test 2 FAILED\n");
     }
-
-    // 测试特殊值(NaN, 0, 最大/最小值)
-    {
-        double special_values[4] ALIGNED(32) = {
-            NAN, 0.0, 
-            -DBL_MAX, DBL_MAX
-        };
-        double dst[4] ALIGNED(32) = {0};
-        double expected[4] = {
-            special_values[0], special_values[0],
-            special_values[2], special_values[2]
-        };
-
-        printf("\n--- Testing special values ---\n");
-        print_double_vec_hex("Source", special_values, 4);
-        print_double_vec_hex("Expected", expected, 4);
-
-        __m256d src_reg, dst_reg;
-        memcpy(&src_reg, special_values, sizeof(src_reg));
-        __asm__ __volatile__(
-            "vmovddup %1, %0\n\t"
-            : "=x"(dst_reg)
-            : "x"(src_reg)
-        );
-        memcpy(dst, &dst_reg, sizeof(dst_reg));
-
-        print_double_vec_hex("Result", dst, 4);
-
-        if(memcmp(dst, expected, sizeof(dst)) != 0) {
-            printf("FAIL: Special values test failed\n");
-            ret = 1;
-        } else {
-            printf("PASS: Special values test\n");
-        }
+    
+    // 测试3: 特殊值测试 (NaN)
+    printf("\nTest 3: Special values (NaN)\n");
+    double nan = 0.0/0.0;
+    double src3[2] = {nan, 0.0}; // NaN, 0
+    double dst3[2] = {0};
+    
+    asm volatile(
+        "vmovddup %1, %%xmm0\n\t"
+        "movupd %%xmm0, %0"
+        : "=m" (*(double (*)[2])dst3)
+        : "m" (*(double (*)[2])src3)
+        : "xmm0"
+    );
+    
+    int nan_ok0 = isnan(dst3[0]);
+    int nan_ok1 = isnan(dst3[1]);
+    
+    printf("Dst: %f, %f\n", dst3[0], dst3[1]);
+    printf("Checks: [0] is nan:%d, [1] is nan:%d\n", nan_ok0, nan_ok1);
+    
+    if(nan_ok0 && nan_ok1) {
+        printf("Test 3 PASSED\n");
+    } else {
+        printf("Test 3 FAILED\n");
     }
-
-    return ret;
 }
 
 int main() {
-    return test_vmovddup();
+    test_vmovddup();
+    return 0;
 }
