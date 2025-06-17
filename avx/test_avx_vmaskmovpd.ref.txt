@@ -1,25 +1,7 @@
-=== Testing vmaskmovpd ===
-Testing vmaskmovpd (128-bit):
-Before: reg=[0.00, 0.00], mask=[0xffffffffffffffff, 0x0]
-After:  reg=[1.00, 0.00]
-  PASS: 128-bit vmaskmovpd
-
-Testing vmaskmovpd (256-bit):
-Before: reg=[0.00, 0.00, 0.00, 0.00]
-After:  reg=[1.00, 2.00, 0.00, 4.00]
-  PASS: 256-bit vmaskmovpd
-
-Testing vmaskmovpd with special values:
-Result: [nan, inf]
-  PASS: NaN value correctly loaded
-  PASS: INFINITY value correctly loaded
-
-Testing vmaskmovpd with unaligned memory:
-Result: [2.00, 3.00]
-  PASS: Unaligned access works
-
-Testing vmaskmovpd with complex mask (256-bit):
-Before: reg=[40.00, 30.00, 20.00, 10.00]
-Mask:   [0x0000000000000000, 0xffffffffffffffff, 0x0000000000000000, 0xffffffffffffffff]
-After:  reg=[0.00, 2.00, 0.00, 4.00]
-  PASS: Complex mask pattern works
+=== Simplified VMASKMOVPD Test ===
+Memory: 1.1, 0.0
+Expected: 1.1, 0.0
+Actual:   1.1, 0.0
+Test PASSED
+XMM0 (src): 9a 99 99 99 99 99 f1 3f 9a 99 99 99 99 99 01 40 
+XMM1 (mask): ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 

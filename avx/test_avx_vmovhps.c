@@ -1,59 +1,63 @@
 #include "avx.h"
 #include <stdio.h>
-#include <math.h>
+#include <string.h>
+#include <immintrin.h>
 
 // VMOVHPS 指令测试
 void test_vmovhps() {
     printf("=== Testing VMOVHPS ===\n");
     
-    // 测试1: 从内存加载到寄存器高64位
-    printf("\nTest 1: Load high 64-bit from memory\n");
-    float src1[4] = {1.1f, 2.2f, 3.3f, 4.4f};
-    float mem_value[2] = {5.5f, 6.6f};
-    float dst1[4] = {0};
-    float expected1[4] = {1.1f, 2.2f, 5.5f, 6.6f}; // 低64位不变，高64位更新
+    // 测试1: 从内存加载高64位到XMM寄存器
+    printf("\nTest 1: Load high 64-bit from memory to XMM register\n");
+    float src_value[2] = {100.0f, 200.0f}; // 要加载的值
+    float src_reg[4] = {1.0f, 2.0f, 3.0f, 4.0f}; // 寄存器初始值
+    float expected[4] = {1.0f, 2.0f, 100.0f, 200.0f}; // 预期结果
     
+    __m128 result;
+    
+    __m128 reg = _mm_loadu_ps(src_reg);
     __asm__ __volatile__ (
-        "vmovups %1, %%xmm0\n\t"      // 加载src1到xmm0
-        "vmovhps %2, %%xmm0, %%xmm0\n\t" // 将内存值加载到xmm0高64位
-        "vmovups %%xmm0, %0"          // 存储结果到dst1
-        : "=m" (*(float (*)[4])dst1)
-        : "m" (*(const float (*)[4])src1), "m" (*(const float (*)[2])mem_value)
-        : "xmm0"
+        "vmovhps %2, %1, %0" // 执行VMOVHPS：将内存值加载到源寄存器的高64位，结果存到目标寄存器
+        : "=x" (result)
+        : "x" (reg), "m" (*(__m128*)src_value)
     );
     
-    printf("Src: %.1f, %.1f, %.1f, %.1f\n", src1[0], src1[1], src1[2], src1[3]);
-    printf("Mem: %.1f, %.1f\n", mem_value[0], mem_value[1]);
-    printf("Dst: %.1f, %.1f, %.1f, %.1f\n", dst1[0], dst1[1], dst1[2], dst1[3]);
+    float result_arr[4];
+    _mm_storeu_ps(result_arr, result);
     
-    if(fabsf(dst1[0] - expected1[0]) < 0.001f && 
-       fabsf(dst1[1] - expected1[1]) < 0.001f &&
-       fabsf(dst1[2] - expected1[2]) < 0.001f && 
-       fabsf(dst1[3] - expected1[3]) < 0.001f) {
+    printf("Register initial: [%.1f, %.1f, %.1f, %.1f]\n", 
+           src_reg[0], src_reg[1], src_reg[2], src_reg[3]);
+    printf("Memory value: [%.1f, %.1f]\n", src_value[0], src_value[1]);
+    printf("Result: [%.1f, %.1f, %.1f, %.1f]\n", 
+           result_arr[0], result_arr[1], result_arr[2], result_arr[3]);
+    printf("Expected: [%.1f, %.1f, %.1f, %.1f]\n", 
+           expected[0], expected[1], expected[2], expected[3]);
+    
+    if(memcmp(result_arr, expected, sizeof(expected)) == 0) {
         printf("Test 1 PASSED\n");
     } else {
         printf("Test 1 FAILED\n");
     }
     
-    // 测试2: 将寄存器高64位存储到内存
-    printf("\nTest 2: Store high 64-bit to memory\n");
-    float src2[4] = {7.7f, 8.8f, 9.9f, 10.10f};
-    float mem_dst[2] = {0};
-    float expected_mem[2] = {9.9f, 10.10f}; // 高64位的值
+    // 测试2: 将XMM寄存器的高64位存储到内存
+    printf("\nTest 2: Store high 64-bit from XMM register to memory\n");
+    float src_vector[4] = {10.0f, 20.0f, 30.0f, 40.0f}; // 源寄存器值
+    float mem_dest[2] = {0.0f, 0.0f}; // 目标内存位置
+    
+    __m128 src = _mm_loadu_ps(src_vector);
     
     __asm__ __volatile__ (
-        "vmovups %1, %%xmm0\n\t"      // 加载src2到xmm0
-        "vmovhps %%xmm0, %0"          // 将xmm0高64位存储到内存
-        : "=m" (*(float (*)[2])mem_dst)
-        : "m" (*(const float (*)[4])src2)
-        : "xmm0"
+        "vmovhps %%xmm0, %0" // 执行VMOVHPS：将xmm0的高64位存储到内存
+        : "=m" (*(__m128*)mem_dest)
+        : "x" (src)
     );
     
-    printf("Src: %.1f, %.1f, %.1f, %.1f\n", src2[0], src2[1], src2[2], src2[3]);
-    printf("Mem: %.1f, %.1f\n", mem_dst[0], mem_dst[1]);
+    printf("Source vector: [%.1f, %.1f, %.1f, %.1f]\n", 
+           src_vector[0], src_vector[1], src_vector[2], src_vector[3]);
+    printf("Memory dest: [%.1f, %.1f]\n", mem_dest[0], mem_dest[1]);
+    printf("Expected: [%.1f, %.1f]\n", src_vector[2], src_vector[3]);
     
-    if(fabsf(mem_dst[0] - expected_mem[0]) < 0.001f && 
-       fabsf(mem_dst[1] - expected_mem[1]) < 0.001f) {
+    if(mem_dest[0] == src_vector[2] && mem_dest[1] == src_vector[3]) {
         printf("Test 2 PASSED\n");
     } else {
         printf("Test 2 FAILED\n");

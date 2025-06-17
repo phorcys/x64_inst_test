@@ -1,6 +1,8 @@
 === Testing VMOVHLPS ===
 
-Test 1: Basic functionality
-Src1: 1.1, 2.2, 3.3, 4.4
-Src2: 5.5, 6.6, 7.7, 8.8
-Dst: 3.3, 4.4, 7.7, 8.8
+Test: Move high 64-bits from source to destination
+Source1: [1.0, 2.0, 3.0, 4.0]
+Source2: [5.0, 6.0, 7.0, 8.0]
+Result: [7.0, 8.0, 3.0, 4.0]
+Expected: [7.0, 8.0, 3.0, 4.0]
+Test PASSED

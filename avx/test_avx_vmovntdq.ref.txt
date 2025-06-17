@@ -1,10 +1,13 @@
-=== Testing vmovntdq ===
-Testing vmovntdq (128-bit):
-Before: src=[0x12345678, 0x87654321, 0xABCDEF01, 0x10FEDCBA]
-After:  dst=[0x12345678, 0x87654321, 0xABCDEF01, 0x10FEDCBA]
-  PASS: 128-bit vmovntdq
+=== Testing VMOVNTDQ ===
 
-Testing vmovntdq (256-bit):
-Before: src=[0x11111111, 0x22222222, 0x33333333, 0x44444444, 0x55555555, 0x66666666, 0x77777777, 0x88888888]
-After:  dst=[0x11111111, 0x22222222, 0x33333333, 0x44444444, 0x55555555, 0x66666666, 0x77777777, 0x88888888]
-  PASS: 256-bit vmovntdq
+Test 1: 128-bit operand
+Source: [1, 2, 3, 4]
+Result: [1, 2, 3, 4]
+Expected: [1, 2, 3, 4]
+Test 1 PASSED
+
+Test 2: 256-bit operand
+Source: [10, 20, 30, 40, 50, 60, 70, 80]
+Result: [10, 20, 30, 40, 50, 60, 70, 80]
+Expected: [10, 20, 30, 40, 50, 60, 70, 80]
+Test 2 PASSED

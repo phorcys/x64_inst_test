@@ -13,11 +13,10 @@ void test_vmaskmovpd() {
     __m128d mask = _mm_castsi128_pd(_mm_set_epi64x(0, -1)); // 低位掩码有效
     
     // 使用显式寄存器绑定
-    register void* rdi asm("rdi") = mem;
     asm volatile(
-        "vmaskmovpd (%%rdi), %xmm1, %xmm0"
+        "vmaskmovpd %%xmm1, %%xmm0, (%0)"  // 添加额外的%转义
         : 
-        : "D" (rdi), "x" (mask), "x" (src)
+        : "r" (mem), "x" (mask), "x" (src)
         : "memory"
     );
     

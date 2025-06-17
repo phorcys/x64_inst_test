@@ -1,34 +1,42 @@
 #include "avx.h"
 #include <stdio.h>
-#include <math.h>
+#include <string.h>
+#include <immintrin.h>
 
 // VMOVHLPS 指令测试
 void test_vmovhlps() {
     printf("=== Testing VMOVHLPS ===\n");
     
-    // 测试1: 基本功能测试
-    printf("\nTest 1: Basic functionality\n");
-    float src1[4] = {1.1f, 2.2f, 3.3f, 4.4f};
-    float src2[4] = {5.5f, 6.6f, 7.7f, 8.8f};
-
-    float dst[4] = {0};
+    // 测试: 将高位64位从源寄存器移动到目标寄存器
+    printf("\nTest: Move high 64-bits from source to destination\n");
+    float src1[4] = {1.0f, 2.0f, 3.0f, 4.0f}; // 源寄存器1
+    float src2[4] = {5.0f, 6.0f, 7.0f, 8.0f}; // 源寄存器2
+    float expected[4] = {7.0f, 8.0f, 3.0f, 4.0f}; // 预期结果
+    
+    __m128 result;
+    __m128 reg1 = _mm_loadu_ps(src1);
+    __m128 reg2 = _mm_loadu_ps(src2);
     
     __asm__ __volatile__ (
-        "vmovups %1, %%xmm0\n\t"      // 加载src1到xmm0
-        "vmovups %2, %%xmm1\n\t"      // 加载src1+2到xmm1
-        "vmovhlps %%xmm0, %%xmm1, %%xmm2\n\t" // 修正参数顺序: xmm2 = [xmm1_low, xmm0_high]
-        "vmovups %%xmm2, %0"          // 存储结果到dst
-        : "=m" (*(float (*)[4])dst)
-        : "m" (*(const float (*)[4])src1), "m" (*(const float (*)[4])(src2))
-        : "xmm0", "xmm1", "xmm2"
+        "vmovhlps %2, %1, %0" // 执行VMOVHLPS: %0 = 源寄存器2的高64位 + 源寄存器1的高64位
+        : "=x" (result)
+        : "x" (reg1), "x" (reg2)
     );
     
+    float result_arr[4];
+    _mm_storeu_ps(result_arr, result);
     
-    printf("Src1: %.1f, %.1f, %.1f, %.1f\n", src1[0], src1[1], src1[2], src1[3]);
-    printf("Src2: %.1f, %.1f, %.1f, %.1f\n", src2[0], src2[1], src2[2], src2[3]);
-    printf("Dst: %.1f, %.1f, %.1f, %.1f\n", dst[0], dst[1], dst[2], dst[3]);
-
-   }
+    printf("Source1: [%.1f, %.1f, %.1f, %.1f]\n", src1[0], src1[1], src1[2], src1[3]);
+    printf("Source2: [%.1f, %.1f, %.1f, %.1f]\n", src2[0], src2[1], src2[2], src2[3]);
+    printf("Result: [%.1f, %.1f, %.1f, %.1f]\n", result_arr[0], result_arr[1], result_arr[2], result_arr[3]);
+    printf("Expected: [%.1f, %.1f, %.1f, %.1f]\n", expected[0], expected[1], expected[2], expected[3]);
+    
+    if(memcmp(result_arr, expected, sizeof(expected)) == 0) {
+        printf("Test PASSED\n");
+    } else {
+        printf("Test FAILED\n");
+    }
+}
 
 int main() {
     test_vmovhlps();

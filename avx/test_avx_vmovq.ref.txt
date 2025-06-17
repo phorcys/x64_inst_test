@@ -1,0 +1,13 @@
+=== Testing VMOVQ ===
+
+Test 1: Load 64-bit integer from memory to XMM register
+Source: 0x1234567890ABCDEF
+Result: 0x1234567890ABCDEF
+Expected: 0x1234567890ABCDEF
+Test 1 PASSED
+
+Test 2: Store low 64-bit from XMM register to memory
+Source vector: 0x1122334455667788
+Memory dest: 0x1122334455667788
+Expected: 0x1122334455667788
+Test 2 PASSED

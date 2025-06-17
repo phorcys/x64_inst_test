@@ -1,0 +1,13 @@
+=== Testing VPMOVSXBD ===
+
+Test 1: 128-bit operand
+Source: [-128, -64, 0, 127]
+Result: [-128, -64, 0, 127]
+Expected: [-128, -64, 0, 127]
+Test 1 PASSED
+
+Test 2: 256-bit operand
+Source: [-128, -64, 0, 64, 127, -1, -32, 32]
+Result: [-128, -64, 0, 64, 127, -1, -32, 32]
+Expected: [-128, -64, 0, 64, 127, -1, -32, 32]
+Test 2 PASSED

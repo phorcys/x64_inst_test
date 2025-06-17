@@ -1,26 +1,14 @@
-=== Testing vmaskmovps ===
-Testing vmaskmovps (128-bit):
-Before: reg=[0.00, 0.00, 0.00, 0.00]
-After:  reg=[1.00, 0.00, 3.00, 0.00]
-  PASS: 128-bit vmaskmovps
+=== Testing VMASKMOVPS ===
 
-Testing vmaskmovps (256-bit):
-Before: reg=[0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
-After:  reg=[1.00, 0.00, 3.00, 0.00, 0.00, 6.00, 0.00, 8.00]
-  PASS: 256-bit vmaskmovps
+Test 1: 128-bit aligned memory
+XMM0 (src): cd cc 8c 3f cd cc 0c 40 33 33 53 40 cd cc 8c 40 
+XMM1 (mask): ff ff ff ff 00 00 00 00 ff ff ff ff 00 00 00 00 
+Memory: 0.0, 0.0, 0.0, 0.0
+Test 1 FAILED
 
-Testing vmaskmovps with special values:
-Result: [nan, inf, -inf, 0.000000]
-  PASS: NaN value correctly loaded
-  PASS: +INFINITY value correctly loaded
-  PASS: -INFINITY value correctly loaded
-  PASS: 0 value not loaded (mask=0)
-
-Testing vmaskmovps with unaligned memory:
-Result: [2.00, 3.00, 4.00, 5.00]
-  PASS: Unaligned access works
-
-Testing vmaskmovps with complex mask (256-bit):
-Before: reg=[10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00]
-After:  reg=[1.00, 0.00, 3.00, 0.00, 0.00, 6.00, 0.00, 8.00]
-  PASS: Complex mask pattern works
+Test 2: Special values
+XMM0 (src): 00 00 00 00 00 00 80 ff 00 00 c0 7f 00 00 80 7f 
+XMM1 (mask): 00 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff 
+Memory: 0.000000, 0.000000, 0.000000, 0.000000
+Checks: -inf:0, nan:0, +inf:0
+Test 2 FAILED

@@ -1,19 +1,16 @@
-===== Test vmovddup instruction =====
+=== Testing VMOVDDUP ===
 
---- Testing 128-bit vmovddup ---
-Source: 1.234568 -2.345679 
-Expected: 1.234568 1.234568 
-Result: 1.234568 1.234568 
-PASS: 128-bit vmovddup
+Test 1: 128-bit version
+Src: 1.1, 2.2
+Dst: 1.1, 1.1
+Test 1 PASSED
 
---- Testing 256-bit vmovddup ---
-Source: 1.234568 -2.345679 3.456789 -4.567890 
-Expected: 1.234568 1.234568 3.456789 3.456789 
-Result: 1.234568 1.234568 3.456789 3.456789 
-PASS: 256-bit vmovddup
+Test 2: 256-bit version
+Src: 1.1, 2.2, 3.3, 4.4
+Dst: 1.1, 1.1, 3.3, 3.3
+Test 2 PASSED
 
---- Testing special values ---
-Source: 0x7ff8000000000000 0x0000000000000000 0xffefffffffffffff 0x7fefffffffffffff 
-Expected: 0x7ff8000000000000 0x7ff8000000000000 0xffefffffffffffff 0xffefffffffffffff 
-Result: 0x7ff8000000000000 0x7ff8000000000000 0xffefffffffffffff 0xffefffffffffffff 
-PASS: Special values test
+Test 3: Special values (NaN)
+Dst: nan, nan
+Checks: [0] is nan:1, [1] is nan:1
+Test 3 PASSED
