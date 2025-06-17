@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-static uint32_t cond = 0b10001100001;
+static uint32_t cond = X_CF|X_SF|X_ZF|X_OF;
 // ANDN 32位指令测试函数
 void test_andn32() {
     printf("=== Testing 32-bit ANDN instruction ===\n");

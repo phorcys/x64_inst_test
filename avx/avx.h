@@ -131,7 +131,15 @@ static uint32_t __attribute__((unused)) get_mxcsr() {
     __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
     return mxcsr;
 }
-
+#define X_CF (1<<0)
+#define X_PF (1<<2)
+#define X_AF (1<<4)
+#define X_ZF (1<<6)
+#define X_SF (1<<7)
+#define X_TF (1<<8)
+#define X_IF (1<<9)
+#define X_DF (1<<10)
+#define X_OF (1<<11)
 // Print EFLAGS register
 static inline void print_eflags(uint32_t eflags) {
     printf("EFLAGS: 0x%08X\n", eflags);

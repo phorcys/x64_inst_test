@@ -5,10 +5,10 @@
 
 // 内联汇编宏定义
 #define BLSR32(dst, src) \
-    asm volatile ("blsr %1, %0" : "=r" (dst) : "r" (src))
+    asm volatile ("blsrl %1, %0" : "=r" (dst) : "r" (src) : "cc")
 
 #define BLSR64(dst, src) \
-    asm volatile ("blsr %1, %0" : "=r" (dst) : "r" (src))
+    asm volatile ("blsrq %1, %0" : "=r" (dst) : "r" (src) : "cc")
 
 int main() {
     printf("Testing BLSR instruction\n");
@@ -25,9 +25,7 @@ int main() {
             uint32_t result;
             uint32_t expected = src & (src - 1);  // BLSR 操作: x & (x-1)
             
-            // 清除标志寄存器
             CLEAR_FLAGS;
-            
             BLSR32(result, src);
             
             printf("Test %zu: BLSR(%s) => ", i+1, names[i]);
@@ -39,9 +37,10 @@ int main() {
                 printf("[FAIL]");
             }
             
-            // 输出标志寄存器状态
             uint64_t flags;
             asm volatile ("pushfq\n\tpop %0" : "=r"(flags));
+            // 清除未定义标志位
+            flags &= 0xFFFFFFFFFFFCFAFF;
             printf(" | Flags: 0x%016" PRIx64 "\n", flags);
         }
     }
@@ -59,9 +58,7 @@ int main() {
             uint64_t result;
             uint64_t expected = src & (src - 1);  // BLSR 操作: x & (x-1)
             
-            // 清除标志寄存器
             CLEAR_FLAGS;
-            
             BLSR64(result, src);
             
             printf("Test %zu: BLSR(%s) => ", i+1, names[i]);
@@ -73,9 +70,10 @@ int main() {
                 printf("[FAIL]");
             }
             
-            // 输出标志寄存器状态
             uint64_t flags;
             asm volatile ("pushfq\n\tpop %0" : "=r"(flags));
+            // 清除未定义标志位
+            flags &= 0xFFFFFFFFFFFCFAFF;
             printf(" | Flags: 0x%016" PRIx64 "\n", flags);
         }
     }
