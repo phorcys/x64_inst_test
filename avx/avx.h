@@ -140,18 +140,19 @@ static uint32_t __attribute__((unused)) get_mxcsr() {
 #define X_IF (1<<9)
 #define X_DF (1<<10)
 #define X_OF (1<<11)
+#define EFLAGS_MASK (0xFFFFFFFFFFFCFAFF) // 保留所有定义标志位，清除未定义位
 // Print EFLAGS register
-static inline void print_eflags(uint32_t eflags) {
-    printf("EFLAGS: 0x%08X\n", eflags);
-    printf("  [%c] CF - Carry Flag\n", (eflags & (1 << 0)) ? 'X' : ' ');
-    printf("  [%c] PF - Parity Flag\n", (eflags & (1 << 2)) ? 'X' : ' ');
-    printf("  [%c] AF - Auxiliary Flag\n", (eflags & (1 << 4)) ? 'X' : ' ');
-    printf("  [%c] ZF - Zero Flag\n", (eflags & (1 << 6)) ? 'X' : ' ');
-    printf("  [%c] SF - Sign Flag\n", (eflags & (1 << 7)) ? 'X' : ' ');
-    printf("  [%c] TF - Trap Flag\n", (eflags & (1 << 8)) ? 'X' : ' ');
-    printf("  [%c] IF - Interrupt Flag\n", (eflags & (1 << 9)) ? 'X' : ' ');
-    printf("  [%c] DF - Direction Flag\n", (eflags & (1 << 10)) ? 'X' : ' ');
-    printf("  [%c] OF - Overflow Flag\n", (eflags & (1 << 11)) ? 'X' : ' ');
+static inline void print_eflags(uint64_t eflags) {
+    printf("EFLAGS: 0x%016" PRIX64 "\n", eflags);
+    printf("  [%c] CF - Carry Flag\n", (eflags & X_CF) ? 'X' : ' ');
+    printf("  [%c] PF - Parity Flag\n", (eflags & X_PF) ? 'X' : ' ');
+    printf("  [%c] AF - Auxiliary Flag\n", (eflags & X_AF) ? 'X' : ' ');
+    printf("  [%c] ZF - Zero Flag\n", (eflags & X_ZF) ? 'X' : ' ');
+    printf("  [%c] SF - Sign Flag\n", (eflags & X_SF) ? 'X' : ' ');
+    printf("  [%c] TF - Trap Flag\n", (eflags & X_TF) ? 'X' : ' ');
+    printf("  [%c] IF - Interrupt Flag\n", (eflags & X_IF) ? 'X' : ' ');
+    printf("  [%c] DF - Direction Flag\n", (eflags & X_DF) ? 'X' : ' ');
+    printf("  [%c] OF - Overflow Flag\n", (eflags & X_OF) ? 'X' : ' ');
 }
 
 // Print EFLAGS register with condition mask
@@ -213,6 +214,6 @@ static void __attribute__((unused)) print_vector256d(const char* name, __m256d v
 
 // 清除标志寄存器（EFLAGS）的宏
 #define CLEAR_FLAGS \
-    asm volatile ("push $0\n\tpopf" : : : "cc", "memory")
+    asm volatile ("push $0\n\tpopfq" : : : "cc", "memory")
 
 #endif // AVX_H

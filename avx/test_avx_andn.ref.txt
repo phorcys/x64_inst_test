@@ -5,7 +5,8 @@ Test 1: 32-bit basic
   Result:   0xAAAAAAAA
   [ ] CF - Carry Flag
   [ ] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 Test 2: 32-bit all zeros
   Input: NOT 0x00000000 AND 0xFFFFFFFF
@@ -13,7 +14,8 @@ Test 2: 32-bit all zeros
   Result:   0xFFFFFFFF
   [ ] CF - Carry Flag
   [ ] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 Test 3: 32-bit all ones
   Input: NOT 0xFFFFFFFF AND 0xFFFFFFFF
@@ -21,7 +23,8 @@ Test 3: 32-bit all ones
   Result:   0x00000000
   [ ] CF - Carry Flag
   [X] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 Test 4: 32-bit memory operand
   Input: NOT 0x12345678 AND 0x87654321
@@ -29,7 +32,8 @@ Test 4: 32-bit memory operand
   Result:   0x85410101
   [ ] CF - Carry Flag
   [ ] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 === Testing 64-bit ANDN instruction ===
 Test 1: 64-bit basic
@@ -38,7 +42,8 @@ Test 1: 64-bit basic
   Result:   0xAAAAAAAAAAAAAAAA
   [ ] CF - Carry Flag
   [ ] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 Test 2: 64-bit all zeros
   Input: NOT 0x0000000000000000 AND 0xFFFFFFFFFFFFFFFF
@@ -46,7 +51,8 @@ Test 2: 64-bit all zeros
   Result:   0xFFFFFFFFFFFFFFFF
   [ ] CF - Carry Flag
   [ ] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 Test 3: 64-bit all ones
   Input: NOT 0xFFFFFFFFFFFFFFFF AND 0xFFFFFFFFFFFFFFFF
@@ -54,7 +60,8 @@ Test 3: 64-bit all ones
   Result:   0x0000000000000000
   [ ] CF - Carry Flag
   [X] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 Test 4: 64-bit memory operand
   Input: NOT 0x123456789ABCDEF0 AND 0xFEDCBA9876543210
@@ -62,5 +69,6 @@ Test 4: 64-bit memory operand
   Result:   0xECC8A88064402000
   [ ] CF - Carry Flag
   [ ] ZF - Zero Flag
-  [ ] DF - Direction Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
 

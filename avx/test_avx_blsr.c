@@ -40,7 +40,7 @@ int main() {
             uint64_t flags;
             asm volatile ("pushfq\n\tpop %0" : "=r"(flags));
             // 清除未定义标志位
-            flags &= 0xFFFFFFFFFFFCFAFF;
+            flags &= EFLAGS_MASK;
             printf(" | Flags: 0x%016" PRIx64 "\n", flags);
         }
     }
@@ -73,7 +73,7 @@ int main() {
             uint64_t flags;
             asm volatile ("pushfq\n\tpop %0" : "=r"(flags));
             // 清除未定义标志位
-            flags &= 0xFFFFFFFFFFFCFAFF;
+            flags &= EFLAGS_MASK;
             printf(" | Flags: 0x%016" PRIx64 "\n", flags);
         }
     }
