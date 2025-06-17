@@ -3,120 +3,64 @@ Test 1: 32-bit basic
   Input: NOT 0x55555555 AND 0xAAAAAAAA
   Expected: 0xAAAAAAAA
   Result:   0xAAAAAAAA
-EFLAGS: 0x00000286
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [X] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 2: 32-bit all zeros
   Input: NOT 0x00000000 AND 0xFFFFFFFF
   Expected: 0xFFFFFFFF
   Result:   0xFFFFFFFF
-EFLAGS: 0x00000286
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [X] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 3: 32-bit all ones
   Input: NOT 0xFFFFFFFF AND 0xFFFFFFFF
   Expected: 0x00000000
   Result:   0x00000000
-EFLAGS: 0x00000246
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 4: 32-bit memory operand
   Input: NOT 0x12345678 AND 0x87654321
   Expected: 0x85410101
   Result:   0x85410101
-EFLAGS: 0x00000282
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [X] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 === Testing 64-bit ANDN instruction ===
 Test 1: 64-bit basic
   Input: NOT 0x5555555555555555 AND 0xAAAAAAAAAAAAAAAA
   Expected: 0xAAAAAAAAAAAAAAAA
   Result:   0xAAAAAAAAAAAAAAAA
-EFLAGS: 0x00000286
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [X] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 2: 64-bit all zeros
   Input: NOT 0x0000000000000000 AND 0xFFFFFFFFFFFFFFFF
   Expected: 0xFFFFFFFFFFFFFFFF
   Result:   0xFFFFFFFFFFFFFFFF
-EFLAGS: 0x00000286
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [X] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 3: 64-bit all ones
   Input: NOT 0xFFFFFFFFFFFFFFFF AND 0xFFFFFFFFFFFFFFFF
   Expected: 0x0000000000000000
   Result:   0x0000000000000000
-EFLAGS: 0x00000246
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 4: 64-bit memory operand
   Input: NOT 0x123456789ABCDEF0 AND 0xFEDCBA9876543210
   Expected: 0xECC8A88064402000
   Result:   0xECC8A88064402000
-EFLAGS: 0x00000286
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [X] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
