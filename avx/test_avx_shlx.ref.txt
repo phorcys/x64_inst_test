@@ -1,0 +1,117 @@
+=== Testing 32-bit SHLX instruction ===
+Test 1: SHLX(0x12345678, 4)
+  Result:   0x23456780
+  Expected: 0x23456780
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 2: SHLX(0x87654321, 0)
+  Result:   0x87654321
+  Expected: 0x87654321
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 3: SHLX(0x00000001, 31)
+  Result:   0x80000000
+  Expected: 0x80000000
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 4: SHLX(mem operand, 8)
+  Input:    0x12345678
+  Result:   0x34567800
+  Expected: 0x34567800
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+=== Testing 64-bit SHLX instruction ===
+Test 1: SHLX(0x123456789ABCDEF0, 8)
+  Result:   0x3456789ABCDEF000
+  Expected: 0x3456789ABCDEF000
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 2: SHLX(0x87654321FEDCBA98, 0)
+  Result:   0x87654321FEDCBA98
+  Expected: 0x87654321FEDCBA98
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 3: SHLX(0x0000000000000001, 63)
+  Result:   0x8000000000000000
+  Expected: 0x8000000000000000
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 4: SHLX(mem operand, 16)
+  Input:    0x123456789ABCDEF0
+  Result:   0x56789ABCDEF00000
+  Expected: 0x56789ABCDEF00000
+EFLAGS: 0x00000202
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+SHLX tests completed.

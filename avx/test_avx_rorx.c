@@ -14,6 +14,8 @@ void test_rorx32() {
         uint8_t shift = 8; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxl $8, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -22,8 +24,8 @@ void test_rorx32() {
             : [src] "r" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint32_t expected = (src >> shift) | (src << (32 - shift));
         
@@ -34,7 +36,7 @@ void test_rorx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+//        print_eflags(eflags);
         printf("\n");
     }
     
@@ -46,6 +48,8 @@ void test_rorx32() {
         uint8_t shift = 0; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxl $0, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -54,8 +58,8 @@ void test_rorx32() {
             : [src] "r" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint32_t expected = src;  // 移位0应返回原值
         
@@ -66,7 +70,7 @@ void test_rorx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+  //      print_eflags(eflags);
         printf("\n");
     }
     
@@ -78,6 +82,8 @@ void test_rorx32() {
         uint8_t shift = 32; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxl $32, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -86,8 +92,8 @@ void test_rorx32() {
             : [src] "r" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint32_t expected = src;  // 移位32应等同于移位0
         
@@ -98,7 +104,7 @@ void test_rorx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+    //    print_eflags(eflags);
         printf("\n");
     }
     
@@ -110,6 +116,8 @@ void test_rorx32() {
         uint8_t shift = 16; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxl $16, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -118,8 +126,8 @@ void test_rorx32() {
             : [src] "m" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint32_t expected = (src >> shift) | (src << (32 - shift));
         
@@ -130,7 +138,7 @@ void test_rorx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+      //  print_eflags(eflags);
         printf("\n");
     }
 }
@@ -147,6 +155,8 @@ void test_rorx64() {
         uint8_t shift = 16; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxq $16, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -155,8 +165,8 @@ void test_rorx64() {
             : [src] "r" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint64_t expected = (src >> shift) | (src << (64 - shift));
         
@@ -167,9 +177,7 @@ void test_rorx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        // 64位操作不影响PF标志，清除PF显示
-        eflags &= ~(1 << 2);  // 清除PF位
-        print_eflags(eflags);
+        //print_eflags(eflags);
         printf("\n");
     }
     
@@ -181,6 +189,8 @@ void test_rorx64() {
         uint8_t shift = 0; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxq $0, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -189,8 +199,8 @@ void test_rorx64() {
             : [src] "r" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint64_t expected = src;  // 移位0应返回原值
         
@@ -201,7 +211,7 @@ void test_rorx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        // print_eflags(eflags);
         printf("\n");
     }
     
@@ -213,6 +223,8 @@ void test_rorx64() {
         uint8_t shift = 64; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxq $64, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -221,8 +233,8 @@ void test_rorx64() {
             : [src] "r" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint64_t expected = src;  // 移位64应等同于移位0
         
@@ -233,7 +245,7 @@ void test_rorx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        // print_eflags(eflags);
         printf("\n");
     }
     
@@ -245,6 +257,8 @@ void test_rorx64() {
         uint8_t shift = 32; // 仅用于打印
         (void)shift; // 显式标记使用以避免警告
         
+        // 清除标志寄存器
+        CLEAR_FLAGS;
         __asm__ __volatile__ (
             "rorxq $32, %[src], %[result]\n\t"
             "pushfq\n\t"
@@ -253,8 +267,8 @@ void test_rorx64() {
             : [src] "m" (src)
             : "cc"
         );
-        // 在 C 代码中清除 PF 和未定义标志位
-        rflags &= 0xFFFFFFFFFFFCFAFF;
+        // 清除未定义标志位
+        rflags &= EFLAGS_MASK;
         uint32_t eflags = (uint32_t)rflags;
         uint64_t expected = (src >> shift) | (src << (64 - shift));
         
@@ -265,7 +279,7 @@ void test_rorx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+       // print_eflags(eflags);
         printf("\n");
     }
 }

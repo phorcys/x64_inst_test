@@ -143,7 +143,7 @@ static uint32_t __attribute__((unused)) get_mxcsr() {
 #define EFLAGS_MASK (0xFFFFFFFFFFFCFAFF) // 保留所有定义标志位，清除未定义位
 // Print EFLAGS register
 static inline void print_eflags(uint64_t eflags) {
-    printf("EFLAGS: 0x%016" PRIX64 "\n", eflags);
+    printf("EFLAGS: 0x%08X\n", (uint32_t)eflags);
     printf("  [%c] CF - Carry Flag\n", (eflags & X_CF) ? 'X' : ' ');
     printf("  [%c] PF - Parity Flag\n", (eflags & X_PF) ? 'X' : ' ');
     printf("  [%c] AF - Auxiliary Flag\n", (eflags & X_AF) ? 'X' : ' ');
