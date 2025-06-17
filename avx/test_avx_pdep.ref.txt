@@ -1,0 +1,28 @@
+Testing PDEP instruction
+========================
+
+32-bit PDEP tests:
+Test 1: src=0, mask=0 => Result: 0x00000000, Expected: 0x00000000 [PASS]
+Test 2: src=0xFFFFFFFF, mask=0xFFFFFFFF => Result: 0xffffffff, Expected: 0xffffffff [PASS]
+Test 3: src=0x12345678, mask=0x55555555 => Result: 0x11141540, Expected: 0x11141540 [PASS]
+Test 4: src=0x9ABCDEF0, mask=0x0F0F0F0F => Result: 0x0d0e0f00, Expected: 0x0d0e0f00 [PASS]
+Test 5: src=0x12345678, mask=0x0000FFFF => Result: 0x00005678, Expected: 0x00005678 [PASS]
+Test 6: src=0x12345678, mask=0xFFFF0000 => Result: 0x56780000, Expected: 0x56780000 [PASS]
+Test 7: src=0x80000000, mask=0x80000000 => Result: 0x00000000, Expected: 0x00000000 [PASS]
+Test 8: src=0x00000001, mask=0x80000000 => Result: 0x80000000, Expected: 0x80000000 [PASS]
+Test 9: src=0x12345678, mask=0xAAAAAAAA => Result: 0x22282a80, Expected: 0x22282a80 [PASS]
+Test 10: src=0x12345678, mask=0x00000001 => Result: 0x00000000, Expected: 0x00000000 [PASS]
+
+64-bit PDEP tests:
+Test 1: src=0, mask=0 => Result: 0x0000000000000000, Expected: 0x0000000000000000 [PASS]
+Test 2: src=0xFFFFFFFFFFFFFFFF, mask=0xFFFFFFFFFFFFFFFF => Result: 0xffffffffffffffff, Expected: 0xffffffffffffffff [PASS]
+Test 3: src=0x123456789ABCDEF0, mask=0x5555555555555555 => Result: 0x4144455051545500, Expected: 0x4144455051545500 [PASS]
+Test 4: src=0x123456789ABCDEF0, mask=0x0F0F0F0F0F0F0F0F => Result: 0x090a0b0c0d0e0f00, Expected: 0x090a0b0c0d0e0f00 [PASS]
+Test 5: src=0x123456789ABCDEF0, mask=0x00000000FFFFFFFF => Result: 0x000000009abcdef0, Expected: 0x000000009abcdef0 [PASS]
+Test 6: src=0x123456789ABCDEF0, mask=0xFFFFFFFF00000000 => Result: 0x9abcdef000000000, Expected: 0x9abcdef000000000 [PASS]
+Test 7: src=0x8000000000000000, mask=0x8000000000000000 => Result: 0x0000000000000000, Expected: 0x0000000000000000 [PASS]
+Test 8: src=0x0000000000000001, mask=0x8000000000000000 => Result: 0x8000000000000000, Expected: 0x8000000000000000 [PASS]
+Test 9: src=0x123456789ABCDEF0, mask=0xAAAAAAAAAAAAAAAA => Result: 0x82888aa0a2a8aa00, Expected: 0x82888aa0a2a8aa00 [PASS]
+Test 10: src=0x123456789ABCDEF0, mask=0x0000000000000001 => Result: 0x0000000000000000, Expected: 0x0000000000000000 [PASS]
+
+PDEP tests completed.

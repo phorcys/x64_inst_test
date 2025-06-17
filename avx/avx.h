@@ -146,6 +146,19 @@ static inline void print_eflags(uint32_t eflags) {
     printf("  [%c] OF - Overflow Flag\n", (eflags & (1 << 11)) ? 'X' : ' ');
 }
 
+// Print EFLAGS register with condition mask
+static inline void print_eflags_cond(uint32_t eflags, uint32_t cond) {
+    if(cond & (1<<0)) printf("  [%c] CF - Carry Flag\n", (eflags & (1 << 0)) ? 'X' : ' ');
+    if(cond & (1<<2)) printf("  [%c] PF - Parity Flag\n", (eflags & (1 << 2)) ? 'X' : ' ');
+    if(cond & (1<<4)) printf("  [%c] AF - Auxiliary Flag\n", (eflags & (1 << 4)) ? 'X' : ' ');
+    if(cond & (1<<6)) printf("  [%c] ZF - Zero Flag\n", (eflags & (1 << 6)) ? 'X' : ' ');
+    if(cond & (1<<7)) printf("  [%c] SF - Sign Flag\n", (eflags & (1 << 7)) ? 'X' : ' ');
+    if(cond & (1<<8)) printf("  [%c] TF - Trap Flag\n", (eflags & (1 << 8)) ? 'X' : ' ');
+    if(cond & (1<<9)) printf("  [%c] IF - Interrupt Flag\n", (eflags & (1 << 9)) ? 'X' : ' ');
+    if(cond & (1<<10)) printf("  [%c] DF - Direction Flag\n", (eflags & (1 << 10)) ? 'X' : ' ');
+    if(cond & (1<<11)) printf("  [%c] OF - Overflow Flag\n", (eflags & (1 << 11)) ? 'X' : ' ');
+}
+
 // Floating point comparison with tolerance and ULPs
 static int __attribute__((unused)) float_equal_ulp(float a, float b, float tolerance, int max_ulps) {
     if (isnan(a) && isnan(b)) return 1;
@@ -189,5 +202,9 @@ static void __attribute__((unused)) print_vector256d(const char* name, __m256d v
     printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", 
            name, d[0], d[1], d[2], d[3]);
 }
+
+// 清除标志寄存器（EFLAGS）的宏
+#define CLEAR_FLAGS \
+    asm volatile ("push $0\n\tpopf" : : : "cc", "memory")
 
 #endif // AVX_H
