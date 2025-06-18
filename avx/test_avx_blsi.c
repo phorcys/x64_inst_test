@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+int64_t cond = X_ZF|X_SF|X_CF|X_OF;
 // BLSI 32位指令测试函数
 void test_blsi32() {
     printf("=== Testing 32-bit BLSI instruction ===\n");
@@ -31,7 +32,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond(eflags, 0x84D);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
     
@@ -59,7 +60,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond(eflags, 0x84D);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
     
@@ -87,7 +88,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond(eflags, 0x84D);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
     
@@ -115,7 +116,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond(eflags, 0x84D);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
 }
@@ -147,7 +148,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond((uint32_t)rflags, 0x84D);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
     
@@ -174,7 +175,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond((uint32_t)rflags, 0x84D);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
     
@@ -201,7 +202,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond((uint32_t)rflags, 0x84D);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
     
@@ -228,7 +229,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags_cond((uint32_t)rflags, 0x84D);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
 }

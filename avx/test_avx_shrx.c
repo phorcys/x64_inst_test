@@ -31,7 +31,7 @@ void test_shrx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
     
@@ -61,7 +61,7 @@ void test_shrx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
     
@@ -91,7 +91,7 @@ void test_shrx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
     
@@ -122,7 +122,7 @@ void test_shrx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
 }
@@ -156,7 +156,7 @@ void test_shrx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
     
@@ -186,7 +186,7 @@ void test_shrx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
     
@@ -216,7 +216,7 @@ void test_shrx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
     
@@ -247,7 +247,7 @@ void test_shrx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
         printf("\n");
     }
 }

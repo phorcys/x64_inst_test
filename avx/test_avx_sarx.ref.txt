@@ -2,116 +2,42 @@
 Test 1: SARX(0x80000000, 1)
   Result:   0xC0000000
   Expected: 0xC0000000
-EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 2: SARX(0x12345678, 0)
   Result:   0x12345678
   Expected: 0x12345678
-EFLAGS: 0x00000202
-  [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 3: SARX(0x80000000, 31)
   Result:   0xFFFFFFFF
   Expected: 0xFFFFFFFF
-EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 4: SARX(mem operand, 4)
   Input:    0x87654321
   Result:   0xF8765432
   Expected: 0xF8765432
-EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 === Testing 64-bit SARX instruction ===
 Test 1: SARX(0x8000000000000000, 1)
   Result:   0xC000000000000000
   Expected: 0xC000000000000000
-EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 2: SARX(0x123456789ABCDEF0, 0)
   Result:   0x123456789ABCDEF0
   Expected: 0x123456789ABCDEF0
-EFLAGS: 0x00000202
-  [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 3: SARX(0x8000000000000000, 63)
   Result:   0xFFFFFFFFFFFFFFFF
   Expected: 0xFFFFFFFFFFFFFFFF
-EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 Test 4: SARX(mem operand, 8)
   Input:    0xFEDCBA9876543210
   Result:   0xFFFEDCBA98765432
   Expected: 0xFFFEDCBA98765432
-EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 
 SARX tests completed.

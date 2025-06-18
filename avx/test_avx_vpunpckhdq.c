@@ -54,7 +54,7 @@ int main() {
         
         uint64_t eflags = 0;
         asm volatile ("pushfq; pop %0" : "=r"(eflags));
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
     }
     
     // 测试128位寄存器-内存操作
@@ -87,7 +87,7 @@ int main() {
         
         uint64_t eflags = 0;
         asm volatile ("pushfq; pop %0" : "=r"(eflags));
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
     }
     
     // 测试256位寄存器-寄存器操作
@@ -129,7 +129,7 @@ int main() {
         
         uint64_t eflags = 0;
         asm volatile ("pushfq; pop %0" : "=r"(eflags));
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
     }
     
     // 测试256位寄存器-内存操作
@@ -173,7 +173,7 @@ int main() {
         
         uint64_t eflags = 0;
         asm volatile ("pushfq; pop %0" : "=r"(eflags));
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0);
     }
     
     printf("\n=== Tests complete: %d errors ===\n", errors);

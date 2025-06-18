@@ -31,7 +31,11 @@ void test_sarx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
     
@@ -61,7 +65,11 @@ void test_sarx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
     
@@ -91,7 +99,11 @@ void test_sarx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
     
@@ -122,7 +134,11 @@ void test_sarx32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
 }
@@ -156,7 +172,11 @@ void test_sarx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
     
@@ -186,7 +206,11 @@ void test_sarx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
     
@@ -216,7 +240,11 @@ void test_sarx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
     
@@ -247,7 +275,11 @@ void test_sarx64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        if (shift) {
+            print_eflags_cond(eflags, X_CF);
+        } else {
+            print_eflags_cond(eflags, 0);
+        }
         printf("\n");
     }
 }

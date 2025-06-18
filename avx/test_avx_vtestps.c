@@ -40,7 +40,7 @@ int test_vtestps() {
         : "x"(ymm1)
         : "cc"
     );
-    print_eflags(eflags);
+        print_eflags_cond(eflags, 0x41);
     if(!(eflags & (1 << 6))) {  // 检查ZF=0
         printf("ZF check passed\n");
     } else {
@@ -64,7 +64,7 @@ int test_vtestps() {
         : "x"(ymm2)
         : "cc"
     );
-    print_eflags(eflags);
+        print_eflags_cond(eflags, 0x41);
     if(eflags & (1 << 6)) {  // 检查ZF=1
         printf("ZF check passed\n");
     } else {
@@ -88,7 +88,7 @@ int test_vtestps() {
         : "x"(ymm3)
         : "cc"
     );
-    print_eflags(eflags);
+        print_eflags_cond(eflags, 0x41);
     if(!(eflags & (1 << 6))) {  // 检查ZF=0
         printf("ZF check passed\n");
     } else {

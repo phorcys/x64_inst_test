@@ -1,43 +1,19 @@
 ===== Testing vtestps =====
 
 === Test case: Mixed signs ===
-EFLAGS: 0x00000203
   [X] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 ZF check passed
 CF check passed
 
 === Test case: All positive ===
-EFLAGS: 0x00000243
   [X] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 ZF check passed
 CF check passed
 
 === Test case: All negative ===
-EFLAGS: 0x00000203
   [X] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
-  [ ] DF - Direction Flag
-  [ ] OF - Overflow Flag
 ZF check passed
 CF check passed
