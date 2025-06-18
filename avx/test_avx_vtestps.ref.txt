@@ -12,7 +12,7 @@ EFLAGS: 0x00000203
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 ZF check passed
-CF check failed
+CF check passed
 
 === Test case: All positive ===
 EFLAGS: 0x00000243
@@ -26,7 +26,7 @@ EFLAGS: 0x00000243
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 ZF check passed
-CF check failed
+CF check passed
 
 === Test case: All negative ===
 EFLAGS: 0x00000203

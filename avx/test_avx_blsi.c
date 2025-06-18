@@ -31,7 +31,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0x84D);
         printf("\n");
     }
     
@@ -59,7 +59,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0x84D);
         printf("\n");
     }
     
@@ -87,7 +87,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0x84D);
         printf("\n");
     }
     
@@ -115,7 +115,7 @@ void test_blsi32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, 0x84D);
         printf("\n");
     }
 }
@@ -147,7 +147,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, 0x84D);
         printf("\n");
     }
     
@@ -174,7 +174,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, 0x84D);
         printf("\n");
     }
     
@@ -201,7 +201,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, 0x84D);
         printf("\n");
     }
     
@@ -228,7 +228,7 @@ void test_blsi64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, 0x84D);
         printf("\n");
     }
 }

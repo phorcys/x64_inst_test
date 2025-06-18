@@ -47,7 +47,7 @@ int test_vtestps() {
         printf("ZF check failed\n");
         ret = 1;
     }
-    if(!(eflags & (1 << 0))) {  // 检查CF=0
+    if(eflags & (1 << 0)) {  // 修正：检查CF=1（混合符号时CF应为1）
         printf("CF check passed\n");
     } else {
         printf("CF check failed\n");
@@ -71,7 +71,7 @@ int test_vtestps() {
         printf("ZF check failed\n");
         ret = 1;
     }
-    if(!(eflags & (1 << 0))) {  // 检查CF=0
+    if(eflags & (1 << 0)) {  // 修正：检查CF=1（全正数时CF应为1）
         printf("CF check passed\n");
     } else {
         printf("CF check failed\n");

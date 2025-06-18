@@ -26,7 +26,7 @@ static void test_blsmsk_32() {
         {0x0000000F, 0x00000001, 0}   // 低4位为1，修正期望值
     };
     
-    for (int i = 0; i < sizeof(cases)/sizeof(cases[0]); i++) {
+    for (size_t i = 0; i < sizeof(cases)/sizeof(cases[0]); i++) {
         uint32_t result;
         uint64_t rflags_before, rflags_after; // 使用64位RFLAGS寄存器
         
@@ -42,10 +42,10 @@ static void test_blsmsk_32() {
         // 计算CF标志
         uint32_t cf = (rflags_after & 1) ? 1 : 0;
         
-        printf("Test %d: Input=0x%08X\n", i+1, cases[i].input);
+        printf("Test %zu: Input=0x%08X\n", i+1, cases[i].input);
         printf("  Expected: 0x%08X, Result: 0x%08X\n", cases[i].expected, result);
         printf("  Expected CF: %d, Actual CF: %d\n", cases[i].expected_cf, cf);
-        printf("  RFLAGS: 0x%016llX\n", rflags_after);
+        printf("  RFLAGS: 0x%016lX\n", rflags_after);
         
         if (result != cases[i].expected || cf != cases[i].expected_cf) {
             printf("  [FAIL] Test failed!\n");
@@ -53,7 +53,7 @@ static void test_blsmsk_32() {
             printf("  [PASS] Test passed!\n");
         }
         
-        print_eflags((uint32_t)rflags_after); // 只传递低32位
+        print_eflags_cond((uint32_t)rflags_after, 0x84D); // 只传递低32位
         printf("\n");
     }
 }
@@ -74,7 +74,7 @@ static void test_blsmsk_64() {
         {0x000000000000000F, 0x0000000000000001, 0}   // 修正期望值
     };
     
-    for (int i = 0; i < sizeof(cases)/sizeof(cases[0]); i++) {
+    for (size_t i = 0; i < sizeof(cases)/sizeof(cases[0]); i++) {
         uint64_t result;
         uint64_t rflags_before, rflags_after; // 使用64位RFLAGS寄存器
         
@@ -90,11 +90,11 @@ static void test_blsmsk_64() {
         // 计算CF标志
         uint32_t cf = (rflags_after & 1) ? 1 : 0;
         
-        printf("Test %d: Input=0x%016" PRIX64 "\n", i+1, cases[i].input);
+        printf("Test %zu: Input=0x%016" PRIX64 "\n", i+1, cases[i].input);
         printf("  Expected: 0x%016" PRIX64 ", Result: 0x%016" PRIX64 "\n", 
                cases[i].expected, result);
         printf("  Expected CF: %d, Actual CF: %d\n", cases[i].expected_cf, cf);
-        printf("  RFLAGS: 0x%016llX\n", rflags_after);
+        printf("  RFLAGS: 0x%016lX\n", rflags_after);
         
         if (result != cases[i].expected || cf != cases[i].expected_cf) {
             printf("  [FAIL] Test failed!\n");
@@ -102,7 +102,7 @@ static void test_blsmsk_64() {
             printf("  [PASS] Test passed!\n");
         }
         
-        print_eflags((uint32_t)rflags_after); // 只传递低32位
+        print_eflags_cond((uint32_t)rflags_after, 0x84D); // 只传递低32位
         printf("\n");
     }
 }

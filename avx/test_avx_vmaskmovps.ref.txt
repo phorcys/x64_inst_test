@@ -1,14 +1,35 @@
-=== Testing VMASKMOVPS ===
+=== Testing vmaskmovps (conditional move based on mask) ===
 
-Test 1: 128-bit aligned memory
-XMM0 (src): cd cc 8c 3f cd cc 0c 40 33 33 53 40 cd cc 8c 40 
-XMM1 (mask): ff ff ff ff 00 00 00 00 ff ff ff ff 00 00 00 00 
-Memory: 0.0, 0.0, 0.0, 0.0
-Test 1 FAILED
+[Test 1: 256-bit mask operation]
+Source: [10.000000, 20.000000, 30.000000, 40.000000]
+Mask: [-1.000000, 0.000000, -1.000000, 0.000000]
+Result: [10.000000, 0.000000, 30.000000, 0.000000]
+Expected: [10.000000, 0.000000, 30.000000, 0.000000]
+EFLAGS: 0x00000246
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
 
-Test 2: Special values
-XMM0 (src): 00 00 00 00 00 00 80 ff 00 00 c0 7f 00 00 80 7f 
-XMM1 (mask): 00 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff 
-Memory: 0.000000, 0.000000, 0.000000, 0.000000
-Checks: -inf:0, nan:0, +inf:0
-Test 2 FAILED
+[Test 2: 256-bit mask with boundary values]
+Source: [inf, -inf, nan, 0.000000]
+Mask: [0.000000, -1.000000, 0.000000, -1.000000]
+Result: [50.000000, -inf, 70.000000, 0.000000]
+Expected: [50.000000, -inf, 70.000000, 0.000000]
+EFLAGS: 0x00000246
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] TF - Trap Flag
+  [X] IF - Interrupt Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+=== Tests complete: 0 errors ===
