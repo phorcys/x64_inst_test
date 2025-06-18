@@ -1,198 +1,447 @@
 #include "avx.h"
 #include <stdio.h>
 #include <math.h>
+#include <fenv.h>
 
 static void test_vdivpd() {
-    printf("--- Testing vdivpd (packed double-precision division) ---\n");
+    printf("=== Testing vdivpd (packed double-precision division) ===\n");
     int total_tests = 0;
     int passed_tests = 0;
+    int errors = 0;
     
-    // 256-bit register-register test
-    printf("Test 1: 256-bit register-register\n");
-    double src1[4] ALIGNED(32) = {
-        10.0, 20.0, 30.0, 40.0
-    };
-    double src2[4] ALIGNED(32) = {
-        2.0, 4.0, 5.0, 8.0
-    };
-    double expected[4] ALIGNED(32) = {
-        5.0, 5.0, 6.0, 5.0
-    };
-    double result[4] ALIGNED(32) = {0};
-    total_tests++;
-    
-    __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vmovapd %2, %%ymm1\n\t"
-        "vdivpd %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovapd %%ymm2, %0\n\t"
-        : "=m"(*result)
-        : "m"(*src1), "m"(*src2)
-        : "ymm0", "ymm1", "ymm2"
-    );
-    
-    printf("Expected: ");
-    print_double_vec("Expected", expected, 4);
-    printf("Result:   ");
-    print_double_vec("Result", result, 4);
-    
-    int pass = 1;
-    for (int i = 0; i < 4; i++) {
-        if (fabs(result[i] - expected[i]) > 1e-6) {
-            printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
-                   i, expected[i], result[i]);
-            pass = 0;
-        }
-    }
-    if (pass) {
-        printf("[PASS] Test 1: 256-bit register-register\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 1: 256-bit register-register\n\n");
-    }
-    
-    // 128-bit register-register test
-    printf("Test 2: 128-bit register-register\n");
-    double src1_128[2] ALIGNED(16) = {
-        100.0, 200.0
-    };
-    double src2_128[2] ALIGNED(16) = {
-        10.0, 20.0
-    };
-    double expected_128[2] ALIGNED(16) = {
-        10.0, 10.0
-    };
-    double result_128[2] ALIGNED(16) = {0};
-    total_tests++;
-    
-    __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
-        "vdivpd %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovapd %%xmm2, %0\n\t"
-        : "=m"(*result_128)
-        : "m"(*src1_128), "m"(*src2_128)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    printf("Expected: ");
-    print_double_vec("Expected", expected_128, 2);
-    printf("Result:   ");
-    print_double_vec("Result", result_128, 2);
-    
-    pass = 1;
-    for (int i = 0; i < 2; i++) {
-        if (fabs(result_128[i] - expected_128[i]) > 1e-6) {
-            printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
-                   i, expected_128[i], result_128[i]);
-            pass = 0;
-        }
-    }
-    if (pass) {
-        printf("[PASS] Test 2: 128-bit register-register\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 2: 128-bit register-register\n\n");
-    }
-    
-    // Boundary values test (division by zero, NaN, infinity, etc.)
-    printf("Test 3: Boundary values\n");
-    double boundary_src1[8] ALIGNED(32) = {
-        INFINITY, -INFINITY, NAN, 1.0,
-        0.0, 0.0, INFINITY, 1.0
-    };
-    double boundary_src2[8] ALIGNED(32) = {
-        1.0, 0.0, 1.0, 0.0,
-        0.0, 1.0, INFINITY, INFINITY
-    };
-    double boundary_expected[8] ALIGNED(32) = {
-        INFINITY, -INFINITY, NAN, INFINITY,
-        NAN, 0.0, NAN, 0.0
-    };
-    double boundary_result[8] ALIGNED(32) = {0};
-    total_tests++;
-    
-    // Set MXCSR to default before boundary test
-    unsigned int mxcsr_default = 0x1F80;
-    __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_default));
-    
-    __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vmovapd %2, %%ymm1\n\t"
-        "vdivpd %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovapd %%ymm2, %0\n\t"
-        : "=m"(*boundary_result)
-        : "m"(*boundary_src1), "m"(*boundary_src2)
-        : "ymm0", "ymm1", "ymm2"
-    );
-    
-    printf("Expected: ");
-    print_double_vec("Expected", boundary_expected, 8);
-    printf("Result:   ");
-    print_double_vec("Result", boundary_result, 8);
-    
-    // Check results
-    int boundary_pass = 1;
-    for (int i = 0; i < 8; i++) {
-        int is_nan_expected = isnan(boundary_expected[i]);
-        int is_nan_result = isnan(boundary_result[i]);
+    // 测试256位寄存器-寄存器操作
+    printf("\n[Test 1: 256-bit reg-reg]\n");
+    {
+        ALIGNED(32) double a[4] = {10.0, 20.0, 30.0, 40.0};
+        ALIGNED(32) double b[4] = {2.0, 4.0, 5.0, 8.0};
+        ALIGNED(32) double c[4] = {0};
+        ALIGNED(32) double expected[4] = {5.0, 5.0, 6.0, 5.0};
         
-        if (is_nan_expected && is_nan_result) continue;
+        CLEAR_FLAGS;
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR
+        __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
-        if (fabs(boundary_result[i] - boundary_expected[i]) > 1e-6) {
-            printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
-                   i, boundary_expected[i], boundary_result[i]);
-            boundary_pass = 0;
+        __asm__ __volatile__(
+            "vmovapd %1, %%ymm0\n\t"
+            "vmovapd %2, %%ymm1\n\t"
+            "vdivpd %%ymm1, %%ymm0, %%ymm2\n\t"
+            "vmovapd %%ymm2, %0\n\t"
+            : "=m"(*c)
+            : "m"(*a), "m"(*b)
+            : "ymm0", "ymm1", "ymm2"
+        );
+        
+        // 打印输入和结果
+        print_double_vec("Input A", a, 4);
+        print_double_vec("Input B", b, 4);
+        print_double_vec("Result", c, 4);
+        print_double_vec("Expected", expected, 4);
+        
+        // 检查结果
+        int pass = 1;
+        for (int i = 0; i < 4; i++) {
+            if (fabs(c[i] - expected[i]) > 1e-6) {
+                printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
+                       i, expected[i], c[i]);
+                pass = 0;
+                errors++;
+            }
         }
+        
+        // 检查MXCSR状态
+        unsigned int mxcsr_after = 0;
+        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+        print_mxcsr(mxcsr_after);
+        
+        // 检查标志位（不应有异常）
+        if (mxcsr_after & 0x3F) {
+            printf("Unexpected floating-point exceptions detected!\n");
+            pass = 0;
+            errors++;
+        }
+        
+        if (pass) {
+            printf("[PASS] Test 1: 256-bit reg-reg\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 1: 256-bit reg-reg\n");
+        }
+        total_tests++;
     }
     
-    if (boundary_pass) {
-        printf("[PASS] Boundary values output check\n");
-    } else {
-        printf("[FAIL] Boundary values output check\n");
+    // 测试256位寄存器-内存操作
+    printf("\n[Test 2: 256-bit reg-mem]\n");
+    {
+        ALIGNED(32) double a[4] = {100.0, 200.0, 300.0, 400.0};
+        ALIGNED(32) double b[4] = {10.0, 20.0, 30.0, 40.0};
+        ALIGNED(32) double c[4] = {0};
+        ALIGNED(32) double expected[4] = {10.0, 10.0, 10.0, 10.0};
+        
+        CLEAR_FLAGS;
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR
+        __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
+        
+        __asm__ __volatile__(
+            "vmovapd %1, %%ymm0\n\t"
+            "vdivpd %2, %%ymm0, %%ymm1\n\t"
+            "vmovapd %%ymm1, %0\n\t"
+            : "=m"(*c)
+            : "m"(*a), "m"(*b)
+            : "ymm0", "ymm1"
+        );
+        
+        // 打印输入和结果
+        print_double_vec("Input A", a, 4);
+        print_double_vec("Memory Input", b, 4);
+        print_double_vec("Result", c, 4);
+        print_double_vec("Expected", expected, 4);
+        
+        // 检查结果
+        int pass = 1;
+        for (int i = 0; i < 4; i++) {
+            if (fabs(c[i] - expected[i]) > 1e-6) {
+                printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
+                       i, expected[i], c[i]);
+                pass = 0;
+                errors++;
+            }
+        }
+        
+        // 检查MXCSR状态
+        unsigned int mxcsr_after = 0;
+        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+        print_mxcsr(mxcsr_after);
+        
+        if (pass) {
+            printf("[PASS] Test 2: 256-bit reg-mem\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 2: 256-bit reg-mem\n");
+        }
+        total_tests++;
     }
     
-    // Check MXCSR state
-    // unsigned int mxcsr = 0;
-    // __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
-    // printf("--- MXCSR State After Operation ---\n");
-    // printf("MXCSR: 0x%08X\n", mxcsr);
-    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-    //        (mxcsr >> 7) & 1, (mxcsr >> 8) & 1, (mxcsr >> 9) & 1,
-    //        (mxcsr >> 10) & 1, (mxcsr >> 11) & 1, (mxcsr >> 12) & 1);
+    // 测试128位寄存器-寄存器操作
+    printf("\n[Test 3: 128-bit reg-reg]\n");
+    {
+        ALIGNED(16) double a[2] = {1.23456e200, 2.34567e-200};
+        ALIGNED(16) double b[2] = {1.0e100, 1.0e-100};
+        ALIGNED(16) double c[2] = {0};
+        ALIGNED(16) double expected[2] = {1.23456e100, 2.34567e-100};
+        
+        CLEAR_FLAGS;
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR
+        __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
+        
+        __asm__ __volatile__(
+            "vmovapd %1, %%xmm0\n\t"
+            "vmovapd %2, %%xmm1\n\t"
+            "vdivpd %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovapd %%xmm2, %0\n\t"
+            : "=m"(*c)
+            : "m"(*a), "m"(*b)
+            : "xmm0", "xmm1", "xmm2"
+        );
+        
+        // 打印输入和结果
+        print_double_vec("Input A", a, 2);
+        print_double_vec("Input B", b, 2);
+        print_double_vec("Result", c, 2);
+        print_double_vec("Expected", expected, 2);
+        
+        // 检查结果
+        int pass = 1;
+        for (int i = 0; i < 2; i++) {
+            if (fabs(c[i] - expected[i]) > 1e-6) {
+                printf("Mismatch at position %d: expected %.6e, got %.6e\n", 
+                       i, expected[i], c[i]);
+                pass = 0;
+                errors++;
+            }
+        }
+        
+        // 检查MXCSR状态
+        unsigned int mxcsr_after = 0;
+        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+        print_mxcsr(mxcsr_after);
+        
+        if (pass) {
+            printf("[PASS] Test 3: 128-bit reg-reg\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 3: 128-bit reg-reg\n");
+        }
+        total_tests++;
+    }
     
-    // // Check MXCSR flags
-     int flags_pass = 1;
+    // 测试128位寄存器-内存操作
+    printf("\n[Test 4: 128-bit reg-mem]\n");
+    {
+        ALIGNED(16) double a[2] = {100.0, 200.0};
+        ALIGNED(16) double b[2] = {25.0, 50.0};
+        ALIGNED(16) double c[2] = {0};
+        ALIGNED(16) double expected[2] = {4.0, 4.0};
+        
+        CLEAR_FLAGS;
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR
+        __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
+        
+        __asm__ __volatile__(
+            "vmovapd %1, %%xmm0\n\t"
+            "vdivpd %2, %%xmm0, %%xmm1\n\t"
+            "vmovapd %%xmm1, %0\n\t"
+            : "=m"(*c)
+            : "m"(*a), "m"(*b)
+            : "xmm0", "xmm1"
+        );
+        
+        // 打印输入和结果
+        print_double_vec("Input A", a, 2);
+        print_double_vec("Memory Input", b, 2);
+        print_double_vec("Result", c, 2);
+        print_double_vec("Expected", expected, 2);
+        
+        // 检查结果
+        int pass = 1;
+        for (int i = 0; i < 2; i++) {
+            if (fabs(c[i] - expected[i]) > 1e-6) {
+                printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
+                       i, expected[i], c[i]);
+                pass = 0;
+                errors++;
+            }
+        }
+        
+        // 检查MXCSR状态
+        unsigned int mxcsr_after = 0;
+        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+        print_mxcsr(mxcsr_after);
+        
+        if (pass) {
+            printf("[PASS] Test 4: 128-bit reg-mem\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 4: 128-bit reg-mem\n");
+        }
+        total_tests++;
+    }
     
-    // // Expect division by zero flag (ZE)
-    // if (!(mxcsr & (1 << 2))) {
-    //     printf("[FAIL] Division by zero flag not set\n");
-    //     flags_pass = 0;
-    // }
+    // 测试边界值（256位）
+    printf("\n[Test 5: 256-bit boundary values]\n");
+    {
+        ALIGNED(32) double a[4] = {
+            INFINITY, -INFINITY, NAN, 1.0,
+        };
+        ALIGNED(32) double b[4] = {
+            1.0, 0.0, 1.0, 0.0
+        };
+        ALIGNED(32) double c[4] = {0};
+        ALIGNED(32) double expected[4] = {
+            INFINITY, -INFINITY, NAN, INFINITY
+        };
+        
+        CLEAR_FLAGS;
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR
+        __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
+        
+        __asm__ __volatile__(
+            "vmovapd %1, %%ymm0\n\t"
+            "vmovapd %2, %%ymm1\n\t"
+            "vdivpd %%ymm1, %%ymm0, %%ymm2\n\t"
+            "vmovapd %%ymm2, %0\n\t"
+            : "=m"(*c)
+            : "m"(*a), "m"(*b)
+            : "ymm0", "ymm1", "ymm2"
+        );
+        
+        // 打印输入和结果
+        print_double_vec("Input A", a, 4);
+        print_double_vec("Input B", b, 4);
+        print_double_vec("Result", c, 4);
+        print_double_vec("Expected", expected, 4);
+        
+        // 检查结果
+        int pass = 1;
+        for (int i = 0; i < 4; i++) {
+            int is_nan_expected = isnan(expected[i]);
+            int is_nan_result = isnan(c[i]);
+            
+            if (is_nan_expected && is_nan_result) continue;
+            
+            if (fabs(c[i] - expected[i]) > 1e-6) {
+                printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
+                       i, expected[i], c[i]);
+                pass = 0;
+                errors++;
+            }
+        }
+        
+        // 检查MXCSR状态
+        unsigned int mxcsr_after = 0;
+        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+        print_mxcsr(mxcsr_after);
+        
+        // 检查预期的异常标志
+        int flags_pass = 1;
+        // 期望除零标志 (ZE)
+        if (!(mxcsr_after & (1 << 2))) {
+            printf("[FAIL] Division by zero flag not set\n");
+            flags_pass = 0;
+            errors++;
+        }
+        // 期望无效操作标志 (IE) 用于NaN操作
+        if (!(mxcsr_after & (1 << 0))) {
+            printf("[FAIL] Invalid operation flag not set\n");
+            flags_pass = 0;
+            errors++;
+        }
+        
+        if (pass && flags_pass) {
+            printf("[PASS] Test 5: 256-bit boundary values\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 5: 256-bit boundary values\n");
+        }
+        total_tests++;
+    }
     
-    // // Expect invalid operation flag (IE) for NaN operations
-    // if (!(mxcsr & (1 << 0))) {
-    //     printf("[FAIL] Invalid operation flag not set\n");
-    //     flags_pass = 0;
-    // }
+    // 测试边界值（128位）
+    printf("\n[Test 6: 128-bit boundary values]\n");
+    {
+        ALIGNED(16) double a[2] = {
+            0.0, INFINITY
+        };
+        ALIGNED(16) double b[2] = {
+            0.0, INFINITY
+        };
+        ALIGNED(16) double c[2] = {0};
+        ALIGNED(16) double expected[2] = {
+            NAN, NAN
+        };
+        
+        CLEAR_FLAGS;
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR
+        __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
+        
+        __asm__ __volatile__(
+            "vmovapd %1, %%xmm0\n\t"
+            "vmovapd %2, %%xmm1\n\t"
+            "vdivpd %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovapd %%xmm2, %0\n\t"
+            : "=m"(*c)
+            : "m"(*a), "m"(*b)
+            : "xmm0", "xmm1", "xmm2"
+        );
+        
+        // 打印输入和结果
+        print_double_vec("Input A", a, 2);
+        print_double_vec("Input B", b, 2);
+        print_double_vec("Result", c, 2);
+        print_double_vec("Expected", expected, 2);
+        
+        // 检查结果
+        int pass = 1;
+        for (int i = 0; i < 2; i++) {
+            int is_nan_expected = isnan(expected[i]);
+            int is_nan_result = isnan(c[i]);
+            
+            if (is_nan_expected && is_nan_result) continue;
+            
+            if (fabs(c[i] - expected[i]) > 1e-6) {
+                printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
+                       i, expected[i], c[i]);
+                pass = 0;
+                errors++;
+            }
+        }
+        
+        // 检查MXCSR状态
+        unsigned int mxcsr_after = 0;
+        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+        print_mxcsr(mxcsr_after);
+        
+        // 检查预期的异常标志
+        int flags_pass = 1;
+        // 期望无效操作标志 (IE) 用于0/0和INF/INF
+        if (!(mxcsr_after & (1 << 0))) {
+            printf("[FAIL] Invalid operation flag not set\n");
+            flags_pass = 0;
+            errors++;
+        }
+        
+        if (pass && flags_pass) {
+            printf("[PASS] Test 6: 128-bit boundary values\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 6: 128-bit boundary values\n");
+        }
+        total_tests++;
+    }
     
-    // if (flags_pass) {
-    //     printf("[PASS] Test 3: Boundary values (expected flags detected)\n\n");
-    //     passed_tests++;
-    // } else {
-    //     printf("[FAIL] Test 3: Boundary values (expected flags not detected)\n\n");
-    // }
+    // 测试舍入模式（默认舍入）
+    printf("\n[Test 7: Rounding mode (nearest)]\n");
+    {
+        ALIGNED(16) double a[2] = {10.0, 20.0};
+        ALIGNED(16) double b[2] = {3.0, 6.0};
+        ALIGNED(16) double c[2] = {0};
+        ALIGNED(16) double expected[2] = {10.0/3.0, 20.0/6.0};
+        
+        CLEAR_FLAGS;
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR (round to nearest)
+        __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
+        
+        __asm__ __volatile__(
+            "vmovapd %1, %%xmm0\n\t"
+            "vmovapd %2, %%xmm1\n\t"
+            "vdivpd %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovapd %%xmm2, %0\n\t"
+            : "=m"(*c)
+            : "m"(*a), "m"(*b)
+            : "xmm0", "xmm1", "xmm2"
+        );
+        
+        // 打印输入和结果
+        print_double_vec("Input A", a, 2);
+        print_double_vec("Input B", b, 2);
+        print_double_vec("Result", c, 2);
+        print_double_vec("Expected", expected, 2);
+        
+        // 检查结果
+        int pass = 1;
+        for (int i = 0; i < 2; i++) {
+            if (fabs(c[i] - expected[i]) > 1e-6) {
+                printf("Mismatch at position %d: expected %.16f, got %.16f\n", 
+                       i, expected[i], c[i]);
+                pass = 0;
+                errors++;
+            }
+        }
+        
+        // 检查MXCSR状态
+        unsigned int mxcsr_after = 0;
+        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+        print_mxcsr(mxcsr_after);
+        
+        if (pass) {
+            printf("[PASS] Test 7: Rounding mode (nearest)\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 7: Rounding mode (nearest)\n");
+        }
+        total_tests++;
+    }
     
-    // Test summary
-    printf("--- Test Summary ---\n");
+    // 测试总结
+    printf("\n=== Test Summary ===\n");
     printf("Total tests: %d\n", total_tests);
     printf("Passed tests: %d\n", passed_tests);
     printf("Failed tests: %d\n", total_tests - passed_tests);
+    printf("Total errors: %d\n", errors);
     
-    if (passed_tests == total_tests) {
-        printf("All vdivpd tests passed!\n");
+    if (errors == 0) {
+        printf("All vdivpd tests passed successfully!\n");
     } else {
-        printf("Some vdivpd tests failed\n");
+        printf("Some vdivpd tests encountered errors\n");
     }
 }
 

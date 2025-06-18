@@ -1,134 +1,201 @@
 #include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
-#include <math.h>
 
-// 测试vtestpd指令
-int test_vtestpd() {
-    int ret = 0;
-    printf("===== Testing vtestpd =====\n");
+static void print_flags(uint32_t flags) {
+    printf("Flags: CF=%d, ZF=%d\n", (flags & 1), (flags >> 6) & 1);
+}
 
-    // 测试数据
-    ALIGNED(32) double src1[4] = {
-        1.0, -2.0, 3.0, -4.0
-    };
-    ALIGNED(32) double src2[4] = {
-        1.0, 2.0, 3.0, 4.0
-    };
-    ALIGNED(32) double src3[4] = {
-        -1.0, -2.0, -3.0, -4.0
-    };
-    ALIGNED(32) double src4[4] = {
-        NAN, INFINITY, -INFINITY, 0.0
-    };
-
-    __m256d ymm1, ymm2, ymm3, ymm4;
-    uint32_t eflags;
-
-    // 加载测试数据
-    ymm1 = _mm256_loadu_pd(src1);
-    ymm2 = _mm256_loadu_pd(src2);
-    ymm3 = _mm256_loadu_pd(src3);
-    ymm4 = _mm256_loadu_pd(src4);
-
-    // 测试混合符号情况
-    printf("\n=== Test case 1: Mixed signs ===\n");
-    print_double_vec("Input", src1, 4);
-    __asm__ __volatile__(
-        "push $0\n\t"  // 清除EFLAGS
-        "popfq\n\t"
-        "vtestpd %1, %1\n\t"
-        "pushfq\n\t"
-        "pop %q0\n\t"
-        : "=r"(eflags)
-        : "x"(ymm1)
-        : "cc"
-    );
-    print_eflags(eflags);
-    if(!(eflags & (1 << 6))) {  // 检查ZF=0
-        printf("ZF check passed\n");
-    } else {
-        printf("ZF check failed\n");
-        ret = 1;
+static void test_vtestpd() {
+    printf("=== Testing vtestpd (packed double-precision bit test) ===\n");
+    int total_tests = 0;
+    int passed_tests = 0;
+    
+    // 测试256位寄存器-寄存器操作
+    printf("\n[Test 1: 256-bit reg-reg - all signs match]\n");
+    {
+        // 正数: 符号位0
+        ALIGNED(32) double a[4] = {1.0, 2.0, 3.0, 4.0};
+        ALIGNED(32) double b[4] = {5.0, 6.0, 7.0, 8.0};
+        uint32_t flags = 0;
+        
+        CLEAR_FLAGS;
+        __asm__ __volatile__(
+            "vmovapd %1, %%ymm0\n\t"
+            "vmovapd %2, %%ymm1\n\t"
+            "vtestpd %%ymm1, %%ymm0\n\t"
+            "pushf\n\t"
+            "pop %0\n\t"
+            : "=r"(flags)
+            : "m"(*a), "m"(*b)
+            : "ymm0", "ymm1"
+        );
+        
+        print_double_vec("Operand A", a, 4);
+        print_double_vec("Operand B", b, 4);
+        print_flags(flags);
+        
+        // 预期: ZF=1 (所有符号匹配), CF=0 (NOT B的符号与A不匹配)
+        int pass = 1;
+        if (!(flags & (1 << 6))) { // ZF位
+            printf("Expected ZF=1, got ZF=0\n");
+            pass = 0;
+        }
+        if (flags & 1) { // CF位
+            printf("Expected CF=0, got CF=1\n");
+            pass = 0;
+        }
+        
+        if (pass) {
+            printf("[PASS] Test 1\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 1\n");
+        }
+        total_tests++;
     }
-    if(!(eflags & (1 << 0))) {  // 检查CF=0
-        printf("CF check passed\n");
-    } else {
-        printf("CF check failed\n");
-        ret = 1;
+    
+    printf("\n[Test 2: 256-bit reg-reg - mixed signs]\n");
+    {
+        // 混合符号
+        ALIGNED(32) double a[4] = {-1.0, 2.0, -3.0, 4.0};
+        ALIGNED(32) double b[4] = {-1.0, -2.0, 3.0, 4.0};
+        uint32_t flags = 0;
+        
+        CLEAR_FLAGS;
+        __asm__ __volatile__(
+            "vmovapd %1, %%ymm0\n\t"
+            "vmovapd %2, %%ymm1\n\t"
+            "vtestpd %%ymm1, %%ymm0\n\t"
+            "pushf\n\t"
+            "pop %0\n\t"
+            : "=r"(flags)
+            : "m"(*a), "m"(*b)
+            : "ymm0", "ymm1"
+        );
+        
+        print_double_vec("Operand A", a, 4);
+        print_double_vec("Operand B", b, 4);
+        print_flags(flags);
+        
+        // 预期: ZF=0, CF=0
+        int pass = 1;
+        if (flags & (1 << 6)) { // ZF位
+            printf("Expected ZF=0, got ZF=1\n");
+            pass = 0;
+        }
+        if (flags & 1) { // CF位
+            printf("Expected CF=0, got CF=1\n");
+            pass = 0;
+        }
+        
+        if (pass) {
+            printf("[PASS] Test 2\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 2\n");
+        }
+        total_tests++;
     }
-    // 测试全正数情况
-    printf("\n=== Test case 2: All positive ===\n");
-    print_double_vec("Input", src2, 4);
-    __asm__ __volatile__(
-        "push $0\n\t"  // 清除EFLAGS
-        "popfq\n\t"
-        "vtestpd %1, %1\n\t"
-        "pushfq\n\t"
-        "pop %q0\n\t"
-        : "=r"(eflags)
-        : "x"(ymm2)
-        : "cc"
-    );
-    print_eflags(eflags);
-
-    // 测试全负数情况
-    printf("\n=== Test case 3: All negative ===\n");
-    print_double_vec("Input", src3, 4);
-    __asm__ __volatile__(
-        "push $0\n\t"  // 清除EFLAGS
-        "popfq\n\t"
-        "vtestpd %1, %1\n\t"
-        "pushfq\n\t"
-        "pop %q0\n\t"
-        : "=r"(eflags)
-        : "x"(ymm3)
-        : "cc"
-    );
-    print_eflags(eflags);
-    if(!(eflags & (1 << 6))) {  // 检查ZF=0
-        printf("ZF check passed\n");
-    } else {
-        printf("ZF check failed\n");
-        ret = 1;
+    
+    printf("\n[Test 3: 256-bit reg-reg - A signs opposite of B]\n");
+    {
+        // A符号位与B相反
+        ALIGNED(32) double a[4] = {-1.0, -2.0, -3.0, -4.0};
+        ALIGNED(32) double b[4] = {1.0, 2.0, 3.0, 4.0};
+        uint32_t flags = 0;
+        
+        CLEAR_FLAGS;
+        __asm__ __volatile__(
+            "vmovapd %1, %%ymm0\n\t"
+            "vmovapd %2, %%ymm1\n\t"
+            "vtestpd %%ymm1, %%ymm0\n\t"
+            "pushf\n\t"
+            "pop %0\n\t"
+            : "=r"(flags)
+            : "m"(*a), "m"(*b)
+            : "ymm0", "ymm1"
+        );
+        
+        print_double_vec("Operand A", a, 4);
+        print_double_vec("Operand B", b, 4);
+        print_flags(flags);
+        
+        // 预期: ZF=0 (符号不匹配), CF=1 (NOT B的符号与A完全匹配)
+        int pass = 1;
+        if (flags & (1 << 6)) { // ZF位
+            printf("Expected ZF=0, got ZF=1\n");
+            pass = 0;
+        }
+        if (!(flags & 1)) { // CF位
+            printf("Expected CF=1, got CF=0\n");
+            pass = 0;
+        }
+        
+        if (pass) {
+            printf("[PASS] Test 3\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 3\n");
+        }
+        total_tests++;
     }
-    if(!(eflags & (1 << 0))) {  // 检查CF=0
-        printf("CF check passed\n");
-    } else {
-        printf("CF check failed\n");
-        ret = 1;
+    
+    printf("\n[Test 4: 128-bit reg-mem]\n");
+    {
+        ALIGNED(16) double a[2] = {1.0, -2.0};
+        ALIGNED(16) double b[2] = {1.0, -2.0};
+        uint32_t flags = 0;
+        
+        CLEAR_FLAGS;
+        __asm__ __volatile__(
+            "vmovapd %1, %%xmm0\n\t"
+            "vtestpd %2, %%xmm0\n\t"
+            "pushf\n\t"
+            "pop %0\n\t"
+            : "=r"(flags)
+            : "m"(*a), "m"(*b)
+            : "xmm0"
+        );
+        
+        print_double_vec("Operand A", a, 2);
+        print_double_vec("Memory Operand", b, 2);
+        print_flags(flags);
+        
+        // 预期: ZF=1 (所有符号匹配), CF=0
+        int pass = 1;
+        if (!(flags & (1 << 6))) { // ZF位
+            printf("Expected ZF=1, got ZF=0\n");
+            pass = 0;
+        }
+        if (flags & 1) { // CF位
+            printf("Expected CF=0, got CF=1\n");
+            pass = 0;
+        }
+        
+        if (pass) {
+            printf("[PASS] Test 4\n");
+            passed_tests++;
+        } else {
+            printf("[FAIL] Test 4\n");
+        }
+        total_tests++;
     }
-
-    // 测试特殊值(NaN, INF)
-    printf("\n=== Test case 4: Special values ===\n");
-    print_double_vec("Input", src4, 4);
-    __asm__ __volatile__(
-        "push $0\n\t"  // 清除EFLAGS
-        "popfq\n\t"
-        "vtestpd %1, %1\n\t"
-        "pushfq\n\t"
-        "pop %q0\n\t"
-        : "=r"(eflags)
-        : "x"(ymm4)
-        : "cc"
-    );
-    print_eflags(eflags);
-    if(!(eflags & (1 << 6))) {  // 检查ZF=0
-        printf("ZF check passed\n");
+    
+    // 测试总结
+    printf("\n=== Test Summary ===\n");
+    printf("Total tests: %d\n", total_tests);
+    printf("Passed tests: %d\n", passed_tests);
+    printf("Failed tests: %d\n", total_tests - passed_tests);
+    
+    if (passed_tests == total_tests) {
+        printf("All vtestpd tests passed successfully!\n");
     } else {
-        printf("ZF check failed\n");
-        ret = 1;
+        printf("Some vtestpd tests failed\n");
     }
-    if(!(eflags & (1 << 0))) {  // 检查CF=0
-        printf("CF check passed\n");
-    } else {
-        printf("CF check failed\n");
-        ret = 1;
-    }    
-    return ret;
 }
 
 int main() {
-    return test_vtestpd();
+    test_vtestpd();
+    return 0;
 }

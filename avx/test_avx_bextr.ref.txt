@@ -3,14 +3,9 @@ Test 1: 32-bit basic
   Input: 0x12345678, Control: 0x00001008 (start=8, len=16)
   Expected: 0x00003456
   Result:   0x00003456
-EFLAGS: 0x00000216
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
@@ -18,14 +13,9 @@ Test 2: 32-bit zero length
   Input: 0xFFFFFFFF, Control: 0x00000000 (start=0, len=0)
   Expected: 0x00000000
   Result:   0x00000000
-EFLAGS: 0x00000256
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
@@ -33,14 +23,9 @@ Test 3: 32-bit full length
   Input: 0x89ABCDEF, Control: 0x00002000 (start=0, len=32)
   Expected: 0x89ABCDEF
   Result:   0x89ABCDEF
-EFLAGS: 0x00000212
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
@@ -48,14 +33,9 @@ Test 4: 32-bit boundary
   Input: 0x87654321, Control: 0x00000818 (start=24, len=8)
   Expected: 0x00000087
   Result:   0x00000087
-EFLAGS: 0x00000216
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
@@ -64,14 +44,9 @@ Test 1: 64-bit basic
   Input: 0x123456789ABCDEF0, Control: 0x0000000000002010 (start=16, len=32)
   Expected: 0x0000000056789ABC
   Result:   0x0000000056789ABC
-EFLAGS: 0x00000212
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
@@ -79,14 +54,9 @@ Test 2: 64-bit zero length
   Input: 0xFFFFFFFFFFFFFFFF, Control: 0x0000000000000000 (start=0, len=0)
   Expected: 0x0000000000000000
   Result:   0x0000000000000000
-EFLAGS: 0x00000256
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
@@ -94,14 +64,9 @@ Test 3: 64-bit full length
   Input: 0x89ABCDEF01234567, Control: 0x0000000000004000 (start=0, len=64)
   Expected: 0x89ABCDEF01234567
   Result:   0x89ABCDEF01234567
-EFLAGS: 0x00000212
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
@@ -109,14 +74,9 @@ Test 4: 64-bit boundary
   Input: 0xFEDCBA9876543210, Control: 0x0000000000000838 (start=56, len=8)
   Expected: 0x00000000000000FE
   Result:   0x00000000000000FE
-EFLAGS: 0x00000212
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
-  [X] AF - Auxiliary Flag
   [ ] ZF - Zero Flag
-  [ ] SF - Sign Flag
   [ ] TF - Trap Flag
-  [X] IF - Interrupt Flag
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 

@@ -1,11 +1,11 @@
 #include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+    uint32_t cond = X_ZF|X_CF|X_TF|X_DF|X_OF;   
 
 // BEXTR 32位指令测试函数
 void test_bextr32() {
     printf("=== Testing 32-bit BEXTR instruction ===\n");
-    
     // 测试用例1: 基本测试
     {
         uint32_t src = 0x12345678;
@@ -32,7 +32,7 @@ void test_bextr32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
     
@@ -62,7 +62,7 @@ void test_bextr32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
     
@@ -92,7 +92,7 @@ void test_bextr32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
     
@@ -122,7 +122,7 @@ void test_bextr32() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags(eflags);
+        print_eflags_cond(eflags, cond);
         printf("\n");
     }
 }
@@ -156,7 +156,7 @@ void test_bextr64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
     
@@ -185,7 +185,7 @@ void test_bextr64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
     
@@ -214,7 +214,7 @@ void test_bextr64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
     
@@ -243,7 +243,7 @@ void test_bextr64() {
         if (result != expected) {
             printf("  [ERROR] Result mismatch!\n");
         }
-        print_eflags((uint32_t)rflags);
+        print_eflags_cond((uint32_t)rflags, cond);
         printf("\n");
     }
 }

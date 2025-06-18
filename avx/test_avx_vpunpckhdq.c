@@ -1,99 +1,181 @@
-#include "avx.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdint.h>
+#include <string.h>
+#include "avx.h"
 
-static void test_vpunpckhdq_128() {
-    printf("=== Testing vpunpckhdq (128-bit) ===\n");
-    
-    uint32_t a[4] ALIGNED(16) = {0};
-    uint32_t b[4] ALIGNED(16) = {0};
-    uint32_t dst[4] ALIGNED(16) = {0};
-    uint32_t expected[4] ALIGNED(16) = {0};
-    
-    #define TEST_UNPCK(a3, a2, b3, b2, e3, e2, e1, e0) \
-    do { \
-        a[0] = 0; a[1] = 0; a[2] = a2; a[3] = a3; \
-        b[0] = 0; b[1] = 0; b[2] = b2; b[3] = b3; \
-        __m128i v_a = _mm_load_si128((__m128i*)a); \
-        __m128i v_b = _mm_load_si128((__m128i*)b); \
-        __m128i v_dst; \
-        asm volatile( \
-            "vpunpckhdq %2, %1, %0" \
-            : "=x"(v_dst) \
-            : "x"(v_a), "x"(v_b) \
-            :  \
-        ); \
-        _mm_store_si128((__m128i*)dst, v_dst); \
-        expected[0] = e0; expected[1] = e1; \
-        expected[2] = e2; expected[3] = e3; \
-        printf("A: [%08X, %08X]\n", a3, a2); \
-        printf("B: [%08X, %08X]\n", b3, b2); \
-        printf("Result:    [%08X, %08X, %08X, %08X]\n", dst[3], dst[2], dst[1], dst[0]); \
-        printf("Expected:  [%08X, %08X, %08X, %08X]\n", expected[3], expected[2], expected[1], expected[0]); \
-        printf("Test: %s\n\n", memcmp(dst, expected, 16) == 0 ? "PASS" : "FAIL"); \
-    } while(0)
-    
-    // 测试1: 基本解包
-    TEST_UNPCK(0x11223344, 0x55667788, 
-               0xAABBCCDD, 0xEEFF0011,
-               0x11223344, 0xAABBCCDD, 
-               0x55667788, 0xEEFF0011);
-    
-    // 测试2: 边界值
-    TEST_UNPCK(0xFFFFFFFF, 0x00000000, 
-               0x00000000, 0xFFFFFFFF,
-               0xFFFFFFFF, 0x00000000, 
-               0x00000000, 0xFFFFFFFF);
+// 打印128位整数向量
+static void print_m128i(const char* name, __m128i vec) {
+    uint32_t *vals = (uint32_t*)&vec;
+    printf("%s: [%u, %u, %u, %u]\n", name, vals[0], vals[1], vals[2], vals[3]);
 }
 
-static void test_vpunpckhdq_256() {
-    printf("\n=== Testing vpunpckhdq (256-bit) ===\n");
-    
-    uint32_t a[8] ALIGNED(32) = {0};
-    uint32_t b[8] ALIGNED(32) = {0};
-    uint32_t dst[8] ALIGNED(32) = {0};
-    uint32_t expected[8] ALIGNED(32) = {0};
-    
-    #define TEST_UNPCK_256(a7, a6, a3, a2, b7, b6, b3, b2, e7, e6, e3, e2, e5, e4, e1, e0) \
-    do { \
-        a[0]=0; a[1]=0; a[2]=a2; a[3]=a3; a[4]=0; a[5]=0; a[6]=a6; a[7]=a7; \
-        b[0]=0; b[1]=0; b[2]=b2; b[3]=b3; b[4]=0; b[5]=0; b[6]=b6; b[7]=b7; \
-        __m256i v_a = _mm256_load_si256((__m256i*)a); \
-        __m256i v_b = _mm256_load_si256((__m256i*)b); \
-        __m256i v_dst; \
-        asm volatile( \
-            "vpunpckhdq %2, %1, %0" \
-            : "=x"(v_dst) \
-            : "x"(v_a), "x"(v_b) \
-            :  \
-        ); \
-        _mm256_store_si256((__m256i*)dst, v_dst); \
-        expected[0]=e0; expected[1]=e1; expected[2]=e2; expected[3]=e3; \
-        expected[4]=e4; expected[5]=e5; expected[6]=e6; expected[7]=e7; \
-        printf("A: [%08X, %08X, %08X, %08X]\n", a7, a6, a3, a2); \
-        printf("B: [%08X, %08X, %08X, %08X]\n", b7, b6, b3, b2); \
-        printf("Result:    [%08X, %08X, %08X, %08X, %08X, %08X, %08X, %08X]\n", \
-               dst[7], dst[6], dst[3], dst[2], dst[5], dst[4], dst[1], dst[0]); \
-        printf("Expected:  [%08X, %08X, %08X, %08X, %08X, %08X, %08X, %08X]\n", \
-               expected[7], expected[6], expected[3], expected[2], \
-               expected[5], expected[4], expected[1], expected[0]); \
-        printf("Test: %s\n\n", memcmp(dst, expected, 32) == 0 ? "PASS" : "FAIL"); \
-    } while(0)
-    
-    // 测试1: 基本解包
-    TEST_UNPCK_256(0x11223344, 0x55667788, 
-                   0x99AABBCC, 0xDDEEFF00,
-                   0xAABBCCDD, 0xEEFF0011,
-                   0x11223344, 0x55667788,
-                   0x11223344, 0xAABBCCDD,
-                   0x55667788, 0xEEFF0011,
-                   0x99AABBCC, 0x11223344,
-                   0xDDEEFF00, 0x55667788);
+// 打印256位整数向量
+static void print_m256i(const char* name, __m256i vec) {
+    uint32_t *vals = (uint32_t*)&vec;
+    printf("%s: [%u, %u, %u, %u, %u, %u, %u, %u]\n", name, 
+           vals[0], vals[1], vals[2], vals[3],
+           vals[4], vals[5], vals[6], vals[7]);
 }
 
+// 主测试函数
 int main() {
-    test_vpunpckhdq_128();
-    test_vpunpckhdq_256();
-    return 0;
+    int errors = 0;
+    
+    printf("=== Testing vpunpckhdq ===\n");
+    
+    // 测试128位寄存器-寄存器操作
+    printf("\n[Test 1: 128-bit reg-reg]\n");
+    {
+        __m128i a = _mm_setr_epi32(0xA1A2A3A4, 0xB1B2B3B4, 0xC1C2C3C4, 0xD1D2D3D4);
+        __m128i b = _mm_setr_epi32(0xE1E2E3E4, 0xF1F2F3F4, 0x01020304, 0x11121314);
+        __m128i c;
+        
+        CLEAR_FLAGS;
+        
+        // 内联汇编实现vpunpckhdq
+        asm volatile (
+            "vpunpckhdq %2, %1, %0"
+            : "=x"(c)
+            : "x"(a), "x"(b)
+        );
+        
+        // 预期结果：高64位交错 [C1C2C3C4, 01020304, D1D2D3D4, 11121314]
+        __m128i expected = _mm_setr_epi32(0xC1C2C3C4, 0x01020304, 0xD1D2D3D4, 0x11121314);
+        
+        print_m128i("Input A", a);
+        print_m128i("Input B", b);
+        print_m128i("Result", c);
+        print_m128i("Expected", expected);
+        
+        if (!cmp_xmm(c, expected)) {
+            printf("Mismatch!\n");
+            errors++;
+        }
+        
+        uint64_t eflags = 0;
+        asm volatile ("pushfq; pop %0" : "=r"(eflags));
+        print_eflags(eflags);
+    }
+    
+    // 测试128位寄存器-内存操作
+    printf("\n[Test 2: 128-bit reg-mem]\n");
+    {
+        __m128i a = _mm_setr_epi32(0xFFFFFFFF, 0x00000000, 0x80000000, 0x7FFFFFFF);
+        ALIGNED(16) uint32_t mem[4] = {0x55555555, 0xAAAAAAAA, 0x12345678, 0x9ABCDEF0};
+        __m128i c;
+        
+        CLEAR_FLAGS;
+        
+        asm volatile (
+            "vpunpckhdq %1, %2, %0"
+            : "=x"(c)
+            : "m"(*mem), "x"(a)
+        );
+        
+        // 预期结果：高64位交错 [80000000, 12345678, 7FFFFFFF, 9ABCDEF0]
+        __m128i expected = _mm_setr_epi32(0x80000000, 0x12345678, 0x7FFFFFFF, 0x9ABCDEF0);
+        
+        print_m128i("Input A", a);
+        printf("Memory: [0x%X, 0x%X, 0x%X, 0x%X]\n", mem[0], mem[1], mem[2], mem[3]);
+        print_m128i("Result", c);
+        print_m128i("Expected", expected);
+        
+        if (!cmp_xmm(c, expected)) {
+            printf("Mismatch!\n");
+            errors++;
+        }
+        
+        uint64_t eflags = 0;
+        asm volatile ("pushfq; pop %0" : "=r"(eflags));
+        print_eflags(eflags);
+    }
+    
+    // 测试256位寄存器-寄存器操作
+    printf("\n[Test 3: 256-bit reg-reg]\n");
+    {
+        __m256i a = _mm256_setr_epi32(
+            0x11111111, 0x22222222, 0x33333333, 0x44444444,
+            0x55555555, 0x66666666, 0x77777777, 0x88888888
+        );
+        __m256i b = _mm256_setr_epi32(
+            0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, 0xCCCCCCCC,
+            0xDDDDDDDD, 0xEEEEEEEE, 0xFFFFFFFF, 0x00000000
+        );
+        __m256i c;
+        
+        CLEAR_FLAGS;
+        
+        asm volatile (
+            "vpunpckhdq %2, %1, %0"
+            : "=x"(c)
+            : "x"(a), "x"(b)
+        );
+        
+        // 预期结果：高128位交错 [33333333, BBBBBBBB, 44444444, CCCCCCCC, 77777777, FFFFFFFF, 88888888, 00000000]
+        __m256i expected = _mm256_setr_epi32(
+            0x33333333, 0xBBBBBBBB, 0x44444444, 0xCCCCCCCC,
+            0x77777777, 0xFFFFFFFF, 0x88888888, 0x00000000
+        );
+        
+        print_m256i("Input A", a);
+        print_m256i("Input B", b);
+        print_m256i("Result", c);
+        print_m256i("Expected", expected);
+        
+        if (!cmp_ymm(c, expected)) {
+            printf("Mismatch!\n");
+            errors++;
+        }
+        
+        uint64_t eflags = 0;
+        asm volatile ("pushfq; pop %0" : "=r"(eflags));
+        print_eflags(eflags);
+    }
+    
+    // 测试256位寄存器-内存操作
+    printf("\n[Test 4: 256-bit reg-mem]\n");
+    {
+        __m256i a = _mm256_setr_epi32(
+            0x00000000, 0xFFFFFFFF, 0x7FFFFFFF, 0x80000000,
+            0x12345678, 0x9ABCDEF0, 0x55555555, 0xAAAAAAAA
+        );
+        ALIGNED(32) uint32_t mem[8] = {
+            0x11111111, 0x22222222, 0x33333333, 0x44444444,
+            0x55555555, 0x66666666, 0x77777777, 0x88888888
+        };
+        __m256i c;
+        
+        CLEAR_FLAGS;
+        
+        asm volatile (
+            "vpunpckhdq %1, %2, %0"
+            : "=x"(c)
+            : "m"(*mem), "x"(a)
+        );
+        
+        // 预期结果：高128位交错 [7FFFFFFF, 33333333, 80000000, 44444444, 55555555, 77777777, AAAAAAAA, 88888888]
+        __m256i expected = _mm256_setr_epi32(
+            0x7FFFFFFF, 0x33333333, 0x80000000, 0x44444444,
+            0x55555555, 0x77777777, 0xAAAAAAAA, 0x88888888
+        );
+        
+        print_m256i("Input A", a);
+        printf("Memory: [");
+        for (int i = 0; i < 8; i++) printf("0x%X%s", mem[i], i<7 ? ", " : "");
+        printf("]\n");
+        print_m256i("Result", c);
+        print_m256i("Expected", expected);
+        
+        if (!cmp_ymm(c, expected)) {
+            printf("Mismatch!\n");
+            errors++;
+        }
+        
+        uint64_t eflags = 0;
+        asm volatile ("pushfq; pop %0" : "=r"(eflags));
+        print_eflags(eflags);
+    }
+    
+    printf("\n=== Tests complete: %d errors ===\n", errors);
+    return errors ? 1 : 0;
 }
