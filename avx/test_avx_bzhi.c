@@ -61,15 +61,22 @@ int main() {
             // 忽略第1位（保留位，总是为1）
             flags &= ~(1UL << 1);
             
-            printf("Test %zu: BZHI(%s) => ", i+1, test_cases[i].name);
-            printf("Result: 0x%08" PRIx32 ", Expected: 0x%08" PRIx32 " ", result, expected);
+            // 计算CF标志
+            uint32_t cf = (flags & 1) ? 1 : 0;
+            uint32_t expected_cf = (test_cases[i].idx > 31) ? 1 : 0;
             
-            if (result == expected) {
-                printf("[PASS]");
+            printf("Test %zu: Input=0x%08X, Index=%u\n", i+1, test_cases[i].src, test_cases[i].idx);
+            printf("  Expected: 0x%08X, Result: 0x%08X\n", expected, result);
+            printf("  Expected CF: %d, Actual CF: %d\n", expected_cf, cf);
+            
+            if (result != expected || cf != expected_cf) {
+                printf("  [FAIL] Test failed!\n");
             } else {
-                printf("[FAIL]");
+                printf("  [PASS] Test passed!\n");
             }
-            printf(" | Flags: 0x%04" PRIx16 "\n", (uint16_t)flags);
+            
+            print_eflags_cond((uint32_t)flags, 0x84D); // 显示CF/SF/ZF/OF
+            printf("\n");
             // 调整输出格式为16位十六进制（低16位）
             // 参考文件使用16位格式，所以只输出低16位
             // 修改为：printf(" | Flags: 0x%04" PRIx16 "\n", (uint16_t)flags);
@@ -126,15 +133,22 @@ int main() {
             // 忽略第1位（保留位，总是为1）
             flags &= ~(1UL << 1);
             
-            printf("Test %zu: BZHI(%s) => ", i+1, test_cases[i].name);
-            printf("Result: 0x%016" PRIx64 ", Expected: 0x%016" PRIx64 " ", result, expected);
+            // 计算CF标志
+            uint32_t cf = (flags & 1) ? 1 : 0;
+            uint32_t expected_cf = (test_cases[i].idx > 63) ? 1 : 0;
             
-            if (result == expected) {
-                printf("[PASS]");
+            printf("Test %zu: Input=0x%016" PRIX64 ", Index=%lu\n", i+1, test_cases[i].src, test_cases[i].idx);
+            printf("  Expected: 0x%016" PRIX64 ", Result: 0x%016" PRIX64 "\n", expected, result);
+            printf("  Expected CF: %d, Actual CF: %d\n", expected_cf, cf);
+            
+            if (result != expected || cf != expected_cf) {
+                printf("  [FAIL] Test failed!\n");
             } else {
-                printf("[FAIL]");
+                printf("  [PASS] Test passed!\n");
             }
-            printf(" | Flags: 0x%04" PRIx16 "\n", (uint16_t)flags);
+            
+            print_eflags_cond((uint32_t)flags, 0x84D); // 显示CF/SF/ZF/OF
+            printf("\n");
             // 调整输出格式为16位十六进制（低16位）
             // 参考文件使用16位格式，所以只输出低16位
             // 修改为：printf(" | Flags: 0x%04" PRIx16 "\n", (uint16_t)flags);

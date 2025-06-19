@@ -1,0 +1,167 @@
+#include "avx.h"
+#include <stdio.h>
+#include <stdint.h>
+
+// 打印双字数组
+static void print_dwords(int32_t *dwords, int count, const char* name) {
+    printf("%s: ", name);
+    for (int i = 0; i < count; i++) {
+        printf("%d ", dwords[i]);
+    }
+    printf("\n");
+}
+
+int test_vpsubd() {
+    printf("Testing VPSUBD instruction\n");
+    printf("=========================\n");
+    
+    int all_tests_passed = 1;
+
+    // 测试1: 128位基本功能测试
+    {
+        printf("Test 1: 128-bit basic functionality\n");
+        
+        int32_t src1[4] = {1000000000, -2000000000, 300000000, -400000000};
+        int32_t src2[4] = {500000000, -1000000000, 200000000, 300000000};
+        int32_t dst[4] = {0};
+
+        // 预期结果(考虑溢出情况)
+        int32_t expected[4] = {500000000, -1000000000, 100000000, -700000000};
+
+        // 执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%xmm0\n\t"
+            "vmovdqu %2, %%xmm1\n\t"
+            "vpsubd %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovdqu %%xmm2, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2)
+            : "xmm0", "xmm1", "xmm2", "memory"
+        );
+
+        // 打印输入输出
+        print_dwords(src1, 4, "Input");
+        print_dwords(src2, 4, "Subtrahend");
+        print_dwords(dst, 4, "Result");
+        print_dwords(expected, 4, "Expected");
+
+        // 验证结果
+        int pass = 1;
+        for (int i = 0; i < 4; i++) {
+            if (dst[i] != expected[i]) {
+                pass = 0;
+                printf("Mismatch at element %d: got %d, expected %d\n",
+                      i, dst[i], expected[i]);
+            }
+        }
+        
+        if (pass) {
+            printf("[PASS]\n");
+        } else {
+            printf("[FAIL]\n");
+            all_tests_passed = 0;
+        }
+    }
+
+    // 测试2: 128位内存操作数测试
+    {
+        printf("\nTest 2: 128-bit memory operand\n");
+        
+        int32_t src1[4] = {2147483647, -2147483648, 0, 1};
+        int32_t src2_mem[4] = {1, 1, 1, -1};
+        int32_t dst[4] = {0};
+
+        // 预期结果
+        int32_t expected[4] = {2147483646, 2147483647, -1, 2};
+
+        // 执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%xmm0\n\t"
+            "vpsubd %2, %%xmm0, %%xmm1\n\t"
+            "vmovdqu %%xmm1, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2_mem)
+            : "xmm0", "xmm1", "memory"
+        );
+
+        // 打印输入输出
+        print_dwords(src1, 4, "Input");
+        print_dwords(src2_mem, 4, "Subtrahend (mem)");
+        print_dwords(dst, 4, "Result");
+        print_dwords(expected, 4, "Expected");
+
+        // 验证结果
+        int pass = 1;
+        for (int i = 0; i < 4; i++) {
+            if (dst[i] != expected[i]) {
+                pass = 0;
+                printf("Mismatch at element %d: got %d, expected %d\n",
+                      i, dst[i], expected[i]);
+            }
+        }
+        
+        if (pass) {
+            printf("[PASS]\n");
+        } else {
+            printf("[FAIL]\n");
+            all_tests_passed = 0;
+        }
+    }
+
+    // 测试3: 256位AVX测试
+    {
+        printf("\nTest 3: 256-bit AVX operation\n");
+        
+        int32_t src1[8] = {1000000000, -2000000000, 300000000, -400000000,
+                          500000000, -600000000, 700000000, -800000000};
+        int32_t src2[8] = {500000000, -1000000000, 200000000, 300000000,
+                          400000000, -500000000, 600000000, 700000000};
+        int32_t dst[8] = {0};
+
+        // 预期结果
+        int32_t expected[8] = {500000000, -1000000000, 100000000, -700000000,
+                              100000000, -100000000, 100000000, -1500000000}; // -800000000 - 700000000 = -1500000000 (32位有符号整数)
+
+        // 执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%ymm0\n\t"
+            "vmovdqu %2, %%ymm1\n\t"
+            "vpsubd %%ymm1, %%ymm0, %%ymm2\n\t"
+            "vmovdqu %%ymm2, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2)
+            : "ymm0", "ymm1", "ymm2", "memory"
+        );
+
+        // 打印输入输出
+        print_dwords(src1, 8, "Input");
+        print_dwords(src2, 8, "Subtrahend");
+        print_dwords(dst, 8, "Result");
+        print_dwords(expected, 8, "Expected");
+
+        // 验证结果
+        int pass = 1;
+        for (int i = 0; i < 8; i++) {
+            if (dst[i] != expected[i]) {
+                pass = 0;
+                printf("Mismatch at element %d: got %d, expected %d\n",
+                      i, dst[i], expected[i]);
+            }
+        }
+        
+        if (pass) {
+            printf("[PASS]\n");
+        } else {
+            printf("[FAIL]\n");
+            all_tests_passed = 0;
+        }
+    }
+
+    printf("\nVPSUBD tests %s\n", all_tests_passed ? "PASSED" : "FAILED");
+    return all_tests_passed;
+}
+
+int main() {
+    int result = test_vpsubd();
+    return result ? 0 : 1;
+}

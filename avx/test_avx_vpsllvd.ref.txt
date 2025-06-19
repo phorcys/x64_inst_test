@@ -1,0 +1,13 @@
+=== Testing VPSLLVD (Vector Packed Shift Left Logical Variable Doubleword) ===
+
+--- 128-bit Tests ---
+Source: 78 56 34 12 ff ff ff 7f 00 00 00 80 98 ba dc fe 
+Shift Counts: 01 00 00 00 04 00 00 00 08 00 00 00 10 00 00 00 
+Result: f0 ac 68 24 f0 ff ff ff 00 00 00 00 00 00 98 ba 
+Comparison: PASS
+
+--- 256-bit Tests ---
+Source: 78 56 34 12 ff ff ff 7f 00 00 00 80 98 ba dc fe 01 00 00 00 55 55 55 55 aa aa aa aa ff ff ff ff 
+Shift Counts: 01 00 00 00 04 00 00 00 08 00 00 00 10 00 00 00 1f 00 00 00 20 00 00 00 21 00 00 00 00 00 00 00 
+Result: f0 ac 68 24 f0 ff ff ff 00 00 00 00 00 00 98 ba 00 00 00 80 00 00 00 00 00 00 00 00 ff ff ff ff 
+Comparison: PASS

@@ -2,18 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include <cpuid.h>
 
 static void test_vpgatherqq_256() {
     printf("=== Testing vpgatherqq (256-bit) ===\n");
-    
-    // Check CPU support for AVX2 (required for vpgatherqq)
-    unsigned int eax, ebx, ecx, edx;
-    __cpuid(1, eax, ebx, ecx, edx);
-    if (!(ecx & (1 << 28)) || !(ebx & (1 << 5))) {
-        printf("AVX2 not supported - skipping test\n");
-        return;
-    }
     
     int64_t base[4] ALIGNED(32) = {10, 20, 30, 40};
     int64_t idx[4] ALIGNED(32) = {0};

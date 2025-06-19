@@ -216,4 +216,42 @@ static void __attribute__((unused)) print_vector256d(const char* name, __m256d v
 #define CLEAR_FLAGS \
     asm volatile ("push $0\n\tpopfq" : : : "cc", "memory")
 
+// 打印128位整型向量（十六进制）
+static inline void print_m128i_hex(__m128i xmm, const char* name) {
+    uint8_t buf[16];
+    memcpy(buf, &xmm, 16);
+    printf("%s: ", name);
+    for(int i=0; i<16; i++) {
+        printf("%02x ", buf[i]);
+    }
+    printf("\n");
+}
+
+// 打印256位整型向量（十六进制）
+static inline void print_m256i_hex(__m256i ymm, const char* name) {
+    uint8_t buf[32];
+    memcpy(buf, &ymm, 32);
+    printf("%s: ", name);
+    for(int i=0; i<32; i++) {
+        printf("%02x ", buf[i]);
+    }
+    printf("\n");
+}
+
+// 兼容性宏定义
+#ifndef _mm_setr_epi64x
+#define _mm_setr_epi64x(e1, e0) \
+    _mm_set_epi64x((long long)(e1), (long long)(e0))
+#endif
+
+// 打印128位整型向量的字节内容
+static inline void print_m128i_bytes(__m128i xmm) {
+    uint8_t buf[16];
+    memcpy(buf, &xmm, 16);
+    for(int i=0; i<16; i++) {
+        printf("%02X ", buf[i]);
+    }
+    printf("\n");
+}
+
 #endif // AVX_H

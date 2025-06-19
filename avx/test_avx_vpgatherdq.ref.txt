@@ -1,2 +1,9 @@
 === Testing vpgatherdq (256-bit) ===
-AVX2 not supported - skipping test
+Base: 10 20 30 40 
+Index: 8 24 0 16 
+Result: 20 40 10 30 
+Expected: 20 40 10 30 
+Test 1: PASS
+Result: 30 30 30 30 
+Expected: 30 30 30 30 
+Test 2: PASS

@@ -220,6 +220,92 @@ void test_bextr64() {
     
     // 测试用例4: 边界测试
     {
+        uint32_t src = 0x87654321;
+        uint32_t control = (24) | (8 << 8); // 修正：低8位=起始位(24)，高8位=位数(8)
+        uint32_t result;
+        uint64_t rflags;
+        uint32_t expected = (src >> 24) & 0xFF;
+        
+        __asm__ __volatile__ (
+            "bextrl %[control], %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "r" (src), [control] "r" (control)
+            : "cc"
+        );
+        
+        printf("Test 4: 32-bit boundary\n");
+        printf("  Input: 0x%08X, Control: 0x%08X (start=%d, len=%d)\n", 
+               src, control, control & 0xFF, (control >> 8) & 0xFF);
+        printf("  Expected: 0x%08X\n", expected);
+        printf("  Result:   0x%08X\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond((uint32_t)rflags, cond);
+        printf("\n");
+    }
+
+    // 测试用例5: 起始位超过32位
+    {
+        uint32_t src = 0x12345678;
+        uint32_t control = (40) | (8 << 8); // 起始位40 > 32
+        uint32_t result;
+        uint64_t rflags;
+        uint32_t expected = 0; // 应该返回0
+        
+        __asm__ __volatile__ (
+            "bextrl %[control], %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "r" (src), [control] "r" (control)
+            : "cc"
+        );
+        
+        printf("Test 5: 32-bit start > 32\n");
+        printf("  Input: 0x%08X, Control: 0x%08X (start=%d, len=%d)\n", 
+               src, control, control & 0xFF, (control >> 8) & 0xFF);
+        printf("  Expected: 0x%08X\n", expected);
+        printf("  Result:   0x%08X\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond((uint32_t)rflags, cond);
+        printf("\n");
+    }
+
+    // 测试用例6: 内存操作数测试
+    {
+        uint32_t src = 0x9ABCDEF0;
+        uint32_t control = (8) | (16 << 8);
+        uint32_t result;
+        uint64_t rflags;
+        uint32_t expected = (src >> 8) & 0xFFFF;
+        
+        __asm__ __volatile__ (
+            "bextrl %[control], %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "m" (src), [control] "r" (control)
+            : "cc"
+        );
+        
+        printf("Test 6: 32-bit memory operand\n");
+        printf("  Input: 0x%08X, Control: 0x%08X (start=%d, len=%d)\n", 
+               src, control, control & 0xFF, (control >> 8) & 0xFF);
+        printf("  Expected: 0x%08X\n", expected);
+        printf("  Result:   0x%08X\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond((uint32_t)rflags, cond);
+        printf("\n");
+    }
+    // 测试用例4: 边界测试
+    {
         uint64_t src = 0xFEDCBA9876543210;
         uint64_t control = (56) | (8 << 8); // 修正：低8位=起始位(56)，高8位=位数(8)
         uint64_t result;
@@ -236,6 +322,64 @@ void test_bextr64() {
         );
         
         printf("Test 4: 64-bit boundary\n");
+        printf("  Input: 0x%016lX, Control: 0x%016lX (start=%ld, len=%ld)\n", 
+               src, control, control & 0xFF, (control >> 8) & 0xFF);
+        printf("  Expected: 0x%016lX\n", expected);
+        printf("  Result:   0x%016lX\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond((uint32_t)rflags, cond);
+        printf("\n");
+    }
+
+    // 测试用例5: 起始位超过64位
+    {
+        uint64_t src = 0x123456789ABCDEF0;
+        uint64_t control = (72) | (8 << 8); // 起始位72 > 64
+        uint64_t result;
+        uint64_t rflags;
+        uint64_t expected = 0; // 应该返回0
+        
+        __asm__ __volatile__ (
+            "bextrq %[control], %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "r" (src), [control] "r" (control)
+            : "cc"
+        );
+        
+        printf("Test 5: 64-bit start > 64\n");
+        printf("  Input: 0x%016lX, Control: 0x%016lX (start=%ld, len=%ld)\n", 
+               src, control, control & 0xFF, (control >> 8) & 0xFF);
+        printf("  Expected: 0x%016lX\n", expected);
+        printf("  Result:   0x%016lX\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond((uint32_t)rflags, cond);
+        printf("\n");
+    }
+
+    // 测试用例6: 内存操作数测试
+    {
+        uint64_t src = 0x9ABCDEF012345678;
+        uint64_t control = (16) | (32 << 8);
+        uint64_t result;
+        uint64_t rflags;
+        uint64_t expected = (src >> 16) & 0xFFFFFFFF;
+        
+        __asm__ __volatile__ (
+            "bextrq %[control], %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "m" (src), [control] "r" (control)
+            : "cc"
+        );
+        
+        printf("Test 6: 64-bit memory operand\n");
         printf("  Input: 0x%016lX, Control: 0x%016lX (start=%ld, len=%ld)\n", 
                src, control, control & 0xFF, (control >> 8) & 0xFF);
         printf("  Expected: 0x%016lX\n", expected);

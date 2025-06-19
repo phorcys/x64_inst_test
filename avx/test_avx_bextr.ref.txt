@@ -70,10 +70,60 @@ Test 3: 64-bit full length
   [ ] DF - Direction Flag
   [ ] OF - Overflow Flag
 
+Test 4: 32-bit boundary
+  Input: 0x87654321, Control: 0x00000818 (start=24, len=8)
+  Expected: 0x00000087
+  Result:   0x00000087
+  [ ] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] TF - Trap Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 5: 32-bit start > 32
+  Input: 0x12345678, Control: 0x00000828 (start=40, len=8)
+  Expected: 0x00000000
+  Result:   0x00000000
+  [ ] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [ ] TF - Trap Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 6: 32-bit memory operand
+  Input: 0x9ABCDEF0, Control: 0x00001008 (start=8, len=16)
+  Expected: 0x0000BCDE
+  Result:   0x0000BCDE
+  [ ] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] TF - Trap Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
 Test 4: 64-bit boundary
   Input: 0xFEDCBA9876543210, Control: 0x0000000000000838 (start=56, len=8)
   Expected: 0x00000000000000FE
   Result:   0x00000000000000FE
+  [ ] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] TF - Trap Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 5: 64-bit start > 64
+  Input: 0x123456789ABCDEF0, Control: 0x0000000000000848 (start=72, len=8)
+  Expected: 0x0000000000000000
+  Result:   0x0000000000000000
+  [ ] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [ ] TF - Trap Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
+Test 6: 64-bit memory operand
+  Input: 0x9ABCDEF012345678, Control: 0x0000000000002010 (start=16, len=32)
+  Expected: 0x00000000DEF01234
+  Result:   0x00000000DEF01234
   [ ] CF - Carry Flag
   [ ] ZF - Zero Flag
   [ ] TF - Trap Flag

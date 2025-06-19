@@ -35,6 +35,24 @@ Test 4: 32-bit all ones
   [ ] SF - Sign Flag
   [ ] OF - Overflow Flag
 
+Test 5: 32-bit middle bit
+  Input: 0x00001000
+  Expected: 0x00001000
+  Result:   0x00001000
+  [X] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Test 6: 32-bit memory operand
+  Input: 0x00000001
+  Expected: 0x00000001
+  Result:   0x00000001
+  [X] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 === Testing 64-bit BLSI instruction ===
 Test 1: 64-bit basic
   Input: 0x123456789ABCDEF0
@@ -65,6 +83,24 @@ Test 3: 64-bit highest bit
 
 Test 4: 64-bit all ones
   Input: 0xFFFFFFFFFFFFFFFF
+  Expected: 0x0000000000000001
+  Result:   0x0000000000000001
+  [X] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Test 5: 64-bit middle bit
+  Input: 0x0000000010000000
+  Expected: 0x0000000010000000
+  Result:   0x0000000010000000
+  [X] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Test 6: 64-bit memory operand
+  Input: 0x0000000000000001
   Expected: 0x0000000000000001
   Result:   0x0000000000000001
   [X] CF - Carry Flag

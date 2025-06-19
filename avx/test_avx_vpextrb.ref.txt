@@ -1,0 +1,70 @@
+Testing VPEXTRB instruction
+==========================
+Source vector: test_vector: 01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10 
+
+Test 1: Index=0
+  Expected: 0x01, Result: 0x01
+  [PASS] Test passed!
+
+Test 2: Index=1
+  Expected: 0x23, Result: 0x23
+  [PASS] Test passed!
+
+Test 3: Index=2
+  Expected: 0x45, Result: 0x45
+  [PASS] Test passed!
+
+Test 4: Index=3
+  Expected: 0x67, Result: 0x67
+  [PASS] Test passed!
+
+Test 5: Index=4
+  Expected: 0x89, Result: 0x89
+  [PASS] Test passed!
+
+Test 6: Index=5
+  Expected: 0xAB, Result: 0xAB
+  [PASS] Test passed!
+
+Test 7: Index=6
+  Expected: 0xCD, Result: 0xCD
+  [PASS] Test passed!
+
+Test 8: Index=7
+  Expected: 0xEF, Result: 0xEF
+  [PASS] Test passed!
+
+Test 9: Index=8
+  Expected: 0xFE, Result: 0xFE
+  [PASS] Test passed!
+
+Test 10: Index=9
+  Expected: 0xDC, Result: 0xDC
+  [PASS] Test passed!
+
+Test 11: Index=10
+  Expected: 0xBA, Result: 0xBA
+  [PASS] Test passed!
+
+Test 12: Index=11
+  Expected: 0x98, Result: 0x98
+  [PASS] Test passed!
+
+Test 13: Index=12
+  Expected: 0x76, Result: 0x76
+  [PASS] Test passed!
+
+Test 14: Index=13
+  Expected: 0x54, Result: 0x54
+  [PASS] Test passed!
+
+Test 15: Index=14
+  Expected: 0x32, Result: 0x32
+  [PASS] Test passed!
+
+Test 16: Index=15
+  Expected: 0x10, Result: 0x10
+  [PASS] Test passed!
+
+
+VPEXTRB tests completed.

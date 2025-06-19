@@ -2,34 +2,250 @@ Testing BZHI instruction
 ========================
 
 32-bit BZHI tests:
-Test 1: BZHI(0xFFFFFFFF, idx=0) => Result: 0x00000000, Expected: 0x00000000 [PASS] | Flags: 0x0244
-Test 2: BZHI(0xFFFFFFFF, idx=1) => Result: 0x00000001, Expected: 0x00000001 [PASS] | Flags: 0x0200
-Test 3: BZHI(0xFFFFFFFF, idx=8) => Result: 0x000000ff, Expected: 0x000000ff [PASS] | Flags: 0x0204
-Test 4: BZHI(0xFFFFFFFF, idx=16) => Result: 0x0000ffff, Expected: 0x0000ffff [PASS] | Flags: 0x0204
-Test 5: BZHI(0xFFFFFFFF, idx=31) => Result: 0x7fffffff, Expected: 0x7fffffff [PASS] | Flags: 0x0204
-Test 6: BZHI(0xFFFFFFFF, idx=32) => Result: 0xffffffff, Expected: 0xffffffff [PASS] | Flags: 0x0285
-Test 7: BZHI(0x12345678, idx=4) => Result: 0x00000008, Expected: 0x00000008 [PASS] | Flags: 0x0200
-Test 8: BZHI(0x12345678, idx=12) => Result: 0x00000678, Expected: 0x00000678 [PASS] | Flags: 0x0204
-Test 9: BZHI(0x12345678, idx=24) => Result: 0x00345678, Expected: 0x00345678 [PASS] | Flags: 0x0204
-Test 10: BZHI(0x12345678, idx=32) => Result: 0x12345678, Expected: 0x12345678 [PASS] | Flags: 0x0205
-Test 11: BZHI(0x80000000, idx=31) => Result: 0x00000000, Expected: 0x00000000 [PASS] | Flags: 0x0244
-Test 12: BZHI(0x80000000, idx=32) => Result: 0x80000000, Expected: 0x80000000 [PASS] | Flags: 0x0285
+Test 1: Input=0xFFFFFFFF, Index=0
+  Expected: 0x00000000, Result: 0x00000000
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 2: Input=0xFFFFFFFF, Index=1
+  Expected: 0x00000001, Result: 0x00000001
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 3: Input=0xFFFFFFFF, Index=8
+  Expected: 0x000000FF, Result: 0x000000FF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 4: Input=0xFFFFFFFF, Index=16
+  Expected: 0x0000FFFF, Result: 0x0000FFFF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 5: Input=0xFFFFFFFF, Index=31
+  Expected: 0x7FFFFFFF, Result: 0x7FFFFFFF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 6: Input=0xFFFFFFFF, Index=32
+  Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF
+  Expected CF: 1, Actual CF: 1
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 7: Input=0x12345678, Index=4
+  Expected: 0x00000008, Result: 0x00000008
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 8: Input=0x12345678, Index=12
+  Expected: 0x00000678, Result: 0x00000678
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 9: Input=0x12345678, Index=24
+  Expected: 0x00345678, Result: 0x00345678
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 10: Input=0x12345678, Index=32
+  Expected: 0x12345678, Result: 0x12345678
+  Expected CF: 1, Actual CF: 1
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 11: Input=0x80000000, Index=31
+  Expected: 0x00000000, Result: 0x00000000
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 12: Input=0x80000000, Index=32
+  Expected: 0x80000000, Result: 0x80000000
+  Expected CF: 1, Actual CF: 1
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
 
 64-bit BZHI tests:
-Test 1: BZHI(0xFFFFFFFFFFFFFFFF, idx=0) => Result: 0x0000000000000000, Expected: 0x0000000000000000 [PASS] | Flags: 0x0244
-Test 2: BZHI(0xFFFFFFFFFFFFFFFF, idx=1) => Result: 0x0000000000000001, Expected: 0x0000000000000001 [PASS] | Flags: 0x0200
-Test 3: BZHI(0xFFFFFFFFFFFFFFFF, idx=8) => Result: 0x00000000000000ff, Expected: 0x00000000000000ff [PASS] | Flags: 0x0204
-Test 4: BZHI(0xFFFFFFFFFFFFFFFF, idx=16) => Result: 0x000000000000ffff, Expected: 0x000000000000ffff [PASS] | Flags: 0x0204
-Test 5: BZHI(0xFFFFFFFFFFFFFFFF, idx=32) => Result: 0x00000000ffffffff, Expected: 0x00000000ffffffff [PASS] | Flags: 0x0204
-Test 6: BZHI(0xFFFFFFFFFFFFFFFF, idx=48) => Result: 0x0000ffffffffffff, Expected: 0x0000ffffffffffff [PASS] | Flags: 0x0204
-Test 7: BZHI(0xFFFFFFFFFFFFFFFF, idx=63) => Result: 0x7fffffffffffffff, Expected: 0x7fffffffffffffff [PASS] | Flags: 0x0204
-Test 8: BZHI(0xFFFFFFFFFFFFFFFF, idx=64) => Result: 0xffffffffffffffff, Expected: 0xffffffffffffffff [PASS] | Flags: 0x0285
-Test 9: BZHI(0x123456789ABCDEF0, idx=4) => Result: 0x0000000000000000, Expected: 0x0000000000000000 [PASS] | Flags: 0x0244
-Test 10: BZHI(0x123456789ABCDEF0, idx=16) => Result: 0x000000000000def0, Expected: 0x000000000000def0 [PASS] | Flags: 0x0204
-Test 11: BZHI(0x123456789ABCDEF0, idx=32) => Result: 0x000000009abcdef0, Expected: 0x000000009abcdef0 [PASS] | Flags: 0x0204
-Test 12: BZHI(0x123456789ABCDEF0, idx=48) => Result: 0x000056789abcdef0, Expected: 0x000056789abcdef0 [PASS] | Flags: 0x0204
-Test 13: BZHI(0x123456789ABCDEF0, idx=64) => Result: 0x123456789abcdef0, Expected: 0x123456789abcdef0 [PASS] | Flags: 0x0205
-Test 14: BZHI(0x8000000000000000, idx=63) => Result: 0x0000000000000000, Expected: 0x0000000000000000 [PASS] | Flags: 0x0244
-Test 15: BZHI(0x8000000000000000, idx=64) => Result: 0x8000000000000000, Expected: 0x8000000000000000 [PASS] | Flags: 0x0285
+Test 1: Input=0xFFFFFFFFFFFFFFFF, Index=0
+  Expected: 0x0000000000000000, Result: 0x0000000000000000
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 2: Input=0xFFFFFFFFFFFFFFFF, Index=1
+  Expected: 0x0000000000000001, Result: 0x0000000000000001
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 3: Input=0xFFFFFFFFFFFFFFFF, Index=8
+  Expected: 0x00000000000000FF, Result: 0x00000000000000FF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 4: Input=0xFFFFFFFFFFFFFFFF, Index=16
+  Expected: 0x000000000000FFFF, Result: 0x000000000000FFFF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 5: Input=0xFFFFFFFFFFFFFFFF, Index=32
+  Expected: 0x00000000FFFFFFFF, Result: 0x00000000FFFFFFFF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 6: Input=0xFFFFFFFFFFFFFFFF, Index=48
+  Expected: 0x0000FFFFFFFFFFFF, Result: 0x0000FFFFFFFFFFFF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 7: Input=0xFFFFFFFFFFFFFFFF, Index=63
+  Expected: 0x7FFFFFFFFFFFFFFF, Result: 0x7FFFFFFFFFFFFFFF
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 8: Input=0xFFFFFFFFFFFFFFFF, Index=64
+  Expected: 0xFFFFFFFFFFFFFFFF, Result: 0xFFFFFFFFFFFFFFFF
+  Expected CF: 1, Actual CF: 1
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 9: Input=0x123456789ABCDEF0, Index=4
+  Expected: 0x0000000000000000, Result: 0x0000000000000000
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 10: Input=0x123456789ABCDEF0, Index=16
+  Expected: 0x000000000000DEF0, Result: 0x000000000000DEF0
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 11: Input=0x123456789ABCDEF0, Index=32
+  Expected: 0x000000009ABCDEF0, Result: 0x000000009ABCDEF0
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 12: Input=0x123456789ABCDEF0, Index=48
+  Expected: 0x000056789ABCDEF0, Result: 0x000056789ABCDEF0
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 13: Input=0x123456789ABCDEF0, Index=64
+  Expected: 0x123456789ABCDEF0, Result: 0x123456789ABCDEF0
+  Expected CF: 1, Actual CF: 1
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 14: Input=0x8000000000000000, Index=63
+  Expected: 0x0000000000000000, Result: 0x0000000000000000
+  Expected CF: 0, Actual CF: 0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 15: Input=0x8000000000000000, Index=64
+  Expected: 0x8000000000000000, Result: 0x8000000000000000
+  Expected CF: 1, Actual CF: 1
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
 
 BZHI tests completed.

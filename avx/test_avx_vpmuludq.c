@@ -1,0 +1,226 @@
+#include "avx.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+
+// 打印64位无符号整数数组
+static void print_qwords(uint64_t *value, int count, const char* name) {
+    printf("%s: ", name);
+    for (int i = 0; i < count; i++) {
+        printf("%lu ", value[i]);
+    }
+    printf("\n");
+}
+
+// VPMULUDQ测试函数
+int test_vpmuludq() {
+    printf("Testing VPMULUDQ instruction\n");
+    printf("==========================\n");
+    
+    int all_tests_passed = 1;
+
+    // 测试1: 128位基本功能测试
+    {
+        printf("Test 1: 128-bit basic functionality\n");
+        
+        // 测试数据包含32位无符号整数(确保不超过UINT32_MAX)
+        uint32_t src1[4] = {1000000000, 2000000000, 3000000000, 4000000000};
+        uint32_t src2[4] = {1500000000, 2500000000, 3500000000, 4000000000};
+        uint64_t dst[2] = {0};
+
+        // 预期结果(64位乘法结果)
+        uint64_t expected[2] = {
+            (uint64_t)src1[0] * src2[0],
+            (uint64_t)src1[2] * src2[2]
+        };
+
+        // 执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%xmm0\n\t"
+            "vmovdqu %2, %%xmm1\n\t"
+            "vpmuludq %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovdqu %%xmm2, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2)
+            : "xmm0", "xmm1", "xmm2", "memory"
+        );
+
+        // 打印输入输出
+        print_qwords(dst, 2, "Result");
+        print_qwords(expected, 2, "Expected");
+
+        // 验证结果
+        int pass = 1;
+        for (int i = 0; i < 2; i++) {
+            if (dst[i] != expected[i]) {
+                pass = 0;
+                printf("Mismatch at element %d: got %lu, expected %lu\n", 
+                      i, dst[i], expected[i]);
+            }
+        }
+        
+        if (pass) {
+            printf("[PASS]\n");
+        } else {
+            printf("[FAIL]\n");
+            all_tests_passed = 0;
+        }
+    }
+
+    // 测试2: 128位边界值测试
+    {
+        printf("\nTest 2: 128-bit boundary values\n");
+        
+        // 测试数据包含边界值
+        uint32_t src1[4] = {4294967295, 4294967295, 4294967295, 4294967295};
+        uint32_t src2[4] = {4294967295, 4294967295, 4294967295, 4294967295};
+        uint64_t dst[2] = {0};
+
+        // 预期结果
+        uint64_t expected[2] = {
+            (uint64_t)src1[0] * src2[0],
+            (uint64_t)src1[2] * src2[2]
+        };
+
+        // 执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%xmm0\n\t"
+            "vmovdqu %2, %%xmm1\n\t"
+            "vpmuludq %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovdqu %%xmm2, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2)
+            : "xmm0", "xmm1", "xmm2", "memory"
+        );
+
+        // 打印输入输出
+        print_qwords(dst, 2, "Result");
+        print_qwords(expected, 2, "Expected");
+
+        // 验证结果
+        int pass = 1;
+        for (int i = 0; i < 2; i++) {
+            if (dst[i] != expected[i]) {
+                pass = 0;
+                printf("Mismatch at element %d: got %lu, expected %lu\n", 
+                      i, dst[i], expected[i]);
+            }
+        }
+        
+        if (pass) {
+            printf("[PASS]\n");
+        } else {
+            printf("[FAIL]\n");
+            all_tests_passed = 0;
+        }
+    }
+
+    // 测试3: 128位内存操作数测试
+    {
+        printf("\nTest 3: 128-bit memory operand\n");
+        
+        // 寄存器操作数
+        uint32_t src1[4] = {500000000, 600000000, 700000000, 800000000};
+        
+        // 内存操作数
+        uint32_t src2_mem[4] = {400000000, 650000000, 750000000, 850000000};
+        uint64_t dst[2] = {0};
+
+        // 预期结果
+        uint64_t expected[2] = {
+            (uint64_t)src1[0] * src2_mem[0],
+            (uint64_t)src1[2] * src2_mem[2]
+        };
+
+        // 执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%xmm0\n\t"
+            "vpmuludq %2, %%xmm0, %%xmm1\n\t"
+            "vmovdqu %%xmm1, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2_mem)
+            : "xmm0", "xmm1", "memory"
+        );
+
+        // 打印输入输出
+        print_qwords(dst, 2, "Result");
+        print_qwords(expected, 2, "Expected");
+
+        // 验证结果
+        int pass = 1;
+        for (int i = 0; i < 2; i++) {
+            if (dst[i] != expected[i]) {
+                pass = 0;
+                printf("Mismatch at element %d: got %lu, expected %lu\n", 
+                      i, dst[i], expected[i]);
+            }
+        }
+        
+        if (pass) {
+            printf("[PASS]\n");
+        } else {
+            printf("[FAIL]\n");
+            all_tests_passed = 0;
+        }
+    }
+
+    // 测试4: 256位AVX测试
+    {
+        printf("\nTest 4: 256-bit AVX operation\n");
+        
+        // 初始化测试数据(确保不超过UINT32_MAX)
+        uint32_t src1[8] = {1000000000, 2000000000, 3000000000, 4000000000,
+                            100000000, 200000000, 300000000, 400000000};
+        uint32_t src2[8] = {1500000000, 2500000000, 3500000000, 4000000000,
+                            500000000, 600000000, 700000000, 800000000};
+        uint64_t dst[4] = {0};
+
+        // 计算预期结果
+        uint64_t expected[4] = {
+            (uint64_t)src1[0] * src2[0],
+            (uint64_t)src1[2] * src2[2],
+            (uint64_t)src1[4] * src2[4],
+            (uint64_t)src1[6] * src2[6]
+        };
+
+        // 执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%ymm0\n\t"
+            "vmovdqu %2, %%ymm1\n\t"
+            "vpmuludq %%ymm1, %%ymm0, %%ymm2\n\t"
+            "vmovdqu %%ymm2, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2)
+            : "ymm0", "ymm1", "ymm2", "memory"
+        );
+
+        // 打印输入输出
+        print_qwords(dst, 4, "Result");
+        print_qwords(expected, 4, "Expected");
+
+        // 验证结果
+        int pass = 1;
+        for (int i = 0; i < 4; i++) {
+            if (dst[i] != expected[i]) {
+                pass = 0;
+                printf("Mismatch at element %d: got %lu, expected %lu\n", 
+                      i, dst[i], expected[i]);
+            }
+        }
+        
+        if (pass) {
+            printf("[PASS]\n");
+        } else {
+            printf("[FAIL]\n");
+            all_tests_passed = 0;
+        }
+    }
+
+    printf("\nVPMULUDQ tests %s\n", all_tests_passed ? "PASSED" : "FAILED");
+    return all_tests_passed;
+}
+
+int main() {
+    int result = test_vpmuludq();
+    return result ? 0 : 1;
+}

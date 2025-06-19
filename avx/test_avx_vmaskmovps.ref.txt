@@ -5,11 +5,11 @@ Source: [10.000000, 20.000000, 30.000000, 40.000000]
 Mask: [-1.000000, 0.000000, -1.000000, 0.000000]
 Result: [10.000000, 0.000000, 30.000000, 0.000000]
 Expected: [10.000000, 0.000000, 30.000000, 0.000000]
-EFLAGS: 0x00000246
+EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [ ] AF - Auxiliary Flag
-  [X] ZF - Zero Flag
+  [ ] ZF - Zero Flag
   [ ] SF - Sign Flag
   [ ] TF - Trap Flag
   [X] IF - Interrupt Flag
@@ -21,11 +21,11 @@ Source: [inf, -inf, nan, 0.000000]
 Mask: [0.000000, -1.000000, 0.000000, -1.000000]
 Result: [50.000000, -inf, 70.000000, 0.000000]
 Expected: [50.000000, -inf, 70.000000, 0.000000]
-EFLAGS: 0x00000246
+EFLAGS: 0x00000202
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [ ] AF - Auxiliary Flag
-  [X] ZF - Zero Flag
+  [ ] ZF - Zero Flag
   [ ] SF - Sign Flag
   [ ] TF - Trap Flag
   [X] IF - Interrupt Flag

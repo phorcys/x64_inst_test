@@ -119,6 +119,62 @@ void test_blsi32() {
         print_eflags_cond(eflags, cond);
         printf("\n");
     }
+
+    // 测试用例5: 中间位测试
+    {
+        uint32_t src = 0x00001000; // 第12位为1
+        uint32_t result;
+        uint64_t rflags;
+        uint32_t expected = 0x00001000;
+        
+        __asm__ __volatile__ (
+            "blsil %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "r" (src)
+            : "cc"
+        );
+        uint32_t eflags = (uint32_t)rflags;
+        
+        printf("Test 5: 32-bit middle bit\n");
+        printf("  Input: 0x%08X\n", src);
+        printf("  Expected: 0x%08X\n", expected);
+        printf("  Result:   0x%08X\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond(eflags, cond);
+        printf("\n");
+    }
+
+    // 测试用例6: 内存操作数测试
+    {
+        uint32_t src = 0x00000001; // 最低位为1
+        uint32_t result;
+        uint64_t rflags;
+        uint32_t expected = 0x00000001;
+        
+        __asm__ __volatile__ (
+            "blsil %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "m" (src)
+            : "cc"
+        );
+        uint32_t eflags = (uint32_t)rflags;
+        
+        printf("Test 6: 32-bit memory operand\n");
+        printf("  Input: 0x%08X\n", src);
+        printf("  Expected: 0x%08X\n", expected);
+        printf("  Result:   0x%08X\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond(eflags, cond);
+        printf("\n");
+    }
 }
 
 // BLSI 64位指令测试函数
@@ -223,6 +279,60 @@ void test_blsi64() {
         );
         
         printf("Test 4: 64-bit all ones\n");
+        printf("  Input: 0x%016lX\n", src);
+        printf("  Expected: 0x%016lX\n", expected);
+        printf("  Result:   0x%016lX\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond((uint32_t)rflags, cond);
+        printf("\n");
+    }
+
+    // 测试用例5: 中间位测试
+    {
+        uint64_t src = 0x0000000010000000; // 第28位为1
+        uint64_t result;
+        uint64_t rflags;
+        uint64_t expected = 0x0000000010000000;
+        
+        __asm__ __volatile__ (
+            "blsiq %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "r" (src)
+            : "cc"
+        );
+        
+        printf("Test 5: 64-bit middle bit\n");
+        printf("  Input: 0x%016lX\n", src);
+        printf("  Expected: 0x%016lX\n", expected);
+        printf("  Result:   0x%016lX\n", result);
+        if (result != expected) {
+            printf("  [ERROR] Result mismatch!\n");
+        }
+        print_eflags_cond((uint32_t)rflags, cond);
+        printf("\n");
+    }
+
+    // 测试用例6: 内存操作数测试
+    {
+        uint64_t src = 0x0000000000000001; // 最低位为1
+        uint64_t result;
+        uint64_t rflags;
+        uint64_t expected = 0x0000000000000001;
+        
+        __asm__ __volatile__ (
+            "blsiq %[src], %[result]\n\t"
+            "pushfq\n\t"
+            "popq %[rflags]\n\t"
+            : [result] "=r" (result), [rflags] "=r" (rflags)
+            : [src] "m" (src)
+            : "cc"
+        );
+        
+        printf("Test 6: 64-bit memory operand\n");
         printf("  Input: 0x%016lX\n", src);
         printf("  Expected: 0x%016lX\n", expected);
         printf("  Result:   0x%016lX\n", result);

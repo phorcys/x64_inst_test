@@ -69,14 +69,27 @@ int main() {
                 : "r" (src), "r" (mask)
             );
             
-            printf("Test %zu: %s => ", i+1, test_cases[i].name);
-            printf("Result: 0x%08" PRIx32 ", Expected: 0x%08" PRIx32 " ", result, expected);
+            // 获取标志寄存器
+            uint64_t flags;
+            asm volatile (
+                "pushfq\n\t"
+                "pop %0"
+                : "=r" (flags)
+                : 
+                : "cc"
+            );
             
-            if (result == expected) {
-                printf("[PASS]\n");
+            printf("Test %zu: Input=0x%08X, Mask=0x%08X\n", i+1, src, mask);
+            printf("  Expected: 0x%08X, Result: 0x%08X\n", expected, result);
+            
+            if (result != expected) {
+                printf("  [FAIL] Test failed!\n");
             } else {
-                printf("[FAIL]\n");
+                printf("  [PASS] Test passed!\n");
             }
+            
+            print_eflags_cond((uint32_t)flags, 0x84D); // 显示CF/SF/ZF/OF
+            printf("\n");
         }
     }
     
@@ -113,14 +126,27 @@ int main() {
                 : "r" (src), "r" (mask)
             );
             
-            printf("Test %zu: %s => ", i+1, test_cases[i].name);
-            printf("Result: 0x%016" PRIx64 ", Expected: 0x%016" PRIx64 " ", result, expected);
+            // 获取标志寄存器
+            uint64_t flags;
+            asm volatile (
+                "pushfq\n\t"
+                "pop %0"
+                : "=r" (flags)
+                : 
+                : "cc"
+            );
             
-            if (result == expected) {
-                printf("[PASS]\n");
+            printf("Test %zu: Input=0x%016" PRIX64 ", Mask=0x%016" PRIX64 "\n", i+1, src, mask);
+            printf("  Expected: 0x%016" PRIX64 ", Result: 0x%016" PRIX64 "\n", expected, result);
+            
+            if (result != expected) {
+                printf("  [FAIL] Test failed!\n");
             } else {
-                printf("[FAIL]\n");
+                printf("  [PASS] Test passed!\n");
             }
+            
+            print_eflags_cond((uint32_t)flags, 0x84D); // 显示CF/SF/ZF/OF
+            printf("\n");
         }
     }
     

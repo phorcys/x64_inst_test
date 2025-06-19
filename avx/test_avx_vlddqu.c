@@ -2,14 +2,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include <cpuid.h>
-
-// 检查CPU是否支持AVX
-static int check_avx_support() {
-    unsigned int eax, ebx, ecx, edx;
-    __get_cpuid(1, &eax, &ebx, &ecx, &edx);
-    return (ecx & bit_AVX) ? 1 : 0;
-}
 
 // 扩展测试
 static void test_vlddqu() {
@@ -95,42 +87,17 @@ static void test_vlddqu() {
             memcmp(data256, res256, 32) ? "FAIL" : "PASS");
 }
 
-#include <signal.h>
-#include <setjmp.h>
-
-static jmp_buf jmp_env;
-
-static void sigsegv_handler(int sig) {
-    (void)sig; // 显式标记未使用参数
-    printf("Caught SIGSEGV, AVX instruction may not be supported properly\n");
-    longjmp(jmp_env, 1);
-}
-
 int main() {
-    signal(SIGSEGV, sigsegv_handler);
-    
-    // printf("=== AVX Support Check ===\n");
-    // if (!check_avx_support()) {
-    //     printf("ERROR: CPU does not support AVX instructions\n");
-    //     return 1;
-    // }
-    // printf("AVX supported\n");
-
-    if (setjmp(jmp_env)) {
-        printf("ERROR: SIGSEGV caught\n");
-        return 1;
-    }
-
     printf("\n=== Basic VLDDQU Test ===\n");
-    volatile uint8_t data[16] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-                               0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10};
+    uint8_t data[16] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+                      0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10};
     
     printf("Testing basic VLDDQU...\n");
-    volatile __m128i result;
+    __m128i result;
     __asm__ __volatile__(
         "vlddqu %1, %0\n\t"
         : "=x"(result)
-        : "m"(*(volatile __m128i*)data)
+        : "m"(*(__m128i*)data)
         : "memory"
     );
     
@@ -140,7 +107,7 @@ int main() {
     for(int i=0; i<16; i++) {
         printf("%02X ", res[i]);
     }
-    printf("\nTest %s\n", memcmp((const void*)data, (const void*)res, 16) == 0 ? "PASSED" : "FAILED");
+    printf("\nTest %s\n", memcmp(data, res, 16) == 0 ? "PASSED" : "FAILED");
 
     // 运行扩展测试
     test_vlddqu();
