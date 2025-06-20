@@ -1,104 +1,80 @@
+#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "avx.h"
+#include <immintrin.h>
 
-// vpcmpgtd 指令测试
-static void test_vpcmpgtd() {
-    printf("--- Testing vpcmpgtd ---\n");
+// 打印32位整数数组
+static void print_dwords(const char *name, const int32_t *dwords, int count) {
+    printf("%s: [", name);
+    for (int i = 0; i < count; i++) {
+        printf("%d", dwords[i]);
+        if (i < count - 1) printf(", ");
+    }
+    printf("]\n");
+}
+
+// 测试128位版本
+static void test_vpcmpgtd_128(const char *name, const int32_t *a, const int32_t *b) {
+    __m128i va = _mm_loadu_si128((const __m128i*)a);
+    __m128i vb = _mm_loadu_si128((const __m128i*)b);
+    __m128i res;
     
-    // 测试数据（有符号32位整数）
-    ALIGNED(32) int32_t src1[8] = {
-        0,
-        -2147483648,
-        2147483647,
-        -1,
-        100,
-        -100,
-        0x7FFFFFFF,
-        0x80000000
-    };
-    
-    ALIGNED(32) int32_t src2[8] = {
-        0,
-        -2147483647,
-        2147483646,
-        0,
-        99,
-        -101,
-        0x7FFFFFFE,
-        0x7FFFFFFF
-    };
-    
-    ALIGNED(32) int32_t dst[8] = {0};
-    
-    // 预期结果
-    int32_t expected[8] = {
-        0,           // 0 == 0 -> 不成立
-        0,           // -2147483648 < -2147483647 -> 不成立
-        0xFFFFFFFF,  // 2147483647 > 2147483646 -> 成立
-        0,           // -1 < 0 -> 不成立
-        0xFFFFFFFF,  // 100 > 99 -> 成立
-        0xFFFFFFFF,  // -100 > -101 -> 成立
-        0xFFFFFFFF,  // 0x7FFFFFFF > 0x7FFFFFFE -> 成立
-        0            // 0x80000000 < 0x7FFFFFFF -> 不成立
-    };
-    
-    // 256位版本 (ymm)
-    __asm__ __volatile__(
-        "vmovdqa %1, %%ymm0\n\t"
-        "vmovdqa %2, %%ymm1\n\t"
-        "vpcmpgtd %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovdqa %%ymm2, %0\n\t"
-        : "=m" (dst)
-        : "m" (src1), "m" (src2)
-        : "ymm0", "ymm1", "ymm2"
+    asm volatile(
+        "vpcmpgtd %[b], %[a], %[res]"
+        : [res] "=x"(res)
+        : [a] "x"(va), [b] "xm"(vb)
     );
     
-    // 检查结果
-    int errors = 0;
-    for (int i = 0; i < 8; i++) {
-        if (dst[i] != expected[i]) {
-            printf("Error at element %d: got 0x%08X, expected 0x%08X\n", i, (uint32_t)dst[i], (uint32_t)expected[i]);
-            errors++;
-        }
-    }
+    int32_t result[4];
+    _mm_storeu_si128((__m128i*)result, res);
     
-    if (errors == 0) {
-        printf("vpcmpgtd (256-bit) test passed!\n");
-    } else {
-        printf("vpcmpgtd (256-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest 128: %s\n", name);
+    print_dwords("Operand A", a, 4);
+    print_dwords("Operand B", b, 4);
+    print_dwords("Result", result, 4);
+}
+
+// 测试256位版本
+static void test_vpcmpgtd_256(const char *name, const int32_t *a, const int32_t *b) {
+    __m256i va = _mm256_loadu_si256((const __m256i*)a);
+    __m256i vb = _mm256_loadu_si256((const __m256i*)b);
+    __m256i res;
     
-    // 128位版本 (xmm)
-    ALIGNED(16) int32_t dst128[4] = {0};
-    __asm__ __volatile__(
-        "vmovdqa %1, %%xmm0\n\t"
-        "vmovdqa %2, %%xmm1\n\t"
-        "vpcmpgtd %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovdqa %%xmm2, %0\n\t"
-        : "=m" (dst128)
-        : "m" (src1), "m" (src2)
-        : "xmm0", "xmm1", "xmm2"
+    asm volatile(
+        "vpcmpgtd %[b], %[a], %[res]"
+        : [res] "=x"(res)
+        : [a] "x"(va), [b] "xm"(vb)
     );
     
-    // 检查128位结果
-    errors = 0;
-    for (int i = 0; i < 4; i++) {
-        if (dst128[i] != expected[i]) {
-            printf("Error at element %d (128-bit): got 0x%08X, expected 0x%08X\n", i, (uint32_t)dst128[i], (uint32_t)expected[i]);
-            errors++;
-        }
-    }
+    int32_t result[8];
+    _mm256_storeu_si256((__m256i*)result, res);
     
-    if (errors == 0) {
-        printf("vpcmpgtd (128-bit) test passed!\n");
-    } else {
-        printf("vpcmpgtd (128-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest 256: %s\n", name);
+    print_dwords("Operand A", a, 8);
+    print_dwords("Operand B", b, 8);
+    print_dwords("Result", result, 8);
 }
 
 int main() {
-    test_vpcmpgtd();
+    // 测试数据
+    int32_t a1[8] = {0, 1, -1, 2147483647, -2147483648, 100, -100, 0x7FFFFFFF};
+    int32_t b1[8] = {1, 0, -2, -2147483648, 2147483647, -100, 100, 0x80000000};
+    
+    // 边界值测试
+    int32_t a2[8], b2[8];
+    for (int i = 0; i < 8; i++) {
+        a2[i] = (i % 2) ? 2147483647 : -2147483648;  // 最大/最小有符号32位整数
+        b2[i] = (i % 2) ? -2147483648 : 2147483647;
+    }
+    
+    // 128位测试
+    test_vpcmpgtd_128("Normal case", a1, b1);
+    test_vpcmpgtd_128("Boundary case", a2, b2);
+    
+    // 256位测试
+    test_vpcmpgtd_256("Normal case", a1, b1);
+    test_vpcmpgtd_256("Boundary case", a2, b2);
+    
     return 0;
 }

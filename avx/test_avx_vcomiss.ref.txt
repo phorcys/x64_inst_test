@@ -1,0 +1,11 @@
+
+Test: VCOMISS with memory operand
+Operand A: 1.000000 3.000000 2.000000 4.000000 
+Operand B (mem): 1.000000 2.000000 3.000000 4.000000 
+EFLAGS changed: ZF 
+Expected flags:   [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] ZF - Zero Flag
+Result: PASS
+
+Summary: 1/1 tests passed

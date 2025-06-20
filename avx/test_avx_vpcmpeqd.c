@@ -1,92 +1,144 @@
+#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "avx.h"
+#include <immintrin.h>
 
-// vpcmpeqd 指令测试
-static void test_vpcmpeqd() {
-    printf("--- Testing vpcmpeqd ---\n");
+// 打印双字向量
+static void print_dword_vec(const char *name, const uint32_t *vec, int len) {
+    printf("%s: [", name);
+    for (int i = 0; i < len; i++) {
+        printf("%08x", vec[i]);
+        if (i < len - 1) printf(" ");
+    }
+    printf("]\n");
+}
+
+// 测试单个比较操作
+static int test_case(const char *name, const uint32_t *a, const uint32_t *b, int len) {
+    ALIGNED(32) uint32_t result[8] = {0};
+    int passed = 1;
     
-    // 测试数据
-    ALIGNED(32) uint32_t src1[8] = {
-        0x00000000, 0xFFFFFFFF, 0x55555555, 0xAAAAAAAA,
-        0x00000001, 0x80000000, 0x7FFFFFFF, 0xFFFFFFFE
-    };
+    if (len == 4) {
+        __m128i va = _mm_loadu_si128((const __m128i*)a);
+        __m128i vb = _mm_loadu_si128((const __m128i*)b);
+        __m128i vres;
+        
+        asm volatile("vpcmpeqd %[b], %[a], %[res]"
+                    : [res] "=x"(vres)
+                    : [a] "x"(va), [b] "xm"(vb));
+        
+        _mm_storeu_si128((__m128i*)result, vres);
+    } else if (len == 8) {
+        __m256i va = _mm256_loadu_si256((const __m256i*)a);
+        __m256i vb = _mm256_loadu_si256((const __m256i*)b);
+        __m256i vres;
+        
+        asm volatile("vpcmpeqd %[b], %[a], %[res]"
+                    : [res] "=x"(vres)
+                    : [a] "x"(va), [b] "xm"(vb));
+        
+        _mm256_storeu_si256((__m256i*)result, vres);
+    }
     
-    ALIGNED(32) uint32_t src2[8] = {
-        0x00000000, 0xFFFFFFFF, 0x55555555, 0xAAAAAAAB,
-        0x00000001, 0x80000000, 0x7FFFFFFE, 0xFFFFFFFE
-    };
-    
-    ALIGNED(32) uint32_t dst[8] = {0};
-    
-    // 预期结果
-    uint32_t expected[8] = {
-        0xFFFFFFFF,  // 0x00000000 == 0x00000000
-        0xFFFFFFFF,  // 0xFFFFFFFF == 0xFFFFFFFF
-        0xFFFFFFFF,  // 0x55555555 == 0x55555555
-        0x00000000,  // 0xAAAAAAAA != 0xAAAAAAAB
-        0xFFFFFFFF,  // 0x00000001 == 0x00000001
-        0xFFFFFFFF,  // 0x80000000 == 0x80000000
-        0x00000000,  // 0x7FFFFFFF != 0x7FFFFFFE
-        0xFFFFFFFF   // 0xFFFFFFFE == 0xFFFFFFFE
-    };
-    
-    // 256位版本 (ymm)
-    __asm__ __volatile__(
-        "vmovdqa %1, %%ymm0\n\t"
-        "vmovdqa %2, %%ymm1\n\t"
-        "vpcmpeqd %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovdqa %%ymm2, %0\n\t"
-        : "=m" (dst)
-        : "m" (src1), "m" (src2)
-        : "ymm0", "ymm1", "ymm2"
-    );
-    
-    // 检查结果
-    int errors = 0;
-    for (int i = 0; i < 8; i++) {
-        if (dst[i] != expected[i]) {
-            printf("Error at element %d: got 0x%08X, expected 0x%08X\n", i, dst[i], expected[i]);
-            errors++;
+    // 验证结果
+    for (int i = 0; i < len; i++) {
+        uint32_t expected = (a[i] == b[i]) ? 0xFFFFFFFF : 0x00000000;
+        if (result[i] != expected) {
+            passed = 0;
+            break;
         }
     }
     
-    if (errors == 0) {
-        printf("vpcmpeqd (256-bit) test passed!\n");
-    } else {
-        printf("vpcmpeqd (256-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest: %s\n", name);
+    print_dword_vec("Operand A", a, len);
+    print_dword_vec("Operand B", b, len);
+    print_dword_vec("Result", result, len);
+    printf("Result: %s\n", passed ? "PASS" : "FAIL");
     
-    // 128位版本 (xmm)
-    ALIGNED(16) uint32_t dst128[4] = {0};
-    __asm__ __volatile__(
-        "vmovdqa %1, %%xmm0\n\t"
-        "vmovdqa %2, %%xmm1\n\t"
-        "vpcmpeqd %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovdqa %%xmm2, %0\n\t"
-        : "=m" (dst128)
-        : "m" (src1), "m" (src2)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    // 检查128位结果
-    errors = 0;
-    for (int i = 0; i < 4; i++) {
-        if (dst128[i] != expected[i]) {
-            printf("Error at element %d (128-bit): got 0x%08X, expected 0x%08X\n", i, dst128[i], expected[i]);
-            errors++;
-        }
-    }
-    
-    if (errors == 0) {
-        printf("vpcmpeqd (128-bit) test passed!\n");
-    } else {
-        printf("vpcmpeqd (128-bit) test failed with %d errors\n", errors);
-    }
+    return passed;
 }
 
 int main() {
-    test_vpcmpeqd();
-    return 0;
+    int total = 0, passed = 0;
+    
+    // 测试128位版本
+    {
+        uint32_t a1[4] = {0x00000000, 0x11111111, 0x22222222, 0xFFFFFFFF};
+        uint32_t b1[4] = {0x00000000, 0x11111111, 0x22222222, 0xFFFFFFFF};
+        passed += test_case("VPCMPEQD 128-bit equal", a1, b1, 4);
+        total++;
+        
+        uint32_t a2[4] = {0};
+        uint32_t b2[4] = {0xFFFFFFFF};
+        passed += test_case("VPCMPEQD 128-bit zero vs 0xFFFFFFFF", a2, b2, 4);
+        total++;
+        
+        uint32_t a3[4] = {0x55555555};
+        uint32_t b3[4] = {0xAAAAAAAA};
+        passed += test_case("VPCMPEQD 128-bit pattern", a3, b3, 4);
+        total++;
+    }
+    
+    // 测试256位版本
+    {
+        uint32_t a1[8];
+        uint32_t b1[8];
+        for (int i = 0; i < 8; i++) {
+            a1[i] = i * 0x11111111;
+            b1[i] = i * 0x11111111;
+        }
+        passed += test_case("VPCMPEQD 256-bit equal", a1, b1, 8);
+        total++;
+        
+        uint32_t a2[8] = {0};
+        uint32_t b2[8] = {0xFFFFFFFF};
+        passed += test_case("VPCMPEQD 256-bit zero vs 0xFFFFFFFF", a2, b2, 8);
+        total++;
+        
+        uint32_t a3[8];
+        uint32_t b3[8];
+        for (int i = 0; i < 8; i++) {
+            a3[i] = i % 2 ? 0x55555555 : 0xAAAAAAAA;
+            b3[i] = i % 2 ? 0xAAAAAAAA : 0x55555555;
+        }
+        passed += test_case("VPCMPEQD 256-bit pattern", a3, b3, 8);
+        total++;
+    }
+    
+    // 测试内存操作数
+    {
+        ALIGNED(32) uint32_t mem_ops[8] = {0x01234567, 0x89ABCDEF, 0xFEDCBA98, 0x76543210};
+        uint32_t a[4] = {0x01234567, 0x89ABCDEF, 0xFEDCBA98, 0x76543210};
+        
+        __m128i va = _mm_loadu_si128((const __m128i*)a);
+        __m128i vres;
+        
+        asm volatile("vpcmpeqd %[mem], %[a], %[res]"
+                    : [res] "=x"(vres)
+                    : [a] "x"(va), [mem] "m"(*mem_ops));
+        
+        uint32_t result[4];
+        _mm_storeu_si128((__m128i*)result, vres);
+        
+        int mem_passed = 1;
+        for (int i = 0; i < 4; i++) {
+            if (result[i] != 0xFFFFFFFF) {
+                mem_passed = 0;
+                break;
+            }
+        }
+        
+        printf("\nTest: VPCMPEQD with memory operand\n");
+        print_dword_vec("Operand A", a, 4);
+        print_dword_vec("Operand B (mem)", mem_ops, 4);
+        print_dword_vec("Result", result, 4);
+        printf("Result: %s\n", mem_passed ? "PASS" : "FAIL");
+        passed += mem_passed;
+        total++;
+    }
+    
+    // 测试总结
+    printf("\nSummary: %d/%d tests passed\n", passed, total);
+    return passed == total ? 0 : 1;
 }

@@ -48,4 +48,25 @@ Expected: 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xfffffffffff
 Result  : 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 0xffffffffffffffff 
 Result: PASS
 
-Summary: 7/7 tests passed
+Test: vcmppd GT (greater than)
+Operand A: 0x4000000000000000 0x3ff0000000000000 0x4010000000000000 0x4008000000000000 
+Operand B: 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0x0000000000000000 
+Result: PASS
+
+Test: vcmppd GE (greater or equal)
+Operand A: 0x4000000000000000 0x3ff0000000000000 0x4010000000000000 0x4010000000000000 
+Operand B: 0x3ff0000000000000 0x4000000000000000 0x4010000000000000 0x4008000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0xffffffffffffffff 
+Result  : 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0xffffffffffffffff 
+Result: PASS
+
+Test: vcmppd NGT (not greater than)
+Operand A: 0x3ff0000000000000 0x4000000000000000 0x4008000000000000 0x4010000000000000 
+Operand B: 0x4000000000000000 0x3ff0000000000000 0x4010000000000000 0x4008000000000000 
+Expected: 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0x0000000000000000 
+Result  : 0xffffffffffffffff 0x0000000000000000 0xffffffffffffffff 0x0000000000000000 
+Result: PASS
+
+Summary: 10/10 tests passed

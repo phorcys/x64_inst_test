@@ -1,0 +1,62 @@
+
+Test: Equal strings (mode=0xc)
+String A: 'Hello'
+Mask: 0x0001 [1000000000000000]
+String B: 'Hello'
+Mask: 0x0001 [1000000000000000]
+Expected mask: 0x0001
+EFLAGS: 0x0000000000000ac3
+Result: PASS
+Full mask (128-bit): 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Different strings (mode=0xc)
+String A: 'Hello'
+Mask: 0x0000 [0000000000000000]
+String B: 'World'
+Mask: 0x0000 [0000000000000000]
+Expected mask: 0x0000
+EFLAGS: 0x00000000000002c2
+Result: PASS
+Full mask (128-bit): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Empty strings (mode=0xc)
+String A: ''
+Mask: 0xffff [1111111111111111]
+String B: ''
+Mask: 0xffff [1111111111111111]
+Expected mask: 0xffff
+EFLAGS: 0x0000000000000ac3
+Result: PASS
+Full mask (128-bit): ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Range check (in) (mode=0x4)
+String A: 'ABCD'
+Mask: 0x0003 [1100000000000000]
+String B: 'BC'
+Mask: 0x0003 [1100000000000000]
+Expected mask: 0x0003
+EFLAGS: 0x0000000000000ac3
+Result: PASS
+Full mask (128-bit): 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Range check (out) (mode=0x4)
+String A: 'XYZ'
+Mask: 0x0000 [0000000000000000]
+String B: 'AB'
+Mask: 0x0000 [0000000000000000]
+Expected mask: 0x0000
+EFLAGS: 0x00000000000002c2
+Result: PASS
+Full mask (128-bit): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Case sensitive unequal (mode=0xc)
+String A: 'abc'
+Mask: 0x0000 [0000000000000000]
+String B: 'ABC'
+Mask: 0x0000 [0000000000000000]
+Expected mask: 0x0000
+EFLAGS: 0x00000000000002c2
+Result: PASS
+Full mask (128-bit): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Summary: 6/6 tests passed

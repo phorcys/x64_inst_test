@@ -5,7 +5,7 @@
 #include <immintrin.h>
 #include <math.h>
 
-// 测试谓词宏定义
+// 测试谓词宏定义 (扩展更多比较类型)
 #define CMP_EQ       0x00
 #define CMP_LT       0x01
 #define CMP_LE       0x02
@@ -14,6 +14,30 @@
 #define CMP_NLT      0x05
 #define CMP_NLE      0x06
 #define CMP_ORD      0x07
+#define CMP_EQ_UQ    0x08
+#define CMP_NGE      0x09
+#define CMP_NGT      0x0A
+#define CMP_FALSE    0x0B
+#define CMP_NEQ_OQ   0x0C
+#define CMP_GE       0x0D
+#define CMP_GT       0x0E
+#define CMP_TRUE     0x0F
+#define CMP_EQ_OS    0x10
+#define CMP_LT_OQ    0x11
+#define CMP_LE_OQ    0x12
+#define CMP_UNORD_S  0x13
+#define CMP_NEQ_US   0x14
+#define CMP_NLT_UQ   0x15
+#define CMP_NLE_UQ   0x16
+#define CMP_ORD_S    0x17
+#define CMP_EQ_US    0x18
+#define CMP_NGE_UQ   0x19
+#define CMP_NGT_UQ   0x1A
+#define CMP_FALSE_OS 0x1B
+#define CMP_NEQ_OS   0x1C
+#define CMP_GE_OQ    0x1D
+#define CMP_GT_OQ    0x1E
+#define CMP_TRUE_US  0x1F
 
 // 内联汇编实现 vcmppd (使用switch处理立即数)
 static void vcmppd(__m256d *dst, __m256d a, __m256d b, int imm) {
@@ -41,6 +65,15 @@ static void vcmppd(__m256d *dst, __m256d a, __m256d b, int imm) {
             break;
         case CMP_ORD:
             asm volatile("vcmppd $7, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
+            break;
+        case CMP_GT:
+            asm volatile("vcmppd $14, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
+            break;
+        case CMP_GE:
+            asm volatile("vcmppd $13, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
+            break;
+        case CMP_NGT:
+            asm volatile("vcmppd $10, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
             break;
         default:
             *dst = _mm256_setzero_pd();
@@ -145,6 +178,30 @@ int main() {
     passed += mem_result;
     total++;
     
+    // 大于比较测试 (使用全1掩码表示true)
+    __m256d a_gt = _mm256_setr_pd(2.0, 1.0, 4.0, 3.0);
+    __m256d b_gt = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
+    __m256d exp_gt = _mm256_castsi256_pd(
+        _mm256_setr_epi64x(0xFFFFFFFFFFFFFFFF, 0, 0xFFFFFFFFFFFFFFFF, 0)); // [2>1, 1!>2, 4>3, 3!>4]
+    passed += test_case("vcmppd GT (greater than)", a_gt, b_gt, CMP_GT, exp_gt);
+    total++;
+
+    // 大于等于比较测试 (使用全1掩码表示true)
+    __m256d a_ge = _mm256_setr_pd(2.0, 1.0, 4.0, 4.0);
+    __m256d b_ge = _mm256_setr_pd(1.0, 2.0, 4.0, 3.0);
+    __m256d exp_ge = _mm256_castsi256_pd(
+        _mm256_setr_epi64x(0xFFFFFFFFFFFFFFFF, 0, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF)); // [2>=1, 1!>=2, 4>=4, 4>=3]
+    passed += test_case("vcmppd GE (greater or equal)", a_ge, b_ge, CMP_GE, exp_ge);
+    total++;
+
+    // 非大于比较测试 (使用全1掩码表示true)
+    __m256d a_ngt = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
+    __m256d b_ngt = _mm256_setr_pd(2.0, 1.0, 4.0, 3.0);
+    __m256d exp_ngt = _mm256_castsi256_pd(
+        _mm256_setr_epi64x(0xFFFFFFFFFFFFFFFF, 0, 0xFFFFFFFFFFFFFFFF, 0)); // [1!>2, 2>1, 3!>4, 4>3]
+    passed += test_case("vcmppd NGT (not greater than)", a_ngt, b_ngt, CMP_NGT, exp_ngt);
+    total++;
+
     // 测试总结
     printf("\nSummary: %d/%d tests passed\n", passed, total);
     return passed == total ? 0 : 1;

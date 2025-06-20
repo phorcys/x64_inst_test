@@ -1,3 +1,44 @@
---- Testing vpcmpeqq ---
-vpcmpeqq (256-bit) test passed!
-vpcmpeqq (128-bit) test passed!
+
+Test: VPCMPEQQ 128-bit equal
+Operand A: [0000000000000000 ffffffffffffffff]
+Operand B: [0000000000000000 ffffffffffffffff]
+Result: [ffffffffffffffff ffffffffffffffff]
+Result: PASS
+
+Test: VPCMPEQQ 128-bit zero vs 0xFFFFFFFFFFFFFFFF
+Operand A: [0000000000000000 0000000000000000]
+Operand B: [ffffffffffffffff 0000000000000000]
+Result: [0000000000000000 ffffffffffffffff]
+Result: PASS
+
+Test: VPCMPEQQ 128-bit pattern
+Operand A: [5555555555555555 0000000000000000]
+Operand B: [aaaaaaaaaaaaaaaa 0000000000000000]
+Result: [0000000000000000 ffffffffffffffff]
+Result: PASS
+
+Test: VPCMPEQQ 256-bit equal
+Operand A: [0000000000000000 1111111111111111 2222222222222222 3333333333333333]
+Operand B: [0000000000000000 1111111111111111 2222222222222222 3333333333333333]
+Result: [ffffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffff]
+Result: PASS
+
+Test: VPCMPEQQ 256-bit zero vs 0xFFFFFFFFFFFFFFFF
+Operand A: [0000000000000000 0000000000000000 0000000000000000 0000000000000000]
+Operand B: [ffffffffffffffff 0000000000000000 0000000000000000 0000000000000000]
+Result: [0000000000000000 ffffffffffffffff ffffffffffffffff ffffffffffffffff]
+Result: PASS
+
+Test: VPCMPEQQ 256-bit pattern
+Operand A: [aaaaaaaaaaaaaaaa 5555555555555555 aaaaaaaaaaaaaaaa 5555555555555555]
+Operand B: [5555555555555555 aaaaaaaaaaaaaaaa 5555555555555555 aaaaaaaaaaaaaaaa]
+Result: [0000000000000000 0000000000000000 0000000000000000 0000000000000000]
+Result: PASS
+
+Test: VPCMPEQQ with memory operand
+Operand A: [0123456789abcdef fedcba9876543210]
+Operand B (mem): [0123456789abcdef fedcba9876543210]
+Result: [ffffffffffffffff ffffffffffffffff]
+Result: PASS
+
+Summary: 7/7 tests passed

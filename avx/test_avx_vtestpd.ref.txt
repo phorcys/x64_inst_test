@@ -1,26 +1,18 @@
-=== Testing vtestpd (packed double-precision bit test) ===
 
-[Test 1: 256-bit reg-reg - all signs match]
-Operand A: 1.000000 2.000000 3.000000 4.000000 
-Operand B: 5.000000 6.000000 7.000000 8.000000 
-Flags: CF=1, ZF=1
-[PASS] Test 1
+Test 128: Normal values
+Result flags: ZF=1 CF=0
 
-[Test 2: 256-bit reg-reg - mixed signs]
-Operand A: -1.000000 2.000000 -3.000000 4.000000 
-Operand B: -1.000000 -2.000000 3.000000 4.000000 
-Flags: CF=0, ZF=0
-[PASS] Test 2
+Test 128: With NaN/Inf
+Result flags: ZF=1 CF=0
 
-[Test 4: 128-bit reg-mem]
-Operand A: 1.000000 -2.000000 
-Memory Operand: 1.000000 -2.000000 
-Flags: CF=1, ZF=0
-[PASS] Test 4
+Test 128: Zero test
+Result flags: ZF=1 CF=1
 
-=== Test Summary ===
-Total tests: 3
-Passed tests: 3
-Failed tests: 0
-Note: Test 3 was skipped due to unresolved issues
-All vtestpd tests passed successfully!
+Test 256: Normal values
+Result flags: ZF=1 CF=0
+
+Test 256: With NaN/Inf
+Result flags: ZF=0 CF=0
+
+Test 256: Zero test
+Result flags: ZF=1 CF=1

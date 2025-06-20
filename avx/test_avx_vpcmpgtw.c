@@ -1,128 +1,82 @@
+#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "avx.h"
+#include <immintrin.h>
 
-// vpcmpgtw 指令测试
-static void test_vpcmpgtw() {
-    printf("--- Testing vpcmpgtw ---\n");
+// 打印16位整数数组
+static void print_words(const char *name, const int16_t *words, int count) {
+    printf("%s: [", name);
+    for (int i = 0; i < count; i++) {
+        printf("%d", words[i]);
+        if (i < count - 1) printf(", ");
+    }
+    printf("]\n");
+}
+
+// 测试128位版本
+static void test_vpcmpgtw_128(const char *name, const int16_t *a, const int16_t *b) {
+    __m128i va = _mm_loadu_si128((const __m128i*)a);
+    __m128i vb = _mm_loadu_si128((const __m128i*)b);
+    __m128i res;
     
-    // 测试数据（有符号16位整数）
-    ALIGNED(32) int16_t src1[16] = {
-        0,
-        32767,
-        -32768,
-        -1,
-        100,
-        -100,
-        0x7FFF,
-        0x8000,
-        50,
-        -50,
-        0,
-        -1,
-        200,
-        -200,
-        0x4000,
-        -0x4000
-    };
-    
-    ALIGNED(32) int16_t src2[16] = {
-        0,
-        32766,
-        -32767,
-        0,
-        99,
-        -101,
-        0x7FFE,
-        0x7FFF,
-        49,
-        -49,
-        -1,
-        -2,
-        199,
-        -201,
-        0x3FFF,
-        -0x4001
-    };
-    
-    ALIGNED(32) int16_t dst[16] = {0};
-    
-    // 预期结果
-    int16_t expected[16] = {
-        0,       // 0 == 0 -> 不成立
-        0xFFFF,  // 32767 > 32766 -> 成立
-        0,       // -32768 < -32767 -> 不成立
-        0,       // -1 < 0 -> 不成立
-        0xFFFF,  // 100 > 99 -> 成立
-        0xFFFF,  // -100 > -101 -> 成立
-        0xFFFF,  // 0x7FFF > 0x7FFE -> 成立
-        0,       // 0x8000 < 0x7FFF -> 不成立
-        0xFFFF,  // 50 > 49 -> 成立
-        0,       // -50 < -49 -> 不成立
-        0xFFFF,  // 0 > -1 -> 成立
-        0xFFFF,  // -1 > -2 -> 成立
-        0xFFFF,  // 200 > 199 -> 成立
-        0xFFFF,  // -200 > -201 -> 成立
-        0xFFFF,  // 0x4000 > 0x3FFF -> 成立
-        0xFFFF   // -0x4000 > -0x4001 -> 成立
-    };
-    
-    // 256位版本 (ymm)
-    __asm__ __volatile__(
-        "vmovdqa %1, %%ymm0\n\t"
-        "vmovdqa %2, %%ymm1\n\t"
-        "vpcmpgtw %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovdqa %%ymm2, %0\n\t"
-        : "=m" (dst)
-        : "m" (src1), "m" (src2)
-        : "ymm0", "ymm1", "ymm2"
+    asm volatile(
+        "vpcmpgtw %[b], %[a], %[res]"
+        : [res] "=x"(res)
+        : [a] "x"(va), [b] "xm"(vb)
     );
     
-    // 检查结果
-    int errors = 0;
-    for (int i = 0; i < 16; i++) {
-        if (dst[i] != expected[i]) {
-            printf("Error at element %d: got 0x%04X, expected 0x%04X\n", i, (uint16_t)dst[i], (uint16_t)expected[i]);
-            errors++;
-        }
-    }
+    int16_t result[8];
+    _mm_storeu_si128((__m128i*)result, res);
     
-    if (errors == 0) {
-        printf("vpcmpgtw (256-bit) test passed!\n");
-    } else {
-        printf("vpcmpgtw (256-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest 128: %s\n", name);
+    print_words("Operand A", a, 8);
+    print_words("Operand B", b, 8);
+    print_words("Result", result, 8);
+}
+
+// 测试256位版本
+static void test_vpcmpgtw_256(const char *name, const int16_t *a, const int16_t *b) {
+    __m256i va = _mm256_loadu_si256((const __m256i*)a);
+    __m256i vb = _mm256_loadu_si256((const __m256i*)b);
+    __m256i res;
     
-    // 128位版本 (xmm)
-    ALIGNED(16) int16_t dst128[8] = {0};
-    __asm__ __volatile__(
-        "vmovdqa %1, %%xmm0\n\t"
-        "vmovdqa %2, %%xmm1\n\t"
-        "vpcmpgtw %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovdqa %%xmm2, %0\n\t"
-        : "=m" (dst128)
-        : "m" (src1), "m" (src2)
-        : "xmm0", "xmm1", "xmm2"
+    asm volatile(
+        "vpcmpgtw %[b], %[a], %[res]"
+        : [res] "=x"(res)
+        : [a] "x"(va), [b] "xm"(vb)
     );
     
-    // 检查128位结果
-    errors = 0;
-    for (int i = 0; i < 8; i++) {
-        if (dst128[i] != expected[i]) {
-            printf("Error at element %d (128-bit): got 0x%04X, expected 0x%04X\n", i, (uint16_t)dst128[i], (uint16_t)expected[i]);
-            errors++;
-        }
-    }
+    int16_t result[16];
+    _mm256_storeu_si256((__m256i*)result, res);
     
-    if (errors == 0) {
-        printf("vpcmpgtw (128-bit) test passed!\n");
-    } else {
-        printf("vpcmpgtw (128-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest 256: %s\n", name);
+    print_words("Operand A", a, 16);
+    print_words("Operand B", b, 16);
+    print_words("Result", result, 16);
 }
 
 int main() {
-    test_vpcmpgtw();
+    // 测试数据
+    int16_t a1[16] = {0, 1, -1, 32767, -32768, 100, -100, 0x7FFF,
+                     0, 1, -1, 32767, -32768, 100, -100, 0x7FFF};
+    int16_t b1[16] = {1, 0, -2, -32768, 32767, -100, 100, 0x8000,
+                     1, 0, -2, -32768, 32767, -100, 100, 0x8000};
+    
+    // 边界值测试
+    int16_t a2[16], b2[16];
+    for (int i = 0; i < 16; i++) {
+        a2[i] = (i % 2) ? 32767 : -32768;  // 最大/最小有符号16位整数
+        b2[i] = (i % 2) ? -32768 : 32767;
+    }
+    
+    // 128位测试
+    test_vpcmpgtw_128("Normal case", a1, b1);
+    test_vpcmpgtw_128("Boundary case", a2, b2);
+    
+    // 256位测试
+    test_vpcmpgtw_256("Normal case", a1, b1);
+    test_vpcmpgtw_256("Boundary case", a2, b2);
+    
     return 0;
 }

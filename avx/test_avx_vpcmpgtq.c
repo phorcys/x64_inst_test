@@ -1,93 +1,78 @@
+#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <inttypes.h>  // 添加PRId64宏定义
 #include <string.h>
-#include "avx.h"
+#include <immintrin.h>
 
-// vpcmpgtq 指令测试
-static void test_vpcmpgtq() {
-    printf("--- Testing vpcmpgtq ---\n");
+// 打印64位整数数组
+static void print_qwords(const char *name, const int64_t *qwords, int count) {
+    printf("%s: [", name);
+    for (int i = 0; i < count; i++) {
+        printf("%" PRId64, qwords[i]);  // 使用PRId64宏确保跨平台兼容性
+        if (i < count - 1) printf(", ");
+    }
+    printf("]\n");
+}
+
+// 测试128位版本
+static void test_vpcmpgtq_128(const char *name, const int64_t *a, const int64_t *b) {
+    __m128i va = _mm_loadu_si128((const __m128i*)a);
+    __m128i vb = _mm_loadu_si128((const __m128i*)b);
+    __m128i res;
     
-    // 测试数据（有符号64位整数）
-    // 使用表达式避免编译器警告
-    ALIGNED(32) int64_t src1[4] = {
-        0,
-        (-9223372036854775807LL - 1), // 等同于 -9223372036854775808
-        9223372036854775807LL,
-        -1
-    };
-    
-    ALIGNED(32) int64_t src2[4] = {
-        0,
-        -9223372036854775807LL,
-        9223372036854775806LL,
-        0
-    };
-    
-    ALIGNED(32) int64_t dst[4] = {0};
-    
-    // 预期结果
-    int64_t expected[4] = {
-        0,           // 0 == 0 -> 不成立
-        0,           // -9223372036854775808 < -9223372036854775807 -> 不成立
-        -1,          // 9223372036854775807 > 9223372036854775806 -> 成立
-        0            // -1 < 0 -> 不成立
-    };
-    
-    // 256位版本 (ymm)
-    __asm__ __volatile__(
-        "vmovdqa %1, %%ymm0\n\t"
-        "vmovdqa %2, %%ymm1\n\t"
-        "vpcmpgtq %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovdqa %%ymm2, %0\n\t"
-        : "=m" (dst)
-        : "m" (src1), "m" (src2)
-        : "ymm0", "ymm1", "ymm2"
+    asm volatile(
+        "vpcmpgtq %[b], %[a], %[res]"
+        : [res] "=x"(res)
+        : [a] "x"(va), [b] "xm"(vb)
     );
     
-    // 检查结果
-    int errors = 0;
-    for (int i = 0; i < 4; i++) {
-        if (dst[i] != expected[i]) {
-            printf("Error at element %d: got 0x%016lX, expected 0x%016lX\n", i, (uint64_t)dst[i], (uint64_t)expected[i]);
-            errors++;
-        }
-    }
+    int64_t result[2];
+    _mm_storeu_si128((__m128i*)result, res);
     
-    if (errors == 0) {
-        printf("vpcmpgtq (256-bit) test passed!\n");
-    } else {
-        printf("vpcmpgtq (256-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest 128: %s\n", name);
+    print_qwords("Operand A", a, 2);
+    print_qwords("Operand B", b, 2);
+    print_qwords("Result", result, 2);
+}
+
+// 测试256位版本
+static void test_vpcmpgtq_256(const char *name, const int64_t *a, const int64_t *b) {
+    __m256i va = _mm256_loadu_si256((const __m256i*)a);
+    __m256i vb = _mm256_loadu_si256((const __m256i*)b);
+    __m256i res;
     
-    // 128位版本 (xmm)
-    ALIGNED(16) int64_t dst128[2] = {0};
-    __asm__ __volatile__(
-        "vmovdqa %1, %%xmm0\n\t"
-        "vmovdqa %2, %%xmm1\n\t"
-        "vpcmpgtq %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovdqa %%xmm2, %0\n\t"
-        : "=m" (dst128)
-        : "m" (src1), "m" (src2)
-        : "xmm0", "xmm1", "xmm2"
+    asm volatile(
+        "vpcmpgtq %[b], %[a], %[res]"
+        : [res] "=x"(res)
+        : [a] "x"(va), [b] "xm"(vb)
     );
     
-    // 检查128位结果
-    errors = 0;
-    for (int i = 0; i < 2; i++) {
-        if (dst128[i] != expected[i]) {
-            printf("Error at element %d (128-bit): got 0x%016lX, expected 0x%016lX\n", i, (uint64_t)dst128[i], (uint64_t)expected[i]);
-            errors++;
-        }
-    }
+    int64_t result[4];
+    _mm256_storeu_si256((__m256i*)result, res);
     
-    if (errors == 0) {
-        printf("vpcmpgtq (128-bit) test passed!\n");
-    } else {
-        printf("vpcmpgtq (128-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest 256: %s\n", name);
+    print_qwords("Operand A", a, 4);
+    print_qwords("Operand B", b, 4);
+    print_qwords("Result", result, 4);
 }
 
 int main() {
-    test_vpcmpgtq();
+    // 测试数据
+    int64_t a1[4] = {0, 1, -1, INT64_MAX};
+    int64_t b1[4] = {1, 0, -2, INT64_MIN};
+    
+    // 边界值测试
+    int64_t a2[4] = {INT64_MAX, INT64_MIN, INT64_MAX, INT64_MIN};
+    int64_t b2[4] = {INT64_MIN, INT64_MAX, INT64_MIN, INT64_MAX};
+    
+    // 128位测试
+    test_vpcmpgtq_128("Normal case", a1, b1);
+    test_vpcmpgtq_128("Boundary case", a2, b2);
+    
+    // 256位测试
+    test_vpcmpgtq_256("Normal case", a1, b1);
+    test_vpcmpgtq_256("Boundary case", a2, b2);
+    
     return 0;
 }

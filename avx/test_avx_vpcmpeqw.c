@@ -1,104 +1,144 @@
+#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "avx.h"
+#include <immintrin.h>
 
-// vpcmpeqw 指令测试
-static void test_vpcmpeqw() {
-    printf("--- Testing vpcmpeqw ---\n");
+// 打印字向量
+static void print_word_vec(const char *name, const uint16_t *vec, int len) {
+    printf("%s: [", name);
+    for (int i = 0; i < len; i++) {
+        printf("%04x", vec[i]);
+        if (i < len - 1) printf(" ");
+    }
+    printf("]\n");
+}
+
+// 测试单个比较操作
+static int test_case(const char *name, const uint16_t *a, const uint16_t *b, int len) {
+    ALIGNED(32) uint16_t result[16] = {0};
+    int passed = 1;
     
-    // 测试数据
-    ALIGNED(32) uint16_t src1[16] = {
-        0x0000, 0xFFFF, 0x5555, 0xAAAA,
-        0x0001, 0x8000, 0x7FFF, 0xFFFE,
-        0x1234, 0x5678, 0x9ABC, 0xDEF0,
-        0x1111, 0x2222, 0x3333, 0x4444
-    };
+    if (len == 8) {
+        __m128i va = _mm_loadu_si128((const __m128i*)a);
+        __m128i vb = _mm_loadu_si128((const __m128i*)b);
+        __m128i vres;
+        
+        asm volatile("vpcmpeqw %[b], %[a], %[res]"
+                    : [res] "=x"(vres)
+                    : [a] "x"(va), [b] "xm"(vb));
+        
+        _mm_storeu_si128((__m128i*)result, vres);
+    } else if (len == 16) {
+        __m256i va = _mm256_loadu_si256((const __m256i*)a);
+        __m256i vb = _mm256_loadu_si256((const __m256i*)b);
+        __m256i vres;
+        
+        asm volatile("vpcmpeqw %[b], %[a], %[res]"
+                    : [res] "=x"(vres)
+                    : [a] "x"(va), [b] "xm"(vb));
+        
+        _mm256_storeu_si256((__m256i*)result, vres);
+    }
     
-    ALIGNED(32) uint16_t src2[16] = {
-        0x0000, 0xFFFF, 0x5555, 0xAAAB,
-        0x0001, 0x8000, 0x7FFE, 0xFFFE,
-        0x1234, 0x5679, 0x9ABC, 0xDEF1,
-        0x1111, 0x2223, 0x3333, 0x4445
-    };
-    
-    ALIGNED(32) uint16_t dst[16] = {0};
-    
-    // 预期结果
-    uint16_t expected[16] = {
-        0xFFFF,  // 相等
-        0xFFFF,  // 相等
-        0xFFFF,  // 相等
-        0x0000,  // 不相等
-        0xFFFF,  // 相等
-        0xFFFF,  // 相等
-        0x0000,  // 不相等
-        0xFFFF,  // 相等
-        0xFFFF,  // 相等
-        0x0000,  // 不相等
-        0xFFFF,  // 相等
-        0x0000,  // 不相等
-        0xFFFF,  // 相等
-        0x0000,  // 不相等
-        0xFFFF,  // 相等
-        0x0000   // 不相等
-    };
-    
-    // 256位版本 (ymm)
-    __asm__ __volatile__(
-        "vmovdqa %1, %%ymm0\n\t"
-        "vmovdqa %2, %%ymm1\n\t"
-        "vpcmpeqw %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovdqa %%ymm2, %0\n\t"
-        : "=m" (dst)
-        : "m" (src1), "m" (src2)
-        : "ymm0", "ymm1", "ymm2"
-    );
-    
-    // 检查结果
-    int errors = 0;
-    for (int i = 0; i < 16; i++) {
-        if (dst[i] != expected[i]) {
-            printf("Error at element %d: got 0x%04X, expected 0x%04X\n", i, dst[i], expected[i]);
-            errors++;
+    // 验证结果
+    for (int i = 0; i < len; i++) {
+        uint16_t expected = (a[i] == b[i]) ? 0xFFFF : 0x0000;
+        if (result[i] != expected) {
+            passed = 0;
+            break;
         }
     }
     
-    if (errors == 0) {
-        printf("vpcmpeqw (256-bit) test passed!\n");
-    } else {
-        printf("vpcmpeqw (256-bit) test failed with %d errors\n", errors);
-    }
+    printf("\nTest: %s\n", name);
+    print_word_vec("Operand A", a, len);
+    print_word_vec("Operand B", b, len);
+    print_word_vec("Result", result, len);
+    printf("Result: %s\n", passed ? "PASS" : "FAIL");
     
-    // 128位版本 (xmm)
-    ALIGNED(16) uint16_t dst128[8] = {0};
-    __asm__ __volatile__(
-        "vmovdqa %1, %%xmm0\n\t"
-        "vmovdqa %2, %%xmm1\n\t"
-        "vpcmpeqw %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovdqa %%xmm2, %0\n\t"
-        : "=m" (dst128)
-        : "m" (src1), "m" (src2)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    // 检查128位结果
-    errors = 0;
-    for (int i = 0; i < 8; i++) {
-        if (dst128[i] != expected[i]) {
-            printf("Error at element %d (128-bit): got 0x%04X, expected 0x%04X\n", i, dst128[i], expected[i]);
-            errors++;
-        }
-    }
-    
-    if (errors == 0) {
-        printf("vpcmpeqw (128-bit) test passed!\n");
-    } else {
-        printf("vpcmpeqw (128-bit) test failed with %d errors\n", errors);
-    }
+    return passed;
 }
 
 int main() {
-    test_vpcmpeqw();
-    return 0;
+    int total = 0, passed = 0;
+    
+    // 测试128位版本
+    {
+        uint16_t a1[8] = {0x0000, 0x1111, 0x2222, 0xFFFF, 0xAAAA, 0x5555, 0x1234, 0x5678};
+        uint16_t b1[8] = {0x0000, 0x1111, 0x2222, 0xFFFF, 0xAAAA, 0x5555, 0x1234, 0x5678};
+        passed += test_case("VPCMPEQW 128-bit equal", a1, b1, 8);
+        total++;
+        
+        uint16_t a2[8] = {0};
+        uint16_t b2[8] = {0xFFFF};
+        passed += test_case("VPCMPEQW 128-bit zero vs 0xFFFF", a2, b2, 8);
+        total++;
+        
+        uint16_t a3[8] = {0x5555};
+        uint16_t b3[8] = {0xAAAA};
+        passed += test_case("VPCMPEQW 128-bit pattern", a3, b3, 8);
+        total++;
+    }
+    
+    // 测试256位版本
+    {
+        uint16_t a1[16];
+        uint16_t b1[16];
+        for (int i = 0; i < 16; i++) {
+            a1[i] = i * 0x1111;
+            b1[i] = i * 0x1111;
+        }
+        passed += test_case("VPCMPEQW 256-bit equal", a1, b1, 16);
+        total++;
+        
+        uint16_t a2[16] = {0};
+        uint16_t b2[16] = {0xFFFF};
+        passed += test_case("VPCMPEQW 256-bit zero vs 0xFFFF", a2, b2, 16);
+        total++;
+        
+        uint16_t a3[16];
+        uint16_t b3[16];
+        for (int i = 0; i < 16; i++) {
+            a3[i] = i % 2 ? 0x5555 : 0xAAAA;
+            b3[i] = i % 2 ? 0xAAAA : 0x5555;
+        }
+        passed += test_case("VPCMPEQW 256-bit pattern", a3, b3, 16);
+        total++;
+    }
+    
+    // 测试内存操作数
+    {
+        ALIGNED(32) uint16_t mem_ops[16] = {0x0123, 0x4567, 0x89AB, 0xCDEF, 0xFEDC, 0xBA98, 0x7654, 0x3210};
+        uint16_t a[8] = {0x0123, 0x4567, 0x89AB, 0xCDEF, 0xFEDC, 0xBA98, 0x7654, 0x3210};
+        
+        __m128i va = _mm_loadu_si128((const __m128i*)a);
+        __m128i vres;
+        
+        asm volatile("vpcmpeqw %[mem], %[a], %[res]"
+                    : [res] "=x"(vres)
+                    : [a] "x"(va), [mem] "m"(*mem_ops));
+        
+        uint16_t result[8];
+        _mm_storeu_si128((__m128i*)result, vres);
+        
+        int mem_passed = 1;
+        for (int i = 0; i < 8; i++) {
+            if (result[i] != 0xFFFF) {
+                mem_passed = 0;
+                break;
+            }
+        }
+        
+        printf("\nTest: VPCMPEQW with memory operand\n");
+        print_word_vec("Operand A", a, 8);
+        print_word_vec("Operand B (mem)", mem_ops, 8);
+        print_word_vec("Result", result, 8);
+        printf("Result: %s\n", mem_passed ? "PASS" : "FAIL");
+        passed += mem_passed;
+        total++;
+    }
+    
+    // 测试总结
+    printf("\nSummary: %d/%d tests passed\n", passed, total);
+    return passed == total ? 0 : 1;
 }

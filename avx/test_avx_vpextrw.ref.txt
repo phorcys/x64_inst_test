@@ -1,0 +1,26 @@
+Starting VPEXTRW tests
+----------------------
+Testing VPEXTRW reg16, xmm, imm8
+  Index 0: Extracted=0x0123, Expected=0x0123 - PASS
+  Index 1: Extracted=0x4567, Expected=0x4567 - PASS
+  Index 2: Extracted=0x89ab, Expected=0x89ab - PASS
+  Index 3: Extracted=0xcdef, Expected=0xcdef - PASS
+  Index 4: Extracted=0xfedc, Expected=0xfedc - PASS
+  Index 5: Extracted=0xba98, Expected=0xba98 - PASS
+  Index 6: Extracted=0x7654, Expected=0x7654 - PASS
+  Index 7: Extracted=0x3210, Expected=0x3210 - PASS
+  Index 8: Extracted=0x0123, Expected=0x0123 - PASS
+Testing VPEXTRW mem16, xmm, imm8
+  Index 0: Extracted=0x1122, Expected=0x1122 - PASS
+  Index 1: Extracted=0x3344, Expected=0x3344 - PASS
+  Index 2: Extracted=0x5566, Expected=0x5566 - PASS
+  Index 3: Extracted=0x7788, Expected=0x7788 - PASS
+  Index 4: Extracted=0x9900, Expected=0x9900 - PASS
+  Index 5: Extracted=0xaabb, Expected=0xaabb - PASS
+  Index 6: Extracted=0xccdd, Expected=0xccdd - PASS
+  Index 7: Extracted=0xeeff, Expected=0xeeff - PASS
+Testing VPEXTRW boundary values
+  Max value: Extracted=0xffff, Expected=0xFFFF - PASS
+  Min value: Extracted=0x0000, Expected=0x0000 - PASS
+
+VPEXTRW tests completed

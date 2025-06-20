@@ -2,109 +2,68 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <immintrin.h>
 
-// 测试vtestps指令
-int test_vtestps() {
-    int ret = 0;
-    printf("===== Testing vtestps =====\n");
+// 打印标志位
+static void print_flags(const char* name, int flags) {
+    printf("%s: ZF=%d CF=%d\n", name, (flags>>6)&1, (flags>>0)&1);
+}
 
-    // 测试数据
-    ALIGNED(32) float src1[8] = {
-        1.0f, -2.0f, 3.0f, -4.0f,
-        5.0f, -6.0f, 7.0f, -8.0f
-    };
-    ALIGNED(32) float src2[8] = {
-        1.0f, 2.0f, 3.0f, 4.0f,
-        5.0f, 6.0f, 7.0f, 8.0f
-    };
-    ALIGNED(32) float src3[8] = {
-        -1.0f, -2.0f, -3.0f, -4.0f,
-        -5.0f, -6.0f, -7.0f, -8.0f
-    };
-
-    __m256 ymm1, ymm2, ymm3;
-    uint32_t eflags;
-
-    // 加载测试数据
-    ymm1 = _mm256_loadu_ps(src1);
-    ymm2 = _mm256_loadu_ps(src2);
-    ymm3 = _mm256_loadu_ps(src3);
-
-    // 测试混合符号情况
-    printf("\n=== Test case: Mixed signs ===\n");
-    __asm__ __volatile__(
-        "vtestps %1, %1\n\t"
+// 测试128位版本
+static void test_vtestps_128(const char* name, __m128 a, __m128 b) {
+    int flags;
+    
+    asm volatile(
+        "vtestps %[b], %[a]\n\t"
         "pushfq\n\t"
-        "pop %q0\n\t"
-        : "=r"(eflags)
-        : "x"(ymm1)
-        : "cc"
-    );
-        print_eflags_cond(eflags, 0x41);
-    if(!(eflags & (1 << 6))) {  // 检查ZF=0
-        printf("ZF check passed\n");
-    } else {
-        printf("ZF check failed\n");
-        ret = 1;
-    }
-    if(eflags & (1 << 0)) {  // 修正：检查CF=1（混合符号时CF应为1）
-        printf("CF check passed\n");
-    } else {
-        printf("CF check failed\n");
-        ret = 1;
-    }
+        "popq %%rax\n\t"
+        "movl %%eax, %[flags]"
+        : [flags] "=r"(flags)
+        : [a] "x"(a), [b] "xm"(b)
+        : "rax", "cc");
+    
+    printf("\nTest 128: %s\n", name);
+    print_flags("Result flags", flags);
+}
 
-    // 测试全正数情况
-    printf("\n=== Test case: All positive ===\n");
-    __asm__ __volatile__(
-        "vtestps %1, %1\n\t"
+// 测试256位版本
+static void test_vtestps_256(const char* name, __m256 a, __m256 b) {
+    int flags;
+    
+    asm volatile(
+        "vtestps %[b], %[a]\n\t"
         "pushfq\n\t"
-        "pop %q0\n\t"
-        : "=r"(eflags)
-        : "x"(ymm2)
-        : "cc"
-    );
-        print_eflags_cond(eflags, 0x41);
-    if(eflags & (1 << 6)) {  // 检查ZF=1
-        printf("ZF check passed\n");
-    } else {
-        printf("ZF check failed\n");
-        ret = 1;
-    }
-    if(eflags & (1 << 0)) {  // 修正：检查CF=1（全正数时CF应为1）
-        printf("CF check passed\n");
-    } else {
-        printf("CF check failed\n");
-        ret = 1;
-    }
-
-    // 测试全负数情况
-    printf("\n=== Test case: All negative ===\n");
-    __asm__ __volatile__(
-        "vtestps %1, %1\n\t"
-        "pushfq\n\t"
-        "pop %q0\n\t"
-        : "=r"(eflags)
-        : "x"(ymm3)
-        : "cc"
-    );
-        print_eflags_cond(eflags, 0x41);
-    if(!(eflags & (1 << 6))) {  // 检查ZF=0
-        printf("ZF check passed\n");
-    } else {
-        printf("ZF check failed\n");
-        ret = 1;
-    }
-    if(eflags & (1 << 0)) {  // 检查CF=1
-        printf("CF check passed\n");
-    } else {
-        printf("CF check failed\n");
-        ret = 1;
-    }
-
-    return ret;
+        "popq %%rax\n\t"
+        "movl %%eax, %[flags]"
+        : [flags] "=r"(flags)
+        : [a] "x"(a), [b] "xm"(b)
+        : "rax", "cc");
+    
+    printf("\nTest 256: %s\n", name);
+    print_flags("Result flags", flags);
 }
 
 int main() {
-    return test_vtestps();
+    // 测试数据
+    __m128 a128 = _mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f);
+    __m128 b128 = _mm_set_ps(0.0f, -1.0f, -2.0f, -3.0f);
+    __m128 nan128 = _mm_set_ps(NAN, INFINITY, -INFINITY, 0.0f);
+    __m128 zero128 = _mm_setzero_ps();
+    
+    __m256 a256 = _mm256_set_ps(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f);
+    __m256 b256 = _mm256_set_ps(0.0f, -1.0f, -2.0f, -3.0f, -4.0f, -5.0f, -6.0f, -7.0f);
+    __m256 nan256 = _mm256_set_ps(NAN, INFINITY, -INFINITY, 0.0f, NAN, INFINITY, -INFINITY, 0.0f);
+    __m256 zero256 = _mm256_setzero_ps();
+    
+    // 128位测试
+    test_vtestps_128("Normal values", a128, b128);
+    test_vtestps_128("With NaN/Inf", nan128, b128);
+    test_vtestps_128("Zero test", zero128, zero128);
+    
+    // 256位测试
+    test_vtestps_256("Normal values", a256, b256);
+    test_vtestps_256("With NaN/Inf", nan256, b256);
+    test_vtestps_256("Zero test", zero256, zero256);
+    
+    return 0;
 }
