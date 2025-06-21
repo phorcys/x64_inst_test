@@ -4,6 +4,9 @@
 #include <string.h>
 #include <immintrin.h>
 
+// 启用AVX编译选项
+#pragma GCC target("avx")
+
 // 打印字节向量
 static void print_byte_vec(const char *name, const uint8_t *vec, int len) {
     printf("%s: [", name);

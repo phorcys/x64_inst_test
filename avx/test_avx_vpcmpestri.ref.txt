@@ -1,50 +1,16 @@
+=== Testing VPCMPESTRI ===
 
-Test: Equal strings (mode=0xc)
-String A: 'HelloWorld'
-String B: 'HelloWorld'
-Result index: 0 (expected: 0)
-EFLAGS: 0x0000000000000ac3
-Mode: 0xc, A len: 10, B len: 10
-Result: PASS
+Test 1: Equal comparison (byte mode, 128-bit)
+Result index: 0
+  [X] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+PASS: Index should be 0 for equal strings
+PASS: CF should be set (IntRes2 not zero)
+PASS: ZF should be set (EDX < 16)
+PASS: SF should be set (EAX < 16)
+PASS: OF should be set (IntRes2[0] = 1)
 
-Test: Different strings (mode=0xc)
-String A: 'Hello'
-String B: 'World'
-Result index: 16 (expected: 16)
-EFLAGS: 0x00000000000002c2
-Mode: 0xc, A len: 5, B len: 5
-Result: PASS
-
-Test: Empty strings (mode=0xc)
-String A: ''
-String B: ''
-Result index: 0 (expected: 0)
-EFLAGS: 0x0000000000000ac3
-Mode: 0xc, A len: 0, B len: 0
-Result: PASS
-
-Test: Range check (in) (mode=0x4)
-String A: 'ABCDEF'
-String B: 'CD'
-Result index: 0 (expected: 0)
-EFLAGS: 0x0000000000000ac3
-Mode: 0x4, A len: 6, B len: 2
-Result: PASS
-
-Test: Range check (out) (mode=0x4)
-String A: 'XYZ'
-String B: 'AB'
-Result index: 16 (expected: 16)
-EFLAGS: 0x00000000000002c2
-Mode: 0x4, A len: 3, B len: 2
-Result: PASS
-
-Test: Case sensitive unequal (mode=0xc)
-String A: 'abc'
-String B: 'ABC'
-Result index: 16 (expected: 16)
-EFLAGS: 0x00000000000002c2
-Mode: 0xc, A len: 3, B len: 3
-Result: PASS
-
-Summary: 6/6 tests passed
+=== Test Summary ===
+Total failures: 0

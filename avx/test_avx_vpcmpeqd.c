@@ -64,19 +64,34 @@ int main() {
     
     // 测试128位版本
     {
+        // 基本相等测试
         uint32_t a1[4] = {0x00000000, 0x11111111, 0x22222222, 0xFFFFFFFF};
         uint32_t b1[4] = {0x00000000, 0x11111111, 0x22222222, 0xFFFFFFFF};
         passed += test_case("VPCMPEQD 128-bit equal", a1, b1, 4);
         total++;
         
-        uint32_t a2[4] = {0};
-        uint32_t b2[4] = {0xFFFFFFFF};
+        // 零值测试
+        uint32_t a2[4] = {0, 0, 0, 0};
+        uint32_t b2[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
         passed += test_case("VPCMPEQD 128-bit zero vs 0xFFFFFFFF", a2, b2, 4);
         total++;
         
-        uint32_t a3[4] = {0x55555555};
-        uint32_t b3[4] = {0xAAAAAAAA};
+        // 模式测试
+        uint32_t a3[4] = {0x55555555, 0x55555555, 0x55555555, 0x55555555};
+        uint32_t b3[4] = {0xAAAAAAAA, 0xAAAAAAAA, 0xAAAAAAAA, 0xAAAAAAAA};
         passed += test_case("VPCMPEQD 128-bit pattern", a3, b3, 4);
+        total++;
+        
+        // 边界值测试
+        uint32_t a4[4] = {0, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFF};
+        uint32_t b4[4] = {0, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFF};
+        passed += test_case("VPCMPEQD 128-bit boundaries", a4, b4, 4);
+        total++;
+        
+        // 部分相等测试
+        uint32_t a5[4] = {1, 2, 3, 4};
+        uint32_t b5[4] = {1, 0, 3, 0};
+        passed += test_case("VPCMPEQD 128-bit partial equal", a5, b5, 4);
         total++;
     }
     
@@ -104,37 +119,36 @@ int main() {
         }
         passed += test_case("VPCMPEQD 256-bit pattern", a3, b3, 8);
         total++;
+        
+        // 边界值测试
+        uint32_t a4[8] = {0, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFF, 
+                          0, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFF};
+        uint32_t b4[8] = {0, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFF, 
+                          0, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFF};
+        passed += test_case("VPCMPEQD 256-bit boundaries", a4, b4, 8);
+        total++;
+        
+        // 部分相等测试
+        uint32_t a5[8] = {1, 2, 3, 4, 5, 6, 7, 8};
+        uint32_t b5[8] = {1, 0, 3, 0, 5, 0, 7, 0};
+        passed += test_case("VPCMPEQD 256-bit partial equal", a5, b5, 8);
+        total++;
     }
     
     // 测试内存操作数
     {
+        // 对齐内存测试
         ALIGNED(32) uint32_t mem_ops[8] = {0x01234567, 0x89ABCDEF, 0xFEDCBA98, 0x76543210};
         uint32_t a[4] = {0x01234567, 0x89ABCDEF, 0xFEDCBA98, 0x76543210};
+        passed += test_case("VPCMPEQD 128-bit memory operand (aligned)", a, mem_ops, 4);
+        total++;
         
-        __m128i va = _mm_loadu_si128((const __m128i*)a);
-        __m128i vres;
+        // 非对齐内存测试
+        uint32_t unaligned_mem[6] = {0, 0xCAFEBABE, 0xDEADBEEF, 0x12345678, 0, 0};
+        uint32_t* unaligned_ptr = &unaligned_mem[1]; // 故意不对齐
         
-        asm volatile("vpcmpeqd %[mem], %[a], %[res]"
-                    : [res] "=x"(vres)
-                    : [a] "x"(va), [mem] "m"(*mem_ops));
-        
-        uint32_t result[4];
-        _mm_storeu_si128((__m128i*)result, vres);
-        
-        int mem_passed = 1;
-        for (int i = 0; i < 4; i++) {
-            if (result[i] != 0xFFFFFFFF) {
-                mem_passed = 0;
-                break;
-            }
-        }
-        
-        printf("\nTest: VPCMPEQD with memory operand\n");
-        print_dword_vec("Operand A", a, 4);
-        print_dword_vec("Operand B (mem)", mem_ops, 4);
-        print_dword_vec("Result", result, 4);
-        printf("Result: %s\n", mem_passed ? "PASS" : "FAIL");
-        passed += mem_passed;
+        uint32_t c[4] = {0xCAFEBABE, 0xDEADBEEF, 0x12345678, 0};
+        passed += test_case("VPCMPEQD 128-bit memory operand (unaligned)", c, unaligned_ptr, 4);
         total++;
     }
     

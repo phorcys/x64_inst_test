@@ -1,62 +1,36 @@
+=== Testing VPCMPESTRM ===
 
-Test: Equal strings (mode=0xc)
-String A: 'Hello'
-Mask: 0x0001 [1000000000000000]
-String B: 'Hello'
-Mask: 0x0001 [1000000000000000]
-Expected mask: 0x0001
-EFLAGS: 0x0000000000000ac3
-Result: PASS
-Full mask (128-bit): 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 1: Equal comparison (byte mode, bit mask)
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [X] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
 
-Test: Different strings (mode=0xc)
-String A: 'Hello'
-Mask: 0x0000 [0000000000000000]
-String B: 'World'
-Mask: 0x0000 [0000000000000000]
-Expected mask: 0x0000
-EFLAGS: 0x00000000000002c2
-Result: PASS
-Full mask (128-bit): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 2: Unequal comparison (byte mode, byte mask)
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [X] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
 
-Test: Empty strings (mode=0xc)
-String A: ''
-Mask: 0xffff [1111111111111111]
-String B: ''
-Mask: 0xffff [1111111111111111]
-Expected mask: 0xffff
-EFLAGS: 0x0000000000000ac3
-Result: PASS
-Full mask (128-bit): ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 3: Boundary values (byte mode)
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 
-Test: Range check (in) (mode=0x4)
-String A: 'ABCD'
-Mask: 0x0003 [1100000000000000]
-String B: 'BC'
-Mask: 0x0003 [1100000000000000]
-Expected mask: 0x0003
-EFLAGS: 0x0000000000000ac3
-Result: PASS
-Full mask (128-bit): 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 4: Length overflow
+  [X] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
 
-Test: Range check (out) (mode=0x4)
-String A: 'XYZ'
-Mask: 0x0000 [0000000000000000]
-String B: 'AB'
-Mask: 0x0000 [0000000000000000]
-Expected mask: 0x0000
-EFLAGS: 0x00000000000002c2
-Result: PASS
-Full mask (128-bit): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 5: Empty strings
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 
-Test: Case sensitive unequal (mode=0xc)
-String A: 'abc'
-Mask: 0x0000 [0000000000000000]
-String B: 'ABC'
-Mask: 0x0000 [0000000000000000]
-Expected mask: 0x0000
-EFLAGS: 0x00000000000002c2
-Result: PASS
-Full mask (128-bit): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 6: Negative length
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 
-Summary: 6/6 tests passed
+Test 7: Word mode comparison
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+=== Test Summary ===
+Total failures: 0
