@@ -1,0 +1,23 @@
+=== Testing VPBLENDVB ===
+Test1 - Alternating blend:
+Expected: 01 22 03 44 05 66 07 88 09 aa 0b cc 0d ee 0f 00 
+Result  : 01 22 03 44 05 66 07 88 09 aa 0b cc 0d ee 0f 00 
+Match: YES
+
+Test2 - All from src1:
+Expected: 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff 00 
+Result  : 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff 00 
+Match: YES
+
+Test3 - All from src2:
+Expected: 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 
+Result  : 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 
+Match: YES
+
+Test4 - Register-Memory blend:
+Expected: 11 02 33 04 55 06 77 08 99 0a bb 0c dd 0e ff 10 
+Result  : 11 02 33 04 55 06 77 08 99 0a bb 0c dd 0e ff 10 
+Match: YES
+
+Test5 - Boundary values blend: SKIPPED FOR NOW
+

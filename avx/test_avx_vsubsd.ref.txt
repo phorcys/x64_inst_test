@@ -1,0 +1,50 @@
+Testing VSUBSD
+Test case 1:
+Input1: 1
+Input2: 0.5
+Result: 0.5
+Expected: 0.5
+
+Test case 2:
+Input1: 4
+Input2: 2
+Result: 2
+Expected: 2
+
+Test case 3:
+Input1: 1.5000000000000001e+300
+Input2: 5.0000000000000003e+299
+Result: 1.0000000000000001e+300
+Expected: 1.0000000000000001e+300
+
+Test case 4:
+Input1: 1.5000000000000001e-300
+Input2: 5.0000000000000001e-301
+Result: 1.0000000000000002e-300
+Expected: 1e-300
+
+Test case 5:
+Input1: 0
+Input2: 0
+Result: 0
+Expected: 0
+
+Test case 6:
+Input1: -1
+Input2: 0.5
+Result: -1.5
+Expected: -1.5
+
+Test case 7:
+Input1: inf
+Input2: 1
+Result: inf
+Expected: inf
+
+Test case 8:
+Input1: nan
+Input2: 1
+Result: nan
+Expected: nan
+
+VSUBSD tests completed

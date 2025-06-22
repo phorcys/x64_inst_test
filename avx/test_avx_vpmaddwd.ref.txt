@@ -1,0 +1,6 @@
+=== Testing VPMADDWD ===
+-- Testing 128-bit operation --
+Result: 2147418113 25000 125000 305000 
+Expected: 2147418113 25000 125000 305000 
+
+=== VPMADDWD test completed ===

@@ -1,0 +1,93 @@
+=== Testing VPSLLQ (Vector Packed Shift Left Logical Quadword) ===
+
+--- 128-bit Tests ---
+
+--- Immediate Shifts ---
+Test: VPSLLQ xmm, xmm, 0
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Result: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Comparison: PASS
+Test: VPSLLQ xmm, xmm, 1
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Result: de 9b 57 13 cf 8a 46 02 20 64 a8 ec 30 75 b9 fd 
+Comparison: PASS
+Test: VPSLLQ xmm, xmm, 63
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Result: 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 
+Comparison: PASS
+Test: VPSLLQ xmm, xmm, 64
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS
+Test: VPSLLQ xmm, xmm, 65
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS
+
+--- Variable Shifts ---
+Test: VPSLLQ xmm, xmm, xmm (shift=0)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Shift Counts: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Comparison: PASS
+Test: VPSLLQ xmm, xmm, xmm (shift=1)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Shift Counts: 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: de 9b 57 13 cf 8a 46 02 20 64 a8 ec 30 75 b9 fd 
+Comparison: PASS
+Test: VPSLLQ xmm, xmm, xmm (shift=63)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Shift Counts: 3f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 
+Comparison: PASS
+Test: VPSLLQ xmm, xmm, xmm (shift=64)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 
+Shift Counts: 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS
+
+--- 256-bit Tests ---
+
+--- Immediate Shifts ---
+Test: VPSLLQ ymm, ymm, 0
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Result: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Comparison: PASS
+Test: VPSLLQ ymm, ymm, 1
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Result: de 9b 57 13 cf 8a 46 02 20 64 a8 ec 30 75 b9 fd aa aa aa aa aa aa aa aa 54 55 55 55 55 55 55 55 
+Comparison: PASS
+Test: VPSLLQ ymm, ymm, 63
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Result: 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 
+Comparison: PASS
+Test: VPSLLQ ymm, ymm, 64
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS
+Test: VPSLLQ ymm, ymm, 65
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS
+
+--- Variable Shifts ---
+Test: VPSLLQ ymm, ymm, xmm (shift=0)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Shift Counts: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Comparison: PASS
+Test: VPSLLQ ymm, ymm, xmm (shift=1)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Shift Counts: 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: de 9b 57 13 cf 8a 46 02 20 64 a8 ec 30 75 b9 fd aa aa aa aa aa aa aa aa 54 55 55 55 55 55 55 55 
+Comparison: PASS
+Test: VPSLLQ ymm, ymm, xmm (shift=63)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Shift Counts: 3f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 
+Comparison: PASS
+Test: VPSLLQ ymm, ymm, xmm (shift=64)
+Source: ef cd ab 89 67 45 23 01 10 32 54 76 98 ba dc fe 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Shift Counts: 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS

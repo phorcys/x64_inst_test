@@ -1,0 +1,14 @@
+=== Testing VMOVHPD ===
+
+Test 1: Load high 64-bit from memory to XMM register
+Register initial: [1.000, 2.000]
+Memory value: 123.456
+Result: [1.000, 123.456]
+Expected: [1.000, 123.456]
+Test 1 PASSED
+
+Test 2: Store high 64-bit from XMM register to memory
+Source vector: [10.0, 20.0]
+Memory dest: 20.0
+Expected: 20.0
+Test 2 PASSED

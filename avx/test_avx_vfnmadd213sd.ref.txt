@@ -1,0 +1,14 @@
+--- Testing vfnmadd213sd (Fused Negative Multiply-Add of Scalar Double-Precision Floating-Point Values) ---
+MXCSR changed: 0x00001F80 -> 0x00001F80
+Input a: 1.000000 
+Input b: 2.000000 
+Input c: 3.000000 
+Result: 1.000000 
+Expected: 1.000000
+Result matches expected value
+
+[Special values test]
+Special inputs a: 0x7ff8000000000000 0x7ff0000000000000 0xfff0000000000000 0x0000000000000000 
+Special inputs b: 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 
+Special inputs c: 0x3ff0000000000000 0x7ff0000000000000 0xfff0000000000000 0x0000000000000000 
+Special results: 0x7ff8000000000000 0x3ff0000000000000 0x0000000000000000 0x0000000000000000 

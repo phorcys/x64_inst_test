@@ -1,0 +1,15 @@
+=== Testing VPMASKMOVQ ===
+
+Test 1: 128-bit masked load
+Source: [10, 20]
+Mask:   [0, -1]
+Result: [0, 20]
+Expected: [0, 20]
+Test 1 PASSED
+
+Test 2: 256-bit masked load
+Source: [100, 200, 300, 400]
+Mask:   [-1, 0, -1, 0]
+Result: [100, 0, 300, 0]
+Expected: [100, 0, 300, 0]
+Test 2 PASSED

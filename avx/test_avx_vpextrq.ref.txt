@@ -1,0 +1,14 @@
+Starting VPEXTRQ tests
+----------------------
+Testing VPEXTRQ reg64, xmm, imm8
+  Index 0: Extracted=0xfedcba9876543210, Expected=0xfedcba9876543210 - PASS
+  Index 1: Extracted=0x0123456789abcdef, Expected=0x0123456789abcdef - PASS
+  Index 2: Extracted=0xfedcba9876543210, Expected=0xfedcba9876543210 - PASS
+Testing VPEXTRQ mem64, xmm, imm8
+  Index 0: Extracted=0x8877665544332211, Expected=0x8877665544332211 - PASS
+  Index 1: Extracted=0x1122334455667788, Expected=0x1122334455667788 - PASS
+Testing VPEXTRQ boundary values
+  Max value: Extracted=0x0000000000000000, Expected=0x0000000000000000 - PASS
+  Min value: Extracted=0xffffffffffffffff, Expected=0xFFFFFFFFFFFFFFFF - PASS
+
+VPEXTRQ tests completed

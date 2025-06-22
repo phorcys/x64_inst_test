@@ -1,0 +1,26 @@
+Testing VPACKSSWB (128-bit)
+Test case 1:
+Input A: 64 00 c8 00 2c 01 90 01 9c ff 38 ff d4 fe 70 fe 
+Input B: 32 00 96 00 fa 00 5e 01 ce ff 6a ff 06 ff a2 fe 
+Result: 64 7f 7f 7f 9c 80 80 80 32 7f 7f 7f ce 80 80 80 
+Test case 1: PASSED
+
+Test case 2:
+Input A: ff 7f ff 7f 00 80 00 80 00 00 00 00 7f 00 80 ff 
+Input B: 7f 00 80 ff 00 00 00 00 ff 7f 00 80 ff 7f 00 80 
+Result: 7f 7f 80 80 00 00 7f 80 7f 80 00 00 7f 80 7f 80 
+Test case 2: PASSED
+
+Testing VPACKSSWB (256-bit)
+Test case 1:
+Input A: 64 00 c8 00 2c 01 90 01 9c ff 38 ff d4 fe 70 fe 96 00 fa 00 5e 01 c2 01 6a ff 06 ff a2 fe 3e fe 
+Input B: 32 00 96 00 fa 00 5e 01 ce ff 6a ff 06 ff a2 fe 4b 00 af 00 13 01 77 01 b5 ff 51 ff ed fe 89 fe 
+Result: 64 7f 7f 7f 9c 80 80 80 32 7f 7f 7f ce 80 80 80 7f 7f 7f 7f 80 80 80 80 4b 7f 7f 7f b5 80 80 80 
+Test case 1: PASSED
+
+Test case 2:
+Input A: ff 7f ff 7f 00 80 00 80 00 00 00 00 7f 00 80 ff ff 7f 00 80 ff 7f 00 80 7f 00 80 ff 7f 00 80 ff 
+Input B: 7f 00 80 ff 00 00 00 00 ff 7f 00 80 ff 7f 00 80 00 00 00 00 7f 00 80 ff ff 7f 00 80 ff 7f 00 80 
+Result: 7f 7f 80 80 00 00 7f 80 7f 80 00 00 7f 80 7f 80 7f 80 7f 80 7f 80 7f 80 00 00 7f 80 7f 80 7f 80 
+Test case 2: PASSED
+

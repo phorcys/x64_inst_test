@@ -1,0 +1,34 @@
+Testing VSQRTPD
+Testing VSQRTPD (128-bit)
+Test case 1 (128-bit):
+Input: 1
+Result: 1
+Expected: 1
+
+Test case 2 (128-bit):
+Input: 4
+Result: 2
+Expected: 2
+
+Testing VSQRTPD (256-bit)
+Test case 1 (256-bit):
+Input: 1
+Result: 1
+Expected: 1
+
+Test case 2 (256-bit):
+Input: 4
+Result: 2
+Expected: 2
+
+Test case 3 (256-bit):
+Input: 16
+Result: 4
+Expected: 4
+
+Test case 4 (256-bit):
+Input: 64
+Result: 8
+Expected: 8
+
+VSQRTPD tests completed

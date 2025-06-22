@@ -1,0 +1,12 @@
+=============================
+VFMSUB132SD Instruction Tests
+=============================
+
+VFMSUB132SD Test (Register-Register Operand):
+  a=1.0, b=5.0, c=9.0
+  Expected: -4.0, Result: -4.0 - PASS
+
+VFMSUB132SD Test (Register-Memory Operand):
+  a=-1.0, b=0.5, c=1.0
+  Expected: -1.5, Result: -1.5 - PASS
+

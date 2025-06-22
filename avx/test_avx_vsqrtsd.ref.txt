@@ -1,0 +1,42 @@
+Testing VSQRTSD
+Test case 1:
+Input: 1
+Result: 1
+Expected: 1
+
+Test case 2:
+Input: 4
+Result: 2
+Expected: 2
+
+Test case 3:
+Input: 16
+Result: 4
+Expected: 4
+
+Test case 4:
+Input: 64
+Result: 8
+Expected: 8
+
+Test case 5:
+Input: 0.25
+Result: 0.5
+Expected: 0.5
+
+Test case 6:
+Input: -0.25
+Result: -nan
+Expected: nan
+
+Test case 7:
+Input: inf
+Result: inf
+Expected: inf
+
+Test case 8:
+Input: nan
+Result: nan
+Expected: nan
+
+VSQRTSD tests completed

@@ -1,0 +1,40 @@
+=== Testing VPSRLQ (Vector Packed Shift Right Logical Quadword) ===
+
+--- 128-bit Tests ---
+Test 1: VPSRLQ xmm, xmm, 1
+Source: f0 de bc 9a 78 56 34 12 ff ff ff ff ff ff ff 7f 
+Result: 78 6f 5e 4d 3c 2b 1a 09 ff ff ff ff ff ff ff 3f 
+Comparison: PASS
+
+Test 2: VPSRLQ xmm, xmm, 4
+Result: ef cd ab 89 67 45 23 01 ff ff ff ff ff ff ff 07 
+Comparison: PASS
+
+Test 3: VPSRLQ xmm, xmm, 63
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS
+
+--- 256-bit Tests ---
+
+Test 4: VPSRLQ ymm, ymm, 1
+Source: f0 de bc 9a 78 56 34 12 ff ff ff ff ff ff ff 7f 00 00 00 00 00 00 00 80 10 32 54 76 98 ba dc fe 
+Result: 78 6f 5e 4d 3c 2b 1a 09 ff ff ff ff ff ff ff 3f 00 00 00 00 00 00 00 40 08 19 2a 3b 4c 5d 6e 7f 
+Comparison: PASS
+
+Test 5: VPSRLQ ymm, ymm, 4
+Result: ef cd ab 89 67 45 23 01 ff ff ff ff ff ff ff 07 00 00 00 00 00 00 00 08 21 43 65 87 a9 cb ed 0f 
+Comparison: PASS
+
+Test 6: VPSRLQ ymm, ymm, 63
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 
+Comparison: PASS
+
+--- Boundary Tests ---
+
+Test 7: Shift count 0 (no change)
+Result: f0 de bc 9a 78 56 34 12 ff ff ff ff ff ff ff 7f 
+Comparison: PASS
+
+Test 8: Shift count 64 (should be all zeros)
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS

@@ -1,0 +1,22 @@
+--- Testing vfmsub231sd (Fused Multiply-Subtract of Scalar Double-Precision Floating-Point Values) ---
+Input a: 1.500000
+Input b: 2.500000
+Input c: 0.500000
+Result: 3.250000
+Expected: 3.250000
+
+[Special values test]
+Special a: 0x7ff0000000000000
+Special b: 0x3ff0000000000000
+Special c: 0x3ff0000000000000
+Special result: 0x7ff0000000000000
+
+[Rounding modes test]
+Rounding mode 0:
+Result: 1.400000
+Rounding mode 1:
+Result: 1.400000
+Rounding mode 2:
+Result: 1.400000
+Rounding mode 3:
+Result: 1.400000

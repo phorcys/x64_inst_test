@@ -1,0 +1,39 @@
+--- Testing vdppd (dot product of double-precision) ---
+Test 1: 128-bit register-register
+Expected: Expected: 1.500000 0.000000 
+Result:   Result: 1.500000 0.000000 
+[PASS] Test 1: 128-bit register-register
+
+Test 2: Different mask (0x11)
+Expected: Expected: 1.500000 0.000000 
+Result:   Result: 1.500000 0.000000 
+[PASS] Test 2: Different mask (0x11)
+
+Test 3: Boundary values
+Expected: Expected: nan 0.000000 
+Result:   Result: nan 0.000000 
+[PASS] Test 3: Boundary values
+
+Test 4: High elements only (0x22)
+Expected: Expected: 0.000000 1.000000 
+Result:   Result: 0.000000 1.000000 
+[PASS] Test 4: High elements only (0x22)
+
+--- MXCSR State After Operations ---
+MXCSR: 0x00001F80
+Flags: I:1 D:1 Z:1 O:1 U:1 P:1
+Test 5: Memory operand
+Expected: Expected: 5.000000 0.000000 
+Result:   Result: 5.000000 0.000000 
+[PASS] Test 5: Memory operand
+
+Test 6: NaN propagation
+Expected: Expected: nan 0.000000 
+Result:   Result: nan 0.000000 
+[PASS] Test 6: NaN propagation
+
+--- Test Summary ---
+Total tests: 6
+Passed tests: 6
+Failed tests: 0
+All vdppd tests passed!

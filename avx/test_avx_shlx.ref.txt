@@ -1,0 +1,57 @@
+=== Testing 32-bit SHLX instruction ===
+Test 1: SHLX(0x12345678, 4)
+  Result:   0x23456780
+  Expected: 0x23456780
+  [OK]
+Test 2: SHLX(0x87654321, 0)
+  Result:   0x87654321
+  Expected: 0x87654321
+  [OK]
+Test 3: SHLX(0x00000001, 31)
+  Result:   0x80000000
+  Expected: 0x80000000
+  [OK]
+Test 4: SHLX(0x12345678, 32)
+  Result:   0x12345678
+  Expected: 0x12345678
+  [OK]
+Test 5: SHLX(mem operand, 8)
+  Input:    0x12345678
+  Result:   0x34567800
+  Expected: 0x34567800
+  [OK]
+Test 6: SHLX(src, shift from memory)
+  Input:    0x12345678
+  Shift:    4
+  Result:   0x23456780
+  Expected: 0x23456780
+  [OK]
+=== Testing 64-bit SHLX instruction ===
+Test 1: SHLX(0x123456789ABCDEF0, 8)
+  Result:   0x3456789ABCDEF000
+  Expected: 0x3456789ABCDEF000
+  [OK]
+Test 2: SHLX(0x87654321FEDCBA98, 0)
+  Result:   0x87654321FEDCBA98
+  Expected: 0x87654321FEDCBA98
+  [OK]
+Test 3: SHLX(0x0000000000000001, 63)
+  Result:   0x8000000000000000
+  Expected: 0x8000000000000000
+  [OK]
+Test 4: SHLX(0x123456789ABCDEF0, 64)
+  Result:   0x123456789ABCDEF0
+  Expected: 0x123456789ABCDEF0
+  [OK]
+Test 5: SHLX(mem operand, 16)
+  Input:    0x123456789ABCDEF0
+  Result:   0x56789ABCDEF00000
+  Expected: 0x56789ABCDEF00000
+  [OK]
+Test 6: SHLX(src, shift from memory)
+  Input:    0x123456789ABCDEF0
+  Shift:    4
+  Result:   0x23456789ABCDEF00
+  Expected: 0x23456789ABCDEF00
+  [OK]
+All SHLX tests completed successfully.

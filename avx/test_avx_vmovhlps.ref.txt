@@ -1,0 +1,8 @@
+=== Testing VMOVHLPS ===
+
+Test: Move high 64-bits from source to destination
+Source1: [1.0, 2.0, 3.0, 4.0]
+Source2: [5.0, 6.0, 7.0, 8.0]
+Result: [7.0, 8.0, 3.0, 4.0]
+Expected: [7.0, 8.0, 3.0, 4.0]
+Test PASSED

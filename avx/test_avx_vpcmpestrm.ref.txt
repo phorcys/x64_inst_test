@@ -1,0 +1,36 @@
+=== Testing VPCMPESTRM ===
+
+Test 1: Equal comparison (byte mode, bit mask)
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [X] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+Test 2: Unequal comparison (byte mode, byte mask)
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [X] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+Test 3: Boundary values (byte mode)
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test 4: Length overflow
+  [X] CF - Carry Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+Test 5: Empty strings
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test 6: Negative length
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test 7: Word mode comparison
+Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+=== Test Summary ===
+Total failures: 0

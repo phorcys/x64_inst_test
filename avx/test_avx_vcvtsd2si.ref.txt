@@ -1,0 +1,149 @@
+====================
+VCVTSD2SI TEST SUITE
+====================
+
+Testing with rounding mode: Round to nearest
+
+Test: Positive double
+Input double: 123.456000 (0x405EDD2F1A9FBE77)
+Expected integer: 123 (0x0000007B)
+Actual result:   123 (0x0000007B)
+TEST PASSED
+
+
+Test: Negative double
+Input double: -123.456000 (0xC05EDD2F1A9FBE77)
+Expected integer: -123 (0xFFFFFF85)
+Actual result:   -123 (0xFFFFFF85)
+TEST PASSED
+
+Testing with rounding mode: Round toward -inf
+
+Test: Positive double (Memory operand)
+Input double: 123.456000 (0x405EDD2F1A9FBE77)
+Expected integer: 123 (0x0000007B)
+Actual result:   123 (0x0000007B)
+TEST PASSED
+
+
+Test: Negative double (Memory operand)
+Input double: -123.456000 (0xC05EDD2F1A9FBE77)
+Expected integer: -124 (0xFFFFFF84)
+Actual result:   -124 (0xFFFFFF84)
+TEST PASSED
+
+Testing with rounding mode: Round toward +inf
+
+Test: Positive double
+Input double: 123.456000 (0x405EDD2F1A9FBE77)
+Expected integer: 124 (0x0000007C)
+Actual result:   124 (0x0000007C)
+TEST PASSED
+
+
+Test: Negative double
+Input double: -123.456000 (0xC05EDD2F1A9FBE77)
+Expected integer: -123 (0xFFFFFF85)
+Actual result:   -123 (0xFFFFFF85)
+TEST PASSED
+
+Testing with rounding mode: Round toward zero
+
+Test: Positive double (Memory operand)
+Input double: 123.456000 (0x405EDD2F1A9FBE77)
+Expected integer: 123 (0x0000007B)
+Actual result:   123 (0x0000007B)
+TEST PASSED
+
+
+Test: Negative double (Memory operand)
+Input double: -123.456000 (0xC05EDD2F1A9FBE77)
+Expected integer: -123 (0xFFFFFF85)
+Actual result:   -123 (0xFFFFFF85)
+TEST PASSED
+
+Testing with rounding mode: Truncate (Round to nearest)
+
+Test: Truncate positive
+Input double: 123.999000 (0x405EFFEF9DB22D0E)
+Expected integer: 123 (0x0000007B)
+Actual result:   123 (0x0000007B)
+TEST PASSED
+
+
+Test: Truncate negative
+Input double: -123.999000 (0xC05EFFEF9DB22D0E)
+Expected integer: -123 (0xFFFFFF85)
+Actual result:   -123 (0xFFFFFF85)
+TEST PASSED
+
+
+Test: DBL_MAX (out of range)
+Input double: 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000 (0x7FEFFFFFFFFFFFFF)
+Expected integer: -2147483648 (0x80000000)
+Actual result:   -2147483648 (0x80000000)
+TEST PASSED
+
+
+Test: DBL_MIN
+Input double: 0.000000 (0x0010000000000000)
+Expected integer: 0 (0x00000000)
+Actual result:   0 (0x00000000)
+TEST PASSED
+
+
+Test: NaN input
+Input double: nan (0x7FF8000000000000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:   -2147483648 (0x80000000)
+TEST PASSED
+
+
+Test: Positive infinity
+Input double: inf (0x7FF0000000000000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:   -2147483648 (0x80000000)
+TEST PASSED
+
+
+Test: Negative infinity
+Input double: -inf (0xFFF0000000000000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:   -2147483648 (0x80000000)
+TEST PASSED
+
+
+Test: Max int32
+Input double: 2147483647.000000 (0x41DFFFFFFFC00000)
+Expected integer: 2147483647 (0x7FFFFFFF)
+Actual result:   2147483647 (0x7FFFFFFF)
+TEST PASSED
+
+
+Test: Min int32
+Input double: -2147483648.000000 (0xC1E0000000000000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:   -2147483648 (0x80000000)
+TEST PASSED
+
+
+Test: Positive out of range
+Input double: 2147483648.000000 (0x41E0000000000000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:   -2147483648 (0x80000000)
+TEST PASSED
+
+
+Test: Negative out of range
+Input double: -2147483649.000000 (0xC1E0000000200000)
+Expected integer: -2147483648 (0x80000000)
+Actual result:   -2147483648 (0x80000000)
+TEST PASSED
+
+
+Test: Precision test
+Input double: 123456789.123456 (0x419D6F34547E6B40)
+Expected integer: 123456789 (0x075BCD15)
+Actual result:   123456789 (0x075BCD15)
+TEST PASSED
+

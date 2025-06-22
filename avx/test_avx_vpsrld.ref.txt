@@ -1,0 +1,40 @@
+=== Testing VPSRLD (Vector Packed Shift Right Logical Doubleword) ===
+
+--- 128-bit Tests ---
+Test 1: VPSRLD xmm, xmm, 1
+Source: 78 56 34 12 ef cd ab 89 ff ff ff 7f 00 00 00 80 
+Result: 3c 2b 1a 09 f7 e6 d5 44 ff ff ff 3f 00 00 00 40 
+Comparison: PASS
+
+Test 2: VPSRLD xmm, xmm, 4
+Result: 67 45 23 01 de bc 9a 08 ff ff ff 07 00 00 00 08 
+Comparison: PASS
+
+Test 3: VPSRLD xmm, xmm, 31
+Result: 00 00 00 00 01 00 00 00 00 00 00 00 01 00 00 00 
+Comparison: PASS
+
+--- 256-bit Tests ---
+
+Test 4: VPSRLD ymm, ymm, 1
+Source: 78 56 34 12 ef cd ab 89 ff ff ff 7f 00 00 00 80 78 56 34 12 ef cd ab 89 ff ff ff 7f 00 00 00 80 
+Result: 3c 2b 1a 09 f7 e6 d5 44 ff ff ff 3f 00 00 00 40 3c 2b 1a 09 f7 e6 d5 44 ff ff ff 3f 00 00 00 40 
+Comparison: PASS
+
+Test 5: VPSRLD ymm, ymm, 4
+Result: 67 45 23 01 de bc 9a 08 ff ff ff 07 00 00 00 08 67 45 23 01 de bc 9a 08 ff ff ff 07 00 00 00 08 
+Comparison: PASS
+
+Test 6: VPSRLD ymm, ymm, 31
+Result: 00 00 00 00 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 01 00 00 00 
+Comparison: PASS
+
+--- Boundary Tests ---
+
+Test 7: Shift count 0 (no change)
+Result: 78 56 34 12 ef cd ab 89 ff ff ff 7f 00 00 00 80 
+Comparison: PASS
+
+Test 8: Shift count 32 (should be all zeros)
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Comparison: PASS

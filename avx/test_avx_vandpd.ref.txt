@@ -1,0 +1,18 @@
+--- Testing vandpd (packed double-precision bitwise AND) ---
+Test 1: 256-bit register-register
+256-bit register-register test:
+Expected: -6148914691236517206 0 -6148914691236517206 0 
+Result: -6148914691236517206 0 -6148914691236517206 0 
+[PASS] Test 1: 256-bit register-register
+
+Test 2: 128-bit register-register
+128-bit register-register test:
+Expected: 0 2459565876494606882 
+Result: 0 2459565876494606882 
+[PASS] Test 2: 128-bit register-register
+
+--- Test Summary ---
+Total tests: 2
+Passed tests: 2
+Failed tests: 0
+All vandpd tests passed!

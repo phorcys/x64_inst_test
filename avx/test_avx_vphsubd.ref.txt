@@ -1,0 +1,6 @@
+=== Testing VPHSUBD ===
+-- Testing 128-bit operation --
+Result: ff ff ff ff 34 f1 ac 68 ff ff ff ff cc 0e 53 97 
+Expected: -1 1756164404 -1 -1756164404 
+
+=== VPHSUBD test completed ===

@@ -1,0 +1,81 @@
+====================
+VCVTSD2SS TEST SUITE
+====================
+
+
+Test: Normal positive
+Input double: 123.456789 (0x405EDD3C07EE0B0B)
+Expected float: 123.456787109375 (0x42F6E9E0)
+Actual result:   123.456787109375 (0x42F6E9E0)
+TEST PASSED
+
+
+Test: Normal negative
+Input double: -123.456789 (0xC05EDD3C07EE0B0B)
+Expected float: -123.456787109375 (0xC2F6E9E0)
+Actual result:   -123.456787109375 (0xC2F6E9E0)
+TEST PASSED
+
+
+Test: Exact representation 1.0 (Memory operand)
+Input double: 1 (0x3FF0000000000000)
+Expected float: 1 (0x3F800000)
+Actual result:   1 (0x3F800000)
+TEST PASSED
+
+
+Test: Exact representation 0.5 (Memory operand)
+Input double: 0.5 (0x3FE0000000000000)
+Expected float: 0.5 (0x3F000000)
+Actual result:   0.5 (0x3F000000)
+TEST PASSED
+
+
+Test: Smallest denormal
+Input double: 2.2250738585072e-308 (0x0010000000000000)
+Expected float: 1.17549435082229e-38 (0x00800000)
+Actual result:   0 (0x00000000)
+TEST PASSED
+
+
+Test: Subnormal to zero
+Input double: 9.99999999999997e-311 (0x000012688B70E62B)
+Expected float: 0 (0x00000000)
+Actual result:   0 (0x00000000)
+TEST PASSED
+
+
+Test: Positive infinity
+Input double: inf (0x7FF0000000000000)
+Expected float: inf (0x7F800000)
+Actual result:   inf (0x7F800000)
+TEST PASSED
+
+
+Test: Negative infinity
+Input double: -inf (0xFFF0000000000000)
+Expected float: -inf (0xFF800000)
+Actual result:   -inf (0xFF800000)
+TEST PASSED
+
+
+Test: NaN
+Input double: nan (0x7FF8000000000000)
+Expected float: nan (0x7FC00000)
+Actual result:   nan (0x7FC00000)
+TEST PASSED
+
+
+Test: Double max to infinity (Memory operand)
+Input double: 1.79769313486232e+308 (0x7FEFFFFFFFFFFFFF)
+Expected float: inf (0x7F800000)
+Actual result:   inf (0x7F800000)
+TEST PASSED
+
+
+Test: Large value to infinity (Memory operand)
+Input double: 1.23456789012346e+300 (0x7E3D7EE8BCBBD34C)
+Expected float: inf (0x7F800000)
+Actual result:   inf (0x7F800000)
+TEST PASSED
+

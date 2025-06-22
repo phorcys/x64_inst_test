@@ -1,0 +1,10 @@
+=== Testing vmovntdqa ===
+Testing vmovntdqa (128-bit):
+Before: src=[0x12345678, 0x87654321, 0xABCDEF01, 0x10FEDCBA]
+After:  dst=[0x12345678, 0x87654321, 0xABCDEF01, 0x10FEDCBA]
+  PASS: 128-bit vmovntdqa
+
+Testing vmovntdqa (256-bit):
+Before: src=[0x11111111, 0x22222222, 0x33333333, 0x44444444, 0x55555555, 0x66666666, 0x77777777, 0x88888888]
+After:  dst=[0x11111111, 0x22222222, 0x33333333, 0x44444444, 0x55555555, 0x66666666, 0x77777777, 0x88888888]
+  PASS: 256-bit vmovntdqa

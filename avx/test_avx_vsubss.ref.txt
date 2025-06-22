@@ -1,0 +1,50 @@
+Testing VSUBSS
+Test case 1:
+Input1: 1
+Input2: 0.5
+Result: 0.5
+Expected: 0.5
+
+Test case 2:
+Input1: 4
+Input2: 2
+Result: 2
+Expected: 2
+
+Test case 3:
+Input1: 1.5e+38
+Input2: 4.99999984e+37
+Result: 1.00000007e+38
+Expected: 9.99999968e+37
+
+Test case 4:
+Input1: 1.50000004e-38
+Input2: 4.99999968e-39
+Result: 1.00000008e-38
+Expected: 9.99999935e-39
+
+Test case 5:
+Input1: 0
+Input2: 0
+Result: 0
+Expected: 0
+
+Test case 6:
+Input1: -1
+Input2: 0.5
+Result: -1.5
+Expected: -1.5
+
+Test case 7:
+Input1: inf
+Input2: 1
+Result: inf
+Expected: inf
+
+Test case 8:
+Input1: nan
+Input2: 1
+Result: nan
+Expected: nan
+
+VSUBSS tests completed

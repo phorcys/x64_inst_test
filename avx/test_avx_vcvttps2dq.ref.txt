@@ -1,0 +1,112 @@
+============================
+VCVTTPS2DQ Instruction Tests
+============================
+
+VCVTTPS2DQ Test (Register Operand):
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+
+VCVTTPS2DQ Test (Memory Operand):
+  Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
+  Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
+  Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
+  Input: -20.2, Expected: 0xFFFFFFEC, Result: 0xFFFFFFEC - PASS
+  Input: 30.3, Expected: 0x0000001E, Result: 0x0000001E - PASS
+  Input: -30.3, Expected: 0xFFFFFFE2, Result: 0xFFFFFFE2 - PASS
+  Input: 40.4, Expected: 0x00000028, Result: 0x00000028 - PASS
+  Input: -40.4, Expected: 0xFFFFFFD8, Result: 0xFFFFFFD8 - PASS
+
+
+Testing with MXCSR rounding mode 0
+VCVTTPS2DQ Test (Register Operand):
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+
+VCVTTPS2DQ Test (Memory Operand):
+  Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
+  Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
+  Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
+  Input: -20.2, Expected: 0xFFFFFFEC, Result: 0xFFFFFFEC - PASS
+  Input: 30.3, Expected: 0x0000001E, Result: 0x0000001E - PASS
+  Input: -30.3, Expected: 0xFFFFFFE2, Result: 0xFFFFFFE2 - PASS
+  Input: 40.4, Expected: 0x00000028, Result: 0x00000028 - PASS
+  Input: -40.4, Expected: 0xFFFFFFD8, Result: 0xFFFFFFD8 - PASS
+
+
+Testing with MXCSR rounding mode 1
+VCVTTPS2DQ Test (Register Operand):
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+
+VCVTTPS2DQ Test (Memory Operand):
+  Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
+  Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
+  Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
+  Input: -20.2, Expected: 0xFFFFFFEC, Result: 0xFFFFFFEC - PASS
+  Input: 30.3, Expected: 0x0000001E, Result: 0x0000001E - PASS
+  Input: -30.3, Expected: 0xFFFFFFE2, Result: 0xFFFFFFE2 - PASS
+  Input: 40.4, Expected: 0x00000028, Result: 0x00000028 - PASS
+  Input: -40.4, Expected: 0xFFFFFFD8, Result: 0xFFFFFFD8 - PASS
+
+
+Testing with MXCSR rounding mode 2
+VCVTTPS2DQ Test (Register Operand):
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+
+VCVTTPS2DQ Test (Memory Operand):
+  Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
+  Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
+  Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
+  Input: -20.2, Expected: 0xFFFFFFEC, Result: 0xFFFFFFEC - PASS
+  Input: 30.3, Expected: 0x0000001E, Result: 0x0000001E - PASS
+  Input: -30.3, Expected: 0xFFFFFFE2, Result: 0xFFFFFFE2 - PASS
+  Input: 40.4, Expected: 0x00000028, Result: 0x00000028 - PASS
+  Input: -40.4, Expected: 0xFFFFFFD8, Result: 0xFFFFFFD8 - PASS
+
+
+Testing with MXCSR rounding mode 3
+VCVTTPS2DQ Test (Register Operand):
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+
+VCVTTPS2DQ Test (Memory Operand):
+  Input: 10.1, Expected: 0x0000000A, Result: 0x0000000A - PASS
+  Input: -10.1, Expected: 0xFFFFFFF6, Result: 0xFFFFFFF6 - PASS
+  Input: 20.2, Expected: 0x00000014, Result: 0x00000014 - PASS
+  Input: -20.2, Expected: 0xFFFFFFEC, Result: 0xFFFFFFEC - PASS
+  Input: 30.3, Expected: 0x0000001E, Result: 0x0000001E - PASS
+  Input: -30.3, Expected: 0xFFFFFFE2, Result: 0xFFFFFFE2 - PASS
+  Input: 40.4, Expected: 0x00000028, Result: 0x00000028 - PASS
+  Input: -40.4, Expected: 0xFFFFFFD8, Result: 0xFFFFFFD8 - PASS
+

@@ -1,0 +1,66 @@
+==================================
+VFMADD132SD Comprehensive Tests
+==================================
+
+Normal values (Register)
+  a=value (0x3ff0000000000000), b=value (0x3fe0000000000000), c=value (0x3ff0000000000000)
+    Expected: value (0x3ff8000000000000), Result: value (0x3ff8000000000000) - PASS
+
+Normal values (Memory)
+  a=value (0x3ff0000000000000), b=value (0x3fe0000000000000), c=value (0x3ff0000000000000)
+    Expected: value (0x3ff8000000000000), Result: value (0x3ff8000000000000) - PASS
+
+Zero values (a=0)
+  a=0.0 (0x0000000000000000), b=value (0x3ff0000000000000), c=value (0x3fb999999999999a)
+    Expected: value (0x3fb999999999999a), Result: value (0x3fb999999999999a) - PASS
+
+Zero values (a=-0)
+  a=-0.0 (0x8000000000000000), b=value (0x4000000000000000), c=value (0x3fc999999999999a)
+    Expected: value (0x3fc999999999999a), Result: value (0x3fc999999999999a) - PASS
+
+Infinity values (a=inf)
+  a=inf (0x7ff0000000000000), b=value (0x3ff0000000000000), c=value (0x3ff0000000000000)
+    Expected: inf (0x7ff0000000000000), Result: inf (0x7ff0000000000000) - PASS
+
+Infinity values (a=-inf)
+  a=-inf (0xfff0000000000000), b=value (0x3ff0000000000000), c=value (0x3ff0000000000000)
+    Expected: -inf (0xfff0000000000000), Result: -inf (0xfff0000000000000) - PASS
+
+NaN values (a=nan)
+  a=nan (0x7ff8000000000000), b=value (0x3ff0000000000000), c=value (0x3ff0000000000000)
+    Expected: nan (0x7ff8000000000000), Result: nan (0x7ff8000000000000) - PASS
+
+NaN values (b=nan)
+  a=value (0x3ff0000000000000), b=nan (0x7ff8000000000000), c=value (0x4000000000000000)
+    Expected: nan (0x7ff8000000000000), Result: nan (0x7ff8000000000000) - PASS
+
+Boundary values (min)
+  a=value (0x0010000000000000), b=value (0x4000000000000000), c=value (0x0010000000000000)
+    Expected: value (0x0028000000000000), Result: value (0x0028000000000000) - PASS
+
+Boundary values (max)
+  a=value (0x7fefffffffffffff), b=value (0x3fe0000000000000), c=value (0x7fefffffffffffff)
+    Expected: inf (0x7ff0000000000000), Result: inf (0x7ff0000000000000) - PASS
+
+Mixed special values (inf, nan)
+  a=inf (0x7ff0000000000000), b=nan (0x7ff8000000000000), c=0.0 (0x0000000000000000)
+    Expected: nan (0x7ff8000000000000), Result: nan (0x7ff8000000000000) - PASS
+
+Mixed special values (nan, inf)
+  a=nan (0x7ff8000000000000), b=inf (0x7ff0000000000000), c=value (0x3ff0000000000000)
+    Expected: nan (0x7ff8000000000000), Result: nan (0x7ff8000000000000) - PASS
+
+Mixed special values (0, inf)
+  a=0.0 (0x0000000000000000), b=inf (0x7ff0000000000000), c=0.0 (0x0000000000000000)
+    Expected: nan (0x7ff8000000000000), Result: nan (0xfff8000000000000) - PASS
+
+Mixed special values (inf, 0)
+  a=inf (0x7ff0000000000000), b=0.0 (0x0000000000000000), c=value (0x3ff0000000000000)
+    Expected: nan (0x7ff8000000000000), Result: nan (0xfff8000000000000) - PASS
+
+Very small values
+  a=value (0x000730d67819e8d2), b=value (0x4000000000000000), c=value (0x000730d67819e8d2)
+    Expected: value (0x00159283684dba76), Result: value (0x00159283684dba76) - PASS
+
+VFMADD132SD Tests: ALL PASS
+
