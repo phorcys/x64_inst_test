@@ -243,6 +243,9 @@ static void test_256bit_reg_reg_operand() {
         print_double_vec("B     :", cases_256[t].b, 4);
         print_double_vec("C     :", cases_256[t].c, 4);
         print_double_vec("Result:", res, 4);
+        print_double_vec_hex("A     :", cases_256[t].a, 4);
+        print_double_vec_hex("B     :", cases_256[t].b, 4);
+        print_double_vec_hex("C     :", cases_256[t].c, 4);
         print_double_vec_hex("Result:", res, 4);
         printf("\n");
     }
@@ -272,6 +275,9 @@ static void test_128bit_reg_reg_operand() {
         print_double_vec("B     :", cases_128[t].b, 2);
         print_double_vec("C     :", cases_128[t].c, 2);
         print_double_vec("Result:", res, 2);
+        print_double_vec_hex("A     :", cases_128[t].a, 2);
+        print_double_vec_hex("B     :", cases_128[t].b, 2);
+        print_double_vec_hex("C     :", cases_128[t].c, 2);
         print_double_vec_hex("Result:", res, 2);
         printf("\n");
     }
