@@ -238,6 +238,7 @@ static void test_256bit_reg_reg_operand() {
         
         double res[4];
         _mm256_storeu_pd(res, va);
+        printf("Test Case: %s\n", cases_256[t].desc);
         print_double_vec("A     :", cases_256[t].a, 4);
         print_double_vec("B     :", cases_256[t].b, 4);
         print_double_vec("C     :", cases_256[t].c, 4);
@@ -265,6 +266,7 @@ static void test_128bit_reg_reg_operand() {
         double res[2];
         _mm_storeu_pd(res, va);
         
+        printf("Test Case: %s\n", cases_128[t].desc);
         print_double_vec("A     :", cases_128[t].a, 2);
         print_double_vec("B     :", cases_128[t].b, 2);
         print_double_vec("C     :", cases_128[t].c, 2);
