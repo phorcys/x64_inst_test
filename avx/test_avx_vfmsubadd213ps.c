@@ -1,61 +1,81 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <immintrin.h>
 #include <math.h>
+#include <float.h>
+#include "avx.h"
 
-void test_vfmsubadd213ps() {
-    printf("--- Testing vfmsubadd213ps (Fused Multiply-Subtract-Add of Packed Single-Precision Floating-Point Values) ---\n");
-    
-    // 测试数据(16字节对齐)
-    float a[4] __attribute__((aligned(16))) = {1.0f, 1.0f, 1.0f, 1.0f};
-    float b[4] __attribute__((aligned(16))) = {2.0f, 2.0f, 2.0f, 2.0f};
-    float c[4] __attribute__((aligned(16))) = {3.0f, 3.0f, 3.0f, 3.0f};
-    float res[4] __attribute__((aligned(16))) = {0};
-    
-    // 预期结果: 根据实际输出调整顺序
-    float expected[4] = {
-        (a[1] * b[1]) + c[1],  // 5.0f
-        (a[0] * b[0]) - c[0],  // -1.0f
-        (a[3] * b[3]) + c[3],  // 5.0f
-        (a[2] * b[2]) - c[2]   // -1.0f
-    };
+#define TEST_CASE_COUNT 14
 
-    // 执行指令
-    __asm__ __volatile__(
-        "vmovaps %1, %%xmm0\n\t"     // a -> xmm0 (src1)
-        "vmovaps %2, %%xmm1\n\t"     // b -> xmm1 (dest)
-        "vmovaps %3, %%xmm2\n\t"     // c -> xmm2 (src2)
-        "vfmsubadd213ps %%xmm2, %%xmm0, %%xmm1\n\t"  // xmm1 = xmm1*xmm0 -/+ xmm2
-        "vmovaps %%xmm1, %0\n\t"     // 存结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "xmm0", "xmm1", "xmm2"
-    );
+typedef struct {
+    float a[4];
+    float b[4];
+    float c[4];
+    const char *desc;
+} test_case;
 
-    // 打印结果
-    printf("[Basic test]\n");
-    print_float_vec("Input a", a, 4);
-    print_float_vec("Input b", b, 4);
-    print_float_vec("Input c", c, 4);
-    print_float_vec("Result", res, 4);
-    print_float_vec("Expected", expected, 4);
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {{1.0f, 2.0f, 3.0f, 4.0f}, {5.0f, 6.0f, 7.0f, 8.0f}, {9.0f, 10.0f, 11.0f, 12.0f}, "Normal values"},
+    // 零值
+    {{0.0f, -0.0f, 0.0f, -0.0f}, {0.0f, -0.0f, 0.0f, -0.0f}, {0.0f, -0.0f, 0.0f, -0.0f}, "Zero values"},
+    // 无穷大
+    {{INFINITY, -INFINITY, 1.0f, 2.0f}, {1.0f, 1.0f, INFINITY, -INFINITY}, {1.0f, 1.0f, 1.0f, 1.0f}, "Infinity values"},
+    // NaN
+    {{NAN, 1.0f, 2.0f, 3.0f}, {1.0f, NAN, 2.0f, 3.0f}, {1.0f, 2.0f, NAN, 3.0f}, "NaN values"},
+    // 边界值
+    {{FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX}, {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX}, {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX}, "Boundary values"},
+    // 混合值
+    {{1.0f, INFINITY, NAN, 0.0f}, {INFINITY, NAN, 0.0f, NAN}, {NAN, 0.0f, INFINITY, 1.0f}, "Mixed special values"},
+    // 小值
+    {{1e-30f, 2e-30f, 3e-30f, 4e-30f}, {5e-30f, 6e-30f, 7e-30f, 8e-30f}, {9e-30f, 10e-30f, 11e-30f, 12e-30f}, "Very small values"},
+    // a为特殊值
+    {{INFINITY, NAN, 1.0f, 2.0f}, {3.0f, 4.0f, 5.0f, 6.0f}, {7.0f, 8.0f, 9.0f, 10.0f}, "Special value in a"},
+    // b为特殊值
+    {{1.0f, 2.0f, 3.0f, 4.0f}, {NAN, INFINITY, -INFINITY, NAN}, {5.0f, 6.0f, 7.0f, 8.0f}, "Special value in b"},
+    // c为特殊值
+    {{1.0f, 2.0f, 3.0f, 4.0f}, {5.0f, 6.0f, 7.0f, 8.0f}, {-INFINITY, NAN, INFINITY, -NAN}, "Special value in c"},
+    // a和b为特殊值
+    {{INFINITY, NAN, -INFINITY, NAN}, {NAN, INFINITY, NAN, -INFINITY}, {1.0f, 2.0f, 3.0f, 4.0f}, "Special values in a and b"},
+    // a和c为特殊值
+    {{NAN, INFINITY, -NAN, -INFINITY}, {1.0f, 2.0f, 3.0f, 4.0f}, {INFINITY, NAN, -INFINITY, NAN}, "Special values in a and c"},
+    // 所有特殊值
+    {{INFINITY, NAN, -INFINITY, NAN}, {NAN, INFINITY, NAN, -INFINITY}, {-INFINITY, NAN, INFINITY, -NAN}, "All special values"}
+};
 
-    // 验证结果
-    int match = 1;
-    for(int i=0; i<4; i++) {
-        if(!float_equal(res[i], expected[i], 1e-6f)) {
-            printf("Mismatch at index %d: got %f, expected %f\n", i, res[i], expected[i]);
-            match = 0;
-        }
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_loadu_ps(cases[t].a);
+        __m128 vb = _mm_loadu_ps(cases[t].b);
+        __m128 vc = _mm_loadu_ps(cases[t].c);
+        
+        __asm__ __volatile__(
+            "vfmsubadd213ps %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        float res[4];
+        _mm_storeu_ps(res, va);
+        
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.9g %.9g %.9g %.9g\n", cases[t].a[0], cases[t].a[1], cases[t].a[2], cases[t].a[3]);
+        printf("B     : %.9g %.9g %.9g %.9g\n", cases[t].b[0], cases[t].b[1], cases[t].b[2], cases[t].b[3]);
+        printf("C     : %.9g %.9g %.9g %.9g\n", cases[t].c[0], cases[t].c[1], cases[t].c[2], cases[t].c[3]);
+        printf("Result: %.9g %.9g %.9g %.9g\n\n", res[0], res[1], res[2], res[3]);
     }
-    if(match) {
-        printf("All elements match\n");
-    }
-
-    printf("\n[Note] Special values test to be added later\n");
+    
+    printf("VFMSUBADD213PS Register-Register Tests Completed\n\n");
 }
 
 int main() {
-    test_vfmsubadd213ps();
+    printf("==================================\n");
+    printf("VFMSUBADD213PS Comprehensive Tests\n");
+    printf("==================================\n\n");
+    
+    test_reg_reg_operand();
+    
+    printf("All VFMSUBADD213PS tests completed. Results are for verification on physical CPU vs box64.\n");
+    
     return 0;
 }

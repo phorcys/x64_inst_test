@@ -1,89 +1,283 @@
-#include "avx.h"
 #include <stdio.h>
+#include <stdint.h>
+#include <immintrin.h>
+#include <math.h>
+#include <float.h>
+#include "avx.h"
 
-// vfnmadd132ps指令测试
-void test_vfnmadd132ps() {
-    printf("=== Testing vfnmadd132ps ===\n");
-    
-    // 测试128位版本
+#define TEST_CASE_COUNT 14
+
+typedef struct {
+    float a[8];
+    float b[8];
+    float c[8];
+    const char *desc;
+} test_case_256;
+
+test_case_256 cases_256[TEST_CASE_COUNT] = {
+    // 正常值
     {
-        __m128 dst = _mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f);
-        __m128 src1 = _mm_set_ps(2.0f, 3.0f, 4.0f, 5.0f);
-        __m128 src2 = _mm_set_ps(0.5f, 1.5f, 2.5f, 3.5f);
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+        "Normal values (256-bit)"
+    },
+    // 零值
+    {
+        {0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+        "Zero values (256-bit)"
+    },
+    // 无穷大
+    {
+        {INFINITY, -INFINITY, 1.0f, 2.0f, INFINITY, -INFINITY, 1.0f, 2.0f},
+        {1.0f, 1.0f, INFINITY, -INFINITY, 1.0f, 1.0f, INFINITY, -INFINITY},
+        {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
+        "Infinity values (256-bit)"
+    },
+    // NaN
+    {
+        {NAN, 1.0f, 2.0f, 3.0f, NAN, 1.0f, 2.0f, 3.0f},
+        {1.0f, NAN, 2.0f, 3.0f, 1.0f, NAN, 2.0f, 3.0f},
+        {1.0f, 2.0f, NAN, 3.0f, 1.0f, 2.0f, NAN, 3.0f},
+        "NaN values (256-bit)"
+    },
+    // 边界值
+    {
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX, FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        {2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f},
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX, FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        "Boundary values (256-bit)"
+    },
+    // 混合值
+    {
+        {1.0f, INFINITY, NAN, 0.0f, 1.0f, INFINITY, NAN, 0.0f},
+        {INFINITY, NAN, 0.0f, NAN, INFINITY, NAN, 0.0f, NAN},
+        {NAN, 0.0f, INFINITY, 1.0f, NAN, 0.0f, INFINITY, 1.0f},
+        "Mixed special values (256-bit)"
+    },
+    // 小值
+    {
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f, 1e-30f, 2e-30f, 3e-30f, 4e-30f},
+        {2.0f, 3.0f, 4.0f, 5.0f, 2.0f, 3.0f, 4.0f, 5.0f},
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f, 1e-30f, 2e-30f, 3e-30f, 4e-30f},
+        "Very small values (256-bit)"
+    },
+    // a为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN, INFINITY, -INFINITY, NAN, -NAN},
+        {2.0f, 3.0f, 4.0f, 5.0f, 2.0f, 3.0f, 4.0f, 5.0f},
+        {1.0f, 2.0f, 3.0f, 4.0f, 1.0f, 2.0f, 3.0f, 4.0f},
+        "Special values in a (256-bit)"
+    },
+    // b为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f, 1.0f, 2.0f, 3.0f, 4.0f},
+        {INFINITY, -INFINITY, NAN, -NAN, INFINITY, -INFINITY, NAN, -NAN},
+        {5.0f, 6.0f, 7.0f, 8.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        "Special values in b (256-bit)"
+    },
+    // c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f, 1.0f, 2.0f, 3.0f, 4.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {INFINITY, -INFINITY, NAN, -NAN, INFINITY, -INFINITY, NAN, -NAN},
+        "Special values in c (256-bit)"
+    },
+    // a和b为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN, INFINITY, -INFINITY, NAN, -NAN},
+        {NAN, 0.0f, INFINITY, -INFINITY, NAN, 0.0f, INFINITY, -INFINITY},
+        {1.0f, 2.0f, 3.0f, 4.0f, 1.0f, 2.0f, 3.0f, 4.0f},
+        "Special values in a and b (256-bit)"
+    },
+    // a和c为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN, INFINITY, -INFINITY, NAN, -NAN},
+        {1.0f, 2.0f, 3.0f, 4.0f, 1.0f, 2.0f, 3.0f, 4.0f},
+        {NAN, 0.0f, INFINITY, -INFINITY, NAN, 0.0f, INFINITY, -INFINITY},
+        "Special values in a and c (256-bit)"
+    },        
+    // b和c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f, 1.0f, 2.0f, 3.0f, 4.0f},
+        {INFINITY, -INFINITY, NAN, -NAN, INFINITY, -INFINITY, NAN, -NAN},
+        {NAN, 0.0f, INFINITY, -INFINITY, NAN, 0.0f, INFINITY, -INFINITY},
+        "Special values in b and c (256-bit)"
+    },                
+    // 所有特殊值
+    {
+        {INFINITY, -INFINITY, NAN, 0.0f, INFINITY, -INFINITY, NAN, 0.0f},
+        {-NAN, 0.0f, INFINITY, -INFINITY, -NAN, 0.0f, INFINITY, -INFINITY},
+        {INFINITY, -INFINITY, NAN, 0.0f, INFINITY, -INFINITY, NAN, 0.0f},
+        "All special values (256-bit)"
+    }
+};
+
+typedef struct {
+    float a[4];
+    float b[4];
+    float c[4];
+    const char *desc;
+} test_case128;
+
+test_case128 cases_128[TEST_CASE_COUNT] = {
+    // 正常值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f},
+        "Normal values (128-bit)"
+    },
+    // 零值
+    {
+        {0.0f, -0.0f, 0.0f, -0.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f},
+        "Zero values (128-bit)"
+    },
+    // 无穷大
+    {
+        {INFINITY, -INFINITY, 1.0f, 2.0f},
+        {1.0f, 1.0f, INFINITY, -INFINITY},
+        {1.0f, 1.0f, 1.0f, 1.0f},
+        "Infinity values (128-bit)"
+    },
+    // NaN
+    {
+        {NAN, 1.0f, 2.0f, 3.0f},
+        {1.0f, NAN, 2.0f, 3.0f},
+        {1.0f, 2.0f, NAN, 3.0f},
+        "NaN values (128-bit)"
+    },
+    // 边界值
+    {
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        {2.0f, 2.0f, 2.0f, 2.0f},
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        "Boundary values (128-bit)"
+    },
+    // 混合值
+    {
+        {1.0f, INFINITY, NAN, 0.0f},
+        {INFINITY, NAN, 0.0f, NAN},
+        {NAN, 0.0f, INFINITY, 1.0f},
+        "Mixed special values (128-bit)"
+    },
+    // 小值
+    {
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f},
+        {2.0f, 3.0f, 4.0f, 5.0f},
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f},
+        "Very small values (128-bit)"
+    },
+    // a为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {2.0f, 3.0f, 4.0f, 5.0f},
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        "Special values in a (128-bit)"
+    },
+    // b为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {5.0f, 6.0f, 7.0f, 8.0f},
+        "Special values in b (128-bit)"
+    },
+    // c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {3.0f, 4.0f, 5.0f, 6.0f},
+        {INFINITY, -INFINITY, NAN, -NAN},
+        "Special values in c (128-bit)"
+    },
+    // a和b为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {NAN, 0.0f, INFINITY, -INFINITY},
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        "Special values in a and b (128-bit)"
+    },
+    // a和c为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {NAN, 0.0f, INFINITY, -INFINITY},
+        "Special values in a and c (128-bit)"
+    },
+    // b和c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {NAN, 0.0f, INFINITY, -INFINITY},
+        "Special values in b and c (128-bit)"
+    },
+    // 所有特殊值
+    {
+        {INFINITY, -INFINITY, NAN, 0.0f},
+        {-NAN, 0.0f, INFINITY, -INFINITY},
+        {INFINITY, -INFINITY, NAN, 0.0f},
+        "All special values (128-bit)"
+    }
+};
+
+static void test_256bit_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m256 va = _mm256_loadu_ps(cases_256[t].a);
+        __m256 vb = _mm256_loadu_ps(cases_256[t].b);
+        __m256 vc = _mm256_loadu_ps(cases_256[t].c);
         
-        __m128 result;
-        asm volatile (
-            "vmovaps %1, %%xmm0\n\t"
-            "vmovaps %2, %%xmm1\n\t"
-            "vmovaps %3, %%xmm2\n\t"
-            "vfnmadd132ps %%xmm1, %%xmm2, %%xmm0\n\t"
-            "vmovaps %%xmm0, %0\n\t"
-            : "=x"(result)
-            : "x"(dst), "x"(src1), "x"(src2)
-            : "xmm0", "xmm1", "xmm2"
+        __asm__ __volatile__(
+            "vfnmadd132ps %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
         
-        print_vector128("128-bit result", result);
-        
-        float expected[4];
-        for (int i = 0; i < 4; i++) {
-            expected[i] = -(dst[i] * src1[i]) + src2[i];
-        }
-        print_float_vec("128-bit expected", expected, 4);
+        float res[8];
+        _mm256_storeu_ps(res, va);
+        print_float_vec("A     :", cases_256[t].a, 8);
+        print_float_vec("B     :", cases_256[t].b, 8);
+        print_float_vec("C     :", cases_256[t].c, 8);
+        print_float_vec("Result:", res, 8);
+        printf("\n");
     }
     
-    // 测试256位版本
-    {
-        __m256 dst = _mm256_set_ps(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f);
-        __m256 src1 = _mm256_set_ps(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f);
-        __m256 src2 = _mm256_set_ps(0.5f, 1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f);
+    printf("VFNMADD132PS 256-bit Register-Register Tests Completed\n\n");
+}
+
+static void test_128bit_reg_reg_operand() {
+    printf("=================================\n");
+    printf("VFNMADD132PS 128-bit Tests\n");
+    printf("=================================\n\n");
+    
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_loadu_ps(cases_128[t].a);
+        __m128 vb = _mm_loadu_ps(cases_128[t].b);
+        __m128 vc = _mm_loadu_ps(cases_128[t].c);
         
-        __m256 result;
-        asm volatile (
-            "vmovaps %1, %%ymm0\n\t"
-            "vmovaps %2, %%ymm1\n\t"
-            "vmovaps %3, %%ymm2\n\t"
-            "vfnmadd132ps %%ymm1, %%ymm2, %%ymm0\n\t"
-            "vmovaps %%ymm0, %0\n\t"
-            : "=x"(result)
-            : "x"(dst), "x"(src1), "x"(src2)
-            : "ymm0", "ymm1", "ymm2"
+        __asm__ __volatile__(
+            "vfnmadd132ps %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
         
-        print_vector256("256-bit result", result);
+        float res[4];
+        _mm_storeu_ps(res, va);
         
-        float expected[8];
-        for (int i = 0; i < 8; i++) {
-            expected[i] = -(dst[i] * src1[i]) + src2[i];
-        }
-        print_float_vec("256-bit expected", expected, 8);
+        print_float_vec("A     :", cases_128[t].a, 4);
+        print_float_vec("B     :", cases_128[t].b, 4);
+        print_float_vec("C     :", cases_128[t].c, 4);
+        print_float_vec("Result:", res, 4);
+        printf("\n");
     }
     
-    // 测试特殊值(NaN, Inf)
-    {
-        __m128 dst = _mm_set_ps(INFINITY, -INFINITY, NAN, 0.0f);
-        __m128 src1 = _mm_set_ps(1.0f, -1.0f, 1.0f, 0.0f);
-        __m128 src2 = _mm_set_ps(1.0f, 1.0f, 1.0f, 1.0f);
-        
-        __m128 result;
-        asm volatile (
-            "vmovaps %1, %%xmm0\n\t"
-            "vmovaps %2, %%xmm1\n\t"
-            "vmovaps %3, %%xmm2\n\t"
-            "vfnmadd132ps %%xmm1, %%xmm2, %%xmm0\n\t"
-            "vmovaps %%xmm0, %0\n\t"
-            : "=x"(result)
-            : "x"(dst), "x"(src1), "x"(src2)
-            : "xmm0", "xmm1", "xmm2"
-        );
-        
-        print_vector128("Special values result", result);
-    }
-    
-    printf("\n");
+    printf("VFNMADD132PS 128-bit Register-Register Tests Completed\n\n");
 }
 
 int main() {
-    test_vfnmadd132ps();
+    test_256bit_reg_reg_operand();
+    test_128bit_reg_reg_operand();
     return 0;
 }

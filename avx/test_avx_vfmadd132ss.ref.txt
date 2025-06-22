@@ -1,56 +1,177 @@
-=============================
+==================================
 VFMADD132SS Comprehensive Tests
-=============================
+==================================
 
-Normal values (Register-Register):
-  a=value (0x3f800000), b=value (0x3f000000), c=value (0x3f800000)
-    Expected: value (0x3fc00000), Result: value (0x3fc00000) - PASS
+Test Case: Normal values
+A     : 1
+B     : 2
+C     : 3
+Result: 5
 
-Normal values (Register-Memory):
-  a=value (0x3f800000), b=value (0x3f000000), c=value (0x3f800000)
-    Expected: value (0x3fc00000), Result: value (0x3fc00000) - PASS
+Test Case: Zero values
+A     : 0
+B     : -0
+C     : 0
+Result: 0
 
-Zero values (a=0):
-  a=0.0 (0x00000000), b=value (0x3f800000), c=value (0x3dcccccd)
-    Expected: value (0x3dcccccd), Result: value (0x3dcccccd) - PASS
+Test Case: Infinity values
+A     : inf
+B     : -inf
+C     : 1
+Result: -inf
 
-Zero values (a=-0):
-  a=0.0 (0x80000000), b=value (0x40000000), c=value (0x3e4ccccd)
-    Expected: value (0x3e4ccccd), Result: value (0x3e4ccccd) - PASS
+Test Case: NaN values
+A     : nan
+B     : 1
+C     : 2
+Result: nan
 
-Infinity values (a=inf):
-  a=inf (0x7f800000), b=value (0x3f800000), c=value (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
+Test Case: Boundary values
+A     : 1.17549435e-38
+B     : 3.40282347e+38
+C     : -1.17549435e-38
+Result: 3.99999976
 
-Infinity values (a=-inf):
-  a=-inf (0xff800000), b=value (0x3f800000), c=value (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
+Test Case: Mixed special values
+A     : 1
+B     : inf
+C     : nan
+Result: nan
 
-NaN values (a=nan):
-  a=nan (0xffc00000), b=value (0x3f800000), c=value (0x3f800000)
-    Expected: nan (0xffc00000), Result: nan (0xffc00000) - PASS
+Test Case: Very small values
+A     : 1e-30
+B     : 2.00000001e-30
+C     : 3.00000001e-30
+Result: 3.00000001e-30
 
-NaN values (b=nan):
-  a=value (0x3f800000), b=nan (0xffc00000), c=value (0x40000000)
-    Expected: nan (0xffc00000), Result: nan (0xffc00000) - PASS
+Test Case: Special value in a
+A     : inf
+B     : 2
+C     : 3
+Result: inf
 
-Boundary values (min normal):
-  a=value (0x00800000), b=value (0x40000000), c=value (0x00800000)
-    Expected: value (0x01400000), Result: value (0x01400000) - PASS
+Test Case: Special value in b
+A     : 1
+B     : nan
+C     : 2
+Result: nan
 
-Boundary values (max float):
-  a=value (0x7f7fffff), b=value (0x40000000), c=value (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
+Test Case: Special value in c
+A     : 1
+B     : 2
+C     : -inf
+Result: -inf
 
-Mixed special values (a=inf, b=nan):
-  a=inf (0x7f800000), b=nan (0xffc00000), c=0.0 (0x00000000)
-    Expected: nan (0xffc00000), Result: nan (0xffc00000) - PASS
+Test Case: Special values in a and b
+A     : inf
+B     : nan
+C     : 1
+Result: nan
 
-Mixed special values (a=nan, b=inf):
-  a=nan (0xffc00000), b=inf (0x7f800000), c=value (0x3f800000)
-    Expected: nan (0xffc00000), Result: nan (0xffc00000) - PASS
+Test Case: Special values in a and c
+A     : nan
+B     : 1
+C     : inf
+Result: nan
 
-Very small values:
-  a=value (0x0da24260), b=value (0x40000000), c=value (0x0da24260)
-    Expected: value (0x0e736390), Result: value (0x0e736390) - PASS
+Test Case: All special values
+A     : inf
+B     : nan
+C     : -inf
+Result: nan
 
+Test Case: (null)
+A     : 0
+B     : 0
+C     : 0
+Result: 0
+
+VFMADD132SS Register-Register Tests Completed
+
+Memory Operand Test: Normal values
+A     : 1
+B     : 2
+C     : 3
+Result: 5
+
+Memory Operand Test: Zero values
+A     : 0
+B     : -0
+C     : 0
+Result: 0
+
+Memory Operand Test: Infinity values
+A     : inf
+B     : -inf
+C     : 1
+Result: -inf
+
+Memory Operand Test: NaN values
+A     : nan
+B     : 1
+C     : 2
+Result: nan
+
+Memory Operand Test: Boundary values
+A     : 1.17549435e-38
+B     : 3.40282347e+38
+C     : -1.17549435e-38
+Result: 3.99999976
+
+Memory Operand Test: Mixed special values
+A     : 1
+B     : inf
+C     : nan
+Result: nan
+
+Memory Operand Test: Very small values
+A     : 1e-30
+B     : 2.00000001e-30
+C     : 3.00000001e-30
+Result: 3.00000001e-30
+
+Memory Operand Test: Special value in a
+A     : inf
+B     : 2
+C     : 3
+Result: inf
+
+Memory Operand Test: Special value in b
+A     : 1
+B     : nan
+C     : 2
+Result: nan
+
+Memory Operand Test: Special value in c
+A     : 1
+B     : 2
+C     : -inf
+Result: -inf
+
+Memory Operand Test: Special values in a and b
+A     : inf
+B     : nan
+C     : 1
+Result: nan
+
+Memory Operand Test: Special values in a and c
+A     : nan
+B     : 1
+C     : inf
+Result: nan
+
+Memory Operand Test: All special values
+A     : inf
+B     : nan
+C     : -inf
+Result: nan
+
+Memory Operand Test: (null)
+A     : 0
+B     : 0
+C     : 0
+Result: 0
+
+VFMADD132SS Register-Memory Tests Completed
+
+All VFMADD132SS tests completed. Results are for verification on physical CPU vs box64.

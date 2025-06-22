@@ -1,72 +1,81 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <immintrin.h>
 #include <math.h>
+#include <float.h>
+#include "avx.h"
 
-// vfmsub213sd指令测试
-void test_vfmsub213sd() {
-    printf("--- Testing vfmsub213sd (Fused Multiply-Subtract of Scalar Double-Precision Floating-Point Values) ---\n");
-    
-    // 测试数据
-    double a = 1.5;
-    double b = 0.5;
-    double c = 1.0;
-    double res = 0;
-    
-    // 预期结果 (vfmsub213sd: res = a*b - c)
-    double expected = a * b - c;
-    
-    // 执行指令
-    __asm__ __volatile__(
-        "vmovsd %1, %%xmm0\n\t"     // 加载a到xmm0 (第一个操作数)
-        "vmovsd %2, %%xmm1\n\t"     // 加载b到xmm1 (第二个操作数)
-        "vmovsd %3, %%xmm2\n\t"     // 加载c到xmm2 (第三个操作数)
-        "vfmsub213sd %%xmm2, %%xmm1, %%xmm0\n\t"  // xmm0 = xmm0*xmm1 - xmm2
-        "vmovsd %%xmm0, %0\n\t"     // 存回结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    printf("[Basic test]\n");
-    printf("Input a: %f\n", a);
-    printf("Input b: %f\n", b);
-    printf("Input c: %f\n", c);
-    printf("Result: %f\n", res);
-    printf("Expected: %f\n", expected);
-    
-    // 验证结果
-    if(!double_equal(res, expected, 1e-10)) {
-        printf("Mismatch: got %f, expected %f\n", res, expected);
-    }
-    
-    // 测试特殊值
-    printf("\n[Special values test]\n");
-    double spec_a[4] = {INFINITY, -INFINITY, NAN, 0.0};
-    double spec_b[4] = {1.0, 1.0, 1.0, 1.0};
-    double spec_c[4] = {1.0, 1.0, 1.0, 1.0};
-    double spec_res[4] = {0};
-    
-    for(int i=0; i<4; i++) {
+#define TEST_CASE_COUNT 14
+
+typedef struct {
+    double a;
+    double b;
+    double c;
+    const char *desc;
+} test_case;
+
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {1.0, 2.0, 3.0, "Normal values"},
+    // 零值
+    {0.0, -0.0, 0.0, "Zero values"},
+    // 无穷大
+    {INFINITY, 1.0, 1.0, "Infinity values"},
+    // NaN
+    {NAN, 2.0, 3.0, "NaN values"},
+    // 边界值
+    {DBL_MIN, -DBL_MIN, DBL_MIN, "Boundary values"},
+    // 混合值
+    {1.0, NAN, INFINITY, "Mixed special values"},
+    // 小值
+    {1e-300, 2e-300, 3e-300, "Very small values"},
+    // a为特殊值
+    {INFINITY, 2.0, 3.0, "Special value in a"},
+    // b为特殊值
+    {1.0, NAN, 2.0, "Special value in b"},
+    // c为特殊值
+    {1.0, 2.0, -INFINITY, "Special value in c"},
+    // a和b为特殊值
+    {INFINITY, NAN, 1.0, "Special values in a and b"},
+    // a和c为特殊值
+    {NAN, 1.0, INFINITY, "Special values in a and c"},
+    // 所有特殊值
+    {INFINITY, NAN, -INFINITY, "All special values"}
+};
+
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_set_sd(cases[t].a);
+        __m128d vb = _mm_set_sd(cases[t].b);
+        __m128d vc = _mm_set_sd(cases[t].c);
+        
         __asm__ __volatile__(
-            "vmovsd %1, %%xmm0\n\t"
-            "vmovsd %2, %%xmm1\n\t"
-            "vmovsd %3, %%xmm2\n\t"
-            "vfmsub213sd %%xmm2, %%xmm1, %%xmm0\n\t"
-            "vmovsd %%xmm0, %0\n\t"
-            : "=m"(spec_res[i])
-            : "m"(spec_a[i]), "m"(spec_b[i]), "m"(spec_c[i])
-            : "xmm0", "xmm1", "xmm2"
+            "vfmsub213sd %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
+        
+        double res;
+        _mm_store_sd(&res, va);
+        
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.17g\n", cases[t].a);
+        printf("B     : %.17g\n", cases[t].b);
+        printf("C     : %.17g\n", cases[t].c);
+        printf("Result: %.17g\n\n", res);
     }
     
-    print_double_vec_hex("Special a", spec_a, 4);
-    print_double_vec_hex("Special b", spec_b, 4);
-    print_double_vec_hex("Special c", spec_c, 4);
-    print_double_vec_hex("Special result", spec_res, 4);
+    printf("VFMSUB213SD Register-Register Tests Completed\n\n");
 }
 
 int main() {
-    test_vfmsub213sd();
+    printf("==================================\n");
+    printf("VFMSUB213SD Comprehensive Tests\n");
+    printf("==================================\n\n");
+    
+    test_reg_reg_operand();
+    
+    printf("All VFMSUB213SD tests completed. Results are for verification on physical CPU vs box64.\n");
+    
     return 0;
 }

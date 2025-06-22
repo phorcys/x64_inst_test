@@ -1,88 +1,111 @@
-#include "avx.h"
 #include <stdio.h>
+#include <stdint.h>
+#include <immintrin.h>
+#include <math.h>
+#include <float.h>
+#include "avx.h"
 
-// vfnmsub213ss - Fused Negative Multiply-Subtract of Scalar Single-Precision Floating-Point Values
-// Performs: -(a*b) - c
-// Forms: VFNMSUB213SS xmm1, xmm2, xmm3/m32
+#define TEST_CASE_COUNT 14
 
-static void test_vfnmsub213ss() {
-    printf("Testing vfnmsub213ss\n");
-    
-    // Test case 1: Basic operation
-    {
-        float a = 1.0f;
-        float b = 2.0f;
-        float c = 3.0f;
-        float res;
+typedef struct {
+    float a;
+    float b;
+    float c;
+    const char *desc;
+} test_case;
+
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {1.0f, 5.0f, 9.0f, "Normal values"},
+    // 零值
+    {0.0f, 5.0f, 9.0f, "Zero values"},
+    // 无穷大
+    {INFINITY, 1.0f, 1.0f, "Infinity values"},
+    // NaN
+    {NAN, 1.0f, 2.0f, "NaN values"},
+    // 边界值
+    {FLT_MIN, 2.0f, FLT_MIN, "Boundary values"},
+    // 混合值
+    {1.0f, INFINITY, NAN, "Mixed special values"},
+    // 小值
+    {1e-30f, 2.0f, 1e-30f, "Very small values"},
+    // a为特殊值
+    {INFINITY, 2.0f, 1.0f, "Special values in a"},
+    // b为特殊值
+    {1.0f, INFINITY, 5.0f, "Special values in b"},
+    // c为特殊值
+    {1.0f, 5.0f, INFINITY, "Special values in c"},
+    // a和b为特殊值
+    {INFINITY, NAN, 1.0f, "Special values in a and b"},
+    // a和c为特殊值
+    {INFINITY, 1.0f, NAN, "Special values in a and c"},
+    // b和c为特殊值
+    {1.0f, INFINITY, NAN, "Special values in b and c"},
+    // 所有特殊值
+    {INFINITY, NAN, INFINITY, "All special values"}
+};
+
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_set_ss(cases[t].a);
+        __m128 vb = _mm_set_ss(cases[t].b);
+        __m128 vc = _mm_set_ss(cases[t].c);
         
         __asm__ __volatile__(
-            "vmovss %1, %%xmm0\n\t"
-            "vmovss %2, %%xmm1\n\t"
-            "vmovss %3, %%xmm2\n\t"
-            "vfnmsub213ss %%xmm2, %%xmm1, %%xmm0\n\t"
-            "vmovss %%xmm0, %0\n\t"
-            : "=m"(res)
-            : "m"(a), "m"(b), "m"(c)
-            : "xmm0", "xmm1", "xmm2"
+            "vfnmsub213ss %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
         
-        printf("Test 1: -(a*b) - c\n");
-        printf("a: %f\n", a);
-        printf("b: %f\n", b);
-        printf("c: %f\n", c);
-        printf("result: %f\n", res);
-        print_hex_float_vec("result (hex)", &res, 1);
+        float res;
+        _mm_store_ss(&res, va);
         
-        float expected = -(1.0f * 2.0f) - 3.0f;
-        if(!float_equal(res, expected, 1e-5f)) {
-            printf("Mismatch: got %f, expected %f\n", res, expected);
-        }
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.7g\n", cases[t].a);
+        printf("B     : %.7g\n", cases[t].b);
+        printf("C     : %.7g\n", cases[t].c);
+        printf("Result: %.7g\n\n", res);
     }
     
-    // Test case 2: Special values (NaN, Inf)
-    {
-        float a = INFINITY;
-        float b = 2.0f;
-        float c = 1.0f;
-        float res;
+    printf("VFNMSUB213SS Register-Register Tests Completed\n\n");
+}
+
+static void test_reg_mem_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_set_ss(cases[t].a);
+        __m128 vc = _mm_set_ss(cases[t].c);
         
+        // 测试内存操作数
+        __m128 va1 = va;
         __asm__ __volatile__(
-            "vmovss %1, %%xmm0\n\t"
-            "vmovss %2, %%xmm1\n\t"
-            "vmovss %3, %%xmm2\n\t"
-            "vfnmsub213ss %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovss %%xmm2, %0\n\t"
-            : "=m"(res)
-            : "m"(a), "m"(b), "m"(c)
-            : "xmm0", "xmm1", "xmm2"
+            "vfnmsub213ss %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (cases[t].b), [c] "x" (vc)
         );
         
-        printf("\nTest 2: Special values\n");
-        printf("a: %f\n", a);
-        printf("b: %f\n", b);
-        printf("c: %f\n", c);
-        printf("result: %f\n", res);
-        print_hex_float_vec("result (hex)", &res, 1);
+        float res;
+        _mm_store_ss(&res, va1);
+        
+        printf("Memory Operand Test: %s\n", cases[t].desc);
+        printf("A     : %.7g\n", cases[t].a);
+        printf("B     : %.7g\n", cases[t].b);
+        printf("C     : %.7g\n", cases[t].c);
+        printf("Result: %.7g\n\n", res);
     }
+    
+    printf("VFNMSUB213SS Register-Memory Tests Completed\n\n");
 }
 
 int main() {
-    printf("Starting vfnmsub213ss tests\n");
+    printf("==================================\n");
+    printf("VFNMSUB213SS Comprehensive Tests\n");
+    printf("==================================\n\n");
     
-    // Save MXCSR
-    uint32_t old_mxcsr = get_mxcsr();
+    // 执行测试
+    test_reg_reg_operand();
+    test_reg_mem_operand();
     
-    // Test with default MXCSR
-    test_vfnmsub213ss();
+    printf("All VFNMSUB213SS tests completed. Results are for verification on physical CPU vs box64.\n");
     
-    // Test with FTZ/DAZ enabled
-    set_mxcsr(old_mxcsr | 0x8040);
-    printf("\nTesting with FTZ/DAZ enabled\n");
-    test_vfnmsub213ss();
-    
-    // Restore MXCSR
-    set_mxcsr(old_mxcsr);
-    
-    printf("vfnmsub213ss tests completed\n");
     return 0;
 }

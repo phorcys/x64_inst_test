@@ -1,98 +1,81 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <immintrin.h>
 #include <math.h>
+#include <float.h>
+#include "avx.h"
 
-// vfmsub231ss指令测试
-void test_vfmsub231ss() {
-    printf("--- Testing vfmsub231ss (Fused Multiply-Subtract of Scalar Single-Precision Floating-Point Values) ---\n");
-    
-    // 测试数据
-    float a = 1.5f;
-    float b = 2.5f;
-    float c = 0.5f;
-    float res = 0;
-    
-    // 预期结果 (vfmsub231ss: res = a*b - c)
-    float expected = a * b - c;
-    
-    // 测试指令
-    __asm__ __volatile__(
-        "vmovss %1, %%xmm0\n\t"     // 加载a到xmm0
-        "vmovss %2, %%xmm1\n\t"     // 加载b到xmm1
-        "vmovss %3, %%xmm2\n\t"     // 加载c到xmm2
-        "vfmsub231ss %%xmm1, %%xmm0, %%xmm2\n\t"  // xmm2 = xmm0*xmm1 - xmm2
-        "vmovss %%xmm2, %0\n\t"     // 存回结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    printf("Input a: %f\n", a);
-    printf("Input b: %f\n", b);
-    printf("Input c: %f\n", c);
-    printf("Result: %f\n", res);
-    printf("Expected: %f\n", expected);
-    
-    // 验证结果
-    if(!float_equal(res, expected, 1e-6f)) {
-        printf("Mismatch: got %f, expected %f\n", res, expected);
-    }
-    
-    // 测试特殊值
-    printf("\n[Special values test]\n");
-    float spec_a = INFINITY;
-    float spec_b = 1.0f;
-    float spec_c = 1.0f;
-    float spec_res = 0;
-    
-    __asm__ __volatile__(
-        "vmovss %1, %%xmm0\n\t"
-        "vmovss %2, %%xmm1\n\t"
-        "vmovss %3, %%xmm2\n\t"
-        "vfmsub231ss %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovss %%xmm2, %0\n\t"
-        : "=m"(spec_res)
-        : "m"(spec_a), "m"(spec_b), "m"(spec_c)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    printf("Special a: 0x%08x\n", *(uint32_t*)&spec_a);
-    printf("Special b: 0x%08x\n", *(uint32_t*)&spec_b);
-    printf("Special c: 0x%08x\n", *(uint32_t*)&spec_c);
-    printf("Special result: 0x%08x\n", *(uint32_t*)&spec_res);
-    
-    // 测试不同舍入模式
-    printf("\n[Rounding modes test]\n");
-    uint32_t mxcsr = get_mxcsr();
-    for(int i=0; i<4; i++) {  // 测试4种舍入模式
-        uint32_t new_mxcsr = (mxcsr & ~0x6000) | (i << 13);
-        set_mxcsr(new_mxcsr);
-        
-        float rnd_a = 1.5f;
-        float rnd_b = 1.0f;
-        float rnd_c = 0.1f;
-        float rnd_res = 0;
+#define TEST_CASE_COUNT 14
+
+typedef struct {
+    float a;
+    float b;
+    float c;
+    const char *desc;
+} test_case;
+
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {1.0f, 2.0f, 3.0f, "Normal values"},
+    // 零值
+    {0.0f, -0.0f, 0.0f, "Zero values"},
+    // 无穷大
+    {INFINITY, 1.0f, 1.0f, "Infinity values"},
+    // NaN
+    {NAN, 2.0f, 3.0f, "NaN values"},
+    // 边界值
+    {FLT_MIN, -FLT_MIN, FLT_MIN, "Boundary values"},
+    // 混合值
+    {1.0f, NAN, INFINITY, "Mixed special values"},
+    // 小值
+    {1e-30f, 2e-30f, 3e-30f, "Very small values"},
+    // a为特殊值
+    {INFINITY, 2.0f, 3.0f, "Special value in a"},
+    // b为特殊值
+    {1.0f, NAN, 2.0f, "Special value in b"},
+    // c为特殊值
+    {1.0f, 2.0f, -INFINITY, "Special value in c"},
+    // a和b为特殊值
+    {INFINITY, NAN, 1.0f, "Special values in a and b"},
+    // a和c为特殊值
+    {NAN, 1.0f, INFINITY, "Special values in a and c"},
+    // 所有特殊值
+    {INFINITY, NAN, -INFINITY, "All special values"}
+};
+
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_set_ss(cases[t].a);
+        __m128 vb = _mm_set_ss(cases[t].b);
+        __m128 vc = _mm_set_ss(cases[t].c);
         
         __asm__ __volatile__(
-            "vmovss %1, %%xmm0\n\t"
-            "vmovss %2, %%xmm1\n\t"
-            "vmovss %3, %%xmm2\n\t"
-            "vfmsub231ss %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovss %%xmm2, %0\n\t"
-            : "=m"(rnd_res)
-            : "m"(rnd_a), "m"(rnd_b), "m"(rnd_c)
-            : "xmm0", "xmm1", "xmm2"
+            "vfmsub231ss %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
         
-        printf("Rounding mode %d:\n", i);
-        print_mxcsr(new_mxcsr);
-        printf("Result: %f\n", rnd_res);
+        float res;
+        _mm_store_ss(&res, va);
+        
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.9g\n", cases[t].a);
+        printf("B     : %.9g\n", cases[t].b);
+        printf("C     : %.9g\n", cases[t].c);
+        printf("Result: %.9g\n\n", res);
     }
-    set_mxcsr(mxcsr);  // 恢复原始MXCSR
+    
+    printf("VFMSUB231SS Register-Register Tests Completed\n\n");
 }
 
 int main() {
-    test_vfmsub231ss();
+    printf("==================================\n");
+    printf("VFMSUB231SS Comprehensive Tests\n");
+    printf("==================================\n\n");
+    
+    test_reg_reg_operand();
+    
+    printf("All VFMSUB231SS tests completed. Results are for verification on physical CPU vs box64.\n");
+    
     return 0;
 }

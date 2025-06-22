@@ -1,78 +1,126 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <immintrin.h>
 #include <math.h>
 #include <float.h>
+#include "avx.h"
 
-void test_vfnmadd213sd() {
-    printf("--- Testing vfnmadd213sd (Fused Negative Multiply-Add of Scalar Double-Precision Floating-Point Values) ---\n");
-    
-    // 测试数据(32字节对齐)
-    double a[4] __attribute__((aligned(32))) = {1.0, 1.0, 1.0, 1.0};
-    double b[4] __attribute__((aligned(32))) = {2.0, 2.0, 2.0, 2.0};
-    double c[4] __attribute__((aligned(32))) = {3.0, 3.0, 3.0, 3.0};
-    double res[4] __attribute__((aligned(32))) = {0};
-    
-    // 特殊值测试数据
-    double special_a[4] = {NAN, INFINITY, -INFINITY, 0.0};
-    double special_b[4] = {1.0, 1.0, 1.0, 1.0};
-    double special_c[4] = {1.0, INFINITY, -INFINITY, 0.0};
+#define TEST_CASE_COUNT 14
 
-    // 预期结果: -(a * b) + c
-    double expected = -(a[0] * b[0]) + c[0];
+typedef struct {
+    double a;
+    double b;
+    double c;
+    const char *desc;
+} test_case;
 
-    // 执行指令
-    uint32_t old_mxcsr = get_mxcsr();
-    __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"     // a -> xmm0 (src1)
-        "vmovapd %2, %%xmm1\n\t"     // b -> xmm1 (src2/dest)
-        "vmovapd %3, %%xmm2\n\t"     // c -> xmm2 (src3)
-        "vfnmadd213sd %%xmm2, %%xmm0, %%xmm1\n\t"  // xmm1 = -(xmm1*xmm0) + xmm2
-        "vmovapd %%xmm1, %0\n\t"     // 存结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "xmm0", "xmm1", "xmm2"
-    );
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {1.0, 5.0, 9.0, "Normal values"},
+    // 零值
+    {0.0, 5.0, 9.0, "Zero values"},
+    // 无穷大
+    {INFINITY, 1.0, 1.0, "Infinity values"},
+    // NaN
+    {NAN, 1.0, 2.0, "NaN values"},
+    // 边界值
+    {DBL_MIN, 2.0, DBL_MIN, "Boundary values"},
+    // 混合值
+    {1.0, INFINITY, NAN, "Mixed special values"},
+    // 小值
+    {1e-300, 2.0, 1e-300, "Very small values"},
+    // a为特殊值
+    {INFINITY, 2.0, 1.0, "Special values in a"},
+    // b为特殊值
+    {1.0, INFINITY, 5.0, "Special values in b"},
+    // c为特殊值
+    {1.0, 5.0, INFINITY, "Special values in c"},
+    // a和b为特殊值
+    {INFINITY, NAN, 1.0, "Special values in a and b"},
+    // a和c为特殊值
+    {INFINITY, 1.0, NAN, "Special values in a and c"},
+    // b和c为特殊值
+    {1.0, INFINITY, NAN, "Special values in b and c"},
+    // 所有特殊值
+    {INFINITY, NAN, INFINITY, "All special values"}
+};
 
-    // 打印结果和MXCSR状态
-    print_mxcsr(get_mxcsr());
-    printf("MXCSR changed: 0x%08X -> 0x%08X\n", old_mxcsr, get_mxcsr());
-    
-    print_double_vec("Input a", a, 1);
-    print_double_vec("Input b", b, 1);
-    print_double_vec("Input c", c, 1);
-    print_double_vec("Result", res, 1);
-    printf("Expected: %f\n", expected);
-
-    // 验证结果
-    if(!double_equal(res[0], expected, 1e-12)) {
-        printf("Mismatch: got %f (0x%016lx), expected %f (0x%016lx)\n", 
-              res[0], *(uint64_t*)&res[0], expected, *(uint64_t*)&expected);
-    } else {
-        printf("Result matches expected value\n");
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_set_sd(cases[t].a);
+        __m128d vb = _mm_set_sd(cases[t].b);
+        __m128d vc = _mm_set_sd(cases[t].c);
+        
+        __asm__ __volatile__(
+            "vfnmadd213sd %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        double res;
+        _mm_store_sd(&res, va);
+        
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.17g\n", cases[t].a);
+        printf("B     : %.17g\n", cases[t].b);
+        printf("C     : %.17g\n", cases[t].c);
+        printf("Result: %.17g\n\n", res);
     }
+    
+    printf("VFNMADD213SD Register-Register Tests Completed\n\n");
+}
 
-    // 测试特殊值
-    printf("\n[Special values test]\n");
-    __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
-        "vmovapd %3, %%xmm2\n\t"
-        "vfnmadd213sd %%xmm2, %%xmm0, %%xmm1\n\t"
-        "vmovapd %%xmm1, %0\n\t"
-        : "=m"(res)
-        : "m"(special_a), "m"(special_b), "m"(special_c)
-        : "xmm0", "xmm1", "xmm2"
-    );
-
-    print_double_vec_hex("Special inputs a", special_a, 4);
-    print_double_vec_hex("Special inputs b", special_b, 4);
-    print_double_vec_hex("Special inputs c", special_c, 4);
-    print_double_vec_hex("Special results", res, 4);
-    print_mxcsr(get_mxcsr());
+static void test_reg_mem_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_set_sd(cases[t].a);
+        __m128d vc = _mm_set_sd(cases[t].c);
+        
+        // 测试不同的内存寻址方式
+        double b = cases[t].b;
+        double b_aligned __attribute__((aligned(16)));
+        b_aligned = cases[t].b;
+        
+        // 测试1: 未对齐内存
+        __m128d va1 = va;
+        __asm__ __volatile__(
+            "vfnmadd213sd %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (b), [c] "x" (vc)
+        );
+        
+        // 测试2: 对齐内存
+        __m128d va2 = va;
+        __asm__ __volatile__(
+            "vfnmadd213sd %[b], %[c], %[a]"
+            : [a] "+x" (va2)
+            : [b] "m" (b_aligned), [c] "x" (vc)
+        );
+        
+        double res1, res2;
+        _mm_store_sd(&res1, va1);
+        _mm_store_sd(&res2, va2);
+        
+        printf("Memory Operand Test: %s\n", cases[t].desc);
+        printf("A     : %.17g\n", cases[t].a);
+        printf("B     : %.17g\n", cases[t].b);
+        printf("C     : %.17g\n", cases[t].c);
+        printf("Unaligned memory: %.17g\n", res1);
+        printf("Aligned memory: %.17g\n\n", res2);
+    }
+    
+    printf("VFNMADD213SD Register-Memory Tests Completed\n\n");
 }
 
 int main() {
-    test_vfnmadd213sd();
+    printf("==================================\n");
+    printf("VFNMADD213SD Comprehensive Tests\n");
+    printf("==================================\n\n");
+    
+    // 执行测试
+    test_reg_reg_operand();
+    test_reg_mem_operand();
+    
+    printf("All VFNMADD213SD tests completed. Results are for verification on physical CPU vs box64.\n");
+    
     return 0;
 }

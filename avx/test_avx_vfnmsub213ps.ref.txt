@@ -1,48 +1,177 @@
-Starting vfnmsub213ps tests
-Testing vfnmsub213ps (128-bit)
-Test 1: -(a*b) - c
-a: 1.000000 2.000000 3.000000 4.000000 
-b: 5.000000 6.000000 7.000000 8.000000 
-c: 9.000000 10.000000 11.000000 12.000000 
-result: -14.000000 -22.000000 -32.000000 -44.000000 
-result (hex): 0xC1600000 0xC1B00000 0xC2000000 0xC2300000 
+==================================
+VFNMSUB213PS Comprehensive Tests
+==================================
 
-Test 2: Special values
-a: inf nan 0.000000 -0.000000 
-b: 2.000000 3.000000 inf inf 
-c: 1.000000 1.000000 1.000000 1.000000 
-result: -inf nan -inf -inf 
-result (hex): 0xFF800000 0x7FC00000 0xFF800000 0xFF800000 
+Test Case: Normal values
+A     : [1, 2, 3, 4]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-14, -26, -40, -56]
 
-Testing vfnmsub213ps (256-bit)
-Test 1: -(a*b) - c
-a: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
-b: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
-c: 17.000000 18.000000 19.000000 20.000000 21.000000 22.000000 23.000000 24.000000 
-result: -26.000000 -38.000000 -52.000000 -68.000000 -86.000000 -106.000000 -128.000000 -152.000000 
-result (hex): 0xC1D00000 0xC2180000 0xC2500000 0xC2880000 0xC2AC0000 0xC2D40000 0xC3000000 0xC3180000 
+Test Case: Zero values
+A     : [0, 0, 0, 0]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-5, -6, -7, -8]
 
-Testing with FTZ/DAZ enabled
-Testing vfnmsub213ps (128-bit)
-Test 1: -(a*b) - c
-a: 1.000000 2.000000 3.000000 4.000000 
-b: 5.000000 6.000000 7.000000 8.000000 
-c: 9.000000 10.000000 11.000000 12.000000 
-result: -14.000000 -22.000000 -32.000000 -44.000000 
-result (hex): 0xC1600000 0xC1B00000 0xC2000000 0xC2300000 
+Test Case: Infinity values
+A     : [inf, inf, inf, inf]
+B     : [1, 1, 1, 1]
+C     : [1, 1, 1, 1]
+Result: [-inf, -inf, -inf, -inf]
 
-Test 2: Special values
-a: inf nan 0.000000 -0.000000 
-b: 2.000000 3.000000 inf inf 
-c: 1.000000 1.000000 1.000000 1.000000 
-result: -inf nan -inf -inf 
-result (hex): 0xFF800000 0x7FC00000 0xFF800000 0xFF800000 
+Test Case: NaN values
+A     : [nan, nan, nan, nan]
+B     : [1, 1, 1, 1]
+C     : [2, 2, 2, 2]
+Result: [nan, nan, nan, nan]
 
-Testing vfnmsub213ps (256-bit)
-Test 1: -(a*b) - c
-a: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
-b: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
-c: 17.000000 18.000000 19.000000 20.000000 21.000000 22.000000 23.000000 24.000000 
-result: -26.000000 -38.000000 -52.000000 -68.000000 -86.000000 -106.000000 -128.000000 -152.000000 
-result (hex): 0xC1D00000 0xC2180000 0xC2500000 0xC2880000 0xC2AC0000 0xC2D40000 0xC3000000 0xC3180000 
-vfnmsub213ps tests completed
+Test Case: Boundary values
+A     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+B     : [2, 2, 2, 2]
+C     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+Result: [-2, -2, -2, -2]
+
+Test Case: Mixed special values
+A     : [1, 1, 1, 1]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Test Case: Very small values
+A     : [1e-30, 1e-30, 1e-30, 1e-30]
+B     : [2, 2, 2, 2]
+C     : [1e-30, 1e-30, 1e-30, 1e-30]
+Result: [-2, -2, -2, -2]
+
+Test Case: Special values in a
+A     : [inf, inf, inf, inf]
+B     : [2, 2, 2, 2]
+C     : [1, 1, 1, 1]
+Result: [-inf, -inf, -inf, -inf]
+
+Test Case: Special values in b
+A     : [1, 1, 1, 1]
+B     : [inf, inf, inf, inf]
+C     : [5, 5, 5, 5]
+Result: [-inf, -inf, -inf, -inf]
+
+Test Case: Special values in c
+A     : [1, 1, 1, 1]
+B     : [5, 5, 5, 5]
+C     : [inf, inf, inf, inf]
+Result: [-inf, -inf, -inf, -inf]
+
+Test Case: Special values in a and b
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [1, 1, 1, 1]
+Result: [nan, nan, nan, nan]
+
+Test Case: Special values in a and c
+A     : [inf, inf, inf, inf]
+B     : [1, 1, 1, 1]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Test Case: Special values in b and c
+A     : [1, 1, 1, 1]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Test Case: All special values
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [inf, inf, inf, inf]
+Result: [nan, nan, nan, nan]
+
+VFNMSUB213PS Register-Register Tests Completed
+
+Memory Operand Test: Normal values
+A     : [1, 2, 3, 4]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-14, -26, -40, -56]
+
+Memory Operand Test: Zero values
+A     : [0, 0, 0, 0]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-5, -6, -7, -8]
+
+Memory Operand Test: Infinity values
+A     : [inf, inf, inf, inf]
+B     : [1, 1, 1, 1]
+C     : [1, 1, 1, 1]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: NaN values
+A     : [nan, nan, nan, nan]
+B     : [1, 1, 1, 1]
+C     : [2, 2, 2, 2]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Boundary values
+A     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+B     : [2, 2, 2, 2]
+C     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+Result: [-2, -2, -2, -2]
+
+Memory Operand Test: Mixed special values
+A     : [1, 1, 1, 1]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Very small values
+A     : [1e-30, 1e-30, 1e-30, 1e-30]
+B     : [2, 2, 2, 2]
+C     : [1e-30, 1e-30, 1e-30, 1e-30]
+Result: [-2, -2, -2, -2]
+
+Memory Operand Test: Special values in a
+A     : [inf, inf, inf, inf]
+B     : [2, 2, 2, 2]
+C     : [1, 1, 1, 1]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: Special values in b
+A     : [1, 1, 1, 1]
+B     : [inf, inf, inf, inf]
+C     : [5, 5, 5, 5]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: Special values in c
+A     : [1, 1, 1, 1]
+B     : [5, 5, 5, 5]
+C     : [inf, inf, inf, inf]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: Special values in a and b
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [1, 1, 1, 1]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Special values in a and c
+A     : [inf, inf, inf, inf]
+B     : [1, 1, 1, 1]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Special values in b and c
+A     : [1, 1, 1, 1]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: All special values
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [inf, inf, inf, inf]
+Result: [nan, nan, nan, nan]
+
+VFNMSUB213PS Register-Memory Tests Completed
+
+All VFNMSUB213PS tests completed. Results are for verification on physical CPU vs box64.

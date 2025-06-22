@@ -1,106 +1,374 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <immintrin.h>
 #include <math.h>
 #include <float.h>
+#include "avx.h"
 
-void test_vfmsubadd231ps() {
-    printf("--- Testing vfmsubadd231ps (Fused Multiply-Subtract-Add of Packed Single-Precision Floating-Point Values) ---\n");
-    
-    // 基本测试数据(16字节对齐)
-    float a[8] __attribute__((aligned(32))) = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-    float b[8] __attribute__((aligned(32))) = {2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f};
-    float c[8] __attribute__((aligned(32))) = {3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f};
-    float res[8] __attribute__((aligned(32))) = {0};
-    
-    // 特殊值测试数据
-    float special_a[8] = {NAN, INFINITY, -INFINITY, 0.0f, -0.0f, FLT_MIN, FLT_MAX, 1.0f};
-    float special_b[8] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f};
-    float special_c[8] = {1.0f, INFINITY, -INFINITY, 0.0f, -0.0f, FLT_MIN, FLT_MAX, 1.0f};
+#define TEST_CASE_COUNT 14
 
-    // 测试128位版本
-    printf("\n[128-bit version test]\n");
-    // 预期结果: 根据实际输出调整顺序
-    float expected[4] = {
-        (a[1] * b[1]) + c[1],  // 5.0f
-        (a[0] * b[0]) - c[0],  // -1.0f 
-        (a[3] * b[3]) + c[3],  // 5.0f
-        (a[2] * b[2]) - c[2]   // -1.0f
-    };
+typedef struct {
+    float a[8];
+    float b[8];
+    float c[8];
+    const char *desc;
+} test_case_256;
 
-    // 执行指令
-    uint32_t old_mxcsr = get_mxcsr();
-    __asm__ __volatile__(
-        "vmovaps %1, %%xmm0\n\t"     // a -> xmm0 (src1)
-        "vmovaps %2, %%xmm1\n\t"     // b -> xmm1 (dest) 
-        "vmovaps %3, %%xmm2\n\t"     // c -> xmm2 (src2)
-        "vfmsubadd231ps %%xmm0, %%xmm1, %%xmm2\n\t"  // xmm2 = xmm1*xmm0 -/+ xmm2
-        "vmovaps %%xmm2, %0\n\t"     // 存结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "xmm0", "xmm1", "xmm2"
-    );
-
-    // 打印结果和MXCSR状态
-    print_mxcsr(get_mxcsr());
-    printf("MXCSR changed: 0x%08X -> 0x%08X\n", old_mxcsr, get_mxcsr());
-    
-    print_float_vec("Input a", a, 4);
-    print_float_vec("Input b", b, 4);
-    print_float_vec("Input c", c, 4);
-    print_float_vec("Result", res, 4);
-    print_float_vec("Expected", expected, 4);
-
-    // 验证结果
-    int match = 1;
-    for(int i=0; i<4; i++) {
-        if(!float_equal(res[i], expected[i], 1e-6f)) {
-            printf("Mismatch at index %d: got %f (0x%08X), expected %f (0x%08X)\n", 
-                  i, res[i], *(uint32_t*)&res[i], expected[i], *(uint32_t*)&expected[i]);
-            match = 0;
-        }
+test_case_256 cases_256[TEST_CASE_COUNT] = {
+    // 正常值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+        {17.0f, 18.0f, 19.0f, 20.0f, 21.0f, 22.0f, 23.0f, 24.0f},
+        "Normal values (256-bit)"
+    },
+    // 零值
+    {
+        {0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f},
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+        "Zero values (256-bit)"
+    },
+    // 无穷大
+    {
+        {INFINITY, -INFINITY, 1.0f, 2.0f, INFINITY, -INFINITY, 3.0f, 4.0f},
+        {1.0f, 1.0f, INFINITY, -INFINITY, 1.0f, 1.0f, INFINITY, -INFINITY},
+        {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
+        "Infinity values (256-bit)"
+    },
+    // NaN
+    {
+        {NAN, 1.0f, 2.0f, 3.0f, NAN, 4.0f, 5.0f, 6.0f},
+        {1.0f, NAN, 2.0f, 3.0f, 4.0f, NAN, 5.0f, 6.0f},
+        {1.0f, 2.0f, NAN, 3.0f, 4.0f, 5.0f, NAN, 6.0f},
+        "NaN values (256-bit)"
+    },
+    // 边界值
+    {
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX, FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        {2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f},
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX, FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        "Boundary values (256-bit)"
+    },
+    // 混合值
+    {
+        {1.0f, INFINITY, NAN, 0.0f, -1.0f, -INFINITY, -NAN, -0.0f},
+        {INFINITY, NAN, 0.0f, NAN, -INFINITY, -NAN, -0.0f, -NAN},
+        {NAN, 0.0f, INFINITY, 1.0f, -NAN, -0.0f, -INFINITY, -1.0f},
+        "Mixed special values (256-bit)"
+    },
+    // 小值
+    {
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f, 5e-30f, 6e-30f, 7e-30f, 8e-30f},
+        {2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f},
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f, 5e-30f, 6e-30f, 7e-30f, 8e-30f},
+        "Very small values (256-bit)"
+    },
+    // a为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN, 0.0f, -0.0f, INFINITY, -INFINITY},
+        {2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f},
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        "Special values in a (256-bit)"
+    },
+    // b为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {INFINITY, -INFINITY, NAN, -NAN, 0.0f, -0.0f, INFINITY, -INFINITY},
+        {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
+        "Special values in b (256-bit)"
+    },
+    // c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
+        {INFINITY, -INFINITY, NAN, -NAN, 0.0f, -0.0f, INFINITY, -INFINITY},
+        "Special values in c (256-bit)"
+    },
+    // a和b为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN, 0.0f, -0.0f, INFINITY, -INFINITY},
+        {NAN, 0.0f, INFINITY, -INFINITY, -NAN, -0.0f, NAN, 0.0f},
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        "Special values in a and b (256-bit)"
+    },
+    // a和c为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN, 0.0f, -0.0f, INFINITY, -INFINITY},
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {NAN, 0.0f, INFINITY, -INFINITY, -NAN, -0.0f, NAN, 0.0f},
+        "Special values in a and c (256-bit)"
+    },
+    // b和c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+        {INFINITY, -INFINITY, NAN, -NAN, 0.0f, -0.0f, INFINITY, -INFINITY},
+        {NAN, 0.0f, INFINITY, -INFINITY, -NAN, -0.0f, NAN, 0.0f},
+        "Special values in b and c (256-bit)"
+    },
+    // 所有特殊值
+    {
+        {INFINITY, -INFINITY, NAN, 0.0f, -INFINITY, INFINITY, -NAN, -0.0f},
+        {-NAN, 0.0f, INFINITY, -INFINITY, NAN, -0.0f, -INFINITY, INFINITY},
+        {INFINITY, -INFINITY, NAN, 0.0f, -INFINITY, INFINITY, -NAN, -0.0f},
+        "All special values (256-bit)"
     }
-    if(match) {
-        printf("All elements match\n");
+};
+
+typedef struct {
+    float a[4];
+    float b[4];
+    float c[4];
+    const char *desc;
+} test_case128;
+
+test_case128 cases_128[TEST_CASE_COUNT] = {
+    // 正常值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f},
+        "Normal values (128-bit)"
+    },
+    // 零值
+    {
+        {0.0f, -0.0f, 0.0f, -0.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f},
+        {9.0f, 10.0f, 11.0f, 12.0f},
+        "Zero values (128-bit)"
+    },
+    // 无穷大
+    {
+        {INFINITY, -INFINITY, 1.0f, 2.0f},
+        {1.0f, 1.0f, INFINITY, -INFINITY},
+        {1.0f, 1.0f, 1.0f, 1.0f},
+        "Infinity values (128-bit)"
+    },
+    // NaN
+    {
+        {NAN, 1.0f, 2.0f, 3.0f},
+        {1.0f, NAN, 2.0f, 3.0f},
+        {1.0f, 2.0f, NAN, 3.0f},
+        "NaN values (128-bit)"
+    },
+    // 边界值
+    {
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        {2.0f, 2.0f, 2.0f, 2.0f},
+        {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX},
+        "Boundary values (128-bit)"
+    },
+    // 混合值
+    {
+        {1.0f, INFINITY, NAN, 0.0f},
+        {INFINITY, NAN, 0.0f, NAN},
+        {NAN, 0.0f, INFINITY, 1.0f},
+        "Mixed special values (128-bit)"
+    },
+    // 小值
+    {
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f},
+        {2.0f, 3.0f, 4.0f, 5.0f},
+        {1e-30f, 2e-30f, 3e-30f, 4e-30f},
+        "Very small values (128-bit)"
+    },
+    // a为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {2.0f, 3.0f, 4.0f, 5.0f},
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        "Special values in a (128-bit)"
+    },
+    // b为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {5.0f, 6.0f, 7.0f, 8.0f},
+        "Special values in b (128-bit)"
+    },
+    // c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {5.0f, 6.0f, 7.0f, 8.0f},
+        {INFINITY, -INFINITY, NAN, -NAN},
+        "Special values in c (128-bit)"
+    },
+    // a和b为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {NAN, 0.0f, INFINITY, -INFINITY},
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        "Special values in a and b (128-bit)"
+    },
+    // a和c为特殊值
+    {
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {NAN, 0.0f, INFINITY, -INFINITY},
+        "Special values in a and c (128-bit)"
+    },
+    // b和c为特殊值
+    {
+        {1.0f, 2.0f, 3.0f, 4.0f},
+        {INFINITY, -INFINITY, NAN, -NAN},
+        {NAN, 0.0f, INFINITY, -INFINITY},
+        "Special values in b and c (128-bit)"
+    },
+    // 所有特殊值
+    {
+        {INFINITY, -INFINITY, NAN, 0.0f},
+        {-NAN, 0.0f, INFINITY, -INFINITY},
+        {INFINITY, -INFINITY, NAN, 0.0f},
+        "All special values (128-bit)"
     }
+};
 
-    // 测试256位版本
-    printf("\n[256-bit version test]\n");
-    __asm__ __volatile__(
-        "vmovaps %1, %%ymm0\n\t"     // a -> ymm0 (src1)
-        "vmovaps %2, %%ymm1\n\t"     // b -> ymm1 (dest)
-        "vmovaps %3, %%ymm2\n\t"     // c -> ymm2 (src2)
-        "vfmsubadd231ps %%ymm0, %%ymm1, %%ymm2\n\t"  // ymm2 = ymm1*ymm0 -/+ ymm2
-        "vmovaps %%ymm2, %0\n\t"     // 存结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "ymm0", "ymm1", "ymm2"
-    );
+static void test_256bit_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m256 va = _mm256_loadu_ps(cases_256[t].a);
+        __m256 vb = _mm256_loadu_ps(cases_256[t].b);
+        __m256 vc = _mm256_loadu_ps(cases_256[t].c);
+        
+        __asm__ __volatile__(
+            "vfmsubadd231ps %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        float res[8];
+        _mm256_storeu_ps(res, va);
+        printf("Test Case: %s\n", cases_256[t].desc);
+        print_float_vec("A     :", cases_256[t].a, 8);
+        print_float_vec("B     :", cases_256[t].b, 8);
+        print_float_vec("C     :", cases_256[t].c, 8);
+        print_float_vec("Result:", res, 8);
+        printf("\n");
+    }
+    
+    printf("VFMSUBADD231PS 256-bit Register-Register Tests Completed\n\n");
+}
 
-    // 打印256位结果
-    print_vector256("256-bit result", _mm256_load_ps(res));
+static void test_128bit_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_loadu_ps(cases_128[t].a);
+        __m128 vb = _mm_loadu_ps(cases_128[t].b);
+        __m128 vc = _mm_loadu_ps(cases_128[t].c);
+        
+        __asm__ __volatile__(
+            "vfmsubadd231ps %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        float res[4];
+        _mm_storeu_ps(res, va);
+        printf("Test Case: %s\n", cases_128[t].desc);
+        print_float_vec("A     :", cases_128[t].a, 4);
+        print_float_vec("B     :", cases_128[t].b, 4);
+        print_float_vec("C     :", cases_128[t].c, 4);
+        print_float_vec("Result:", res, 4);
+        printf("\n");
+    }
+    
+    printf("VFMSUBADD231PS 128-bit Register-Register Tests Completed\n\n");
+}
 
-    // 测试特殊值
-    printf("\n[Special values test]\n");
-    __asm__ __volatile__(
-        "vmovaps %1, %%xmm0\n\t"
-        "vmovaps %2, %%xmm1\n\t"
-        "vmovaps %3, %%xmm2\n\t"
-        "vfmsubadd231ps %%xmm0, %%xmm1, %%xmm2\n\t"
-        "vmovaps %%xmm2, %0\n\t"
-        : "=m"(res)
-        : "m"(special_a), "m"(special_b), "m"(special_c)
-        : "xmm0", "xmm1", "xmm2"
-    );
+static void test_256bit_reg_mem_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m256 va = _mm256_loadu_ps(cases_256[t].a);
+        __m256 vc = _mm256_loadu_ps(cases_256[t].c);
+        
+        // 测试不同的内存寻址方式
+        float *b_ptr = cases_256[t].b;
+        float b_aligned[8] __attribute__((aligned(32)));
+        memcpy(b_aligned, cases_256[t].b, sizeof(b_aligned));
+        
+        // 测试1: 未对齐内存
+        __m256 va1 = va;
+        __asm__ __volatile__(
+            "vfmsubadd231ps %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (*(const __m256*)b_ptr), [c] "x" (vc)
+        );
+        
+        // 测试2: 对齐内存
+        __m256 va2 = va;
+        __asm__ __volatile__(
+            "vfmsubadd231ps %[b], %[c], %[a]"
+            : [a] "+x" (va2)
+            : [b] "m" (*(const __m256*)b_aligned), [c] "x" (vc)
+        );
+        
+        float res1[8], res2[8];
+        _mm256_storeu_ps(res1, va1);
+        _mm256_storeu_ps(res2, va2);
+        
+        printf("Memory Operand Test: %s\n", cases_256[t].desc);
+        print_float_vec("A     :", cases_256[t].a, 8);
+        print_float_vec("B     :", cases_256[t].b, 8);
+        print_float_vec("C     :", cases_256[t].c, 8);
+        print_float_vec("Unaligned memory:", res1, 8);
+        print_float_vec("Aligned memory:", res2, 8);
+        printf("\n");
+    }
+    
+    printf("VFMSUBADD231PS 256-bit Register-Memory Tests Completed\n\n");
+}
 
-    print_hex_float_vec("Special inputs a", special_a, 8);
-    print_hex_float_vec("Special inputs b", special_b, 8);
-    print_hex_float_vec("Special inputs c", special_c, 8);
-    print_hex_float_vec("Special results", res, 8);
-    print_mxcsr(get_mxcsr());
+static void test_128bit_reg_mem_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_loadu_ps(cases_128[t].a);
+        __m128 vc = _mm_loadu_ps(cases_128[t].c);
+        
+        // 测试不同的内存寻址方式
+        float *b_ptr = cases_128[t].b;
+        float b_aligned[4] __attribute__((aligned(16)));
+        memcpy(b_aligned, cases_128[t].b, sizeof(b_aligned));
+        
+        // 测试1: 未对齐内存
+        __m128 va1 = va;
+        __asm__ __volatile__(
+            "vfmsubadd231ps %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (*(const __m128*)b_ptr), [c] "x" (vc)
+        );
+        
+        // 测试2: 对齐内存
+        __m128 va2 = va;
+        __asm__ __volatile__(
+            "vfmsubadd231ps %[b], %[c], %[a]"
+            : [a] "+x" (va2)
+            : [b] "m" (*(const __m128*)b_aligned), [c] "x" (vc)
+        );
+        
+        float res1[4], res2[4];
+        _mm_storeu_ps(res1, va1);
+        _mm_storeu_ps(res2, va2);
+        
+        printf("Memory Operand Test: %s\n", cases_128[t].desc);
+        print_float_vec("A     :", cases_128[t].a, 4);
+        print_float_vec("B     :", cases_128[t].b, 4);
+        print_float_vec("C     :", cases_128[t].c, 4);
+        print_float_vec("Unaligned memory:", res1, 4);
+        print_float_vec("Aligned memory:", res2, 4);
+        printf("\n");
+    }
+    
+    printf("VFMSUBADD231PS 128-bit Register-Memory Tests Completed\n\n");
 }
 
 int main() {
-    test_vfmsubadd231ps();
+    printf("==================================\n");
+    printf("VFMSUBADD231PS Comprehensive Tests\n");
+    printf("==================================\n\n");
+    
+    // 执行测试
+    test_128bit_reg_reg_operand();
+    test_256bit_reg_reg_operand();
+    test_128bit_reg_mem_operand();
+    test_256bit_reg_mem_operand();
+    
+    printf("All VFMSUBADD231PS tests completed. Results are for verification on physical CPU vs box64.\n");
+    
     return 0;
 }

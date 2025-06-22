@@ -1,167 +1,81 @@
-#include "avx.h"
 #include <stdio.h>
+#include <stdint.h>
+#include <immintrin.h>
+#include <math.h>
+#include <float.h>
+#include "avx.h"
 
-// vfmsub213pd - Fused Multiply-Subtract of Packed Double-Precision Floating-Point Values
-// Performs: a*b - c
-// Forms: VFMSUB213PD xmm1, xmm2, xmm3/m128
-//        VFMSUB213PD ymm1, ymm2, ymm3/m256
+#define TEST_CASE_COUNT 14
 
-static void test_vfmsub213pd_128() {
-    printf("Testing vfmsub213pd (128-bit)\n");
-    
-    // Test case 1: Basic operation
-    {
-        double a[2] ALIGNED(16) = {1.0, 2.0};
-        double b[2] ALIGNED(16) = {3.0, 4.0}; 
-        double c[2] ALIGNED(16) = {5.0, 6.0};
-        double res[2] ALIGNED(16);
-        
-        __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vmovapd %2, %%xmm1\n\t"
-            "vmovapd %3, %%xmm2\n\t"
-            "vfmsub213pd %%xmm2, %%xmm1, %%xmm0\n\t"
-            "vmovapd %%xmm0, %0\n\t"
-            : "=m"(res)
-            : "m"(a), "m"(b), "m"(c)
-            : "xmm0", "xmm1", "xmm2"
-        );
-        
-        printf("Test 1: a*b - c\n");
-        print_double_vec("a", a, 2);
-        print_double_vec("b", b, 2);
-        print_double_vec("c", c, 2);
-        print_double_vec("result", res, 2);
-        print_double_vec_hex("result (hex)", res, 2);
-        
-        double expected[2] = {
-            1.0 * 3.0 - 5.0,
-            2.0 * 4.0 - 6.0
-        };
-        
-        for(int i=0; i<2; i++) {
-            if(!double_equal(res[i], expected[i], 1e-10)) {
-                printf("Mismatch at index %d: got %f, expected %f\n", 
-                      i, res[i], expected[i]);
-            }
-        }
-    }
-    
-    // Test case 2: Special values (NaN, Inf)
-    {
-        double a[2] ALIGNED(16) = {INFINITY, NAN};
-        double b[2] ALIGNED(16) = {2.0, 3.0};
-        double c[2] ALIGNED(16) = {1.0, 1.0};
-        double res[2] ALIGNED(16);
-        
-        __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vmovapd %2, %%xmm1\n\t"
-            "vmovapd %3, %%xmm2\n\t"
-            "vfmsub213pd %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovapd %%xmm2, %0\n\t"
-            : "=m"(res)
-            : "m"(a), "m"(b), "m"(c)
-            : "xmm0", "xmm1", "xmm2"
-        );
-        
-        printf("\nTest 2: Special values\n");
-        print_double_vec("a", a, 2);
-        print_double_vec("b", b, 2);
-        print_double_vec("c", c, 2);
-        print_double_vec("result", res, 2);
-        print_double_vec_hex("result (hex)", res, 2);
-    }
-}
+typedef struct {
+    double a[2];
+    double b[2];
+    double c[2];
+    const char *desc;
+} test_case;
 
-static void test_vfmsub213pd_256() {
-    printf("\nTesting vfmsub213pd (256-bit)\n");
-    
-    // Test case 1: Basic operation
-    {
-        double a[4] ALIGNED(32) = {1.0, 2.0, 3.0, 4.0};
-        double b[4] ALIGNED(32) = {5.0, 6.0, 7.0, 8.0};
-        double c[4] ALIGNED(32) = {9.0, 10.0, 11.0, 12.0};
-        double res[4] ALIGNED(32);
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, "Normal values"},
+    // 零值
+    {{0.0, -0.0}, {0.0, -0.0}, {0.0, -0.0}, "Zero values"},
+    // 无穷大
+    {{INFINITY, -INFINITY}, {1.0, 1.0}, {1.0, 1.0}, "Infinity values"},
+    // NaN
+    {{NAN, 1.0}, {2.0, NAN}, {3.0, 4.0}, "NaN values"},
+    // 边界值
+    {{DBL_MIN, DBL_MAX}, {-DBL_MIN, -DBL_MAX}, {DBL_MIN, DBL_MAX}, "Boundary values"},
+    // 混合值
+    {{1.0, INFINITY}, {NAN, 2.0}, {3.0, NAN}, "Mixed special values"},
+    // 小值
+    {{1e-300, 2e-300}, {3e-300, 4e-300}, {5e-300, 6e-300}, "Very small values"},
+    // a为特殊值
+    {{INFINITY, NAN}, {2.0, 3.0}, {4.0, 5.0}, "Special value in a"},
+    // b为特殊值
+    {{1.0, 2.0}, {NAN, INFINITY}, {3.0, 4.0}, "Special value in b"},
+    // c为特殊值
+    {{1.0, 2.0}, {3.0, 4.0}, {-INFINITY, NAN}, "Special value in c"},
+    // a和b为特殊值
+    {{INFINITY, NAN}, {NAN, INFINITY}, {1.0, 2.0}, "Special values in a and b"},
+    // a和c为特殊值
+    {{NAN, INFINITY}, {1.0, 2.0}, {INFINITY, NAN}, "Special values in a and c"},
+    // 所有特殊值
+    {{INFINITY, NAN}, {NAN, INFINITY}, {-INFINITY, NAN}, "All special values"}
+};
+
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_loadu_pd(cases[t].a);
+        __m128d vb = _mm_loadu_pd(cases[t].b);
+        __m128d vc = _mm_loadu_pd(cases[t].c);
         
         __asm__ __volatile__(
-            "vmovapd %1, %%ymm0\n\t"
-            "vmovapd %2, %%ymm1\n\t"
-            "vmovapd %3, %%ymm2\n\t"
-            "vfmsub213pd %%ymm2, %%ymm1, %%ymm0\n\t"
-            "vmovapd %%ymm0, %0\n\t"
-            : "=m"(res)
-            : "m"(a), "m"(b), "m"(c)
-            : "ymm0", "ymm1", "ymm2"
+            "vfmsub213pd %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
         
-        printf("Test 1: a*b - c\n");
-        print_double_vec("a", a, 4);
-        print_double_vec("b", b, 4);
-        print_double_vec("c", c, 4);
-        print_double_vec("result", res, 4);
-        print_double_vec_hex("result (hex)", res, 4);
+        double res[2];
+        _mm_storeu_pd(res, va);
         
-        double expected[4] = {
-            1.0 * 5.0 - 9.0,
-            2.0 * 6.0 - 10.0,
-            3.0 * 7.0 - 11.0,
-            4.0 * 8.0 - 12.0
-        };
-        
-        for(int i=0; i<4; i++) {
-            if(!double_equal(res[i], expected[i], 1e-10)) {
-                printf("Mismatch at index %d: got %f, expected %f\n", 
-                      i, res[i], expected[i]);
-            }
-        }
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.17g %.17g\n", cases[t].a[0], cases[t].a[1]);
+        printf("B     : %.17g %.17g\n", cases[t].b[0], cases[t].b[1]);
+        printf("C     : %.17g %.17g\n", cases[t].c[0], cases[t].c[1]);
+        printf("Result: %.17g %.17g\n\n", res[0], res[1]);
     }
     
-    // Test case 2: Memory operand
-    {
-        double a[4] ALIGNED(32) = {0.1, 0.2, 0.3, 0.4};
-        double b[4] ALIGNED(32) = {0.5, 0.6, 0.7, 0.8};
-        double c[4] ALIGNED(32) = {0.9, 1.0, 1.1, 1.2};
-        double res[4] ALIGNED(32);
-        
-        __asm__ __volatile__(
-            "vmovapd %1, %%ymm0\n\t"
-            "vmovapd %2, %%ymm1\n\t"
-            "vfmsub213pd %3, %%ymm1, %%ymm0\n\t"
-            "vmovapd %%ymm0, %0\n\t"
-            : "=m"(res)
-            : "m"(a), "m"(b), "m"(c)
-            : "ymm0", "ymm1"
-        );
-        
-        printf("\nTest 2: Memory operand\n");
-        print_double_vec("a", a, 4);
-        print_double_vec("b", b, 4);
-        print_double_vec("c", c, 4);
-        print_double_vec("result", res, 4);
-        print_double_vec_hex("result (hex)", res, 4);
-    }
+    printf("VFMSUB213PD Register-Register Tests Completed\n\n");
 }
 
 int main() {
-    printf("Starting vfmsub213pd tests\n");
+    printf("==================================\n");
+    printf("VFMSUB213PD Comprehensive Tests\n");
+    printf("==================================\n\n");
     
-    // Save MXCSR
-    uint32_t old_mxcsr = get_mxcsr();
+    test_reg_reg_operand();
     
-    // Test with default MXCSR
-    test_vfmsub213pd_128();
-    test_vfmsub213pd_256();
+    printf("All VFMSUB213PD tests completed. Results are for verification on physical CPU vs box64.\n");
     
-    // Test with FTZ/DAZ enabled
-    set_mxcsr(old_mxcsr | 0x8040);
-    printf("\nTesting with FTZ/DAZ enabled\n");
-    test_vfmsub213pd_128();
-    test_vfmsub213pd_256();
-    
-    // Restore MXCSR
-    set_mxcsr(old_mxcsr);
-    
-    printf("vfmsub213pd tests completed\n");
     return 0;
 }

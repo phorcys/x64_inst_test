@@ -1,43 +1,91 @@
---- Testing vfmaddsub231ps (Fused Multiply-Alternating Add/Subtract of Packed Single-Precision Floating-Point Values) ---
-Input a: 1.500000 2.500000 3.500000 4.500000 5.500000 6.500000 7.500000 8.500000 
-Input b: 0.500000 1.500000 2.500000 3.500000 4.500000 5.500000 6.500000 7.500000 
-Input c: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
-Result: -0.250000 5.750000 5.750000 19.750000 19.750000 41.750000 41.750000 71.750000 
-Expected: -0.250000 5.750000 5.750000 19.750000 19.750000 41.750000 41.750000 71.750000 
+==================================
+VFMADDSUB231PS Comprehensive Tests
+==================================
 
-[Special values test]
-Test case 1:
-a: 0x7F800000 0x3F800000 0x7F800000 0x3F800000 0x7F800000 0x3F800000 0x7F800000 0x3F800000 
-b: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-c: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-result: 0x7F800000 0x40000000 0x7F800000 0x40000000 0x7F800000 0x40000000 0x7F800000 0x40000000 
-Test case 2:
-a: 0xFF800000 0x3F800000 0xFF800000 0x3F800000 0xFF800000 0x3F800000 0xFF800000 0x3F800000 
-b: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-c: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-result: 0xFF800000 0x40000000 0xFF800000 0x40000000 0xFF800000 0x40000000 0xFF800000 0x40000000 
-Test case 3:
-a: 0x7FC00000 0x3F800000 0x7FC00000 0x3F800000 0x7FC00000 0x3F800000 0x7FC00000 0x3F800000 
-b: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-c: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-result: 0x7FC00000 0x40000000 0x7FC00000 0x40000000 0x7FC00000 0x40000000 0x7FC00000 0x40000000 
-Test case 4:
-a: 0x00000000 0x3F800000 0x00000000 0x3F800000 0x00000000 0x3F800000 0x00000000 0x3F800000 
-b: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-c: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-result: 0xBF800000 0x40000000 0xBF800000 0x40000000 0xBF800000 0x40000000 0xBF800000 0x40000000 
-Test case 5:
-a: 0x7E967699 0x40000000 0x7E967699 0x40000000 0x7E967699 0x40000000 0x7E967699 0x40000000 
-b: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
-c: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
-result: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 
+Test Case: Normal values
+A     : 1 2 3 4
+B     : 5 6 7 8
+C     : 9 10 11 12
+Result: 44 62 74 100
 
-[Rounding modes test]
-Rounding mode 0:
-Result: -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 
-Rounding mode 1:
-Result: -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 
-Rounding mode 2:
-Result: -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 
-Rounding mode 3:
-Result: -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 -1.400000 1.600000 
+Test Case: Zero values
+A     : 0 -0 0 -0
+B     : 0 -0 0 -0
+C     : 0 -0 0 -0
+Result: 0 0 0 0
+
+Test Case: Infinity values
+A     : inf -inf 1 2
+B     : 1 1 inf -inf
+C     : 1 1 1 1
+Result: -inf -inf inf -inf
+
+Test Case: NaN values
+A     : nan 1 2 3
+B     : 1 nan 2 3
+C     : 1 2 nan 3
+Result: nan nan nan 12
+
+Test Case: Boundary values
+A     : 1.17549435e-38 3.40282347e+38 -1.17549435e-38 -3.40282347e+38
+B     : 1.17549435e-38 3.40282347e+38 -1.17549435e-38 -3.40282347e+38
+C     : 1.17549435e-38 3.40282347e+38 -1.17549435e-38 -3.40282347e+38
+Result: -1.17549435e-38 inf 1.17549435e-38 inf
+
+Test Case: Mixed special values
+A     : 1 inf nan 0
+B     : inf nan 0 nan
+C     : nan 0 inf 1
+Result: nan nan nan nan
+
+Test Case: Very small values
+A     : 1e-30 2.00000001e-30 3.00000001e-30 4.00000001e-30
+B     : 5.00000002e-30 6.00000002e-30 7.00000002e-30 8.00000003e-30
+C     : 9.00000003e-30 1e-29 1.1e-29 1.2e-29
+Result: -1e-30 2.00000001e-30 -3.00000001e-30 4.00000001e-30
+
+Test Case: Special value in a
+A     : inf nan 1 2
+B     : 3 4 5 6
+C     : 7 8 9 10
+Result: -inf nan 44 62
+
+Test Case: Special value in b
+A     : 1 2 3 4
+B     : nan inf -inf nan
+C     : 5 6 7 8
+Result: nan inf -inf nan
+
+Test Case: Special value in c
+A     : 1 2 3 4
+B     : 5 6 7 8
+C     : -inf nan inf -nan
+Result: -inf nan inf -nan
+
+Test Case: Special values in a and b
+A     : inf nan -inf nan
+B     : nan inf nan -inf
+C     : 1 2 3 4
+Result: nan nan nan nan
+
+Test Case: Special values in a and c
+A     : nan inf -nan -inf
+B     : 1 2 3 4
+C     : inf nan -inf nan
+Result: nan nan -nan nan
+
+Test Case: All special values
+A     : inf nan -inf nan
+B     : nan inf nan -inf
+C     : -inf nan inf -nan
+Result: nan nan nan -nan
+
+Test Case: (null)
+A     : 0 0 0 0
+B     : 0 0 0 0
+C     : 0 0 0 0
+Result: 0 0 0 0
+
+VFMADDSUB231PS Register-Register Tests Completed
+
+All VFMADDSUB231PS tests completed. Results are for verification on physical CPU vs box64.

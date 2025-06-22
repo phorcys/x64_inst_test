@@ -1,72 +1,111 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <immintrin.h>
 #include <math.h>
+#include <float.h>
+#include "avx.h"
 
-// vfnmsub231ss指令测试
-void test_vfnmsub231ss() {
-    printf("--- Testing vfnmsub231ss (Fused Negative Multiply-Subtract of Scalar Single-Precision Floating-Point Values) ---\n");
-    
-    // 测试数据
-    float a = 1.5f;
-    float b = 0.5f;
-    float c = 1.0f;
-    float res = 0;
-    
-    // 预期结果 (vfnmsub231ss: res = -(a*b) - c)
-    float expected = -(a * b) - c;
-    
-    // 执行指令
-    __asm__ __volatile__(
-        "vmovss %1, %%xmm0\n\t"     // 加载a到xmm0
-        "vmovss %2, %%xmm1\n\t"     // 加载b到xmm1
-        "vmovss %3, %%xmm2\n\t"     // 加载c到xmm2
-        "vfnmsub231ss %%xmm1, %%xmm0, %%xmm2\n\t"  // xmm2 = -(xmm0*xmm1) - xmm2
-        "vmovss %%xmm2, %0\n\t"     // 存回结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    printf("[Basic test]\n");
-    printf("Input a: %f\n", a);
-    printf("Input b: %f\n", b);
-    printf("Input c: %f\n", c);
-    printf("Result: %f\n", res);
-    printf("Expected: %f\n", expected);
-    
-    // 验证结果
-    if(!float_equal(res, expected, 1e-5f)) {
-        printf("Mismatch: got %f, expected %f\n", res, expected);
-    }
-    
-    // 测试特殊值
-    printf("\n[Special values test]\n");
-    float spec_a[4] = {INFINITY, -INFINITY, NAN, 0.0f};
-    float spec_b[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-    float spec_c[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-    float spec_res[4] = {0};
-    
-    for(int i=0; i<4; i++) {
+#define TEST_CASE_COUNT 14
+
+typedef struct {
+    float a;
+    float b;
+    float c;
+    const char *desc;
+} test_case;
+
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {1.0f, 5.0f, 9.0f, "Normal values"},
+    // 零值
+    {0.0f, 5.0f, 9.0f, "Zero values"},
+    // 无穷大
+    {INFINITY, 1.0f, 1.0f, "Infinity values"},
+    // NaN
+    {NAN, 1.0f, 2.0f, "NaN values"},
+    // 边界值
+    {FLT_MIN, 2.0f, FLT_MIN, "Boundary values"},
+    // 混合值
+    {1.0f, INFINITY, NAN, "Mixed special values"},
+    // 小值
+    {1e-30f, 2.0f, 1e-30f, "Very small values"},
+    // a为特殊值
+    {INFINITY, 2.0f, 1.0f, "Special values in a"},
+    // b为特殊值
+    {1.0f, INFINITY, 5.0f, "Special values in b"},
+    // c为特殊值
+    {1.0f, 5.0f, INFINITY, "Special values in c"},
+    // a和b为特殊值
+    {INFINITY, NAN, 1.0f, "Special values in a and b"},
+    // a和c为特殊值
+    {INFINITY, 1.0f, NAN, "Special values in a and c"},
+    // b和c为特殊值
+    {1.0f, INFINITY, NAN, "Special values in b and c"},
+    // 所有特殊值
+    {INFINITY, NAN, INFINITY, "All special values"}
+};
+
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_load_ss(&cases[t].a);
+        __m128 vb = _mm_load_ss(&cases[t].b);
+        __m128 vc = _mm_load_ss(&cases[t].c);
+        
         __asm__ __volatile__(
-            "vmovss %1, %%xmm0\n\t"
-            "vmovss %2, %%xmm1\n\t"
-            "vmovss %3, %%xmm2\n\t"
-            "vfnmsub231ss %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovss %%xmm2, %0\n\t"
-            : "=m"(spec_res[i])
-            : "m"(spec_a[i]), "m"(spec_b[i]), "m"(spec_c[i])
-            : "xmm0", "xmm1", "xmm2"
+            "vfnmsub231ss %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
+        
+        float res;
+        _mm_store_ss(&res, va);
+        
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.7g\n", cases[t].a);
+        printf("B     : %.7g\n", cases[t].b);
+        printf("C     : %.7g\n", cases[t].c);
+        printf("Result: %.7g\n\n", res);
     }
     
-    print_hex_float_vec("Special a", spec_a, 4);
-    print_hex_float_vec("Special b", spec_b, 4);
-    print_hex_float_vec("Special c", spec_c, 4);
-    print_hex_float_vec("Special result", spec_res, 4);
+    printf("VFNMSUB231SS Register-Register Tests Completed\n\n");
+}
+
+static void test_reg_mem_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128 va = _mm_load_ss(&cases[t].a);
+        __m128 vc = _mm_load_ss(&cases[t].c);
+        
+        // 测试内存操作数
+        __m128 va1 = va;
+        __asm__ __volatile__(
+            "vfnmsub231ss %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (cases[t].b), [c] "x" (vc)
+        );
+        
+        float res;
+        _mm_store_ss(&res, va1);
+        
+        printf("Memory Operand Test: %s\n", cases[t].desc);
+        printf("A     : %.7g\n", cases[t].a);
+        printf("B     : %.7g\n", cases[t].b);
+        printf("C     : %.7g\n", cases[t].c);
+        printf("Result: %.7g\n\n", res);
+    }
+    
+    printf("VFNMSUB231SS Register-Memory Tests Completed\n\n");
 }
 
 int main() {
-    test_vfnmsub231ss();
+    printf("==================================\n");
+    printf("VFNMSUB231SS Comprehensive Tests\n");
+    printf("==================================\n\n");
+    
+    // 执行测试
+    test_reg_reg_operand();
+    test_reg_mem_operand();
+    
+    printf("All VFNMSUB231SS tests completed. Results are for verification on physical CPU vs box64.\n");
+    
     return 0;
 }

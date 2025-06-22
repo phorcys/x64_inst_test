@@ -1,13 +1,177 @@
---- Testing vfmadd213sd (Fused Multiply-Add of Scalar Double-Precision Floating-Point Values) ---
-[Basic test]
-Input a: 1.500000
-Input b: 0.500000
-Input c: 1.000000
-Result: 2.000000
-Expected: 2.000000
+==================================
+VFMADD213SD Comprehensive Tests
+==================================
 
-[Special values test]
-Special a: 0x7ff0000000000000 0xfff0000000000000 0x7ff8000000000000 0x0000000000000000 
-Special b: 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 
-Special c: 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 
-Special result: 0x7ff0000000000000 0xfff0000000000000 0x7ff8000000000000 0x3ff0000000000000 
+Test Case: Normal values
+A     : 1
+B     : 2
+C     : 3
+Result: 5
+
+Test Case: Zero values
+A     : 0
+B     : -0
+C     : 0
+Result: 0
+
+Test Case: Infinity values
+A     : inf
+B     : -inf
+C     : 1
+Result: -nan
+
+Test Case: NaN values
+A     : nan
+B     : 1
+C     : 2
+Result: nan
+
+Test Case: Boundary values
+A     : 2.2250738585072014e-308
+B     : 1.7976931348623157e+308
+C     : -2.2250738585072014e-308
+Result: 1.7976931348623157e+308
+
+Test Case: Mixed special values
+A     : 1
+B     : inf
+C     : nan
+Result: nan
+
+Test Case: Very small values
+A     : 1e-300
+B     : 2.0000000000000001e-300
+C     : 3.0000000000000002e-300
+Result: 2.0000000000000001e-300
+
+Test Case: Special value in a
+A     : inf
+B     : 2
+C     : 3
+Result: inf
+
+Test Case: Special value in b
+A     : 1
+B     : nan
+C     : 2
+Result: nan
+
+Test Case: Special value in c
+A     : 1
+B     : 2
+C     : -inf
+Result: -inf
+
+Test Case: Special values in a and b
+A     : inf
+B     : nan
+C     : 1
+Result: nan
+
+Test Case: Special values in a and c
+A     : nan
+B     : 1
+C     : inf
+Result: nan
+
+Test Case: All special values
+A     : inf
+B     : nan
+C     : -inf
+Result: nan
+
+Test Case: (null)
+A     : 0
+B     : 0
+C     : 0
+Result: 0
+
+VFMADD213SD Register-Register Tests Completed
+
+Memory Operand Test: Normal values
+A     : 1
+B     : 2
+C     : 3
+Result: 5
+
+Memory Operand Test: Zero values
+A     : 0
+B     : -0
+C     : 0
+Result: 0
+
+Memory Operand Test: Infinity values
+A     : inf
+B     : -inf
+C     : 1
+Result: -nan
+
+Memory Operand Test: NaN values
+A     : nan
+B     : 1
+C     : 2
+Result: nan
+
+Memory Operand Test: Boundary values
+A     : 2.2250738585072014e-308
+B     : 1.7976931348623157e+308
+C     : -2.2250738585072014e-308
+Result: 1.7976931348623157e+308
+
+Memory Operand Test: Mixed special values
+A     : 1
+B     : inf
+C     : nan
+Result: nan
+
+Memory Operand Test: Very small values
+A     : 1e-300
+B     : 2.0000000000000001e-300
+C     : 3.0000000000000002e-300
+Result: 2.0000000000000001e-300
+
+Memory Operand Test: Special value in a
+A     : inf
+B     : 2
+C     : 3
+Result: inf
+
+Memory Operand Test: Special value in b
+A     : 1
+B     : nan
+C     : 2
+Result: nan
+
+Memory Operand Test: Special value in c
+A     : 1
+B     : 2
+C     : -inf
+Result: -inf
+
+Memory Operand Test: Special values in a and b
+A     : inf
+B     : nan
+C     : 1
+Result: nan
+
+Memory Operand Test: Special values in a and c
+A     : nan
+B     : 1
+C     : inf
+Result: nan
+
+Memory Operand Test: All special values
+A     : inf
+B     : nan
+C     : -inf
+Result: nan
+
+Memory Operand Test: (null)
+A     : 0
+B     : 0
+C     : 0
+Result: 0
+
+VFMADD213SD Register-Memory Tests Completed
+
+All VFMADD213SD tests completed. Results are for verification on physical CPU vs box64.

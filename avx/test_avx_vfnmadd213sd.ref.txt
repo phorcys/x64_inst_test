@@ -1,14 +1,191 @@
---- Testing vfnmadd213sd (Fused Negative Multiply-Add of Scalar Double-Precision Floating-Point Values) ---
-MXCSR changed: 0x00001F80 -> 0x00001F80
-Input a: 1.000000 
-Input b: 2.000000 
-Input c: 3.000000 
-Result: 1.000000 
-Expected: 1.000000
-Result matches expected value
+==================================
+VFNMADD213SD Comprehensive Tests
+==================================
 
-[Special values test]
-Special inputs a: 0x7ff8000000000000 0x7ff0000000000000 0xfff0000000000000 0x0000000000000000 
-Special inputs b: 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 0x3ff0000000000000 
-Special inputs c: 0x3ff0000000000000 0x7ff0000000000000 0xfff0000000000000 0x0000000000000000 
-Special results: 0x7ff8000000000000 0x3ff0000000000000 0x0000000000000000 0x0000000000000000 
+Test Case: Normal values
+A     : 1
+B     : 5
+C     : 9
+Result: -4
+
+Test Case: Zero values
+A     : 0
+B     : 5
+C     : 9
+Result: 5
+
+Test Case: Infinity values
+A     : inf
+B     : 1
+C     : 1
+Result: -inf
+
+Test Case: NaN values
+A     : nan
+B     : 1
+C     : 2
+Result: nan
+
+Test Case: Boundary values
+A     : 2.2250738585072014e-308
+B     : 2
+C     : 2.2250738585072014e-308
+Result: 2
+
+Test Case: Mixed special values
+A     : 1
+B     : inf
+C     : nan
+Result: nan
+
+Test Case: Very small values
+A     : 1e-300
+B     : 2
+C     : 1e-300
+Result: 2
+
+Test Case: Special values in a
+A     : inf
+B     : 2
+C     : 1
+Result: -inf
+
+Test Case: Special values in b
+A     : 1
+B     : inf
+C     : 5
+Result: inf
+
+Test Case: Special values in c
+A     : 1
+B     : 5
+C     : inf
+Result: -inf
+
+Test Case: Special values in a and b
+A     : inf
+B     : nan
+C     : 1
+Result: nan
+
+Test Case: Special values in a and c
+A     : inf
+B     : 1
+C     : nan
+Result: nan
+
+Test Case: Special values in b and c
+A     : 1
+B     : inf
+C     : nan
+Result: nan
+
+Test Case: All special values
+A     : inf
+B     : nan
+C     : inf
+Result: nan
+
+VFNMADD213SD Register-Register Tests Completed
+
+Memory Operand Test: Normal values
+A     : 1
+B     : 5
+C     : 9
+Unaligned memory: -4
+Aligned memory: -4
+
+Memory Operand Test: Zero values
+A     : 0
+B     : 5
+C     : 9
+Unaligned memory: 5
+Aligned memory: 5
+
+Memory Operand Test: Infinity values
+A     : inf
+B     : 1
+C     : 1
+Unaligned memory: -inf
+Aligned memory: -inf
+
+Memory Operand Test: NaN values
+A     : nan
+B     : 1
+C     : 2
+Unaligned memory: nan
+Aligned memory: nan
+
+Memory Operand Test: Boundary values
+A     : 2.2250738585072014e-308
+B     : 2
+C     : 2.2250738585072014e-308
+Unaligned memory: 2
+Aligned memory: 2
+
+Memory Operand Test: Mixed special values
+A     : 1
+B     : inf
+C     : nan
+Unaligned memory: nan
+Aligned memory: nan
+
+Memory Operand Test: Very small values
+A     : 1e-300
+B     : 2
+C     : 1e-300
+Unaligned memory: 2
+Aligned memory: 2
+
+Memory Operand Test: Special values in a
+A     : inf
+B     : 2
+C     : 1
+Unaligned memory: -inf
+Aligned memory: -inf
+
+Memory Operand Test: Special values in b
+A     : 1
+B     : inf
+C     : 5
+Unaligned memory: inf
+Aligned memory: inf
+
+Memory Operand Test: Special values in c
+A     : 1
+B     : 5
+C     : inf
+Unaligned memory: -inf
+Aligned memory: -inf
+
+Memory Operand Test: Special values in a and b
+A     : inf
+B     : nan
+C     : 1
+Unaligned memory: nan
+Aligned memory: nan
+
+Memory Operand Test: Special values in a and c
+A     : inf
+B     : 1
+C     : nan
+Unaligned memory: nan
+Aligned memory: nan
+
+Memory Operand Test: Special values in b and c
+A     : 1
+B     : inf
+C     : nan
+Unaligned memory: nan
+Aligned memory: nan
+
+Memory Operand Test: All special values
+A     : inf
+B     : nan
+C     : inf
+Unaligned memory: nan
+Aligned memory: nan
+
+VFNMADD213SD Register-Memory Tests Completed
+
+All VFNMADD213SD tests completed. Results are for verification on physical CPU vs box64.

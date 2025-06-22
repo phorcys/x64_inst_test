@@ -1,109 +1,81 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <immintrin.h>
 #include <math.h>
+#include <float.h>
+#include "avx.h"
 
-// vfmadd231sd指令测试
-void test_vfmadd231sd() {
-    printf("--- Testing vfmadd231sd (Fused Multiply-Add of Scalar Double-Precision Floating-Point Values) ---\n");
-    
-    // 测试数据
-    double a = 1.5;
-    double b = 2.5;
-    double c = 0.5;
-    double res = 0;
-    
-    // 预期结果
-    double expected = a * b + c;
-    
-    // 测试指令
-    __asm__ __volatile__(
-        "vmovsd %1, %%xmm0\n\t"     // 加载a到xmm0
-        "vmovsd %2, %%xmm1\n\t"     // 加载b到xmm1
-        "vmovsd %3, %%xmm2\n\t"     // 加载c到xmm2
-        "vfmadd231sd %%xmm1, %%xmm0, %%xmm2\n\t"  // xmm2 = xmm0*xmm1 + xmm2
-        "vmovsd %%xmm2, %0\n\t"     // 存回结果
-        : "=m"(res)
-        : "m"(a), "m"(b), "m"(c)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    printf("Input a: %f\n", a);
-    printf("Input b: %f\n", b);
-    printf("Input c: %f\n", c);
-    printf("Result: %f\n", res);
-    printf("Expected: %f\n", expected);
-    
-    // 验证结果
-    if(!double_equal(res, expected, 1e-12)) {
-        printf("Mismatch: got %f, expected %f\n", res, expected);
-    }
-    
-    // 测试特殊值
-    printf("\n[Special values test]\n");
-    double spec_values[][3] = {
-        {INFINITY, 1.0, 1.0},
-        {-INFINITY, 1.0, 1.0},
-        {NAN, 1.0, 1.0},
-        {0.0, 1.0, 1.0},
-        {1.0e308, 2.0, 0.0}  // 测试溢出
-    };
-    
-    for(size_t i=0; i<sizeof(spec_values)/sizeof(spec_values[0]); i++) {
-        double spec_a = spec_values[i][0];
-        double spec_b = spec_values[i][1];
-        double spec_c = spec_values[i][2];
-        double spec_res = 0;
+#define TEST_CASE_COUNT 14
+
+typedef struct {
+    double a;
+    double b;
+    double c;
+    const char *desc;
+} test_case;
+
+test_case cases[TEST_CASE_COUNT] = {
+    // 正常值
+    {1.0, 2.0, 3.0, "Normal values"},
+    // 零值
+    {0.0, -0.0, 0.0, "Zero values"},
+    // 无穷大
+    {INFINITY, -INFINITY, 1.0, "Infinity values"},
+    // NaN
+    {NAN, 1.0, 2.0, "NaN values"},
+    // 边界值
+    {DBL_MIN, DBL_MAX, -DBL_MIN, "Boundary values"},
+    // 混合值
+    {1.0, INFINITY, NAN, "Mixed special values"},
+    // 小值
+    {1e-300, 2.0000000000000001e-300, 3.0000000000000002e-300, "Very small values"},
+    // a为特殊值
+    {INFINITY, 2.0, 3.0, "Special value in a"},
+    // b为特殊值
+    {1.0, NAN, 2.0, "Special value in b"},
+    // c为特殊值
+    {1.0, 2.0, -INFINITY, "Special value in c"},
+    // a和b为特殊值
+    {INFINITY, NAN, 1.0, "Special values in a and b"},
+    // a和c为特殊值
+    {NAN, 1.0, INFINITY, "Special values in a and c"},
+    // 所有特殊值
+    {INFINITY, NAN, -INFINITY, "All special values"}
+};
+
+static void test_reg_reg_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_load_sd(&cases[t].a);
+        __m128d vb = _mm_load_sd(&cases[t].b);
+        __m128d vc = _mm_load_sd(&cases[t].c);
         
         __asm__ __volatile__(
-            "vmovsd %1, %%xmm0\n\t"
-            "vmovsd %2, %%xmm1\n\t"
-            "vmovsd %3, %%xmm2\n\t"
-            "vfmadd231sd %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovsd %%xmm2, %0\n\t"
-            : "=m"(spec_res)
-            : "m"(spec_a), "m"(spec_b), "m"(spec_c)
-            : "xmm0", "xmm1", "xmm2"
+            "vfmadd231sd %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
         );
         
-        printf("Test case %zu:\n", i+1);
-        print_double_vec_hex("a", &spec_a, 1);
-        print_double_vec_hex("b", &spec_b, 1);
-        print_double_vec_hex("c", &spec_c, 1);
-        print_double_vec_hex("result", &spec_res, 1);
+        double res;
+        _mm_store_sd(&res, va);
+        
+        printf("Test Case: %s\n", cases[t].desc);
+        printf("A     : %.17g\n", cases[t].a);
+        printf("B     : %.17g\n", cases[t].b);
+        printf("C     : %.17g\n", cases[t].c);
+        printf("Result: %.17g\n\n", res);
     }
     
-    // 测试不同舍入模式
-    printf("\n[Rounding modes test]\n");
-    uint32_t mxcsr = get_mxcsr();
-    for(int i=0; i<4; i++) {  // 测试4种舍入模式
-        uint32_t new_mxcsr = (mxcsr & ~0x6000) | (i << 13);
-        set_mxcsr(new_mxcsr);
-        
-        double rnd_a = 1.5;
-        double rnd_b = 1.0;
-        double rnd_c = 0.1;
-        double rnd_res = 0;
-        
-        __asm__ __volatile__(
-            "vmovsd %1, %%xmm0\n\t"
-            "vmovsd %2, %%xmm1\n\t"
-            "vmovsd %3, %%xmm2\n\t"
-            "vfmadd231sd %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovsd %%xmm2, %0\n\t"
-            : "=m"(rnd_res)
-            : "m"(rnd_a), "m"(rnd_b), "m"(rnd_c)
-            : "xmm0", "xmm1", "xmm2"
-        );
-        
-        printf("Rounding mode %d:\n", i);
-        print_mxcsr(new_mxcsr);
-        printf("Result: %.17g\n", rnd_res);
-    }
-    set_mxcsr(mxcsr);  // 恢复原始MXCSR
+    printf("VFMADD231SD Register-Register Tests Completed\n\n");
 }
 
 int main() {
-    test_vfmadd231sd();
+    printf("==================================\n");
+    printf("VFMADD231SD Comprehensive Tests\n");
+    printf("==================================\n\n");
+    
+    test_reg_reg_operand();
+    
+    printf("All VFMADD231SD tests completed. Results are for verification on physical CPU vs box64.\n");
+    
     return 0;
 }

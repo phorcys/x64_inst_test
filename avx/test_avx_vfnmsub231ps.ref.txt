@@ -1,17 +1,177 @@
---- Testing vfnmsub231ps (Fused Negative Multiply-Subtract of Packed Single-Precision Floating-Point Values) ---
-[256-bit test]
-Input a: 1.500000 2.500000 3.500000 4.500000 5.500000 6.500000 7.500000 8.500000 
-Input b: 0.500000 1.500000 2.500000 3.500000 4.500000 5.500000 6.500000 7.500000 
-Input c: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
-Result: -1.750000 -5.750000 -11.750000 -19.750000 -29.750000 -41.750000 -55.750000 -71.750000 
-Expected: -1.750000 -5.750000 -11.750000 -19.750000 -29.750000 -41.750000 -55.750000 -71.750000 
+==================================
+VFNMSUB231PS Comprehensive Tests
+==================================
 
-[128-bit test]
-Result: -1.750000 -5.750000 -11.750000 -19.750000 
-Expected: -1.750000 -5.750000 -11.750000 -19.750000 
+Test Case: Normal values
+A     : [1, 2, 3, 4]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-46, -62, -80, -100]
 
-[Special values test]
-Special a: 0x7F800000 0xFF800000 0x7FC00000 0x00000000 0x3F800000 0xBF800000 0x40000000 0xC0000000 
-Special b: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x00000000 0x00000000 0x80000000 0x80000000 
-Special c: 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 0x3F800000 
-Special result: 0xFF800000 0x7F800000 0x7FC00000 0xBF800000 0xBF800000 0xBF800000 0xBF800000 0xBF800000 
+Test Case: Zero values
+A     : [0, 0, 0, 0]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-45, -60, -77, -96]
+
+Test Case: Infinity values
+A     : [inf, inf, inf, inf]
+B     : [1, 2, 3, 4]
+C     : [1, 2, 3, 4]
+Result: [-inf, -inf, -inf, -inf]
+
+Test Case: NaN values
+A     : [nan, nan, nan, nan]
+B     : [1, 2, 3, 4]
+C     : [2, 3, 4, 5]
+Result: [nan, nan, nan, nan]
+
+Test Case: Boundary values
+A     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+B     : [2, 3, 4, 5]
+C     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+Result: [-3.526483e-38, -4.701977e-38, -5.877472e-38, -7.052966e-38]
+
+Test Case: Mixed special values
+A     : [1, 2, 3, 4]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Test Case: Very small values
+A     : [1e-30, 1e-30, 1e-30, 1e-30]
+B     : [2, 3, 4, 5]
+C     : [1e-30, 1e-30, 1e-30, 1e-30]
+Result: [-3e-30, -4e-30, -5e-30, -6e-30]
+
+Test Case: Special values in a
+A     : [inf, inf, inf, inf]
+B     : [2, 3, 4, 5]
+C     : [1, 2, 3, 4]
+Result: [-inf, -inf, -inf, -inf]
+
+Test Case: Special values in b
+A     : [1, 2, 3, 4]
+B     : [inf, inf, inf, inf]
+C     : [5, 6, 7, 8]
+Result: [-inf, -inf, -inf, -inf]
+
+Test Case: Special values in c
+A     : [1, 2, 3, 4]
+B     : [5, 6, 7, 8]
+C     : [inf, inf, inf, inf]
+Result: [-inf, -inf, -inf, -inf]
+
+Test Case: Special values in a and b
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [1, 2, 3, 4]
+Result: [nan, nan, nan, nan]
+
+Test Case: Special values in a and c
+A     : [inf, inf, inf, inf]
+B     : [1, 2, 3, 4]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Test Case: Special values in b and c
+A     : [1, 2, 3, 4]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Test Case: All special values
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [inf, inf, inf, inf]
+Result: [nan, nan, nan, nan]
+
+VFNMSUB231PS Register-Register Tests Completed
+
+Memory Operand Test: Normal values
+A     : [1, 2, 3, 4]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-46, -62, -80, -100]
+
+Memory Operand Test: Zero values
+A     : [0, 0, 0, 0]
+B     : [5, 6, 7, 8]
+C     : [9, 10, 11, 12]
+Result: [-45, -60, -77, -96]
+
+Memory Operand Test: Infinity values
+A     : [inf, inf, inf, inf]
+B     : [1, 2, 3, 4]
+C     : [1, 2, 3, 4]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: NaN values
+A     : [nan, nan, nan, nan]
+B     : [1, 2, 3, 4]
+C     : [2, 3, 4, 5]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Boundary values
+A     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+B     : [2, 3, 4, 5]
+C     : [1.175494e-38, 1.175494e-38, 1.175494e-38, 1.175494e-38]
+Result: [-3.526483e-38, -4.701977e-38, -5.877472e-38, -7.052966e-38]
+
+Memory Operand Test: Mixed special values
+A     : [1, 2, 3, 4]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Very small values
+A     : [1e-30, 1e-30, 1e-30, 1e-30]
+B     : [2, 3, 4, 5]
+C     : [1e-30, 1e-30, 1e-30, 1e-30]
+Result: [-3e-30, -4e-30, -5e-30, -6e-30]
+
+Memory Operand Test: Special values in a
+A     : [inf, inf, inf, inf]
+B     : [2, 3, 4, 5]
+C     : [1, 2, 3, 4]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: Special values in b
+A     : [1, 2, 3, 4]
+B     : [inf, inf, inf, inf]
+C     : [5, 6, 7, 8]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: Special values in c
+A     : [1, 2, 3, 4]
+B     : [5, 6, 7, 8]
+C     : [inf, inf, inf, inf]
+Result: [-inf, -inf, -inf, -inf]
+
+Memory Operand Test: Special values in a and b
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [1, 2, 3, 4]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Special values in a and c
+A     : [inf, inf, inf, inf]
+B     : [1, 2, 3, 4]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: Special values in b and c
+A     : [1, 2, 3, 4]
+B     : [inf, inf, inf, inf]
+C     : [nan, nan, nan, nan]
+Result: [nan, nan, nan, nan]
+
+Memory Operand Test: All special values
+A     : [inf, inf, inf, inf]
+B     : [nan, nan, nan, nan]
+C     : [inf, inf, inf, inf]
+Result: [nan, nan, nan, nan]
+
+VFNMSUB231PS Register-Memory Tests Completed
+
+All VFNMSUB231PS tests completed. Results are for verification on physical CPU vs box64.

@@ -2,1301 +2,348 @@
 VFMADD132PS Comprehensive Tests
 ==================================
 
-Normal values (128-bit):
-  Element 0: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 1: a=2.000000 (0x40000000), b=1.500000 (0x3fc00000), c=2.000000 (0x40000000)
-    Expected: 5.000000 (0x40a00000), Result: 5.000000 (0x40a00000) - PASS
-  Element 2: a=3.000000 (0x40400000), b=2.500000 (0x40200000), c=3.000000 (0x40400000)
-    Expected: 10.500000 (0x41280000), Result: 10.500000 (0x41280000) - PASS
-  Element 3: a=4.000000 (0x40800000), b=3.500000 (0x40600000), c=4.000000 (0x40800000)
-    Expected: 18.000000 (0x41900000), Result: 18.000000 (0x41900000) - PASS
-
-Zero values (128-bit):
-  Element 0: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=0.100000 (0x3dcccccd)
-    Expected: 0.100000 (0x3dcccccd), Result: 0.100000 (0x3dcccccd) - PASS
-  Element 1: a=-0.000000 (0x80000000), b=2.000000 (0x40000000), c=0.200000 (0x3e4ccccd)
-    Expected: 0.200000 (0x3e4ccccd), Result: 0.200000 (0x3e4ccccd) - PASS
-  Element 2: a=0.000000 (0x00000000), b=3.000000 (0x40400000), c=0.300000 (0x3e99999a)
-    Expected: 0.300000 (0x3e99999a), Result: 0.300000 (0x3e99999a) - PASS
-  Element 3: a=-0.000000 (0x80000000), b=4.000000 (0x40800000), c=0.400000 (0x3ecccccd)
-    Expected: 0.400000 (0x3ecccccd), Result: 0.400000 (0x3ecccccd) - PASS
-
-Infinity values (128-bit):
-  Element 0: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 1: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 2: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 3: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-NaN values (128-bit):
-  Element 0: a=nan (0x7fc00000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=1.000000 (0x3f800000), b=nan (0x7fc00000), c=2.000000 (0x40000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=2.000000 (0x40000000), b=2.000000 (0x40000000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=3.000000 (0x40400000), b=3.000000 (0x40400000), c=3.000000 (0x40400000)
-    Expected: 12.000000 (0x41400000), Result: 12.000000 (0x41400000) - PASS
-
-Boundary values (128-bit):
-  Element 0: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 1: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=2.000000 (0x40000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 2: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 3: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=2.000000 (0x40000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-Mixed special values (128-bit):
-  Element 0: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=nan (0x7fc00000), b=0.000000 (0x00000000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=nan (0x7fc00000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-
-Very small values (128-bit):
-  Element 0: a=0.000000 (0x0da24260), b=2.000000 (0x40000000), c=0.000000 (0x0da24260)
-    Expected: 0.000000 (0x0e736390), Result: 0.000000 (0x0e736390) - PASS
-  Element 1: a=0.000000 (0x0e224260), b=3.000000 (0x40400000), c=0.000000 (0x0e224260)
-    Expected: 0.000000 (0x0f224260), Result: 0.000000 (0x0f224260) - PASS
-  Element 2: a=0.000000 (0x0e736390), b=4.000000 (0x40800000), c=0.000000 (0x0e736390)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 3: a=0.000000 (0x0ea24260), b=5.000000 (0x40a00000), c=0.000000 (0x0ea24260)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-VFMADD132PS 128-bit Register-Register Tests: ALL PASS
-
-Normal values (128-bit):
-  Element 0: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 1: a=0.500000 (0x3f000000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 2: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Normal values (256-bit):
-  Element 0: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 1: a=2.000000 (0x40000000), b=1.500000 (0x3fc00000), c=2.000000 (0x40000000)
-    Expected: 5.000000 (0x40a00000), Result: 5.000000 (0x40a00000) - PASS
-  Element 2: a=3.000000 (0x40400000), b=2.500000 (0x40200000), c=3.000000 (0x40400000)
-    Expected: 10.500000 (0x41280000), Result: 10.500000 (0x41280000) - PASS
-  Element 3: a=4.000000 (0x40800000), b=3.500000 (0x40600000), c=4.000000 (0x40800000)
-    Expected: 18.000000 (0x41900000), Result: 18.000000 (0x41900000) - PASS
-  Element 4: a=5.000000 (0x40a00000), b=4.500000 (0x40900000), c=5.000000 (0x40a00000)
-    Expected: 27.500000 (0x41dc0000), Result: 27.500000 (0x41dc0000) - PASS
-  Element 5: a=6.000000 (0x40c00000), b=5.500000 (0x40b00000), c=6.000000 (0x40c00000)
-    Expected: 39.000000 (0x421c0000), Result: 39.000000 (0x421c0000) - PASS
-  Element 6: a=7.000000 (0x40e00000), b=6.500000 (0x40d00000), c=7.000000 (0x40e00000)
-    Expected: 52.500000 (0x42520000), Result: 52.500000 (0x42520000) - PASS
-  Element 7: a=8.000000 (0x41000000), b=7.500000 (0x40f00000), c=8.000000 (0x41000000)
-    Expected: 68.000000 (0x42880000), Result: 68.000000 (0x42880000) - PASS
-
-Zero values:
-  Element 0: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=0.100000 (0x3dcccccd)
-    Expected: 0.100000 (0x3dcccccd), Result: 0.100000 (0x3dcccccd) - PASS
-  Element 1: a=-0.000000 (0x80000000), b=2.000000 (0x40000000), c=0.200000 (0x3e4ccccd)
-    Expected: 0.200000 (0x3e4ccccd), Result: 0.200000 (0x3e4ccccd) - PASS
-  Element 2: a=0.000000 (0x00000000), b=3.000000 (0x40400000), c=0.300000 (0x3e99999a)
-    Expected: 0.300000 (0x3e99999a), Result: 0.300000 (0x3e99999a) - PASS
-  Element 3: a=-0.000000 (0x80000000), b=4.000000 (0x40800000), c=0.400000 (0x3ecccccd)
-    Expected: 0.400000 (0x3ecccccd), Result: 0.400000 (0x3ecccccd) - PASS
-  Element 4: a=0.000000 (0x00000000), b=5.000000 (0x40a00000), c=0.500000 (0x3f000000)
-    Expected: 0.500000 (0x3f000000), Result: 0.500000 (0x3f000000) - PASS
-  Element 5: a=-0.000000 (0x80000000), b=6.000000 (0x40c00000), c=0.600000 (0x3f19999a)
-    Expected: 0.600000 (0x3f19999a), Result: 0.600000 (0x3f19999a) - PASS
-  Element 6: a=0.000000 (0x00000000), b=7.000000 (0x40e00000), c=0.700000 (0x3f333333)
-    Expected: 0.700000 (0x3f333333), Result: 0.700000 (0x3f333333) - PASS
-  Element 7: a=-0.000000 (0x80000000), b=8.000000 (0x41000000), c=0.800000 (0x3f4ccccd)
-    Expected: 0.800000 (0x3f4ccccd), Result: 0.800000 (0x3f4ccccd) - PASS
-
-Infinity values:
-  Element 0: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 1: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 2: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 3: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 4: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 5: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 6: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 7: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-NaN values:
-  Element 0: a=nan (0x7fc00000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=1.000000 (0x3f800000), b=nan (0x7fc00000), c=2.000000 (0x40000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=2.000000 (0x40000000), b=2.000000 (0x40000000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=3.000000 (0x40400000), b=3.000000 (0x40400000), c=3.000000 (0x40400000)
-    Expected: 12.000000 (0x41400000), Result: 12.000000 (0x41400000) - PASS
-  Element 4: a=nan (0x7fc00000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 5: a=1.000000 (0x3f800000), b=nan (0x7fc00000), c=2.000000 (0x40000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 6: a=2.000000 (0x40000000), b=2.000000 (0x40000000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 7: a=3.000000 (0x40400000), b=3.000000 (0x40400000), c=3.000000 (0x40400000)
-    Expected: 12.000000 (0x41400000), Result: 12.000000 (0x41400000) - PASS
-
-Boundary values:
-  Element 0: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 1: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=0.500000 (0x3f000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 2: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 3: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=0.500000 (0x3f000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 4: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 5: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=0.500000 (0x3f000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 6: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 7: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=0.500000 (0x3f000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-Mixed special values:
-  Element 0: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=nan (0x7fc00000), b=inf (0x7f800000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: inf (0x7f800000) - FAIL
-  Element 3: a=-0.000000 (0x80000000), b=1.000000 (0x3f800000), c=-inf (0xff800000)
-    Expected: nan (0x7fc00000), Result: -inf (0xff800000) - FAIL
-  Element 4: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 5: a=nan (0x7fc00000), b=inf (0x7f800000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: inf (0x7f800000) - FAIL
-  Element 7: a=-0.000000 (0x80000000), b=1.000000 (0x3f800000), c=-inf (0xff800000)
-    Expected: nan (0x7fc00000), Result: -inf (0xff800000) - FAIL
-
-Very small values:
-  Element 0: a=0.000000 (0x0da24260), b=2.000000 (0x40000000), c=0.000000 (0x0da24260)
-    Expected: 0.000000 (0x0e736390), Result: 0.000000 (0x0e736390) - PASS
-  Element 1: a=0.000000 (0x0e224260), b=3.000000 (0x40400000), c=0.000000 (0x0e224260)
-    Expected: 0.000000 (0x0f224260), Result: 0.000000 (0x0f224260) - PASS
-  Element 2: a=0.000000 (0x0e736390), b=4.000000 (0x40800000), c=0.000000 (0x0e736390)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 3: a=0.000000 (0x0ea24260), b=5.000000 (0x40a00000), c=0.000000 (0x0ea24260)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-  Element 4: a=0.000000 (0x0ecad2f8), b=2.000000 (0x40000000), c=0.000000 (0x0ecad2f8)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 5: a=0.000000 (0x0ef36390), b=3.000000 (0x40400000), c=0.000000 (0x0ef36390)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-  Element 6: a=0.000000 (0x0f0dfa14), b=4.000000 (0x40800000), c=0.000000 (0x0f0dfa14)
-    Expected: 0.000000 (0x10317899), Result: 0.000000 (0x10317899) - PASS
-  Element 7: a=0.000000 (0x0f224260), b=5.000000 (0x40a00000), c=0.000000 (0x0f224260)
-    Expected: 0.000000 (0x10736390), Result: 0.000000 (0x10736390) - PASS
-
-Boundary values (128-bit):
-  Element 0: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 1: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=0.500000 (0x3f000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 2: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 3: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=0.500000 (0x3f000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Special values (128-bit):
-  Element 0: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 1: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=inf (0x7f800000), c=0.000000 (0x00000000)
-    Expected: -nan (0xffc00000), Result: -nan (0xffc00000) - PASS
-  Element 3: a=-0.000000 (0x80000000), b=-inf (0xff800000), c=0.000000 (0x00000000)
-    Expected: -nan (0xffc00000), Result: -nan (0xffc00000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-(null):
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-VFMADD132PS 256-bit Register-Register Tests: SOME FAIL
-
-Memory Operand Test: Normal values (128-bit memory)
-  Unaligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 1: a=2.000000 (0x40000000), b=1.500000 (0x3fc00000), c=2.000000 (0x40000000)
-    Expected: 5.000000 (0x40a00000), Result: 5.000000 (0x40a00000) - PASS
-  Element 2: a=3.000000 (0x40400000), b=2.500000 (0x40200000), c=3.000000 (0x40400000)
-    Expected: 10.500000 (0x41280000), Result: 10.500000 (0x41280000) - PASS
-  Element 3: a=4.000000 (0x40800000), b=3.500000 (0x40600000), c=4.000000 (0x40800000)
-    Expected: 18.000000 (0x41900000), Result: 18.000000 (0x41900000) - PASS
-
-  Aligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 1: a=2.000000 (0x40000000), b=1.500000 (0x3fc00000), c=2.000000 (0x40000000)
-    Expected: 5.000000 (0x40a00000), Result: 5.000000 (0x40a00000) - PASS
-  Element 2: a=3.000000 (0x40400000), b=2.500000 (0x40200000), c=3.000000 (0x40400000)
-    Expected: 10.500000 (0x41280000), Result: 10.500000 (0x41280000) - PASS
-  Element 3: a=4.000000 (0x40800000), b=3.500000 (0x40600000), c=4.000000 (0x40800000)
-    Expected: 18.000000 (0x41900000), Result: 18.000000 (0x41900000) - PASS
-
-Memory Operand Test: Zero values (128-bit memory)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=0.100000 (0x3dcccccd)
-    Expected: 0.100000 (0x3dcccccd), Result: 0.100000 (0x3dcccccd) - PASS
-  Element 1: a=-0.000000 (0x80000000), b=2.000000 (0x40000000), c=0.200000 (0x3e4ccccd)
-    Expected: 0.200000 (0x3e4ccccd), Result: 0.200000 (0x3e4ccccd) - PASS
-  Element 2: a=0.000000 (0x00000000), b=3.000000 (0x40400000), c=0.300000 (0x3e99999a)
-    Expected: 0.300000 (0x3e99999a), Result: 0.300000 (0x3e99999a) - PASS
-  Element 3: a=-0.000000 (0x80000000), b=4.000000 (0x40800000), c=0.400000 (0x3ecccccd)
-    Expected: 0.400000 (0x3ecccccd), Result: 0.400000 (0x3ecccccd) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=0.100000 (0x3dcccccd)
-    Expected: 0.100000 (0x3dcccccd), Result: 0.100000 (0x3dcccccd) - PASS
-  Element 1: a=-0.000000 (0x80000000), b=2.000000 (0x40000000), c=0.200000 (0x3e4ccccd)
-    Expected: 0.200000 (0x3e4ccccd), Result: 0.200000 (0x3e4ccccd) - PASS
-  Element 2: a=0.000000 (0x00000000), b=3.000000 (0x40400000), c=0.300000 (0x3e99999a)
-    Expected: 0.300000 (0x3e99999a), Result: 0.300000 (0x3e99999a) - PASS
-  Element 3: a=-0.000000 (0x80000000), b=4.000000 (0x40800000), c=0.400000 (0x3ecccccd)
-    Expected: 0.400000 (0x3ecccccd), Result: 0.400000 (0x3ecccccd) - PASS
-
-Memory Operand Test: Infinity values (128-bit memory)
-  Unaligned memory:
-  Element 0: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 1: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 2: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 3: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-  Aligned memory:
-  Element 0: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 1: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 2: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 3: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-Memory Operand Test: NaN values (128-bit memory)
-  Unaligned memory:
-  Element 0: a=nan (0x7fc00000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=1.000000 (0x3f800000), b=nan (0x7fc00000), c=2.000000 (0x40000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=2.000000 (0x40000000), b=2.000000 (0x40000000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=3.000000 (0x40400000), b=3.000000 (0x40400000), c=3.000000 (0x40400000)
-    Expected: 12.000000 (0x41400000), Result: 12.000000 (0x41400000) - PASS
-
-  Aligned memory:
-  Element 0: a=nan (0x7fc00000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=1.000000 (0x3f800000), b=nan (0x7fc00000), c=2.000000 (0x40000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=2.000000 (0x40000000), b=2.000000 (0x40000000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=3.000000 (0x40400000), b=3.000000 (0x40400000), c=3.000000 (0x40400000)
-    Expected: 12.000000 (0x41400000), Result: 12.000000 (0x41400000) - PASS
-
-Memory Operand Test: Boundary values (128-bit memory)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 1: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=2.000000 (0x40000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 2: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 3: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=2.000000 (0x40000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 1: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=2.000000 (0x40000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 2: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 3: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=2.000000 (0x40000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-Memory Operand Test: Mixed special values (128-bit memory)
-  Unaligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=nan (0x7fc00000), b=0.000000 (0x00000000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=nan (0x7fc00000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-
-  Aligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=nan (0x7fc00000), b=0.000000 (0x00000000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=nan (0x7fc00000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-
-Memory Operand Test: Very small values (128-bit memory)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x0da24260), b=2.000000 (0x40000000), c=0.000000 (0x0da24260)
-    Expected: 0.000000 (0x0e736390), Result: 0.000000 (0x0e736390) - PASS
-  Element 1: a=0.000000 (0x0e224260), b=3.000000 (0x40400000), c=0.000000 (0x0e224260)
-    Expected: 0.000000 (0x0f224260), Result: 0.000000 (0x0f224260) - PASS
-  Element 2: a=0.000000 (0x0e736390), b=4.000000 (0x40800000), c=0.000000 (0x0e736390)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 3: a=0.000000 (0x0ea24260), b=5.000000 (0x40a00000), c=0.000000 (0x0ea24260)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x0da24260), b=2.000000 (0x40000000), c=0.000000 (0x0da24260)
-    Expected: 0.000000 (0x0e736390), Result: 0.000000 (0x0e736390) - PASS
-  Element 1: a=0.000000 (0x0e224260), b=3.000000 (0x40400000), c=0.000000 (0x0e224260)
-    Expected: 0.000000 (0x0f224260), Result: 0.000000 (0x0f224260) - PASS
-  Element 2: a=0.000000 (0x0e736390), b=4.000000 (0x40800000), c=0.000000 (0x0e736390)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 3: a=0.000000 (0x0ea24260), b=5.000000 (0x40a00000), c=0.000000 (0x0ea24260)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-VFMADD132PS 128-bit Memory Operand Tests: ALL PASS
-
-Memory Operand Test: Normal values (256-bit memory)
-  Unaligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 1: a=2.000000 (0x40000000), b=1.500000 (0x3fc00000), c=2.000000 (0x40000000)
-    Expected: 5.000000 (0x40a00000), Result: 5.000000 (0x40a00000) - PASS
-  Element 2: a=3.000000 (0x40400000), b=2.500000 (0x40200000), c=3.000000 (0x40400000)
-    Expected: 10.500000 (0x41280000), Result: 10.500000 (0x41280000) - PASS
-  Element 3: a=4.000000 (0x40800000), b=3.500000 (0x40600000), c=4.000000 (0x40800000)
-    Expected: 18.000000 (0x41900000), Result: 18.000000 (0x41900000) - PASS
-  Element 4: a=5.000000 (0x40a00000), b=4.500000 (0x40900000), c=5.000000 (0x40a00000)
-    Expected: 27.500000 (0x41dc0000), Result: 27.500000 (0x41dc0000) - PASS
-  Element 5: a=6.000000 (0x40c00000), b=5.500000 (0x40b00000), c=6.000000 (0x40c00000)
-    Expected: 39.000000 (0x421c0000), Result: 39.000000 (0x421c0000) - PASS
-  Element 6: a=7.000000 (0x40e00000), b=6.500000 (0x40d00000), c=7.000000 (0x40e00000)
-    Expected: 52.500000 (0x42520000), Result: 52.500000 (0x42520000) - PASS
-  Element 7: a=8.000000 (0x41000000), b=7.500000 (0x40f00000), c=8.000000 (0x41000000)
-    Expected: 68.000000 (0x42880000), Result: 68.000000 (0x42880000) - PASS
-
-  Aligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=0.500000 (0x3f000000), c=1.000000 (0x3f800000)
-    Expected: 1.500000 (0x3fc00000), Result: 1.500000 (0x3fc00000) - PASS
-  Element 1: a=2.000000 (0x40000000), b=1.500000 (0x3fc00000), c=2.000000 (0x40000000)
-    Expected: 5.000000 (0x40a00000), Result: 5.000000 (0x40a00000) - PASS
-  Element 2: a=3.000000 (0x40400000), b=2.500000 (0x40200000), c=3.000000 (0x40400000)
-    Expected: 10.500000 (0x41280000), Result: 10.500000 (0x41280000) - PASS
-  Element 3: a=4.000000 (0x40800000), b=3.500000 (0x40600000), c=4.000000 (0x40800000)
-    Expected: 18.000000 (0x41900000), Result: 18.000000 (0x41900000) - PASS
-  Element 4: a=5.000000 (0x40a00000), b=4.500000 (0x40900000), c=5.000000 (0x40a00000)
-    Expected: 27.500000 (0x41dc0000), Result: 27.500000 (0x41dc0000) - PASS
-  Element 5: a=6.000000 (0x40c00000), b=5.500000 (0x40b00000), c=6.000000 (0x40c00000)
-    Expected: 39.000000 (0x421c0000), Result: 39.000000 (0x421c0000) - PASS
-  Element 6: a=7.000000 (0x40e00000), b=6.500000 (0x40d00000), c=7.000000 (0x40e00000)
-    Expected: 52.500000 (0x42520000), Result: 52.500000 (0x42520000) - PASS
-  Element 7: a=8.000000 (0x41000000), b=7.500000 (0x40f00000), c=8.000000 (0x41000000)
-    Expected: 68.000000 (0x42880000), Result: 68.000000 (0x42880000) - PASS
-
-Memory Operand Test: Zero values (256-bit memory)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=0.100000 (0x3dcccccd)
-    Expected: 0.100000 (0x3dcccccd), Result: 0.100000 (0x3dcccccd) - PASS
-  Element 1: a=-0.000000 (0x80000000), b=2.000000 (0x40000000), c=0.200000 (0x3e4ccccd)
-    Expected: 0.200000 (0x3e4ccccd), Result: 0.200000 (0x3e4ccccd) - PASS
-  Element 2: a=0.000000 (0x00000000), b=3.000000 (0x40400000), c=0.300000 (0x3e99999a)
-    Expected: 0.300000 (0x3e99999a), Result: 0.300000 (0x3e99999a) - PASS
-  Element 3: a=-0.000000 (0x80000000), b=4.000000 (0x40800000), c=0.400000 (0x3ecccccd)
-    Expected: 0.400000 (0x3ecccccd), Result: 0.400000 (0x3ecccccd) - PASS
-  Element 4: a=0.000000 (0x00000000), b=5.000000 (0x40a00000), c=0.500000 (0x3f000000)
-    Expected: 0.500000 (0x3f000000), Result: 0.500000 (0x3f000000) - PASS
-  Element 5: a=-0.000000 (0x80000000), b=6.000000 (0x40c00000), c=0.600000 (0x3f19999a)
-    Expected: 0.600000 (0x3f19999a), Result: 0.600000 (0x3f19999a) - PASS
-  Element 6: a=0.000000 (0x00000000), b=7.000000 (0x40e00000), c=0.700000 (0x3f333333)
-    Expected: 0.700000 (0x3f333333), Result: 0.700000 (0x3f333333) - PASS
-  Element 7: a=-0.000000 (0x80000000), b=8.000000 (0x41000000), c=0.800000 (0x3f4ccccd)
-    Expected: 0.800000 (0x3f4ccccd), Result: 0.800000 (0x3f4ccccd) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=1.000000 (0x3f800000), c=0.100000 (0x3dcccccd)
-    Expected: 0.100000 (0x3dcccccd), Result: 0.100000 (0x3dcccccd) - PASS
-  Element 1: a=-0.000000 (0x80000000), b=2.000000 (0x40000000), c=0.200000 (0x3e4ccccd)
-    Expected: 0.200000 (0x3e4ccccd), Result: 0.200000 (0x3e4ccccd) - PASS
-  Element 2: a=0.000000 (0x00000000), b=3.000000 (0x40400000), c=0.300000 (0x3e99999a)
-    Expected: 0.300000 (0x3e99999a), Result: 0.300000 (0x3e99999a) - PASS
-  Element 3: a=-0.000000 (0x80000000), b=4.000000 (0x40800000), c=0.400000 (0x3ecccccd)
-    Expected: 0.400000 (0x3ecccccd), Result: 0.400000 (0x3ecccccd) - PASS
-  Element 4: a=0.000000 (0x00000000), b=5.000000 (0x40a00000), c=0.500000 (0x3f000000)
-    Expected: 0.500000 (0x3f000000), Result: 0.500000 (0x3f000000) - PASS
-  Element 5: a=-0.000000 (0x80000000), b=6.000000 (0x40c00000), c=0.600000 (0x3f19999a)
-    Expected: 0.600000 (0x3f19999a), Result: 0.600000 (0x3f19999a) - PASS
-  Element 6: a=0.000000 (0x00000000), b=7.000000 (0x40e00000), c=0.700000 (0x3f333333)
-    Expected: 0.700000 (0x3f333333), Result: 0.700000 (0x3f333333) - PASS
-  Element 7: a=-0.000000 (0x80000000), b=8.000000 (0x41000000), c=0.800000 (0x3f4ccccd)
-    Expected: 0.800000 (0x3f4ccccd), Result: 0.800000 (0x3f4ccccd) - PASS
-
-Memory Operand Test: Infinity values (256-bit memory)
-  Unaligned memory:
-  Element 0: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 1: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 2: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 3: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 4: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 5: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 6: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 7: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-
-  Aligned memory:
-  Element 0: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 1: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 2: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 3: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 4: a=inf (0x7f800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 5: a=-inf (0xff800000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 6: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=1.000000 (0x3f800000)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 7: a=2.000000 (0x40000000), b=-inf (0xff800000), c=1.000000 (0x3f800000)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
+A     :: 1.000000 2.000000 3.000000 4.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 
+Result:: 14.000000 22.000000 32.000000 44.000000 
+
+A     :: 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 
+Result:: 9.000000 10.000000 11.000000 12.000000 
+
+A     :: inf -inf 1.000000 2.000000 
+B     :: 1.000000 1.000000 inf -inf 
+C     :: 1.000000 1.000000 1.000000 1.000000 
+Result:: inf -inf inf -inf 
+
+A     :: nan 1.000000 2.000000 3.000000 
+B     :: 1.000000 nan 2.000000 3.000000 
+C     :: 1.000000 2.000000 nan 3.000000 
+Result:: nan nan nan 12.000000 
+
+A     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+B     :: 2.000000 2.000000 2.000000 2.000000 
+C     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+Result:: 0.000000 inf -0.000000 -inf 
+
+A     :: 1.000000 inf nan 0.000000 
+B     :: inf nan 0.000000 nan 
+C     :: nan 0.000000 inf 1.000000 
+Result:: nan nan nan nan 
+
+A     :: 0.000000 0.000000 0.000000 0.000000 
+B     :: 2.000000 3.000000 4.000000 5.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 
+Result:: 0.000000 0.000000 0.000000 0.000000 
+
+A     :: inf -inf nan -nan 
+B     :: 2.000000 3.000000 4.000000 5.000000 
+C     :: 1.000000 2.000000 3.000000 4.000000 
+Result:: inf -inf nan -nan 
+
+A     :: 1.000000 2.000000 3.000000 4.000000 
+B     :: inf -inf nan -nan 
+C     :: 5.000000 6.000000 7.000000 8.000000 
+Result:: inf -inf nan -nan 
+
+A     :: 1.000000 2.000000 3.000000 4.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 
+C     :: inf -inf nan -nan 
+Result:: inf -inf nan -nan 
+
+A     :: inf -inf nan -nan 
+B     :: nan 0.000000 inf -inf 
+C     :: 1.000000 2.000000 3.000000 4.000000 
+Result:: nan -nan nan -nan 
+
+A     :: inf -inf nan -nan 
+B     :: 1.000000 2.000000 3.000000 4.000000 
+C     :: nan 0.000000 inf -inf 
+Result:: nan -inf nan -nan 
+
+A     :: inf -inf nan 0.000000 
+B     :: -nan 0.000000 inf -inf 
+C     :: inf -inf nan 0.000000 
+Result:: -nan -nan nan -nan 
+
+A     :: 0.000000 0.000000 0.000000 0.000000 
+B     :: 0.000000 0.000000 0.000000 0.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 
+Result:: 0.000000 0.000000 0.000000 0.000000 
+
+VFMADD132PS 128-bit Register-Register Tests Completed
+
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: 17.000000 18.000000 19.000000 20.000000 21.000000 22.000000 23.000000 24.000000 
+Result:: 26.000000 38.000000 52.000000 68.000000 86.000000 106.000000 128.000000 152.000000 
+
+A     :: 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+C     :: 13.000000 14.000000 15.000000 16.000000 17.000000 18.000000 19.000000 20.000000 
+Result:: 13.000000 14.000000 15.000000 16.000000 17.000000 18.000000 19.000000 20.000000 
+
+A     :: inf -inf 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 
+B     :: 1.000000 1.000000 inf -inf 1.000000 1.000000 1.000000 1.000000 
+C     :: 1.000000 1.000000 1.000000 1.000000 inf -inf 1.000000 1.000000 
+Result:: inf -inf inf -inf inf -inf 6.000000 7.000000 
+
+A     :: nan 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 
+B     :: 1.000000 nan 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 
+C     :: 1.000000 2.000000 nan 3.000000 4.000000 5.000000 6.000000 7.000000 
+Result:: nan nan nan 12.000000 20.000000 30.000000 42.000000 56.000000 
+
+A     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+B     :: 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 
+C     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+Result:: 0.000000 inf -0.000000 -inf 0.000000 inf -0.000000 -inf 
+
+A     :: 1.000000 inf nan 0.000000 -inf -0.000000 2.000000 3.000000 
+B     :: inf nan 0.000000 nan 1.000000 2.000000 3.000000 4.000000 
+C     :: nan 0.000000 inf 1.000000 2.000000 3.000000 4.000000 5.000000 
+Result:: nan nan nan nan -inf 3.000000 10.000000 17.000000 
+
+A     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+B     :: 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 9.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+Result:: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+
+A     :: inf -inf nan -nan inf -inf nan -nan 
+B     :: 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 9.000000 
+C     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+Result:: inf -inf nan -nan inf -inf nan -nan 
+
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: inf -inf nan -nan inf -inf nan -nan 
+C     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+Result:: inf -inf nan -nan inf -inf nan -nan 
+
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+C     :: inf -inf nan -nan inf -inf nan -nan 
+Result:: inf -inf nan -nan inf -inf nan -nan 
+
+A     :: inf -inf nan -nan inf -inf nan -nan 
+B     :: nan 0.000000 inf -inf nan 0.000000 inf -inf 
+C     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+A     :: inf -inf nan -nan inf -inf nan -nan 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: nan 0.000000 inf -inf nan 0.000000 inf -inf 
+Result:: nan -inf nan -nan nan -inf nan -nan 
+
+A     :: inf -inf nan 0.000000 inf -inf nan 0.000000 
+B     :: -nan 0.000000 inf -inf -nan 0.000000 inf -inf 
+C     :: inf -inf nan 0.000000 inf -inf nan 0.000000 
+Result:: -nan -nan nan -nan -nan -nan nan -nan 
+
+A     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+B     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+Result:: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+
+VFMADD132PS 256-bit Register-Register Tests Completed
+
+Memory Operand Test: Normal values (128-bit)
+A     :: 1.000000 2.000000 3.000000 4.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 
+Unaligned memory:: 14.000000 22.000000 32.000000 44.000000 
+Aligned memory:: 14.000000 22.000000 32.000000 44.000000 
+
+Memory Operand Test: Zero values (128-bit)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 
+Unaligned memory:: 9.000000 10.000000 11.000000 12.000000 
+Aligned memory:: 9.000000 10.000000 11.000000 12.000000 
+
+Memory Operand Test: Infinity values (128-bit)
+A     :: inf -inf 1.000000 2.000000 
+B     :: 1.000000 1.000000 inf -inf 
+C     :: 1.000000 1.000000 1.000000 1.000000 
+Unaligned memory:: inf -inf inf -inf 
+Aligned memory:: inf -inf inf -inf 
 
 Memory Operand Test: NaN values (128-bit)
-  Unaligned memory:
-  Element 0: a=nan (0x7fc00000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=1.000000 (0x3f800000), b=nan (0x7fc00000), c=2.000000 (0x40000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=2.000000 (0x40000000), b=2.000000 (0x40000000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=3.000000 (0x40400000), b=3.000000 (0x40400000), c=3.000000 (0x40400000)
-    Expected: 12.000000 (0x41400000), Result: 12.000000 (0x41400000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+A     :: nan 1.000000 2.000000 3.000000 
+B     :: 1.000000 nan 2.000000 3.000000 
+C     :: 1.000000 2.000000 nan 3.000000 
+Unaligned memory:: nan nan nan 12.000000 
+Aligned memory:: nan nan nan 12.000000 
 
-  Aligned memory:
-  Element 0: a=nan (0x7fc00000), b=1.000000 (0x3f800000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=1.000000 (0x3f800000), b=nan (0x7fc00000), c=2.000000 (0x40000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=2.000000 (0x40000000), b=2.000000 (0x40000000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=3.000000 (0x40400000), b=3.000000 (0x40400000), c=3.000000 (0x40400000)
-    Expected: 12.000000 (0x41400000), Result: 12.000000 (0x41400000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+Memory Operand Test: Boundary values (128-bit)
+A     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+B     :: 2.000000 2.000000 2.000000 2.000000 
+C     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+Unaligned memory:: 0.000000 inf -0.000000 -inf 
+Aligned memory:: 0.000000 inf -0.000000 -inf 
 
-Memory Operand Test: Boundary values (256-bit memory)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 1: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=2.000000 (0x40000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 2: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 3: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=2.000000 (0x40000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 4: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 5: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=2.000000 (0x40000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 6: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 7: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=2.000000 (0x40000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
+Memory Operand Test: Mixed special values (128-bit)
+A     :: 1.000000 inf nan 0.000000 
+B     :: inf nan 0.000000 nan 
+C     :: nan 0.000000 inf 1.000000 
+Unaligned memory:: nan nan nan nan 
+Aligned memory:: nan nan nan nan 
 
-  Aligned memory:
-  Element 0: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 1: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=2.000000 (0x40000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 2: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 3: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=2.000000 (0x40000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
-  Element 4: a=0.000000 (0x00800000), b=2.000000 (0x40000000), c=0.000000 (0x00800000)
-    Expected: 0.000000 (0x01400000), Result: 0.000000 (0x01400000) - PASS
-  Element 5: a=340282346638528859811704183484516925440.000000 (0x7f7fffff), b=2.000000 (0x40000000), c=340282346638528859811704183484516925440.000000 (0x7f7fffff)
-    Expected: inf (0x7f800000), Result: inf (0x7f800000) - PASS
-  Element 6: a=-0.000000 (0x80800000), b=2.000000 (0x40000000), c=-0.000000 (0x80800000)
-    Expected: -0.000000 (0x81400000), Result: -0.000000 (0x81400000) - PASS
-  Element 7: a=-340282346638528859811704183484516925440.000000 (0xff7fffff), b=2.000000 (0x40000000), c=-340282346638528859811704183484516925440.000000 (0xff7fffff)
-    Expected: -inf (0xff800000), Result: -inf (0xff800000) - PASS
+Memory Operand Test: Very small values (128-bit)
+A     :: 0.000000 0.000000 0.000000 0.000000 
+B     :: 2.000000 3.000000 4.000000 5.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 
+Unaligned memory:: 0.000000 0.000000 0.000000 0.000000 
+Aligned memory:: 0.000000 0.000000 0.000000 0.000000 
 
-Memory Operand Test: Mixed special values (256-bit memory)
-  Unaligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=nan (0x7fc00000), b=0.000000 (0x00000000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=nan (0x7fc00000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 4: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 5: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 6: a=nan (0x7fc00000), b=0.000000 (0x00000000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=nan (0x7fc00000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
+Memory Operand Test: Special values in a (128-bit)
+A     :: inf -inf nan -nan 
+B     :: 2.000000 3.000000 4.000000 5.000000 
+C     :: 1.000000 2.000000 3.000000 4.000000 
+Unaligned memory:: inf -inf nan -nan 
+Aligned memory:: inf -inf nan -nan 
 
-  Aligned memory:
-  Element 0: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 1: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 2: a=nan (0x7fc00000), b=0.000000 (0x00000000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=nan (0x7fc00000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 4: a=1.000000 (0x3f800000), b=inf (0x7f800000), c=nan (0x7fc00000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 5: a=inf (0x7f800000), b=nan (0x7fc00000), c=0.000000 (0x00000000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 6: a=nan (0x7fc00000), b=0.000000 (0x00000000), c=inf (0x7f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=nan (0x7fc00000), c=1.000000 (0x3f800000)
-    Expected: nan (0x7fc00000), Result: nan (0x7fc00000) - PASS
+Memory Operand Test: Special values in b (128-bit)
+A     :: 1.000000 2.000000 3.000000 4.000000 
+B     :: inf -inf nan -nan 
+C     :: 5.000000 6.000000 7.000000 8.000000 
+Unaligned memory:: inf -inf nan -nan 
+Aligned memory:: inf -inf nan -nan 
 
-Memory Operand Test: Very small values (256-bit memory)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x0da24260), b=2.000000 (0x40000000), c=0.000000 (0x0da24260)
-    Expected: 0.000000 (0x0e736390), Result: 0.000000 (0x0e736390) - PASS
-  Element 1: a=0.000000 (0x0e224260), b=3.000000 (0x40400000), c=0.000000 (0x0e224260)
-    Expected: 0.000000 (0x0f224260), Result: 0.000000 (0x0f224260) - PASS
-  Element 2: a=0.000000 (0x0e736390), b=4.000000 (0x40800000), c=0.000000 (0x0e736390)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 3: a=0.000000 (0x0ea24260), b=5.000000 (0x40a00000), c=0.000000 (0x0ea24260)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-  Element 4: a=0.000000 (0x0ecad2f8), b=2.000000 (0x40000000), c=0.000000 (0x0ecad2f8)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 5: a=0.000000 (0x0ef36390), b=3.000000 (0x40400000), c=0.000000 (0x0ef36390)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-  Element 6: a=0.000000 (0x0f0dfa14), b=4.000000 (0x40800000), c=0.000000 (0x0f0dfa14)
-    Expected: 0.000000 (0x10317899), Result: 0.000000 (0x10317899) - PASS
-  Element 7: a=0.000000 (0x0f224260), b=5.000000 (0x40a00000), c=0.000000 (0x0f224260)
-    Expected: 0.000000 (0x10736390), Result: 0.000000 (0x10736390) - PASS
+Memory Operand Test: Special values in c (128-bit)
+A     :: 1.000000 2.000000 3.000000 4.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 
+C     :: inf -inf nan -nan 
+Unaligned memory:: inf -inf nan -nan 
+Aligned memory:: inf -inf nan -nan 
 
-  Aligned memory:
-  Element 0: a=0.000000 (0x0da24260), b=2.000000 (0x40000000), c=0.000000 (0x0da24260)
-    Expected: 0.000000 (0x0e736390), Result: 0.000000 (0x0e736390) - PASS
-  Element 1: a=0.000000 (0x0e224260), b=3.000000 (0x40400000), c=0.000000 (0x0e224260)
-    Expected: 0.000000 (0x0f224260), Result: 0.000000 (0x0f224260) - PASS
-  Element 2: a=0.000000 (0x0e736390), b=4.000000 (0x40800000), c=0.000000 (0x0e736390)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 3: a=0.000000 (0x0ea24260), b=5.000000 (0x40a00000), c=0.000000 (0x0ea24260)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-  Element 4: a=0.000000 (0x0ecad2f8), b=2.000000 (0x40000000), c=0.000000 (0x0ecad2f8)
-    Expected: 0.000000 (0x0f981e3a), Result: 0.000000 (0x0f981e3a) - PASS
-  Element 5: a=0.000000 (0x0ef36390), b=3.000000 (0x40400000), c=0.000000 (0x0ef36390)
-    Expected: 0.000000 (0x0ff36390), Result: 0.000000 (0x0ff36390) - PASS
-  Element 6: a=0.000000 (0x0f0dfa14), b=4.000000 (0x40800000), c=0.000000 (0x0f0dfa14)
-    Expected: 0.000000 (0x10317899), Result: 0.000000 (0x10317899) - PASS
-  Element 7: a=0.000000 (0x0f224260), b=5.000000 (0x40a00000), c=0.000000 (0x0f224260)
-    Expected: 0.000000 (0x10736390), Result: 0.000000 (0x10736390) - PASS
+Memory Operand Test: Special values in a and b (128-bit)
+A     :: inf -inf nan -nan 
+B     :: nan 0.000000 inf -inf 
+C     :: 1.000000 2.000000 3.000000 4.000000 
+Unaligned memory:: nan -nan nan -nan 
+Aligned memory:: nan -nan nan -nan 
+
+Memory Operand Test: Special values in a and c (128-bit)
+A     :: inf -inf nan -nan 
+B     :: 1.000000 2.000000 3.000000 4.000000 
+C     :: nan 0.000000 inf -inf 
+Unaligned memory:: nan -inf nan -nan 
+Aligned memory:: nan -inf nan -nan 
+
+Memory Operand Test: All special values (128-bit)
+A     :: inf -inf nan 0.000000 
+B     :: -nan 0.000000 inf -inf 
+C     :: inf -inf nan 0.000000 
+Unaligned memory:: -nan -nan nan -nan 
+Aligned memory:: -nan -nan nan -nan 
 
 Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+A     :: 0.000000 0.000000 0.000000 0.000000 
+B     :: 0.000000 0.000000 0.000000 0.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 
+Unaligned memory:: 0.000000 0.000000 0.000000 0.000000 
+Aligned memory:: 0.000000 0.000000 0.000000 0.000000 
 
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+VFMADD132PS 128-bit Register-Memory Tests Completed
 
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+Memory Operand Test: Normal values (256-bit)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: 17.000000 18.000000 19.000000 20.000000 21.000000 22.000000 23.000000 24.000000 
+Unaligned memory:: 26.000000 38.000000 52.000000 68.000000 86.000000 106.000000 128.000000 152.000000 
+Aligned memory:: 26.000000 38.000000 52.000000 68.000000 86.000000 106.000000 128.000000 152.000000 
 
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+Memory Operand Test: Zero values (256-bit)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+C     :: 13.000000 14.000000 15.000000 16.000000 17.000000 18.000000 19.000000 20.000000 
+Unaligned memory:: 13.000000 14.000000 15.000000 16.000000 17.000000 18.000000 19.000000 20.000000 
+Aligned memory:: 13.000000 14.000000 15.000000 16.000000 17.000000 18.000000 19.000000 20.000000 
 
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+Memory Operand Test: Infinity values (256-bit)
+A     :: inf -inf 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 
+B     :: 1.000000 1.000000 inf -inf 1.000000 1.000000 1.000000 1.000000 
+C     :: 1.000000 1.000000 1.000000 1.000000 inf -inf 1.000000 1.000000 
+Unaligned memory:: inf -inf inf -inf inf -inf 6.000000 7.000000 
+Aligned memory:: inf -inf inf -inf inf -inf 6.000000 7.000000 
 
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+Memory Operand Test: NaN values (256-bit)
+A     :: nan 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 
+B     :: 1.000000 nan 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 
+C     :: 1.000000 2.000000 nan 3.000000 4.000000 5.000000 6.000000 7.000000 
+Unaligned memory:: nan nan nan 12.000000 20.000000 30.000000 42.000000 56.000000 
+Aligned memory:: nan nan nan 12.000000 20.000000 30.000000 42.000000 56.000000 
+
+Memory Operand Test: Boundary values (256-bit)
+A     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+B     :: 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 
+C     :: 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 0.000000 340282346638528859811704183484516925440.000000 -0.000000 -340282346638528859811704183484516925440.000000 
+Unaligned memory:: 0.000000 inf -0.000000 -inf 0.000000 inf -0.000000 -inf 
+Aligned memory:: 0.000000 inf -0.000000 -inf 0.000000 inf -0.000000 -inf 
+
+Memory Operand Test: Mixed special values (256-bit)
+A     :: 1.000000 inf nan 0.000000 -inf -0.000000 2.000000 3.000000 
+B     :: inf nan 0.000000 nan 1.000000 2.000000 3.000000 4.000000 
+C     :: nan 0.000000 inf 1.000000 2.000000 3.000000 4.000000 5.000000 
+Unaligned memory:: nan nan nan nan -inf 3.000000 10.000000 17.000000 
+Aligned memory:: nan nan nan nan -inf 3.000000 10.000000 17.000000 
+
+Memory Operand Test: Very small values (256-bit)
+A     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+B     :: 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 9.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+Unaligned memory:: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+Aligned memory:: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+
+Memory Operand Test: Special values in a (256-bit)
+A     :: inf -inf nan -nan inf -inf nan -nan 
+B     :: 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 9.000000 
+C     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+Unaligned memory:: inf -inf nan -nan inf -inf nan -nan 
+Aligned memory:: inf -inf nan -nan inf -inf nan -nan 
+
+Memory Operand Test: Special values in b (256-bit)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: inf -inf nan -nan inf -inf nan -nan 
+C     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+Unaligned memory:: inf -inf nan -nan inf -inf nan -nan 
+Aligned memory:: inf -inf nan -nan inf -inf nan -nan 
+
+Memory Operand Test: Special values in c (256-bit)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+C     :: inf -inf nan -nan inf -inf nan -nan 
+Unaligned memory:: inf -inf nan -nan inf -inf nan -nan 
+Aligned memory:: inf -inf nan -nan inf -inf nan -nan 
+
+Memory Operand Test: Special values in a and b (256-bit)
+A     :: inf -inf nan -nan inf -inf nan -nan 
+B     :: nan 0.000000 inf -inf nan 0.000000 inf -inf 
+C     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+Unaligned memory:: nan -nan nan -nan nan -nan nan -nan 
+Aligned memory:: nan -nan nan -nan nan -nan nan -nan 
+
+Memory Operand Test: Special values in a and c (256-bit)
+A     :: inf -inf nan -nan inf -inf nan -nan 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: nan 0.000000 inf -inf nan 0.000000 inf -inf 
+Unaligned memory:: nan -inf nan -nan nan -inf nan -nan 
+Aligned memory:: nan -inf nan -nan nan -inf nan -nan 
+
+Memory Operand Test: All special values (256-bit)
+A     :: inf -inf nan 0.000000 inf -inf nan 0.000000 
+B     :: -nan 0.000000 inf -inf -nan 0.000000 inf -inf 
+C     :: inf -inf nan 0.000000 inf -inf nan 0.000000 
+Unaligned memory:: -nan -nan nan -nan -nan -nan nan -nan 
+Aligned memory:: -nan -nan nan -nan -nan -nan nan -nan 
 
 Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+A     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+B     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+C     :: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+Unaligned memory:: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
+Aligned memory:: 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 
 
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
+VFMADD132PS 256-bit Register-Memory Tests Completed
 
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-Memory Operand Test: (null)
-  Unaligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-  Aligned memory:
-  Element 0: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 1: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 2: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 3: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 4: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 5: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 6: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-  Element 7: a=0.000000 (0x00000000), b=0.000000 (0x00000000), c=0.000000 (0x00000000)
-    Expected: 0.000000 (0x00000000), Result: 0.000000 (0x00000000) - PASS
-
-VFMADD132PS 256-bit Memory Operand Tests: ALL PASS
-
+All VFMADD132PS tests completed. Results are for verification on physical CPU vs box64.
