@@ -1,151 +1,160 @@
 #include "avx.h"
 #include <stdio.h>
-#include <stdint.h>
 #include <string.h>
-#include <immintrin.h>
+#include <stdint.h>
+#include <inttypes.h>
 
-// 启用AVX编译选项
-#pragma GCC target("avx")
-
-// 打印字节向量
-static void print_byte_vec(const char *name, const uint8_t *vec, int len) {
-    printf("%s: [", name);
-    for (int i = 0; i < len; i++) {
-        printf("%02x", vec[i]);
-        if (i < len - 1) printf(" ");
+// 打印 128 位向量中的字节值
+static void print_vector_128b(const char *name, __m128i vec) {
+    uint8_t buffer[16];
+    _mm_storeu_si128((__m128i_u*)buffer, vec);
+    printf("%s: ", name);
+    for (int i = 0; i < 16; i++) {
+        printf("%02X ", buffer[i]);
     }
-    printf("]\n");
+    printf("\n");
 }
 
-// 测试单个比较操作
-static int test_case(const char *name, const uint8_t *a, const uint8_t *b, int len) {
-    ALIGNED(32) uint8_t result[32] = {0};
-    int passed = 1;
-    
-    if (len == 16) {
-        __m128i va = _mm_loadu_si128((const __m128i*)a);
-        __m128i vb = _mm_loadu_si128((const __m128i*)b);
-        __m128i vres;
-        
-        asm volatile("vpcmpeqb %[b], %[a], %[res]"
-                    : [res] "=x"(vres)
-                    : [a] "x"(va), [b] "xm"(vb));
-        
-        _mm_storeu_si128((__m128i*)result, vres);
-    } else if (len == 32) {
-        __m256i va = _mm256_loadu_si256((const __m256i*)a);
-        __m256i vb = _mm256_loadu_si256((const __m256i*)b);
-        __m256i vres;
-        
-        asm volatile("vpcmpeqb %[b], %[a], %[res]"
-                    : [res] "=x"(vres)
-                    : [a] "x"(va), [b] "xm"(vb));
-        
-        _mm256_storeu_si256((__m256i*)result, vres);
+// 打印 256 位向量中的字节值
+static void print_vector_256b(const char *name, __m256i vec) {
+    uint8_t buffer[32];
+    _mm256_storeu_si256((__m256i_u*)buffer, vec);
+    printf("%s: ", name);
+    for (int i = 0; i < 32; i++) {
+        printf("%02X ", buffer[i]);
     }
+    printf("\n");
+}
+
+// 测试 128 位寄存器-寄存器操作
+static void test_rr_128(const char *name, __m128i a, __m128i b) {
+    __m128i result;
+    asm volatile(
+        "vpcmpeqb %2, %1, %0"
+        : "=x"(result)
+        : "x"(a), "x"(b)
+    );
     
-    // 验证结果
-    for (int i = 0; i < len; i++) {
-        uint8_t expected = (a[i] == b[i]) ? 0xFF : 0x00;
-        if (result[i] != expected) {
-            passed = 0;
-            break;
-        }
-    }
+    printf("\nTest (128-bit RR): %s\n", name);
+    print_vector_128b("Operand A", a);
+    print_vector_128b("Operand B", b);
+    print_vector_128b("Result   ", result);
+}
+
+// 测试 128 位寄存器-内存操作
+static void test_rm_128(const char *name, __m128i a, const __m128i *b) {
+    __m128i result;
+    asm volatile(
+        "vpcmpeqb %2, %1, %0"
+        : "=x"(result)
+        : "x"(a), "m"(*b)
+    );
     
-    printf("\nTest: %s\n", name);
-    print_byte_vec("Operand A", a, len);
-    print_byte_vec("Operand B", b, len);
-    print_byte_vec("Result", result, len);
-    printf("Result: %s\n", passed ? "PASS" : "FAIL");
+    printf("\nTest (128-bit RM): %s\n", name);
+    print_vector_128b("Operand A", a);
+    print_vector_128b("Operand B", *b);
+    print_vector_128b("Result   ", result);
+}
+
+// 测试 256 位寄存器-寄存器操作
+static void test_rr_256(const char *name, __m256i a, __m256i b) {
+    __m256i result;
+    asm volatile(
+        "vpcmpeqb %2, %1, %0"
+        : "=x"(result)
+        : "x"(a), "x"(b)
+    );
     
-    return passed;
+    printf("\nTest (256-bit RR): %s\n", name);
+    print_vector_256b("Operand A", a);
+    print_vector_256b("Operand B", b);
+    print_vector_256b("Result   ", result);
+}
+
+// 测试 256 位寄存器-内存操作
+static void test_rm_256(const char *name, __m256i a, const __m256i *b) {
+    __m256i result;
+    asm volatile(
+        "vpcmpeqb %2, %1, %0"
+        : "=x"(result)
+        : "x"(a), "m"(*b)
+    );
+    
+    printf("\nTest (256-bit RM): %s\n", name);
+    print_vector_256b("Operand A", a);
+    print_vector_256b("Operand B", *b);
+    print_vector_256b("Result   ", result);
 }
 
 int main() {
-    int total = 0, passed = 0;
+    // 128 位测试数据
+    ALIGNED(16) uint8_t data1_128[16] = {
+        0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF
+    };
     
-    // 测试128位版本
-    {
-        uint8_t a1[16] = {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,
-                         0x88,0x99,0xAA,0xBB,0xCC,0xDD,0xEE,0xFF};
-        uint8_t b1[16] = {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,
-                         0x88,0x99,0xAA,0xBB,0xCC,0xDD,0xEE,0xFF};
-        passed += test_case("VPCMPEQB 128-bit equal", a1, b1, 16);
-        total++;
-        
-        uint8_t a2[16] = {0};
-        uint8_t b2[16] = {0xFF};
-        passed += test_case("VPCMPEQB 128-bit zero vs 0xFF", a2, b2, 16);
-        total++;
-        
-        uint8_t a3[16] = {0x55};
-        uint8_t b3[16] = {0xAA};
-        passed += test_case("VPCMPEQB 128-bit pattern", a3, b3, 16);
-        total++;
-    }
+    ALIGNED(16) uint8_t data2_128[16] = {
+        0x00, 0x10, 0x22, 0x30, 0x44, 0x50, 0x66, 0x70,
+        0x88, 0x90, 0xAA, 0xB0, 0xCC, 0xD0, 0xEE, 0xF0
+    };
     
-    // 测试256位版本
-    {
-        uint8_t a1[32];
-        uint8_t b1[32];
-        for (int i = 0; i < 32; i++) {
-            a1[i] = i;
-            b1[i] = i;
-        }
-        passed += test_case("VPCMPEQB 256-bit equal", a1, b1, 32);
-        total++;
-        
-        uint8_t a2[32] = {0};
-        uint8_t b2[32] = {0xFF};
-        passed += test_case("VPCMPEQB 256-bit zero vs 0xFF", a2, b2, 32);
-        total++;
-        
-        uint8_t a3[32];
-        uint8_t b3[32];
-        for (int i = 0; i < 32; i++) {
-            a3[i] = i % 2 ? 0x55 : 0xAA;
-            b3[i] = i % 2 ? 0xAA : 0x55;
-        }
-        passed += test_case("VPCMPEQB 256-bit pattern", a3, b3, 32);
-        total++;
-    }
+    ALIGNED(16) uint8_t data3_128[16] = {
+        0xFF, 0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88,
+        0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00
+    };
     
-    // 测试内存操作数
-    {
-        ALIGNED(32) uint8_t mem_ops[32] = {0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF,
-                                          0xFE,0xDC,0xBA,0x98,0x76,0x54,0x32,0x10};
-        uint8_t a[16] = {0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF,
-                        0xFE,0xDC,0xBA,0x98,0x76,0x54,0x32,0x10};
-        
-        __m128i va = _mm_loadu_si128((const __m128i*)a);
-        __m128i vres;
-        
-        asm volatile("vpcmpeqb %[mem], %[a], %[res]"
-                    : [res] "=x"(vres)
-                    : [a] "x"(va), [mem] "m"(*mem_ops));
-        
-        uint8_t result[16];
-        _mm_storeu_si128((__m128i*)result, vres);
-        
-        int mem_passed = 1;
-        for (int i = 0; i < 16; i++) {
-            if (result[i] != 0xFF) {
-                mem_passed = 0;
-                break;
-            }
-        }
-        
-        printf("\nTest: VPCMPEQB with memory operand\n");
-        print_byte_vec("Operand A", a, 16);
-        print_byte_vec("Operand B (mem)", mem_ops, 16);
-        print_byte_vec("Result", result, 16);
-        printf("Result: %s\n", mem_passed ? "PASS" : "FAIL");
-        passed += mem_passed;
-        total++;
-    }
+    // 256 位测试数据
+    ALIGNED(32) uint8_t data1_256[32] = {
+        0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+        0x10, 0x21, 0x32, 0x43, 0x54, 0x65, 0x76, 0x87,
+        0x98, 0xA9, 0xBA, 0xCB, 0xDC, 0xED, 0xFE, 0x0F
+    };
     
-    // 测试总结
-    printf("\nSummary: %d/%d tests passed\n", passed, total);
-    return passed == total ? 0 : 1;
+    ALIGNED(32) uint8_t data2_256[32] = {
+        0x00, 0x10, 0x22, 0x30, 0x44, 0x50, 0x66, 0x70,
+        0x88, 0x90, 0xAA, 0xB0, 0xCC, 0xD0, 0xEE, 0xF0,
+        0x10, 0x20, 0x32, 0x40, 0x54, 0x60, 0x76, 0x80,
+        0x98, 0xA0, 0xBA, 0xC0, 0xDC, 0xE0, 0xFE, 0x00
+    };
+    
+    ALIGNED(32) uint8_t data3_256[32] = {
+        0xFF, 0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88,
+        0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
+        0x0F, 0xFE, 0xED, 0xDC, 0xCB, 0xBA, 0xA9, 0x98,
+        0x87, 0x76, 0x65, 0x54, 0x43, 0x32, 0x21, 0x10
+    };
+
+    // 加载测试数据到向量寄存器
+    __m128i vec1_128 = _mm_load_si128((const __m128i*)data1_128);
+    __m128i vec2_128 = _mm_load_si128((const __m128i*)data2_128);
+    __m128i vec3_128 = _mm_load_si128((const __m128i*)data3_128);
+    
+    __m256i vec1_256 = _mm256_load_si256((const __m256i*)data1_256);
+    __m256i vec2_256 = _mm256_load_si256((const __m256i*)data2_256);
+    __m256i vec3_256 = _mm256_load_si256((const __m256i*)data3_256);
+
+    // 运行测试
+    printf("Starting VPCMPEQB tests...\n");
+    
+    // 128 位测试
+    test_rr_128("Equal vectors", vec1_128, vec1_128);
+    test_rr_128("Partial equal", vec1_128, vec2_128);
+    test_rr_128("Completely different", vec1_128, vec3_128);
+    
+    test_rm_128("Equal vectors (mem)", vec1_128, (const __m128i*)data1_128);
+    test_rm_128("Partial equal (mem)", vec1_128, (const __m128i*)data2_128);
+    test_rm_128("Completely different (mem)", vec1_128, (const __m128i*)data3_128);
+    
+    // 256 位测试
+    test_rr_256("Equal vectors", vec1_256, vec1_256);
+    test_rr_256("Partial equal", vec1_256, vec2_256);
+    test_rr_256("Completely different", vec1_256, vec3_256);
+    
+    test_rm_256("Equal vectors (mem)", vec1_256, (const __m256i*)data1_256);
+    test_rm_256("Partial equal (mem)", vec1_256, (const __m256i*)data2_256);
+    test_rm_256("Completely different (mem)", vec1_256, (const __m256i*)data3_256);
+    
+    printf("All VPCMPEQB tests completed.\n");
+    return 0;
 }

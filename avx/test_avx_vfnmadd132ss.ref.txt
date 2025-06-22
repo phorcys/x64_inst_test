@@ -1,7 +1,0 @@
-=== Testing vfnmadd132ss ===
-Result: -4.500000000000000
-Expected: -4.500000000000000
-Boundary result: -inf
-Boundary expected: -inf
-Special result: nan
-

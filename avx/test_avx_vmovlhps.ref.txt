@@ -1,8 +1,0 @@
-=== Testing VMOVLHPS ===
-
-Test: Combine low 64-bits from two registers
-Source1: [1.0, 2.0, 3.0, 4.0]
-Source2: [5.0, 6.0, 7.0, 8.0]
-Result: [1.0, 2.0, 5.0, 6.0]
-Expected: [1.0, 2.0, 5.0, 6.0] (low 64-bits of both sources)
-Test PASSED

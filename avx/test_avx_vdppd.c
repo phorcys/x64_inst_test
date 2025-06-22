@@ -178,6 +178,74 @@ static void test_vdppd() {
            (mxcsr >> 7) & 1, (mxcsr >> 8) & 1, (mxcsr >> 9) & 1,
            (mxcsr >> 10) & 1, (mxcsr >> 11) & 1, (mxcsr >> 12) & 1);
 
+    // Memory operand test
+    printf("Test 5: Memory operand\n");
+    double mem_src1[2] ALIGNED(16) = {2.0, 3.0};
+    double mem_src2[2] ALIGNED(16) = {1.0, 1.0};
+    double mem_expected[2] ALIGNED(16) = {5.0, 0.0}; // 2.0*1.0 + 3.0*1.0 = 5.0
+    double mem_result[2] ALIGNED(16) = {0};
+    total_tests++;
+    
+    __asm__ __volatile__(
+        "vmovapd %1, %%xmm0\n\t"
+        "vdppd $0x31, %2, %%xmm0, %%xmm1\n\t"
+        "vmovapd %%xmm1, %0\n\t"
+        : "=m"(*mem_result)
+        : "m"(*mem_src1), "m"(*mem_src2)
+        : "xmm0", "xmm1"
+    );
+    
+    printf("Expected: ");
+    print_double_vec("Expected", mem_expected, 2);
+    printf("Result:   ");
+    print_double_vec("Result", mem_result, 2);
+    
+    pass = 1;
+    for (int i = 0; i < 2; i++) {
+        if (fabs(mem_result[i] - mem_expected[i]) > 1e-6) {
+            printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
+                   i, mem_expected[i], mem_result[i]);
+            pass = 0;
+        }
+    }
+    if (pass) {
+        printf("[PASS] Test 5: Memory operand\n\n");
+        passed_tests++;
+    } else {
+        printf("[FAIL] Test 5: Memory operand\n\n");
+    }
+
+    // NaN propagation test
+    printf("Test 6: NaN propagation\n");
+    double nan_src1[2] ALIGNED(16) = {NAN, 1.0};
+    double nan_src2[2] ALIGNED(16) = {1.0, 1.0};
+    double nan_expected[2] ALIGNED(16) = {NAN, 0.0}; // NAN*1.0 + 1.0*1.0 = NAN
+    double nan_result[2] ALIGNED(16) = {0};
+    total_tests++;
+    
+    __asm__ __volatile__(
+        "vmovapd %1, %%xmm0\n\t"
+        "vmovapd %2, %%xmm1\n\t"
+        "vdppd $0x31, %%xmm1, %%xmm0, %%xmm2\n\t"
+        "vmovapd %%xmm2, %0\n\t"
+        : "=m"(*nan_result)
+        : "m"(*nan_src1), "m"(*nan_src2)
+        : "xmm0", "xmm1", "xmm2"
+    );
+    
+    printf("Expected: ");
+    print_double_vec("Expected", nan_expected, 2);
+    printf("Result:   ");
+    print_double_vec("Result", nan_result, 2);
+    
+    pass = isnan(nan_result[0]) && (fabs(nan_result[1] - nan_expected[1]) < 1e-6);
+    if (pass) {
+        printf("[PASS] Test 6: NaN propagation\n\n");
+        passed_tests++;
+    } else {
+        printf("[FAIL] Test 6: NaN propagation\n\n");
+    }
+
     // Test summary
     printf("--- Test Summary ---\n");
     printf("Total tests: %d\n", total_tests);

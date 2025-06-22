@@ -1,4 +1,0 @@
-
-Skipping memory operand test due to precision issues
-
-Summary: 0/0 tests passed

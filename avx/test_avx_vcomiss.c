@@ -1,65 +1,90 @@
 #include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
-#include <immintrin.h>
 #include <math.h>
-
-// 获取EFLAGS寄存器值
-static inline uint64_t get_eflags() {
-    uint64_t eflags;
-    asm volatile ("pushfq\n\tpopq %0" : "=r"(eflags));
-    return eflags;
-}
-
-// 设置EFLAGS寄存器值
-static inline void set_eflags(uint64_t eflags) {
-    asm volatile ("pushq %0\n\tpopfq" : : "r"(eflags) : "cc", "memory");
-}
-
-// 打印EFLAGS差异
-static inline void print_eflags_diff(uint64_t before, uint64_t after) {
-    uint32_t changed = before ^ after;
-    printf("EFLAGS changed: ");
-    if(changed & X_CF) printf("CF ");
-    if(changed & X_PF) printf("PF ");
-    if(changed & X_AF) printf("AF ");
-    if(changed & X_ZF) printf("ZF ");
-    if(changed & X_SF) printf("SF ");
-    if(changed & X_OF) printf("OF ");
-    printf("\n");
-}
+#include <float.h>
 
 // 测试单个比较操作
-static int test_case(const char *name, __m128 a, __m128 b, uint32_t expected_flags) {
-    uint32_t actual_flags;
+static int test_case(const char *name, float a, float b, int exp_zf, int exp_pf, int exp_cf) {
+    // 保存结果标志位
+    int zf, pf, cf;
+    int of, sf, af;
     
-    // 执行比较并获取EFLAGS
+    // 使用内联汇编执行 vcomiss 并获取标志位
+    uint64_t flags;
     asm volatile(
-        "vcomiss %[b], %[a]\n\t"
-        "pushfq\n\t"
-        "popq %%rax\n\t"
-        "movl %%eax, %[flags]"
-        : [flags] "=r"(actual_flags)
-        : [a] "x"(a),
-          [b] "xm"(b)
-        : "cc", "rax"
+        "vcomiss %2, %1\n\t"   // 执行比较
+        "pushfq\n\t"            // 保存标志寄存器
+        "popq %0\n\t"           // 弹出到flags
+        : "=r"(flags)
+        : "x"(_mm_set_ss(a)), "x"(_mm_set_ss(b))
+        : "cc"
     );
     
-    // 提取相关标志位
-    actual_flags &= (X_CF|X_PF|X_ZF);
+    // 提取标志位
+    zf = (flags >> 6) & 1;   // ZF 在 bit 6
+    pf = (flags >> 2) & 1;   // PF 在 bit 2
+    cf = (flags >> 0) & 1;   // CF 在 bit 0
+    of = (flags >> 11) & 1;  // OF 在 bit 11
+    sf = (flags >> 7) & 1;   // SF 在 bit 7
+    af = (flags >> 4) & 1;   // AF 在 bit 4
     
     // 打印输入和输出
     printf("\nTest: %s\n", name);
-    print_float_vec("Operand A", (float*)&a, 4);
-    print_float_vec("Operand B", (float*)&b, 4);
+    printf("Operand A: %a (%f)\n", a, a);
+    printf("Operand B: %a (%f)\n", b, b);
+    printf("Expected flags: ZF=%d, PF=%d, CF=%d\n", exp_zf, exp_pf, exp_cf);
+    printf("Result flags:   ZF=%d, PF=%d, CF=%d, OF=%d, SF=%d, AF=%d\n", 
+           zf, pf, cf, of, sf, af);
     
-    // 比较结果
-    int ret = (actual_flags == expected_flags);
-    printf("Expected flags: ");
-    print_eflags_cond(expected_flags, X_CF|X_PF|X_ZF);
-    printf("Actual flags:   ");
-    print_eflags_cond(actual_flags, X_CF|X_PF|X_ZF);
+    // 检查标志位
+    int ret = (zf == exp_zf) && (pf == exp_pf) && (cf == exp_cf) &&
+              (of == 0) && (sf == 0) && (af == 0); // OF, SF, AF 应为0
+    
+    printf("Result: %s\n", ret ? "PASS" : "FAIL");
+    return ret;
+}
+
+// 测试内存操作数
+static int test_mem_operand(const char *name, float a, float b, int exp_zf, int exp_pf, int exp_cf) {
+    // 保存结果标志位
+    int zf, pf, cf;
+    int of, sf, af;
+    
+    // 对齐内存操作数
+    ALIGNED(16) float mem_b = b;
+    
+    // 使用内联汇编执行 vcomiss 并获取标志位
+    uint64_t flags;
+    asm volatile(
+        "vcomiss %2, %1\n\t"   // 执行比较
+        "pushfq\n\t"            // 保存标志寄存器
+        "popq %0\n\t"           // 弹出到flags
+        : "=r"(flags)
+        : "x"(_mm_set_ss(a)), "m"(mem_b)
+        : "cc"
+    );
+    
+    // 提取标志位
+    zf = (flags >> 6) & 1;
+    pf = (flags >> 2) & 1;
+    cf = (flags >> 0) & 1;
+    of = (flags >> 11) & 1;
+    sf = (flags >> 7) & 1;
+    af = (flags >> 4) & 1;
+    
+    // 打印输入和输出
+    printf("\nTest (mem operand): %s\n", name);
+    printf("Operand A: %a (%f)\n", a, a);
+    printf("Operand B (mem): %a (%f)\n", b, b);
+    printf("Expected flags: ZF=%d, PF=%d, CF=%d\n", exp_zf, exp_pf, exp_cf);
+    printf("Result flags:   ZF=%d, PF=%d, CF=%d, OF=%d, SF=%d, AF=%d\n", 
+           zf, pf, cf, of, sf, af);
+    
+    // 检查标志位
+    int ret = (zf == exp_zf) && (pf == exp_pf) && (cf == exp_cf) &&
+              (of == 0) && (sf == 0) && (af == 0);
+    
     printf("Result: %s\n", ret ? "PASS" : "FAIL");
     return ret;
 }
@@ -67,63 +92,66 @@ static int test_case(const char *name, __m128 a, __m128 b, uint32_t expected_fla
 int main() {
     int total = 0, passed = 0;
     
-    /* 完全注释掉所有VCOMISS测试用例，因为EFLAGS标志位变化与参考不一致 */
+    // 定义测试值
+    float qnan = NAN;
+    // 手动构造一个信号NaN (SNaN) - 指数全1，尾数最高位为0且尾数非零
+    float snan;
+    uint32_t snan_bits = 0x7f800001;
+    memcpy(&snan, &snan_bits, sizeof(snan));
+    float inf = INFINITY;
+    float neg_inf = -INFINITY;
+    float zero = 0.0f;
+    float neg_zero = -0.0f;
     
-    // 内存操作数测试 - 由于精度问题暂时注释掉
-    /*
-    ALIGNED(16) float mem_ops[4] = {1.0f, 2.0f, 3.0f, 4.0f};
-    __m128 a_mem = _mm_setr_ps(1.0f, 3.0f, 2.0f, 4.0f);
-    
-    uint64_t flags_before, flags_after = 0;
-    
-    // 获取清除前的 EFLAGS
-    flags_before = get_eflags();
-    
-    // 清除 EFLAGS 中的相关标志位
-    asm volatile (
-        "pushfq\n\t"
-        "popq %%rax\n\t"
-        "andq $0xfffffffffffff71a, %%rax\n\t" // 清除 CF(0), PF(2), AF(4), ZF(6), SF(7), OF(11)
-        "pushq %%rax\n\t"
-        "popfq\n\t"
-        ::: "rax", "cc"
-    );
-    
-    // 使用单独的寄存器存储标志位，避免临时变量干扰
-    asm volatile(
-        "vcomiss (%[mem]), %[a]\n\t"
-        "pushfq\n\t"
-        "popq %[flags]"
-        : [a] "+x"(a_mem),
-          [flags] "=r"(flags_after)
-        : [mem] "r"(mem_ops)
-        : "cc"
-    );
-    
-    // 只提取相关标志位
-    uint64_t mem_flags = flags_after & (X_CF|X_PF|X_ZF);
-    
-    printf("\nTest: VCOMISS with memory operand\n");
-    print_float_vec("Operand A", (float*)&a_mem, 4);
-    print_float_vec("Operand B (mem)", mem_ops, 4);
-    print_eflags_diff(flags_before, flags_after);
-    
-    // 根据Intel手册，相等时应只设置ZF标志
-    int mem_result = (mem_flags == X_ZF); 
-    printf("Expected flags: ");
-    print_eflags_cond(X_ZF, X_CF|X_PF|X_ZF);
-    printf("Actual flags:   ");
-    print_eflags_cond(mem_flags, X_CF|X_PF|X_ZF);
-    printf("Result: %s\n", mem_result ? "PASS" : "FAIL");
-    passed += mem_result;
+    // 正常数比较
+    passed += test_case("1.5 > 1.0", 1.5f, 1.0f, 0,0,0); // 大于
     total++;
-    */
-    printf("\nSkipping memory operand test due to precision issues\n");
     
-    // 测试总结
+    passed += test_case("1.0 < 1.5", 1.0f, 1.5f, 0,0,1); // 小于
+    total++;
+    
+    passed += test_case("1.0 == 1.0", 1.0f, 1.0f, 1,0,0); // 相等
+    total++;
+    
+    // 零值比较
+    passed += test_case("+0.0 == -0.0", zero, neg_zero, 1,0,0); // 相等
+    total++;
+    
+    // 无穷大比较
+    passed += test_case("+Inf == +Inf", inf, inf, 1,0,0); // 相等
+    total++;
+    
+    passed += test_case("+Inf > -Inf", inf, neg_inf, 0,0,0); // 大于
+    total++;
+    
+    passed += test_case("-Inf < +Inf", neg_inf, inf, 0,0,1); // 小于
+    total++;
+    
+    // NaN比较
+    passed += test_case("QNaN vs 1.0", qnan, 1.0f, 1,1,1); // 无序
+    total++;
+    
+    passed += test_case("1.0 vs SNaN", 1.0f, snan, 1,1,1); // 无序
+    total++;
+    
+    passed += test_case("QNaN vs QNaN", qnan, qnan, 1,1,1); // 无序
+    total++;
+    
+    // 边界值比较
+    passed += test_case("FLT_MAX vs FLT_MIN", FLT_MAX, FLT_MIN, 0,0,0); // 大于
+    total++;
+    
+    passed += test_case("FLT_MIN vs FLT_MAX", FLT_MIN, FLT_MAX, 0,0,1); // 小于
+    total++;
+    
+    // 内存操作数测试
+    passed += test_mem_operand("1.5 > 1.0 (mem)", 1.5f, 1.0f, 0,0,0); // 大于
+    total++;
+    
+    passed += test_mem_operand("QNaN vs 1.0 (mem)", qnan, 1.0f, 1,1,1); // 无序
+    total++;
+    
     // 测试总结
     printf("\nSummary: %d/%d tests passed\n", passed, total);
-    
-    // 如果所有测试通过返回0，否则返回1
     return passed == total ? 0 : 1;
 }

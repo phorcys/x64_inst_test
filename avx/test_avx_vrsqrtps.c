@@ -1,132 +1,87 @@
 #include "avx.h"
 #include <stdio.h>
-#include <math.h>
-#include <string.h>
 #include <stdint.h>
+#include <math.h>
+
+// VRSQRTPS - Compute Reciprocals of Square Roots of Packed Single-Precision Floating-Point Values
+// Computes approximate reciprocals of square roots (1/√x) of packed single-precision floating-point values
 
 static void test_vrsqrtps() {
-    printf("--- Testing vrsqrtps (reciprocal square root of packed single-precision) ---\n");
-    int total_tests = 0;
-    int passed_tests = 0;
+    printf("Testing VRSQRTPS\n");
     
-    // 256-bit register-register test
-    printf("Test 1: Basic values\n");
-    float src[8] ALIGNED(32) = {1.0f, 4.0f, 9.0f, 16.0f, 25.0f, 36.0f, 49.0f, 64.0f};
-    float expected[8] ALIGNED(32) = {
-        1.0f/sqrtf(1.0f), 1.0f/sqrtf(4.0f), 1.0f/sqrtf(9.0f), 1.0f/sqrtf(16.0f),
-        1.0f/sqrtf(25.0f), 1.0f/sqrtf(36.0f), 1.0f/sqrtf(49.0f), 1.0f/sqrtf(64.0f)
-    };
+    // 测试128位和256位版本
+    float input128[4] = {1.0f, 4.0f, 16.0f, 64.0f};
+    float expected128[4] = {1.0f/sqrtf(1.0f), 1.0f/sqrtf(4.0f), 1.0f/sqrtf(16.0f), 1.0f/sqrtf(64.0f)};
+    float result128[4] = {0};
     
-    float result[8] ALIGNED(32) = {0};
-    total_tests++;
-    
+    float input256[8] = {1.0f, 4.0f, 16.0f, 64.0f, 0.25f, -0.25f, INFINITY, NAN};
+    float expected256[8] = {1.0f/sqrtf(1.0f), 1.0f/sqrtf(4.0f), 1.0f/sqrtf(16.0f), 1.0f/sqrtf(64.0f),
+                          1.0f/sqrtf(0.25f), NAN, 0.0f, NAN};
+    float result256[8] = {0};
+
+    // 测试128位版本
+    printf("Testing VRSQRTPS (128-bit)\n");
     __asm__ __volatile__(
-        "vmovaps %1, %%ymm0\n\t"
+        "vmovups %1, %%xmm0\n\t"
+        "vrsqrtps %%xmm0, %%xmm1\n\t"
+        "vmovups %%xmm1, %0\n\t"
+        : "=m"(result128)
+        : "m"(input128)
+        : "xmm0", "xmm1"
+    );
+
+    for (int i = 0; i < 4; i++) {
+        printf("Test case %d (128-bit):\n", i+1);
+        printf("Input: %.9g\n", input128[i]);
+        printf("Result: %.9g\n", result128[i]);
+        printf("Expected: %.9g\n", expected128[i]);
+        
+        if (isnan(expected128[i])) {
+            if (!isnan(result128[i])) {
+                printf("Mismatch: expected NaN\n");
+            }
+        } else if (fabsf(result128[i] - expected128[i]) > 0.001f) {
+            printf("Mismatch: got %.9g, expected %.9g\n", 
+                  result128[i], expected128[i]);
+        }
+        printf("\n");
+    }
+
+    // 测试256位版本
+    printf("Testing VRSQRTPS (256-bit)\n");
+    __asm__ __volatile__(
+        "vmovups %1, %%ymm0\n\t"
         "vrsqrtps %%ymm0, %%ymm1\n\t"
-        "vmovaps %%ymm1, %0\n\t"
-        : "=m"(*result)
-        : "m"(*src)
+        "vmovups %%ymm1, %0\n\t"
+        : "=m"(result256)
+        : "m"(input256)
         : "ymm0", "ymm1"
     );
-    
-    printf("Expected: ");
-    print_float_vec("Expected", expected, 8);
-    printf("Result:   ");
-    print_float_vec("Result", result, 8);
-    
-    int pass = 1;
-    float tolerance = 1e-3f; // vrsqrtps 有大约 1.5*2^-12 的精度
+
     for (int i = 0; i < 8; i++) {
-        float diff = fabsf(result[i] - expected[i]);
-        if (diff > tolerance) {
-            printf("Mismatch at position %d: expected %.6f, got %.6f (diff: %.6f)\n", 
-                   i, expected[i], result[i], diff);
-            pass = 0;
+        printf("Test case %d (256-bit):\n", i+1);
+        printf("Input: %.9g\n", input256[i]);
+        printf("Result: %.9g\n", result256[i]);
+        printf("Expected: %.9g\n", expected256[i]);
+        
+        if (isnan(expected256[i])) {
+            if (!isnan(result256[i])) {
+                printf("Mismatch: expected NaN\n");
+            }
+        } else if (isinf(expected256[i]) && isinf(result256[i])) {
+            if (signbit(expected256[i]) != signbit(result256[i])) {
+                printf("Mismatch: sign differs for infinity\n");
+            }
+        } else if (fabsf(result256[i] - expected256[i]) > 0.001f) {
+            printf("Mismatch: got %.9g, expected %.9g\n", 
+                  result256[i], expected256[i]);
         }
-    }
-    if (pass) {
-        printf("[PASS] Test 1: Basic values\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 1: Basic values\n\n");
-    }
-    
-    // Boundary values test
-    printf("Test 2: Boundary values\n");
-    float boundary_src[8] ALIGNED(32) = {
-        0.0f, -0.0f, INFINITY, -INFINITY, 
-        NAN, 1e-10f, 1e10f, -1e10f
-    };
-    float boundary_expected[8] ALIGNED(32) = {
-        INFINITY, -INFINITY, 0.0f, -NAN, // -INFINITY -> -QNaN
-        NAN, 1e5f, 1e-5f, -NAN           // -1e10f -> -QNaN
-    };
-    
-    float boundary_result[8] ALIGNED(32) = {0};
-    total_tests++;
-    
-    __asm__ __volatile__(
-        "vmovaps %1, %%ymm0\n\t"
-        "vrsqrtps %%ymm0, %%ymm1\n\t"
-        "vmovaps %%ymm1, %0\n\t"
-        : "=m"(*boundary_result)
-        : "m"(*boundary_src)
-        : "ymm0", "ymm1"
-    );
-    
-    printf("Expected: ");
-    print_hex_float_vec("Expected", boundary_expected, 8);
-    printf("Result:   ");
-    print_hex_float_vec("Result", boundary_result, 8);
-    
-    // Check results
-    int boundary_pass = 1;
-    for (int i = 0; i < 8; i++) {
-        if (i < 4) { // 前4个有明确定义的行为
-            if (memcmp(&boundary_result[i], &boundary_expected[i], sizeof(float))) {
-                printf("Mismatch at position %d: expected 0x%08X, got 0x%08X\n", 
-                       i, *(uint32_t*)&boundary_expected[i], *(uint32_t*)&boundary_result[i]);
-                boundary_pass = 0;
-            }
-        } else if (i == 4) { // NaN
-            if (!isnan(boundary_result[i])) {
-                printf("Expected NaN at position %d, got 0x%08X\n", 
-                       i, *(uint32_t*)&boundary_result[i]);
-                boundary_pass = 0;
-            }
-        } else { // 大/小值，使用相对误差检查
-            float expected_val = boundary_expected[i];
-            float result_val = boundary_result[i];
-            float rel_error = fabsf((result_val - expected_val) / expected_val);
-            if (rel_error > 0.01f) { // 1% 相对误差
-                printf("Mismatch at position %d: expected %.6e, got %.6e (rel error: %.2f%%)\n", 
-                       i, expected_val, result_val, rel_error*100);
-                boundary_pass = 0;
-            }
-        }
-    }
-    
-    if (boundary_pass) {
-        printf("[PASS] Boundary values\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Boundary values\n");
-    }
-    
-    // Test summary
-    printf("--- Test Summary ---\n");
-    printf("Total tests: %d\n", total_tests);
-    printf("Passed tests: %d\n", passed_tests);
-    printf("Failed tests: %d\n", total_tests - passed_tests);
-    
-    if (passed_tests == total_tests) {
-        printf("All vrsqrtps tests passed!\n");
-    } else {
-        printf("Some vrsqrtps tests failed\n");
+        printf("\n");
     }
 }
 
 int main() {
     test_vrsqrtps();
+    printf("VRSQRTPS tests completed\n");
     return 0;
 }

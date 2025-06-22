@@ -178,6 +178,102 @@ static void test_vdpps() {
     //     printf("[FAIL] Test 4: Boundary values (no invalid operation detected)\n\n");
     // }
 
+    // Memory operand test
+    printf("Test 5: Memory operand\n");
+    float mem_src1[8] ALIGNED(32) = {
+        1.0f, 2.0f, 3.0f, 4.0f,
+        5.0f, 6.0f, 7.0f, 8.0f
+    };
+    float mem_src2[8] ALIGNED(32) = {
+        0.5f, 0.5f, 0.5f, 0.5f,
+        0.5f, 0.5f, 0.5f, 0.5f
+    };
+    float mem_expected[8] ALIGNED(32) = {
+        5.0f, 5.0f, 5.0f, 5.0f,
+        13.0f, 13.0f, 13.0f, 13.0f
+    };
+    float mem_result[8] ALIGNED(32) = {0};
+    total_tests++;
+    
+    __asm__ __volatile__(
+        "vmovaps %1, %%ymm0\n\t"
+        "vdpps $0xFF, %2, %%ymm0, %%ymm1\n\t"
+        "vmovaps %%ymm1, %0\n\t"
+        : "=m"(*mem_result)
+        : "m"(*mem_src1), "m"(*mem_src2)
+        : "ymm0", "ymm1"
+    );
+    
+    printf("Expected: ");
+    print_float_vec("Expected", mem_expected, 8);
+    printf("Result:   ");
+    print_float_vec("Result", mem_result, 8);
+    
+    int pass5 = 1;
+    for (int i = 0; i < 8; i++) {
+        if (fabsf(mem_result[i] - mem_expected[i]) > 1e-6) {
+            printf("Mismatch at position %d: expected %.6f, got %.6f\n", 
+                   i, mem_expected[i], mem_result[i]);
+            pass5 = 0;
+        }
+    }
+    if (pass5) {
+        printf("[PASS] Test 5: Memory operand\n\n");
+        passed_tests++;
+    } else {
+        printf("[FAIL] Test 5: Memory operand\n\n");
+    }
+
+    // NaN propagation test
+    printf("Test 6: NaN propagation\n");
+    float nan_src1[8] ALIGNED(32) = {
+        NAN, 1.0f, 2.0f, 3.0f,
+        NAN, 5.0f, 6.0f, 7.0f
+    };
+    float nan_src2[8] ALIGNED(32) = {
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f
+    };
+    float nan_result[8] ALIGNED(32) = {0};
+    total_tests++;
+    
+    __asm__ __volatile__(
+        "vmovaps %1, %%ymm0\n\t"
+        "vmovaps %2, %%ymm1\n\t"
+        "vdpps $0xFF, %%ymm1, %%ymm0, %%ymm2\n\t"
+        "vmovaps %%ymm2, %0\n\t"
+        : "=m"(*nan_result)
+        : "m"(*nan_src1), "m"(*nan_src2)
+        : "ymm0", "ymm1", "ymm2"
+    );
+    
+    printf("Result: ");
+    print_float_vec("Result", nan_result, 8);
+    
+    int pass6 = isnan(nan_result[0]) && isnan(nan_result[1]) && 
+                isnan(nan_result[2]) && isnan(nan_result[3]) &&
+                isnan(nan_result[4]) && isnan(nan_result[5]) &&
+                isnan(nan_result[6]) && isnan(nan_result[7]);
+    if (pass6) {
+        printf("[PASS] Test 6: NaN propagation\n\n");
+        passed_tests++;
+    } else {
+        printf("[FAIL] Test 6: NaN propagation\n\n");
+    }
+
+    // Check MXCSR state
+    unsigned int mxcsr = 0;
+    __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
+    printf("--- MXCSR State After Operations ---\n");
+    printf("MXCSR: 0x%08X\n", mxcsr);
+    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+           (mxcsr >> 0) & 1,  // Invalid
+           (mxcsr >> 1) & 1,  // Denormal
+           (mxcsr >> 2) & 1,  // Divide-by-zero
+           (mxcsr >> 3) & 1,  // Overflow
+           (mxcsr >> 4) & 1,  // Underflow
+           (mxcsr >> 5) & 1); // Precision
+
     // Test summary
     printf("--- Test Summary ---\n");
     printf("Total tests: %d\n", total_tests);

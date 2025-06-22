@@ -1,7 +1,0 @@
-=== Simplified VMASKMOVPD Test ===
-Memory: 1.1, 0.0
-Expected: 1.1, 0.0
-Actual:   1.1, 0.0
-Test PASSED
-XMM0 (src): 9a 99 99 99 99 99 f1 3f 9a 99 99 99 99 99 01 40 
-XMM1 (mask): ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 

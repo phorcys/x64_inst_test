@@ -1,6 +1,0 @@
-=== Testing VPHSUBW ===
--- Testing 128-bit operation --
-Result: ff ff ff ff ef ee ef ee ff ff 01 00 11 11 11 11 
-Expected: -1 -1 -4369 -4369 -1 1 4369 4369 
-
-=== VPHSUBW test completed ===

@@ -1,9 +1,0 @@
-=== Testing VPMADDUBSW ===
--- Testing 128-bit operation --
-Input data:
-Src1: ff 80 7f 00 11 22 33 44 55 66 77 88 99 aa bb cc 
-Src2: 7f 80 7f 80 11 de 33 bc ab 66 89 88 67 aa 45 cc 
-Result: 81 3e 01 3f 9d fc 19 f8 6b 0c ef 88 73 04 f7 08 
-Expected: 16001 16129 -867 -2023 3179 -30481 1139 2295 
-
-=== VPMADDUBSW test completed ===

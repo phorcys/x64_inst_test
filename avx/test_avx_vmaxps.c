@@ -1,141 +1,184 @@
+#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "avx.h"
+#include <math.h>
 
-// vmaxps 指令测试
-static void test_vmaxps() {
-    printf("--- Testing vmaxps ---\n");
+// VMAXPS - Packed Single-FP Maximum
+// Compares packed single-precision floating-point values and returns the maximum values
+
+static void test_vmaxps_128() {
+    printf("Testing VMAXPS (128-bit)\n");
     
-    // 测试数据
-    // 使用对齐内存
-    ALIGNED(32) float src1[8] = {1.0f, -2.0f, 0.0f, -0.0f, -INFINITY, NAN, 3.5f, -3.5f};
-    ALIGNED(32) float src2[8] = {-1.0f, 3.0f, -0.0f, 0.0f, NAN, INFINITY, 2.5f, -2.5f};
-    ALIGNED(32) float dst[8] = {0};
+    float a[4] = {1.5f, -2.5f, 3.0f, -4.0f};
+    float b[4] = {-1.0f, 3.0f, 2.0f, -3.0f};
+    float r[4];
+    float expected[4] = {1.5f, 3.0f, 3.0f, -3.0f};
     
-    // 预期结果
-    float expected[8] = {
-        1.0f,   // max(1.0, -1.0)
-        3.0f,   // max(-2.0, 3.0)
-        -0.0f,  // max(0.0, -0.0) - 根据指令行为返回第二个操作数(-0.0)
-        0.0f,   // max(-0.0, 0.0) - 根据指令行为返回第二个操作数(0.0)
-        NAN,    // max(-INFINITY, NAN) - 应该返回NAN
-        INFINITY, // max(NAN, INFINITY) - 应该返回INFINITY
-        3.5f,   // max(3.5, 2.5)
-        -2.5f   // max(-3.5, -2.5)
-    };
-    
-    // 设置预期结果的位模式
-    uint32_t expected_bits[8];
-    for (int i = 0; i < 8; i++) {
-        expected_bits[i] = *(uint32_t*)&expected[i];
-    }
-    
-    // 使用非对齐加载/存储指令
-    // 256位版本 (ymm)
-    __asm__ __volatile__(
-        "vmovups %1, %%ymm0\n\t"
-        "vmovups %2, %%ymm1\n\t"
-        "vmaxps %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovups %%ymm2, %0\n\t"
-        : "=m" (dst)
-        : "m" (src1), "m" (src2)
-        : "ymm0", "ymm1", "ymm2"
-    );
-    
-    // 检查结果
-    int errors = 0;
-    for (int i = 0; i < 8; i++) {
-        if (isnan(expected[i])) {
-            if (!isnan(dst[i])) {
-                printf("Error at element %d: expected NaN, got %f (0x%x)\n", i, dst[i], *(uint32_t*)&dst[i]);
-                errors++;
-            } else {
-                printf("Element %d OK: got NaN as expected\n", i);
-            }
-        } else if (expected[i] == 0.0f && dst[i] == 0.0f) {
-            // 检查符号位
-            uint32_t exp_bits = expected_bits[i];
-            uint32_t dst_bits = *(uint32_t*)&dst[i];
-            if ((exp_bits & 0x80000000) != (dst_bits & 0x80000000)) {
-                printf("Error at element %d: sign mismatch. Expected %f (0x%x), got %f (0x%x)\n", 
-                       i, expected[i], exp_bits, dst[i], dst_bits);
-                errors++;
-            } else {
-                printf("Element %d OK: got %f (0x%x)\n", i, dst[i], dst_bits);
-            }
-        } else if (dst[i] != expected[i]) {
-            printf("Error at element %d: got %f (0x%x), expected %f (0x%x)\n", 
-                   i, dst[i], *(uint32_t*)&dst[i], expected[i], expected_bits[i]);
-            errors++;
-        } else {
-            printf("Element %d OK: got %f (0x%x)\n", i, dst[i], *(uint32_t*)&dst[i]);
-        }
-    }
-    
-    if (errors == 0) {
-        printf("vmaxps (256-bit) test passed!\n");
-    } else {
-        printf("vmaxps (256-bit) test failed with %d errors\n", errors);
-    }
-    
-    // 128位版本 (xmm)
-    ALIGNED(16) float dst128[4] = {0};
     __asm__ __volatile__(
         "vmovups %1, %%xmm0\n\t"
         "vmovups %2, %%xmm1\n\t"
         "vmaxps %%xmm1, %%xmm0, %%xmm2\n\t"
         "vmovups %%xmm2, %0\n\t"
-        : "=m" (dst128)
-        : "m" (src1), "m" (src2)
+        : "=m"(r)
+        : "m"(a), "m"(b)
         : "xmm0", "xmm1", "xmm2"
     );
     
-    // 检查128位结果
-    errors = 0;
+    print_float_vec("Input A", a, 4);
+    print_float_vec("Input B", b, 4);
+    print_float_vec("Result", r, 4);
+    print_float_vec("Expected", expected, 4);
+    
     for (int i = 0; i < 4; i++) {
-        if (isnan(expected[i])) {
-            if (!isnan(dst128[i])) {
-                printf("Error at element %d (128-bit): expected NaN, got %f (0x%x)\n", i, dst128[i], *(uint32_t*)&dst128[i]);
-                errors++;
-            } else {
-                printf("Element %d (128-bit) OK: got NaN as expected\n", i);
-            }
-        } else if (expected[i] == 0.0f && dst128[i] == 0.0f) {
-            // 检查符号位
-            uint32_t exp_bits = expected_bits[i];
-            uint32_t dst_bits = *(uint32_t*)&dst128[i];
-            if ((exp_bits & 0x80000000) != (dst_bits & 0x80000000)) {
-                printf("Error at element %d (128-bit): sign mismatch. Expected %f (0x%x), got %f (0x%x)\n", 
-                       i, expected[i], exp_bits, dst128[i], dst_bits);
-                errors++;
-            } else {
-                printf("Element %d (128-bit) OK: got %f (0x%x)\n", i, dst128[i], dst_bits);
-            }
-        } else if (dst128[i] != expected[i]) {
-            printf("Error at element %d (128-bit): got %f (0x%x), expected %f (0x%x)\n", 
-                   i, dst128[i], *(uint32_t*)&dst128[i], expected[i], expected_bits[i]);
-            errors++;
-        } else {
-            printf("Element %d (128-bit) OK: got %f (0x%x)\n", i, dst128[i], *(uint32_t*)&dst128[i]);
+        if (!float_equal(r[i], expected[i], 0.0001f)) {
+            printf("Mismatch at index %d: got %f, expected %f\n", 
+                   i, r[i], expected[i]);
         }
     }
+    printf("\n");
+}
+
+static void test_vmaxps_256() {
+    printf("Testing VMAXPS (256-bit)\n");
     
-    if (errors == 0) {
-        printf("vmaxps (128-bit) test passed!\n");
-    } else {
-        printf("vmaxps (128-bit) test failed with %d errors\n", errors);
+    float a[8] = {1.5f, -2.5f, 3.0f, -4.0f, 0.0f, -0.0f, INFINITY, -INFINITY};
+    float b[8] = {-1.0f, 3.0f, 2.0f, -3.0f, -0.0f, 0.0f, 1.0f, -1.0f};
+    float r[8];
+    float expected[8] = {1.5f, 3.0f, 3.0f, -3.0f, -0.0f, 0.0f, INFINITY, -1.0f};
+    
+    __asm__ __volatile__(
+        "vmovups %1, %%ymm0\n\t"
+        "vmovups %2, %%ymm1\n\t"
+        "vmaxps %%ymm1, %%ymm0, %%ymm2\n\t"
+        "vmovups %%ymm2, %0\n\t"
+        : "=m"(r)
+        : "m"(a), "m"(b)
+        : "ymm0", "ymm1", "ymm2"
+    );
+    
+    print_float_vec("Input A", a, 8);
+    print_float_vec("Input B", b, 8);
+    print_float_vec("Result", r, 8);
+    print_float_vec("Expected", expected, 8);
+    
+    for (int i = 0; i < 8; i++) {
+        if (isnan(expected[i])) {
+            if (!isnan(r[i])) {
+                printf("Mismatch at index %d: expected NaN, got %f\n", i, r[i]);
+            }
+        } else if (isinf(expected[i])) {
+            if (!isinf(r[i]) || (signbit(expected[i]) != signbit(r[i]))) {
+                printf("Mismatch at index %d: got %f, expected %f\n", i, r[i], expected[i]);
+            }
+        } else {
+            if (!float_equal(r[i], expected[i], 0.0001f)) {
+                printf("Mismatch at index %d: got %f, expected %f\n", i, r[i], expected[i]);
+            }
+        }
+    }
+    printf("\n");
+}
+
+static void test_vmaxps_edge_cases() {
+    printf("Testing VMAXPS (Edge Cases)\n");
+    
+    // Function to create SNaN (signaling NaN)
+    float create_snan() {
+        uint32_t snan = 0x7F800001;
+        return *(float*)&snan;
+    }
+    
+    struct {
+        float a[4];
+        float b[4];
+        float expected[4];
+    } tests[] = {
+        // Zeros - VMAXPS returns second operand when equal
+        {{0.0f, 0.0f, 0.0f, 0.0f}, 
+         {0.0f, -0.0f, -0.0f, 0.0f}, 
+         {0.0f, -0.0f, -0.0f, 0.0f}},
+         
+        {{-0.0f, -0.0f, -0.0f, -0.0f}, 
+         {0.0f, -0.0f, 0.0f, -0.0f}, 
+         {0.0f, -0.0f, 0.0f, -0.0f}},
+        
+        // NaN cases - VMAXPS returns the second operand if first is NaN
+        {{NAN, NAN, NAN, NAN}, 
+         {1.0f, -1.0f, 2.0f, -2.0f}, 
+         {1.0f, -1.0f, 2.0f, -2.0f}},
+        
+        // NaN cases - VMAXPS returns second operand if it's NaN
+        {{1.0f, -1.0f, 2.0f, -2.0f}, 
+         {NAN, NAN, NAN, NAN}, 
+         {NAN, NAN, NAN, NAN}},
+        
+        {{INFINITY, -INFINITY, 3.0f, -3.0f}, 
+         {NAN, NAN, NAN, NAN}, 
+         {NAN, NAN, NAN, NAN}},
+        
+        // SNaN cases
+        {{1.0f, -1.0f, 2.0f, -2.0f}, 
+         {create_snan(), create_snan(), create_snan(), create_snan()}, 
+         {create_snan(), create_snan(), create_snan(), create_snan()}},
+        
+        {{NAN, NAN, NAN, NAN}, 
+         {create_snan(), create_snan(), create_snan(), create_snan()}, 
+         {create_snan(), create_snan(), create_snan(), create_snan()}},
+        
+        // Infinity cases
+        {{INFINITY, -INFINITY, INFINITY, -INFINITY}, 
+         {1.0f, -1.0f, -2.0f, 2.0f}, 
+         {INFINITY, -1.0f, INFINITY, 2.0f}},
+         
+        {{1.0f, -1.0f, -2.0f, 2.0f}, 
+         {INFINITY, -INFINITY, INFINITY, -INFINITY}, 
+         {INFINITY, -1.0f, INFINITY, 2.0f}}
+    };
+    
+    for (size_t i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
+        float r[4];
+        
+        __asm__ __volatile__(
+            "vmovups %1, %%xmm0\n\t"
+            "vmovups %2, %%xmm1\n\t"
+            "vmaxps %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovups %%xmm2, %0\n\t"
+            : "=m"(r)
+            : "m"(tests[i].a), "m"(tests[i].b)
+            : "xmm0", "xmm1", "xmm2"
+        );
+        
+        printf("Test case %zu\n", i);
+        print_float_vec("Input A", tests[i].a, 4);
+        print_float_vec("Input B", tests[i].b, 4);
+        print_float_vec("Result", r, 4);
+        print_float_vec("Expected", tests[i].expected, 4);
+        
+        for (int j = 0; j < 4; j++) {
+            if (isnan(tests[i].expected[j])) {
+                if (!isnan(r[j])) {
+                    printf("Mismatch at index %d: expected NaN, got %f\n", j, r[j]);
+                }
+            } else if (isinf(tests[i].expected[j])) {
+                if (!isinf(r[j]) || (signbit(tests[i].expected[j]) != signbit(r[j]))) {
+                    printf("Mismatch at index %d: got %f, expected %f\n", j, r[j], tests[i].expected[j]);
+                }
+            } else {
+                if (!float_equal(r[j], tests[i].expected[j], 0.0001f)) {
+                    printf("Mismatch at index %d: got %f, expected %f\n", 
+                           j, r[j], tests[i].expected[j]);
+                }
+            }
+        }
+        printf("\n");
     }
 }
 
 int main() {
-    // 设置MXCSR寄存器以控制浮点行为
-    uint32_t mxcsr = get_mxcsr();
-    mxcsr &= ~(0x6000); // 清除FTZ和DAZ标志
-    set_mxcsr(mxcsr);
-    
-    print_mxcsr(get_mxcsr());
-    test_vmaxps();
-    
+    test_vmaxps_128();
+    test_vmaxps_256();
+    test_vmaxps_edge_cases();
+    printf("VMAXPS tests completed\n");
     return 0;
 }

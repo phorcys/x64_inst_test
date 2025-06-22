@@ -1,6 +1,0 @@
-=== Testing VPHADDSW ===
--- Testing 128-bit operation --
-Result: ff ff ff ff 33 33 77 77 ff ff ff ff cd cc 89 88 
-Expected: -1 -1 13107 30583 -1 -1 -13107 -30583 
-
-=== VPHADDSW test completed ===

@@ -1,9 +1,0 @@
---- Testing vinserti128 (insert 128-bit integer data into 256-bit register) ---
-vinsertf128 low 128-bits tests.
-src1:: 1 2 3 4 5 6 7 8 
-src2:: 10 20 30 40 
-dst :: 10 20 30 40 5 6 7 8 
-vinsertf128 low 128-bits tests.
-src1:: 1 2 3 4 5 6 7 8 
-src2:: 10 20 30 40 
-dst :: 1 2 3 4 10 20 30 40 

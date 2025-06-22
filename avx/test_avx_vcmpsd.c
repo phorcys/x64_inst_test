@@ -5,46 +5,45 @@
 #include <immintrin.h>
 #include <math.h>
 
-// 比较谓词宏定义
-#define CMP_EQ       0x00
-#define CMP_LT       0x01
-#define CMP_LE       0x02
-#define CMP_UNORD    0x03
-#define CMP_NEQ      0x04
-#define CMP_NLT      0x05
-#define CMP_NLE      0x06
-#define CMP_ORD      0x07
+// 使用宏定义实现所有32种比较条件
+#define DEFINE_CMP_FUNC(imm) \
+static void vcmpsd_##imm(__m128d *dst, __m128d a, __m128d b) { \
+    asm volatile("vcmpsd $"#imm", %2, %1, %0" \
+                 : "=x"(*dst) \
+                 : "x"(a), "x"(b)); \
+}
 
-// 内联汇编实现 vcmpsd
+// 为所有32种条件定义函数
+DEFINE_CMP_FUNC(0x00) DEFINE_CMP_FUNC(0x01) DEFINE_CMP_FUNC(0x02) DEFINE_CMP_FUNC(0x03)
+DEFINE_CMP_FUNC(0x04) DEFINE_CMP_FUNC(0x05) DEFINE_CMP_FUNC(0x06) DEFINE_CMP_FUNC(0x07)
+DEFINE_CMP_FUNC(0x08) DEFINE_CMP_FUNC(0x09) DEFINE_CMP_FUNC(0x0A) DEFINE_CMP_FUNC(0x0B)
+DEFINE_CMP_FUNC(0x0C) DEFINE_CMP_FUNC(0x0D) DEFINE_CMP_FUNC(0x0E) DEFINE_CMP_FUNC(0x0F)
+DEFINE_CMP_FUNC(0x10) DEFINE_CMP_FUNC(0x11) DEFINE_CMP_FUNC(0x12) DEFINE_CMP_FUNC(0x13)
+DEFINE_CMP_FUNC(0x14) DEFINE_CMP_FUNC(0x15) DEFINE_CMP_FUNC(0x16) DEFINE_CMP_FUNC(0x17)
+DEFINE_CMP_FUNC(0x18) DEFINE_CMP_FUNC(0x19) DEFINE_CMP_FUNC(0x1A) DEFINE_CMP_FUNC(0x1B)
+DEFINE_CMP_FUNC(0x1C) DEFINE_CMP_FUNC(0x1D) DEFINE_CMP_FUNC(0x1E) DEFINE_CMP_FUNC(0x1F)
+
+// 函数指针类型
+typedef void (*vcmpsd_func_t)(__m128d*, __m128d, __m128d);
+
+// 函数指针数组
+static vcmpsd_func_t vcmpsd_funcs[32] = {
+    vcmpsd_0x00, vcmpsd_0x01, vcmpsd_0x02, vcmpsd_0x03,
+    vcmpsd_0x04, vcmpsd_0x05, vcmpsd_0x06, vcmpsd_0x07,
+    vcmpsd_0x08, vcmpsd_0x09, vcmpsd_0x0A, vcmpsd_0x0B,
+    vcmpsd_0x0C, vcmpsd_0x0D, vcmpsd_0x0E, vcmpsd_0x0F,
+    vcmpsd_0x10, vcmpsd_0x11, vcmpsd_0x12, vcmpsd_0x13,
+    vcmpsd_0x14, vcmpsd_0x15, vcmpsd_0x16, vcmpsd_0x17,
+    vcmpsd_0x18, vcmpsd_0x19, vcmpsd_0x1A, vcmpsd_0x1B,
+    vcmpsd_0x1C, vcmpsd_0x1D, vcmpsd_0x1E, vcmpsd_0x1F
+};
+
+// 统一的调用函数
 static void vcmpsd(__m128d *dst, __m128d a, __m128d b, int imm) {
-    switch(imm) {
-        case CMP_EQ:
-            asm volatile("vcmpsd $0, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        case CMP_LT:
-            asm volatile("vcmpsd $1, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        case CMP_LE:
-            asm volatile("vcmpsd $2, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        case CMP_UNORD:
-            asm volatile("vcmpsd $3, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        case CMP_NEQ:
-            asm volatile("vcmpsd $4, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        case CMP_NLT:
-            asm volatile("vcmpsd $5, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        case CMP_NLE:
-            asm volatile("vcmpsd $6, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        case CMP_ORD:
-            asm volatile("vcmpsd $7, %2, %1, %0" : "=x"(*dst) : "x"(a), "x"(b), "0"(*dst));
-            break;
-        default:
-            *dst = _mm_setzero_pd();
-            break;
+    if (imm >= 0 && imm < 32) {
+        vcmpsd_funcs[imm](dst, a, b);
+    } else {
+        *dst = _mm_setzero_pd();
     }
 }
 
@@ -54,16 +53,19 @@ static int test_case(const char *name, __m128d a, __m128d b, int imm, __m128d ex
     vcmpsd(&res, a, b, imm);
     
     // 打印输入和输出
-    printf("\nTest: %s\n", name);
+    printf("\nTest: %s (imm=0x%02X)\n", name, imm);
     print_double_vec_hex("Operand A", (double*)&a, 2);
     print_double_vec_hex("Operand B", (double*)&b, 2);
     print_double_vec_hex("Expected", (double*)&expected, 2);
     print_double_vec_hex("Result  ", (double*)&res, 2);
     
-    // 比较结果
+    // 比较结果 (只比较低64位)
     uint64_t res_low = *((uint64_t*)&res);
     uint64_t exp_low = *((uint64_t*)&expected);
-    int ret = (res_low == exp_low);
+    uint64_t res_high = *((uint64_t*)&res + 1);
+    uint64_t a_high = *((uint64_t*)&a + 1);
+    
+    int ret = (res_low == exp_low) && (res_high == a_high);
     printf("Result: %s\n", ret ? "PASS" : "FAIL");
     return ret;
 }
@@ -74,75 +76,180 @@ int main() {
     // 定义测试值
     double nan = NAN;
     double inf = INFINITY;
-    double neg_inf = -INFINITY;
+    double zero = 0.0;
+    double neg_zero = -0.0;
     
-    // 相等比较
-    __m128d a_eq = _mm_setr_pd(1.0, 2.0);
-    __m128d b_eq = _mm_setr_pd(1.0, 2.0);
-    __m128d exp_eq = _mm_castsi128_pd(_mm_set_epi64x(0, 0xFFFFFFFFFFFFFFFF)); // 低64位全1
-    passed += test_case("vcmpsd EQ (equal)", a_eq, b_eq, CMP_EQ, exp_eq);
+    // 特殊值测试向量
+    __m128d special_a = _mm_setr_pd(zero, nan);
+    __m128d special_b = _mm_setr_pd(neg_zero, nan);
+    
+    // 测试特殊值: NaN、零值
+    uint64_t mask = 0xFFFFFFFFFFFFFFFF; // 全1掩码
+    __m128d expected = _mm_setr_pd(*(double*)&mask, special_a[1]);
+    passed += test_case("vcmpsd zero values", 
+                       special_a, special_b, 0x00,
+                       expected); // 0.0 == -0.0 应为真
     total++;
     
-    // 不等比较
-    __m128d a_neq = _mm_setr_pd(1.0, 2.0);
-    __m128d b_neq = _mm_setr_pd(0.0, 3.0);
-    __m128d exp_neq = _mm_castsi128_pd(_mm_set_epi64x(0, 0xFFFFFFFFFFFFFFFF)); // 全部不等
-    passed += test_case("vcmpsd NEQ (not equal)", a_neq, b_neq, CMP_NEQ, exp_neq);
+    // 测试NaN比较
+    passed += test_case("vcmpsd NaN comparison", 
+                       _mm_setr_pd(nan, 1.0),
+                       _mm_setr_pd(nan, 2.0),
+                       0x00,
+                       _mm_setr_pd(0.0, 0.0)); // NaN比较不应相等
     total++;
     
-    // 小于比较
-    __m128d a_lt = _mm_setr_pd(1.0, 3.0);
-    __m128d b_lt = _mm_setr_pd(2.0, 1.0);
-    __m128d exp_lt = _mm_castsi128_pd(_mm_set_epi64x(0, 0xFFFFFFFFFFFFFFFF)); // 1.0 < 2.0 -> true
-    passed += test_case("vcmpsd LT (less than)", a_lt, b_lt, CMP_LT, exp_lt);
+    // 测试无穷大比较
+    passed += test_case("vcmpsd inf comparison", 
+                       _mm_setr_pd(INFINITY, 1.0),
+                       _mm_setr_pd(INFINITY, 2.0),
+                       0x00,
+                       _mm_setr_pd(*(double*)&mask, 0.0)); // 无穷大相等
     total++;
     
-    // 无序比较 (NaN)
-    __m128d a_unord = _mm_setr_pd(1.0, nan);
-    __m128d b_unord = _mm_setr_pd(nan, 2.0);
-    __m128d exp_unord = _mm_castsi128_pd(_mm_set_epi64x(0, 0xFFFFFFFFFFFFFFFF)); // 全部无序
-    passed += test_case("vcmpsd UNORD (unordered)", a_unord, b_unord, CMP_UNORD, exp_unord);
+    // 测试负无穷大比较
+    passed += test_case("vcmpsd neg_inf comparison", 
+                       _mm_setr_pd(-INFINITY, 1.0),
+                       _mm_setr_pd(-INFINITY, 2.0),
+                       0x00,
+                       _mm_setr_pd(*(double*)&mask, 0.0)); // 负无穷大相等
     total++;
     
-    // 有序比较 (NaN)
-    __m128d a_ord = _mm_setr_pd(1.0, nan);
-    __m128d b_ord = _mm_setr_pd(2.0, nan);
-    __m128d exp_ord = _mm_castsi128_pd(_mm_set_epi64x(0, 0xFFFFFFFFFFFFFFFF)); // 1.0和2.0有序
-    passed += test_case("vcmpsd ORD (ordered)", a_ord, b_ord, CMP_ORD, exp_ord);
+    // 测试零和NaN比较
+    passed += test_case("vcmpsd zero vs NaN", 
+                       _mm_setr_pd(0.0, 1.0),
+                       _mm_setr_pd(nan, 2.0),
+                       0x03, // UNORD
+                       _mm_setr_pd(*(double*)&mask, 0.0)); // 应为真
     total++;
     
-    // 无穷大比较
-    __m128d a_inf = _mm_setr_pd(inf, neg_inf);
-    __m128d b_inf = _mm_setr_pd(100.0, -100.0);
-    __m128d exp_inf = _mm_castsi128_pd(_mm_set_epi64x(0, 0)); // 都不相等
-    passed += test_case("vcmpsd EQ with inf", a_inf, b_inf, CMP_EQ, exp_inf);
-    total++;
+    // 测试所有32种比较条件
+    for (int imm = 0; imm < 32; imm++) {
+        char name[64];
+        snprintf(name, sizeof(name), "vcmpsd imm=0x%02X", imm);
+        
+        // 设置测试值
+        __m128d a = _mm_setr_pd(1.0, 2.0); // 高位保留测试值
+        __m128d b = _mm_setr_pd(3.0, 1.0);
+        
+        // 计算预期结果
+        double ai = a[0];
+        double bi = b[0];
+        int cmp_result = 0;
+        
+        switch(imm) {
+            case 0x00: // EQ (equal)
+                cmp_result = (ai == bi);
+                break;
+            case 0x01: // LT (less than)
+                cmp_result = (ai < bi);
+                break;
+            case 0x02: // LE (less than or equal)
+                cmp_result = (ai <= bi);
+                break;
+            case 0x03: // UNORD (unordered)
+                cmp_result = (isnan(ai) || isnan(bi));
+                break;
+            case 0x04: // NEQ (not equal)
+                cmp_result = (ai != bi);
+                break;
+            case 0x05: // NLT (not less than)
+                cmp_result = !(ai < bi);
+                break;
+            case 0x06: // NLE (not less than or equal)
+                cmp_result = !(ai <= bi);
+                break;
+            case 0x07: // ORD (ordered)
+                cmp_result = !(isnan(ai) || isnan(bi));
+                break;
+            case 0x08: // EQ_UQ (equal, unordered or equal)
+                cmp_result = (ai == bi) || (isnan(ai) && isnan(bi));
+                break;
+            case 0x09: // NGE (not greater than or equal)
+                cmp_result = !(ai >= bi);
+                break;
+            case 0x0A: // NGT (not greater than)
+                cmp_result = !(ai > bi);
+                break;
+            case 0x0B: // FALSE (always false)
+                cmp_result = 0;
+                break;
+            case 0x0C: // NEQ_OQ (not equal, ordered or equal)
+                cmp_result = (ai != bi) && !(isnan(ai) || isnan(bi));
+                break;
+            case 0x0D: // GE (greater than or equal)
+                cmp_result = (ai >= bi);
+                break;
+            case 0x0E: // GT (greater than)
+                cmp_result = (ai > bi);
+                break;
+            case 0x0F: // TRUE (always true)
+                cmp_result = 1;
+                break;
+            case 0x10: // EQ_OS (equal, ordered signaling)
+                cmp_result = (ai == bi) && !(isnan(ai) || isnan(bi));
+                break;
+            case 0x11: // LT_OS (less than, ordered signaling)
+                cmp_result = (ai < bi) && !(isnan(ai) || isnan(bi));
+                break;
+            case 0x12: // LE_OS (less than or equal, ordered signaling)
+                cmp_result = (ai <= bi) && !(isnan(ai) || isnan(bi));
+                break;
+            case 0x13: // UNORD_S (unordered, signaling)
+                cmp_result = (isnan(ai) || isnan(bi));
+                break;
+            case 0x14: // NEQ_US (not equal, unordered or signaling)
+                cmp_result = (ai != bi) || (isnan(ai) || isnan(bi));
+                break;
+            case 0x15: // NLT_US (not less than, unordered or signaling)
+                cmp_result = !(ai < bi) || (isnan(ai) || isnan(bi));
+                break;
+            case 0x16: // NLE_US (not less than or equal, unordered or signaling)
+                cmp_result = !(ai <= bi) || (isnan(ai) || isnan(bi));
+                break;
+            case 0x17: // ORD_S (ordered, signaling)
+                cmp_result = !(isnan(ai) || isnan(bi));
+                break;
+            case 0x18: // EQ_US (equal, unordered or signaling)
+                cmp_result = (ai == bi) || (isnan(ai) || isnan(bi));
+                break;
+            case 0x19: // NGE_US (not greater than or equal, unordered or signaling)
+                cmp_result = !(ai >= bi) || (isnan(ai) || isnan(bi));
+                break;
+            case 0x1A: // NGT_US (not greater than, unordered or signaling)
+                cmp_result = !(ai > bi) || (isnan(ai) || isnan(bi));
+                break;
+            case 0x1B: // FALSE_OS (always false, ordered signaling)
+                cmp_result = 0;
+                break;
+            case 0x1C: // NEQ_OS (not equal, ordered or signaling)
+                cmp_result = (ai != bi) && !(isnan(ai) || isnan(bi));
+                break;
+            case 0x1D: // GE_OS (greater than or equal, ordered signaling)
+                cmp_result = (ai >= bi) && !(isnan(ai) || isnan(bi));
+                break;
+            case 0x1E: // GT_OS (greater than, ordered signaling)
+                cmp_result = (ai > bi) && !(isnan(ai) || isnan(bi));
+                break;
+            case 0x1F: // TRUE_US (always true, unordered or signaling)
+                cmp_result = 1;
+                break;
+        }
+        
+        // 构建预期结果：低位为掩码，高位保留a的高位
+        uint64_t mask = cmp_result ? 0xFFFFFFFFFFFFFFFF : 0x0;
+        __m128d expected = _mm_setr_pd(*(double*)&mask, a[1]);
+        
+        passed += test_case(name, a, b, imm, expected);
+        total++;
+    }
     
-    // 内存操作数测试
-    ALIGNED(16) double mem_ops[2] = {1.0, 2.0}; // 16字节对齐
-    __m128d a_mem = _mm_setr_pd(1.0, 2.0);
-    __m128d exp_mem = _mm_castsi128_pd(_mm_set_epi64x(0, 0xFFFFFFFFFFFFFFFF)); // 相等
-    
-    __m128d res_mem = _mm_setzero_pd();
-    asm volatile(
-        "vcmpsd %[imm], (%[mem]), %[src], %[dst]"
-        : [dst] "=x"(res_mem)
-        : [src] "x"(a_mem), 
-          [mem] "r"(mem_ops), 
-          [imm] "i"(CMP_EQ)
-    );
-    
-    printf("\nTest: vcmpsd with memory operand\n");
-    print_double_vec_hex("Operand A", (double*)&a_mem, 2);
-    print_double_vec_hex("Operand B (mem)", mem_ops, 2);
-    print_double_vec_hex("Expected", (double*)&exp_mem, 2);
-    print_double_vec_hex("Result  ", (double*)&res_mem, 2);
-    
-    uint64_t mem_res_low = *((uint64_t*)&res_mem);
-    uint64_t mem_exp_low = *((uint64_t*)&exp_mem);
-    int mem_result = (mem_res_low == mem_exp_low);
-    printf("Result: %s\n", mem_result ? "PASS" : "FAIL");
-    passed += mem_result;
+    // 特殊值测试：NaN、零值
+    passed += test_case("vcmpsd NaN special", 
+                       _mm_setr_pd(nan, 1.0),
+                       _mm_setr_pd(nan, 2.0),
+                       0x00,
+                       _mm_setr_pd(0.0, 0.0)); // NaN比较不应相等
     total++;
     
     // 测试总结
