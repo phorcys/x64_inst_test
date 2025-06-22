@@ -122,7 +122,7 @@ typedef struct {
     const char *desc;
 } test_case128;
 
-test_case128 test_case_128[TEST_CASE_COUNT] = {
+test_case128 cases_128[TEST_CASE_COUNT] = {
     // 正常值
     {
         {1.0, 2.0},
@@ -223,20 +223,6 @@ test_case128 test_case_128[TEST_CASE_COUNT] = {
     }
 };
 
-// 输出双精度浮点向量计算结果
-static void print_double_vector_result(const char *desc, double *a, double *b, double *c, double *res, int count) {
-    printf("%s:\n", desc);
-    for (int i = 0; i < count; i++) {
-        printf("  Element %d: a=%.6f (0x%016lx), b=%.6f (0x%016lx), c=%.6f (0x%016lx)\n",
-               i, a[i], *(uint64_t*)&a[i], 
-               b[i], *(uint64_t*)&b[i], 
-               c[i], *(uint64_t*)&c[i]);
-        printf("    Result: %.6f (0x%016lx) [Calculation: a * b + c]\n",
-               res[i], *(uint64_t*)&res[i]);
-    }
-    printf("\n");
-}
-
 static void test_256bit_reg_reg_operand() {
    
     for (int t = 0; t < TEST_CASE_COUNT; t++) {
@@ -252,8 +238,11 @@ static void test_256bit_reg_reg_operand() {
         
         double res[4];
         _mm256_storeu_pd(res, va);
-        
-        print_double_vector_result(cases_256[t].desc, cases_256[t].a, cases_256[t].b, cases_256[t].c, res, 4);
+        print_double_vec("A     :", cases_256[t].a, 4);
+        print_double_vec("B     :", cases_256[t].b, 4);
+        print_double_vec("C     :", cases_256[t].c, 4);
+        print_double_vec("Result:", res, 4);
+        printf("\n");
     }
     
     printf("VFMADD132PD 256-bit Register-Register Tests Completed\n\n");
@@ -263,9 +252,9 @@ static void test_128bit_reg_reg_operand() {
 
     
     for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128d va = _mm_loadu_pd(test_case_128[t].a);
-        __m128d vb = _mm_loadu_pd(test_case_128[t].b);
-        __m128d vc = _mm_loadu_pd(test_case_128[t].c);
+        __m128d va = _mm_loadu_pd(cases_128[t].a);
+        __m128d vb = _mm_loadu_pd(cases_128[t].b);
+        __m128d vc = _mm_loadu_pd(cases_128[t].c);
         
         __asm__ __volatile__(
             "vfmadd132pd %[b], %[c], %[a]"
@@ -276,7 +265,11 @@ static void test_128bit_reg_reg_operand() {
         double res[2];
         _mm_storeu_pd(res, va);
         
-        print_double_vector_result(test_case_128[t].desc, test_case_128[t].a, test_case_128[t].b, test_case_128[t].c, res, 2);
+        print_double_vec("A     :", cases_128[t].a, 2);
+        print_double_vec("B     :", cases_128[t].b, 2);
+        print_double_vec("C     :", cases_128[t].c, 2);
+        print_double_vec("Result:", res, 2);    
+        printf("\n");
     }
     
     printf("VFMADD132PD 128-bit Register-Register Tests Completed\n\n");
@@ -314,8 +307,12 @@ static void test_256bit_reg_mem_operand() {
         _mm256_storeu_pd(res2, va2);
         
         printf("Memory Operand Test: %s\n", cases_256[t].desc);
-        print_double_vector_result("  Unaligned memory", cases_256[t].a, cases_256[t].b, cases_256[t].c, res1, 4);
-        print_double_vector_result("  Aligned memory", cases_256[t].a, cases_256[t].b, cases_256[t].c, res2, 4);
+        print_double_vec("A     :", cases_256[t].a, 4);
+        print_double_vec("B     :", cases_256[t].b, 4);
+        print_double_vec("C     :", cases_256[t].c, 4);
+        print_double_vec("Unaligned memory:", res1, 4);
+        print_double_vec("Aligned memory:", res2, 4);
+        printf("\n");
     }
     
     printf("VFMADD132PD 256-bit Register-Memory Tests Completed\n\n");
@@ -324,13 +321,13 @@ static void test_256bit_reg_mem_operand() {
 static void test_128bit_reg_mem_operand() {
 
     for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128d va = _mm_loadu_pd(test_case_128[t].a);
-        __m128d vc = _mm_loadu_pd(test_case_128[t].c);
+        __m128d va = _mm_loadu_pd(cases_128[t].a);
+        __m128d vc = _mm_loadu_pd(cases_128[t].c);
         
         // 测试不同的内存寻址方式
-        double *b_ptr = test_case_128[t].b;
+        double *b_ptr = cases_128[t].b;
         double b_aligned[2] __attribute__((aligned(16)));
-        memcpy(b_aligned, test_case_128[t].b, sizeof(b_aligned));
+        memcpy(b_aligned, cases_128[t].b, sizeof(b_aligned));
         
         // 测试1: 未对齐内存
         __m128d va1 = va;
@@ -352,9 +349,13 @@ static void test_128bit_reg_mem_operand() {
         _mm_storeu_pd(res1, va1);
         _mm_storeu_pd(res2, va2);
         
-        printf("Memory Operand Test: %s\n", test_case_128[t].desc);
-        print_double_vector_result("  Unaligned memory", test_case_128[t].a, test_case_128[t].b, test_case_128[t].c, res1, 2);
-        print_double_vector_result("  Aligned memory", test_case_128[t].a, test_case_128[t].b, test_case_128[t].c, res2, 2);
+        printf("Memory Operand Test: %s\n", cases_128[t].desc);
+        print_double_vec("A     :", cases_128[t].a, 2);
+        print_double_vec("B     :", cases_128[t].b, 2);
+        print_double_vec("C     :", cases_128[t].c, 2);
+        print_double_vec("Unaligned memory:", res1, 2);
+        print_double_vec("Aligned memory:", res2, 2);
+        printf("\n");
     }
     
     printf("VFMADD132PD 128-bit Register-Memory Tests Completed\n\n");
