@@ -5,7 +5,7 @@
 #include <float.h>
 #include "avx.h"
 
-#define TEST_CASE_COUNT 12
+#define TEST_CASE_COUNT 14
 
 typedef struct {
     double a[4];
@@ -121,9 +121,8 @@ typedef struct {
     double c[2];
     const char *desc;
 } test_case128;
-uint32_t TEST_CASE_COUNT_128 = 7;
 
-test_case128 test_case_128[7] = {
+test_case128 test_case_128[TEST_CASE_COUNT] = {
     // 正常值
     {
         {1.0, 2.0},
@@ -172,6 +171,55 @@ test_case128 test_case_128[7] = {
         {2.0, 3.0},
         {1e-300, 2e-300},
         "Very small values (128-bit)"
+    },
+    // a为特殊值
+    {
+        {INFINITY, -INFINITY},
+        {2.0, 3.0},
+        {1.0, 2.0},
+        "Special values in a (128-bit)"
+    },
+    // b为特殊值
+    {
+        {1.0, 2.0},
+        {INFINITY, -INFINITY},
+        {5.0, 6.0},
+        "Special values in b (128-bit)"
+    },
+    // c为特殊值
+    {
+        {1.0, 2.0},
+        {3.0, 4.0},
+        {INFINITY, -INFINITY},
+        "Special values in c (128-bit)"
+    },
+    // a和b为特殊值
+    {
+        {INFINITY, -INFINITY},
+        {NAN, 0.0},
+        {1.0, 2.0},
+        "Special values in a and b (128-bit)"
+    },
+    // a和c为特殊值
+    {
+        {INFINITY, -INFINITY},
+        {1.0, 2.0},
+        {NAN, 0.0},
+        "Special values in a and c (128-bit)"
+    },
+    // b和c为特殊值
+    {
+        {1.0, 2.0},
+        {INFINITY, -INFINITY},
+        {NAN, 0.0},
+        "Special values in b and c (128-bit)"
+    },
+    // 所有特殊值
+    {
+        {INFINITY, -INFINITY},
+        {-NAN, 0.0},
+        {INFINITY, -INFINITY},
+        "All special values (128-bit)"
     }
 };
 
@@ -214,7 +262,7 @@ static void test_256bit_reg_reg_operand() {
 static void test_128bit_reg_reg_operand() {
 
     
-    for (int t = 0; t < 7; t++) {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
         __m128d va = _mm_loadu_pd(test_case_128[t].a);
         __m128d vb = _mm_loadu_pd(test_case_128[t].b);
         __m128d vc = _mm_loadu_pd(test_case_128[t].c);
