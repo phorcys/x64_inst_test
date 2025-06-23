@@ -254,4 +254,37 @@ static inline void print_m128i_bytes(__m128i xmm) {
     printf("\n");
 }
 
+// 打印128位双精度向量
+static inline void print_xmmd(const char* name, __m128d xmm) {
+    double d[2];
+    _mm_storeu_pd(d, xmm);
+    printf("%s: [%.6f, %.6f]\n", name, d[0], d[1]);
+}
+
+// 打印256位双精度向量
+static inline void print_ymmd(const char* name, __m256d ymm) {
+    double d[4];
+    _mm256_storeu_pd(d, ymm);
+    printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", name, d[0], d[1], d[2], d[3]);
+}
+
+// 比较两个128位双精度向量是否相等
+static inline int cmp_xmmd(__m128d a, __m128d b) {
+    double da[2], db[2];
+    _mm_storeu_pd(da, a);
+    _mm_storeu_pd(db, b);
+    return (fabs(da[0] - db[0]) < 1e-9) && (fabs(da[1] - db[1]) < 1e-9);
+}
+
+// 比较两个256位双精度向量是否相等
+static inline int cmp_ymmd(__m256d a, __m256d b) {
+    double da[4], db[4];
+    _mm256_storeu_pd(da, a);
+    _mm256_storeu_pd(db, b);
+    return (fabs(da[0] - db[0]) < 1e-9) && 
+           (fabs(da[1] - db[1]) < 1e-9) &&
+           (fabs(da[2] - db[2]) < 1e-9) &&
+           (fabs(da[3] - db[3]) < 1e-9);
+}
+
 #endif // AVX_H

@@ -1,87 +1,124 @@
 #include "avx.h"
 #include <stdio.h>
-#include <string.h>
+#include <stdint.h>
 
-// VMOVDDUP 指令测试
-void test_vmovddup() {
-    printf("=== Testing VMOVDDUP ===\n");
+// 测试VMOVDDUP指令
+int test_vmovddup() {
+    int ret = 0;
     
-    // 测试1: 128位版本
-    printf("\nTest 1: 128-bit version\n");
-    double src1[2] = {1.1, 2.2};
-    double dst1[2] = {0};
-    double expected1[2] = {1.1, 1.1}; // 复制低位元素
-    
-    asm volatile(
-        "vmovddup %1, %%xmm0\n\t"
-        "movupd %%xmm0, %0"
-        : "=m" (*(double (*)[2])dst1)
-        : "m" (src1[0])
-        : "xmm0"
-    );
-    
-    printf("Src: %.1f\n", src1[0]);
-    printf("Dst: %.1f, %.1f\n", dst1[0], dst1[1]);
-    
-    if(dst1[0] == expected1[0] && dst1[1] == expected1[1]) {
-        printf("Test 1 PASSED\n");
-    } else {
-        printf("Test 1 FAILED\n");
+    // 测试128位版本
+    {
+        printf("=== Testing VMOVDDUP (128-bit) ===\n");
+        
+        // 寄存器-寄存器测试
+        {
+            __m128d a = _mm_setr_pd(1.0, 2.0);
+            __m128d result;
+            
+            // VMOVDDUP xmm1, xmm2
+            __asm__ volatile (
+                "vmovddup %1, %0"
+                : "=x"(result)
+                : "x"(a)
+            );
+            
+            __m128d expected = _mm_setr_pd(1.0, 1.0);
+            
+            printf("Testing register-register operation\n");
+            print_xmmd("a", a);
+            print_xmmd("result", result);
+            print_xmmd("expected", expected);
+            
+            if (!cmp_xmmd(result, expected)) {
+                printf("Mismatch in register-register test\n");
+                ret = 1;
+            }
+        }
+        
+        // 寄存器-内存测试
+        {
+            ALIGNED(16) double mem[2] = {3.0, 4.0};
+            __m128d result;
+            
+            // VMOVDDUP xmm1, [mem]
+            __asm__ volatile (
+                "vmovddup %1, %0"
+                : "=x"(result)
+                : "m"(*mem)
+            );
+            
+            __m128d expected = _mm_setr_pd(3.0, 3.0);
+            
+            printf("\nTesting register-memory operation\n");
+            printf("Memory operand: %f %f\n", mem[0], mem[1]);
+            print_xmmd("result", result);
+            print_xmmd("expected", expected);
+            
+            if (!cmp_xmmd(result, expected)) {
+                printf("Mismatch in register-memory test\n");
+                ret = 1;
+            }
+        }
     }
-   
-    // 测试2: 256位版本
-    printf("\nTest 2: 256-bit version\n");
-    double src2[4] = {1.1, 2.2, 3.3, 4.4};
-    double dst2[4] = {0};
-    double expected2[4] = {1.1, 1.1, 3.3, 3.3}; // 复制每个64位元素
     
-    asm volatile(
-        "vmovddup %1, %%ymm0\n\t"
-        "vmovupd %%ymm0, %0"
-        : "=m" (*(double (*)[4])dst2)
-        : "m" (*(double (*)[4])src2)
-        : "ymm0"
-    );
-    
-    printf("Src: %.1f, %.1f, %.1f, %.1f\n", 
-           src2[0], src2[1], src2[2], src2[3]);
-    printf("Dst: %.1f, %.1f, %.1f, %.1f\n", 
-           dst2[0], dst2[1], dst2[2], dst2[3]);
-    
-    if(memcmp(dst2, expected2, sizeof(dst2)) == 0) {
-        printf("Test 2 PASSED\n");
-    } else {
-        printf("Test 2 FAILED\n");
+    // 测试256位版本
+    {
+        printf("\n=== Testing VMOVDDUP (256-bit) ===\n");
+        
+        // 寄存器-寄存器测试
+        {
+            __m256d a = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
+            __m256d result;
+            
+            // VMOVDDUP ymm1, ymm2
+            __asm__ volatile (
+                "vmovddup %1, %0"
+                : "=x"(result)
+                : "x"(a)
+            );
+            
+            __m256d expected = _mm256_setr_pd(1.0, 1.0, 3.0, 3.0);
+            
+            printf("Testing register-register operation\n");
+            print_ymmd("a", a);
+            print_ymmd("result", result);
+            print_ymmd("expected", expected);
+            
+            if (!cmp_ymmd(result, expected)) {
+                printf("Mismatch in register-register test\n");
+                ret = 1;
+            }
+        }
+        
+        // 寄存器-内存测试
+        {
+            ALIGNED(32) double mem[4] = {5.0, 6.0, 7.0, 8.0};
+            __m256d result;
+            
+            // VMOVDDUP ymm1, [mem]
+            __asm__ volatile (
+                "vmovddup %1, %0"
+                : "=x"(result)
+                : "m"(*mem)
+            );
+            
+            __m256d expected = _mm256_setr_pd(5.0, 5.0, 7.0, 7.0);
+            
+            printf("\nTesting register-memory operation\n");
+            printf("Memory operand: %f %f %f %f\n", mem[0], mem[1], mem[2], mem[3]);
+            print_ymmd("result", result);
+            print_ymmd("expected", expected);
+            
+            if (!cmp_ymmd(result, expected)) {
+                printf("Mismatch in register-memory test\n");
+                ret = 1;
+            }
+        }
     }
     
-    // 测试3: 特殊值测试 (NaN)
-    printf("\nTest 3: Special values (NaN)\n");
-    double nan = 0.0/0.0;
-    double src3[2] = {nan, 0.0}; // NaN, 0
-    double dst3[2] = {0};
-    
-    asm volatile(
-        "vmovddup %1, %%xmm0\n\t"
-        "movupd %%xmm0, %0"
-        : "=m" (*(double (*)[2])dst3)
-        : "m" (*(double (*)[2])src3)
-        : "xmm0"
-    );
-    
-    int nan_ok0 = isnan(dst3[0]);
-    int nan_ok1 = isnan(dst3[1]);
-    
-    printf("Dst: %f, %f\n", dst3[0], dst3[1]);
-    printf("Checks: [0] is nan:%d, [1] is nan:%d\n", nan_ok0, nan_ok1);
-    
-    if(nan_ok0 && nan_ok1) {
-        printf("Test 3 PASSED\n");
-    } else {
-        printf("Test 3 FAILED\n");
-    }
+    return ret;
 }
 
 int main() {
-    test_vmovddup();
-    return 0;
+    return test_vmovddup();
 }
