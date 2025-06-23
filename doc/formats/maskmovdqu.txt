@@ -42,3 +42,27 @@ Note: In VEX-encoded versions, VEX.vvvv is reserved and must be 1111b otherwise 
 
 If VMASKMOVDQU is encoded with VEX.L= 1, an attempt to execute the instruction encoded with VEX.L= 1 will cause an #UD exception.
 
+Operation ¶
+
+IF (MASK[7] = 1)
+    THEN DEST[DI/EDI] := SRC[7:0] ELSE (* Memory location unchanged *); FI;
+IF (MASK[15] = 1)
+    THEN DEST[DI/EDI +1] := SRC[15:8] ELSE (* Memory location unchanged *); FI;
+    (* Repeat operation for 3rd through 14th bytes in source operand *)
+IF (MASK[127] = 1)
+    THEN DEST[DI/EDI +15] := SRC[127:120] ELSE (* Memory location unchanged *); FI;
+
+Intel C/C++ Compiler Intrinsic Equivalent ¶
+
+void _mm_maskmoveu_si128(__m128i d, __m128i n, char * p)
+
+Other Exceptions ¶
+
+See Table 2-21, “Type 4 Class Exception Conditions,” additionally:
+
+#UD If VEX.L= 1
+    If VEX.vvvv ≠ 1111B.
+
+This UNOFFICIAL, mechanically-separated, non-verified reference is provided for convenience, but it may be incomplete or b[r]oke[n] in various obvious or non-obvious ways. Refer to Intel® 64 and IA-32 Architectures Software Developer’s Manual for
+anything serious.
+
