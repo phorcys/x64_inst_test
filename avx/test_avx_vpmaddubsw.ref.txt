@@ -1,9 +1,25 @@
-=== Testing VPMADDUBSW ===
--- Testing 128-bit operation --
-Input data:
-Src1: ff 80 7f 00 11 22 33 44 55 66 77 88 99 aa bb cc 
-Src2: 7f 80 7f 80 11 de 33 bc ab 66 89 88 67 aa 45 cc 
-Result: 81 3e 01 3f 9d fc 19 f8 6b 0c ef 88 73 04 f7 08 
-Expected: 16001 16129 -867 -2023 3179 -30481 1139 2295 
+=== Testing VPMADDUBSW (128-bit) ===
+Testing register-register operation
+a: 00 01 7f 80 ff fe 81 7e 40 c0 20 e0 10 f0 08 f8 
+b: 00 7f 01 ff 80 7f ff 01 40 c0 20 e0 10 f0 08 f8 
+result: 7f 00 ff ff 82 fe fd ff 00 e0 00 e8 00 f2 80 f8 
+expected: 7f 00 ff ff 82 fe fd ff 00 e0 00 e8 00 f2 80 f8 
 
-=== VPMADDUBSW test completed ===
+Testing register-memory operation
+a: 00 7f 01 ff 80 7f ff 01 40 c0 20 e0 10 f0 08 f8 
+Memory operand: 00 01 7f 80 ff fe 81 7e 40 c0 20 e0 10 f0 08 f8 
+result: 7f 00 ff 80 82 fe fd 81 00 e0 00 e8 00 f2 80 f8 
+expected: 7f 00 ff 80 82 fe fd 81 00 e0 00 e8 00 f2 80 f8 
+
+=== Testing VPMADDUBSW (256-bit) ===
+Testing register-register operation
+a: 00 01 7f 80 ff fe 81 7e 40 c0 20 e0 10 f0 08 f8 00 01 7f 80 ff fe 81 7e 40 c0 20 e0 10 f0 08 f8 
+b: 00 7f 01 ff 80 7f ff 01 40 c0 20 e0 10 f0 08 f8 00 7f 01 ff 80 7f ff 01 40 c0 20 e0 10 f0 08 f8 
+result: 7f 00 ff ff 82 fe fd ff 00 e0 00 e8 00 f2 80 f8 7f 00 ff ff 82 fe fd ff 00 e0 00 e8 00 f2 80 f8 
+expected: 7f 00 ff ff 82 fe fd ff 00 e0 00 e8 00 f2 80 f8 7f 00 ff ff 82 fe fd ff 00 e0 00 e8 00 f2 80 f8 
+
+Testing register-memory operation
+a: 00 7f 01 ff 80 7f ff 01 40 c0 20 e0 10 f0 08 f8 00 7f 01 ff 80 7f ff 01 40 c0 20 e0 10 f0 08 f8 
+Memory operand: 00 01 7f 80 ff fe 81 7e 40 c0 20 e0 10 f0 08 f8 00 01 7f 80 ff fe 81 7e 40 c0 20 e0 10 f0 08 f8 
+result: 7f 00 ff 80 82 fe fd 81 00 e0 00 e8 00 f2 80 f8 7f 00 ff 80 82 fe fd 81 00 e0 00 e8 00 f2 80 f8 
+expected: 7f 00 ff 80 82 fe fd 81 00 e0 00 e8 00 f2 80 f8 7f 00 ff 80 82 fe fd 81 00 e0 00 e8 00 f2 80 f8 

@@ -1,82 +1,204 @@
 #include "avx.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdint.h>
 
-// 饱和加法辅助函数
-static int16_t sat_add(int16_t a, int16_t b) {
-    int32_t res = (int32_t)a + (int32_t)b;
-    if (res > 0x7FFF) return 0x7FFF;
-    if (res < -0x8000) return -0x8000;
-    return (int16_t)res;
-}
-
-// VPMADDUBSW测试函数
-void test_vpmaddubsw() {
-    printf("=== Testing VPMADDUBSW ===\n");
-
-    // 测试128位操作
+// 测试VPMADDUBSW指令
+int test_vpmaddubsw() {
+    int ret = 0;
+    
+    // 测试128位版本
     {
-        printf("-- Testing 128-bit operation --\n");
+        printf("=== Testing VPMADDUBSW (128-bit) ===\n");
         
-        // 初始化测试数据
-        uint8_t src1[16] = {0xFF, 0x80, 0x7F, 0x00, 0x11, 0x22, 0x33, 0x44,
-                            0x55, 0x66, 0x77, 0x88, 0x99, 0xAA, 0xBB, 0xCC};
-        int8_t src2[16] = {0x7F, (int8_t)0x80, 0x7F, (int8_t)0x80, 0x11, (int8_t)0xDE, 0x33, (int8_t)0xBC,
-                          (int8_t)0xAB, 0x66, (int8_t)0x89, 0x88, (int8_t)0x67, (int8_t)0xAA, (int8_t)0x45, 0xCC};
-        int16_t dst[8] = {0};
-
-        // 预期结果计算（考虑饱和）
-        int16_t expected[8] = {
-            sat_add((int16_t)(255 * 127), (int16_t)(128 * -128)),  // 0xFF*0x7F + 0x80*0x80
-            sat_add((int16_t)(127 * 127), (int16_t)(0 * -128)),    // 0x7F*0x7F + 0x00*0x80
-            sat_add((int16_t)(17 * 17), (int16_t)(34 * -34)),      // 0x11*0x11 + 0x22*0xDE
-            sat_add((int16_t)(51 * 51), (int16_t)(68 * -68)),      // 0x33*0x33 + 0x44*0xBC
-            sat_add((int16_t)(85 * -85), (int16_t)(102 * 102)),    // 0x55*0xAB + 0x66*0x66
-            sat_add((int16_t)(119 * -119), (int16_t)(136 * -120)),  // 0x77*0x89 + 0x88*0x88
-            sat_add((int16_t)(153 * 103), (int16_t)(170 * -86)),    // 0x99*0x67 + 0xAA*0xAA
-            sat_add((int16_t)(187 * 69), (int16_t)(204 * -52))      // 0xBB*0x45 + 0xCC*0xCC
-        };
-
-        // 使用内联汇编执行指令并打印中间结果
-        printf("Input data:\n");
-        printf("Src1: ");
-        for(int i=0; i<16; i++) printf("%02x ", src1[i]);
-        printf("\nSrc2: ");
-        for(int i=0; i<16; i++) printf("%02x ", (uint8_t)src2[i]);
-        printf("\n");
-        
-        __asm__ __volatile__(
-            "vmovdqu %1, %%xmm0\n\t"
-            "vmovdqu %2, %%xmm1\n\t"
-            "vpmaddubsw %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovdqu %%xmm2, %0\n\t"
-            : "=m" (dst)
-            : "m" (src1), "m" (src2)
-            : "xmm0", "xmm1", "xmm2", "memory"
-        );
-
-        // 打印结果
-        print_xmm("Result", *(__m128i*)dst);
-        printf("Expected: ");
-        for(int i=0; i<8; i++) {
-            printf("%d ", expected[i]);
+        // 寄存器-寄存器测试
+        {
+            __m128i a = _mm_setr_epi8(
+                0x00, 0x01, 0x7F, 0x80,  // 0, 1, 127, -128 (signed)
+                0xFF, 0xFE, 0x81, 0x7E,  // -1, -2, -127, 126
+                0x40, 0xC0, 0x20, 0xE0, // 64, -64, 32, -32
+                0x10, 0xF0, 0x08, 0xF8   // 16, -16, 8, -8
+            );
+            
+            __m128i b = _mm_setr_epi8(
+                0x00, 0x7F, 0x01, 0xFF,  // 0, 127, 1, -1
+                0x80, 0x7F, 0xFF, 0x01,  // -128, 127, -1, 1
+                0x40, 0xC0, 0x20, 0xE0,  // 64, -64, 32, -32
+                0x10, 0xF0, 0x08, 0xF8    // 16, -16, 8, -8
+            );
+            
+            __m128i result;
+            result = _mm_maddubs_epi16(a, b);
+            
+            // 重新计算预期值
+            uint16_t expected_result[8];
+            for (int i = 0; i < 8; i++) {
+                uint8_t a_lo = ((uint8_t*)&a)[i*2];
+                uint8_t a_hi = ((uint8_t*)&a)[i*2+1];
+                int8_t b_lo = ((int8_t*)&b)[i*2];
+                int8_t b_hi = ((int8_t*)&b)[i*2+1];
+                
+                int16_t prod_lo = (int16_t)a_lo * b_lo;
+                int16_t prod_hi = (int16_t)a_hi * b_hi;
+                expected_result[i] = (uint16_t)(prod_lo + prod_hi);
+            }
+            __m128i expected = _mm_loadu_si128((__m128i*)expected_result);
+            
+            printf("Testing register-register operation\n");
+            print_xmm("a", a);
+            print_xmm("b", b);
+            print_xmm("result", result);
+            print_xmm("expected", expected);
+            
+            if (!cmp_xmm(result, expected)) {
+                printf("Mismatch in register-register test\n");
+                ret = 1;
+            }
         }
-        printf("\n");
-
-        // 验证结果
-        for (int i = 0; i < 8; i++) {
-            if (dst[i] != expected[i]) {
-                printf("Mismatch at element %d: got %d, expected %d\n", 
-                      i, dst[i], expected[i]);
+        
+        // 寄存器-内存测试
+        {
+            ALIGNED(16) uint8_t mem[16] = {
+                0x00, 0x01, 0x7F, 0x80, 0xFF, 0xFE, 0x81, 0x7E,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8
+            };
+            
+            __m128i a = _mm_setr_epi8(
+                0x00, 0x7F, 0x01, 0xFF, 0x80, 0x7F, 0xFF, 0x01,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8
+            );
+            
+            __m128i result;
+            result = _mm_maddubs_epi16(a, _mm_loadu_si128((__m128i*)mem));
+            
+            // 重新计算预期值(128位内存操作数)
+            uint16_t expected_result[8];
+            for (int i = 0; i < 8; i++) {
+                uint8_t a_lo = ((uint8_t*)&a)[i*2];
+                uint8_t a_hi = ((uint8_t*)&a)[i*2+1];
+                int8_t b_lo = ((int8_t*)mem)[i*2];
+                int8_t b_hi = ((int8_t*)mem)[i*2+1];
+                
+                int16_t prod_lo = (int16_t)a_lo * b_lo;
+                int16_t prod_hi = (int16_t)a_hi * b_hi;
+                expected_result[i] = (uint16_t)(prod_lo + prod_hi);
+            }
+            __m128i expected = _mm_loadu_si128((__m128i*)expected_result);
+            
+            printf("\nTesting register-memory operation\n");
+            print_xmm("a", a);
+            printf("Memory operand: ");
+            for (int i = 0; i < 16; i++) printf("%02x ", mem[i]);
+            printf("\n");
+            print_xmm("result", result);
+            print_xmm("expected", expected);
+            
+            if (!cmp_xmm(result, expected)) {
+                printf("Mismatch in register-memory test\n");
+                ret = 1;
             }
         }
     }
-
-    printf("\n=== VPMADDUBSW test completed ===\n");
+    
+    // 测试256位版本
+    {
+        printf("\n=== Testing VPMADDUBSW (256-bit) ===\n");
+        
+        // 寄存器-寄存器测试
+        {
+            __m256i a = _mm256_setr_epi8(
+                0x00, 0x01, 0x7F, 0x80, 0xFF, 0xFE, 0x81, 0x7E,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8,
+                0x00, 0x01, 0x7F, 0x80, 0xFF, 0xFE, 0x81, 0x7E,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8
+            );
+            
+            __m256i b = _mm256_setr_epi8(
+                0x00, 0x7F, 0x01, 0xFF, 0x80, 0x7F, 0xFF, 0x01,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8,
+                0x00, 0x7F, 0x01, 0xFF, 0x80, 0x7F, 0xFF, 0x01,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8
+            );
+            
+            __m256i result;
+            result = _mm256_maddubs_epi16(a, b);
+            
+            // 重新计算预期值
+            uint16_t expected_result[16];
+            for (int i = 0; i < 16; i++) {
+                uint8_t a_lo = ((uint8_t*)&a)[i*2];
+                uint8_t a_hi = ((uint8_t*)&a)[i*2+1];
+                int8_t b_lo = ((int8_t*)&b)[i*2];
+                int8_t b_hi = ((int8_t*)&b)[i*2+1];
+                
+                int16_t prod_lo = (int16_t)a_lo * b_lo;
+                int16_t prod_hi = (int16_t)a_hi * b_hi;
+                expected_result[i] = (uint16_t)(prod_lo + prod_hi);
+            }
+            __m256i expected = _mm256_loadu_si256((__m256i*)expected_result);
+            
+            printf("Testing register-register operation\n");
+            print_ymm("a", a);
+            print_ymm("b", b);
+            print_ymm("result", result);
+            print_ymm("expected", expected);
+            
+            if (!cmp_ymm(result, expected)) {
+                printf("Mismatch in register-register test\n");
+                ret = 1;
+            }
+        }
+        
+        // 寄存器-内存测试
+        {
+            ALIGNED(32) uint8_t mem[32] = {
+                0x00, 0x01, 0x7F, 0x80, 0xFF, 0xFE, 0x81, 0x7E,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8,
+                0x00, 0x01, 0x7F, 0x80, 0xFF, 0xFE, 0x81, 0x7E,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8
+            };
+            
+            __m256i a = _mm256_setr_epi8(
+                0x00, 0x7F, 0x01, 0xFF, 0x80, 0x7F, 0xFF, 0x01,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8,
+                0x00, 0x7F, 0x01, 0xFF, 0x80, 0x7F, 0xFF, 0x01,
+                0x40, 0xC0, 0x20, 0xE0, 0x10, 0xF0, 0x08, 0xF8
+            );
+            
+            __m256i result;
+            result = _mm256_maddubs_epi16(a, _mm256_loadu_si256((__m256i*)mem));
+            
+            // 重新计算预期值(256位内存操作数)
+            uint16_t expected_result[16];
+            for (int i = 0; i < 16; i++) {
+                uint8_t a_lo = ((uint8_t*)&a)[i*2];
+                uint8_t a_hi = ((uint8_t*)&a)[i*2+1];
+                int8_t b_lo = ((int8_t*)mem)[i*2];
+                int8_t b_hi = ((int8_t*)mem)[i*2+1];
+                
+                int16_t prod_lo = (int16_t)a_lo * b_lo;
+                int16_t prod_hi = (int16_t)a_hi * b_hi;
+                expected_result[i] = (uint16_t)(prod_lo + prod_hi);
+            }
+            __m256i expected = _mm256_loadu_si256((__m256i*)expected_result);
+            
+            printf("\nTesting register-memory operation\n");
+            print_ymm("a", a);
+            printf("Memory operand: ");
+            for (int i = 0; i < 32; i++) printf("%02x ", mem[i]);
+            printf("\n");
+            print_ymm("result", result);
+            print_ymm("expected", expected);
+            
+            if (!cmp_ymm(result, expected)) {
+                printf("Mismatch in register-memory test\n");
+                ret = 1;
+            }
+        }
+    }
+    
+    return ret;
 }
 
 int main() {
-    test_vpmaddubsw();
-    return 0;
+    return test_vpmaddubsw();
 }
