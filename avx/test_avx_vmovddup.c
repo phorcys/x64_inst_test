@@ -16,11 +16,11 @@ void test_vmovddup() {
         "vmovddup %1, %%xmm0\n\t"
         "movupd %%xmm0, %0"
         : "=m" (*(double (*)[2])dst1)
-        : "m" (*(double (*)[2])src1)
+        : "m" (src1[0])
         : "xmm0"
     );
     
-    printf("Src: %.1f, %.1f\n", src1[0], src1[1]);
+    printf("Src: %.1f\n", src1[0]);
     printf("Dst: %.1f, %.1f\n", dst1[0], dst1[1]);
     
     if(dst1[0] == expected1[0] && dst1[1] == expected1[1]) {
@@ -28,7 +28,7 @@ void test_vmovddup() {
     } else {
         printf("Test 1 FAILED\n");
     }
-    
+   
     // 测试2: 256位版本
     printf("\nTest 2: 256-bit version\n");
     double src2[4] = {1.1, 2.2, 3.3, 4.4};
