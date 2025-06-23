@@ -1,16 +1,21 @@
-=== Testing VMOVDDUP ===
+=== Testing VMOVDDUP (128-bit) ===
+Testing register-register operation
+a: [1.000000, 2.000000]
+result: [1.000000, 1.000000]
+expected: [1.000000, 1.000000]
 
-Test 1: 128-bit version
-Src: 1.1, 2.2
-Dst: 1.1, 1.1
-Test 1 PASSED
+Testing register-memory operation
+Memory operand: 3.000000 4.000000
+result: [3.000000, 3.000000]
+expected: [3.000000, 3.000000]
 
-Test 2: 256-bit version
-Src: 1.1, 2.2, 3.3, 4.4
-Dst: 1.1, 1.1, 3.3, 3.3
-Test 2 PASSED
+=== Testing VMOVDDUP (256-bit) ===
+Testing register-register operation
+a: [1.000000, 2.000000, 3.000000, 4.000000]
+result: [1.000000, 1.000000, 3.000000, 3.000000]
+expected: [1.000000, 1.000000, 3.000000, 3.000000]
 
-Test 3: Special values (NaN)
-Dst: -nan, -nan
-Checks: [0] is nan:1, [1] is nan:1
-Test 3 PASSED
+Testing register-memory operation
+Memory operand: 5.000000 6.000000 7.000000 8.000000
+result: [5.000000, 5.000000, 7.000000, 7.000000]
+expected: [5.000000, 5.000000, 7.000000, 7.000000]
