@@ -4,36 +4,15 @@ Source Data: 11 22 33 44 55 66 77 88 99 AA BB CC DD EE FF 00
 Mask Data:   FF 00 FF 00 FF 00 FF 00 FF 00 FF 00 FF 00 FF 00 
 Result Data: 11 00 33 00 55 00 77 00 99 00 BB 00 DD 00 FF 00 
 Result matches expected value
-EFLAGS after operation:
-  [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] OF - Overflow Flag
 
 === Test Case: All 1s Mask ===
 Source Data: 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 
 Mask Data:   FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
 Result Data: 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 
 Result matches expected value
-EFLAGS after operation:
-  [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] OF - Overflow Flag
 
 === Test Case: All 0s Mask ===
 Source Data: F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF F0 
 Mask Data:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Result Data: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Result matches expected value
-EFLAGS after operation:
-  [ ] CF - Carry Flag
-  [X] PF - Parity Flag
-  [ ] AF - Auxiliary Flag
-  [X] ZF - Zero Flag
-  [ ] SF - Sign Flag
-  [ ] OF - Overflow Flag

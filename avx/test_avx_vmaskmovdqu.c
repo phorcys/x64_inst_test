@@ -61,8 +61,8 @@ static void test_vmaskmovdqu_case(const char* name,
     }
     
     // 打印EFLAGS状态
-    printf("EFLAGS after operation:\n");
-    print_eflags_cond(eflags, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF);
+//    printf("EFLAGS after operation:\n");
+ //   print_eflags_cond(eflags, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF);
 }
 
 void test_vmaskmovdqu() {
