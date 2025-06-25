@@ -13,22 +13,23 @@ static void test_lock_adc_size() {
     uint64_t qword1 = 0x5555555555555555, qword2 = 0xAAAAAAAAAAAAAAAA;
     printf("Testing LOCK ADC with different operand sizes:\n");
 
-    // Set carry flag
+    // Test byte size (with carry set)
     asm volatile("stc"); // Set carry flag (CF=1)
-
-    // Test byte size
     asm volatile("lock adcb %1, %0" : "+m"(byte1) : "ri"(byte2));
     printf("BYTE: 0x%02X + 0x%02X + CF = 0x%02X\n", 0x55, 0xAA, byte1);
 
-    // Test word size
+    // Test word size (with carry set)
+    asm volatile("stc"); // Set carry flag (CF=1)
     asm volatile("lock adcw %1, %0" : "+m"(word1) : "ri"(word2));
     printf("WORD: 0x%04X + 0x%04X + CF = 0x%04X\n", 0x5555, 0xAAAA, word1);
 
-    // Test dword size  
+    // Test dword size (with carry set)
+    asm volatile("stc"); // Set carry flag (CF=1)
     asm volatile("lock adcl %1, %0" : "+m"(dword1) : "ri"(dword2));
     printf("DWORD: 0x%08X + 0x%08X + CF = 0x%08X\n", 0x55555555, 0xAAAAAAAA, dword1);
 
-    // Test qword size
+    // Test qword size (with carry set)
+    asm volatile("stc"); // Set carry flag (CF=1)
     asm volatile("lock adcq %1, %0" : "+m"(qword1) : "ri"(qword2));
     printf("QWORD: 0x%016lX + 0x%016lX + CF = 0x%016lX\n", 
            0x5555555555555555, 0xAAAAAAAAAAAAAAAA, qword1);
@@ -49,6 +50,7 @@ static void test_lock_adc_addressing() {
 
     // Immediate to memory
     mem = 0x12345678;
+    asm volatile("stc"); // Set carry flag (CF=1)
     asm volatile("lock adcl $0x87654321, %0" : "+m"(mem));
     printf("IMM->MEM: 0x12345678 + 0x87654321 + CF = 0x%08X\n", mem);
 }
