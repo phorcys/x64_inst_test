@@ -5,7 +5,11 @@
 static void print_result(const char* label, const uint8_t* data, size_t size) {
     printf("%s: ", label);
     for (size_t i = 0; i < size; i++) {
-        printf("%02X ", data[i]);
+        if (i < size) { // 确保不越界访问
+            printf("%02X ", data[i]);
+        } else {
+            printf("00 "); // 越界时填充0
+        }
     }
     printf("\n");
 }
@@ -33,7 +37,7 @@ static void test_vpalignr_128() {
     };
 
     // 测试不同偏移量 (VPALIGNR指令实际上只使用低4位偏移量，所以测试0-15)
-    for (int offset = 0; offset < 16; offset++) {
+    for (int offset = 0; offset < 32; offset++) {
         ALIGNED(16) uint8_t result[16] = {0};
         ALIGNED(16) uint8_t expected[16] = {0};
         
@@ -96,7 +100,14 @@ static void test_vpalignr_128() {
         
         printf("\nOffset %d:\n", offset);
         print_result("Src1", src1, 16);
-        print_result("Src2", src2, 16);
+        // 安全打印 Src2，避免越界
+        if (effective_offset < 16) {
+            print_result("Src2", src2, 16);
+        } else {
+            // 偏移量超出时只打印16个0
+            uint8_t zeros[16] = {0};
+            print_result("Src2", zeros, 16);
+        }
         print_result("Result", result, 16);
         print_result("Expected", expected, 16);
         
@@ -126,7 +137,7 @@ static void test_vpalignr_256() {
     };
 
     // 测试不同偏移量 (VPALIGNR指令实际上只使用低4位偏移量，所以测试0-15)
-    for (int offset = 0; offset < 16; offset++) {
+    for (int offset = 0; offset < 32; offset++) {
         ALIGNED(32) uint8_t result[32] = {0};
         ALIGNED(32) uint8_t expected[32] = {0};
         
@@ -197,7 +208,14 @@ static void test_vpalignr_256() {
         
         printf("\nOffset %d:\n", offset);
         print_result("Src1", src1, 32);
-        print_result("Src2", src2, 32);
+        // 安全打印 Src2，避免越界
+        if (effective_offset < 32) {
+            print_result("Src2", src2, 32);
+        } else {
+            // 偏移量超出时只打印32个0
+            uint8_t zeros[32] = {0};
+            print_result("Src2", zeros, 32);
+        }
         print_result("Result", result, 32);
         print_result("Expected", expected, 32);
         
@@ -269,7 +287,14 @@ static void test_vpalignr_mem() {
         
         printf("\nOffset %d:\n", offset);
         print_result("Src1", src1, 16);
-        print_result("Src2", src2, 16);
+        // 安全打印 Src2，避免越界
+        if (effective_offset < 16) {
+            print_result("Src2", src2, 16);
+        } else {
+            // 偏移量超出时只打印16个0
+            uint8_t zeros[16] = {0};
+            print_result("Src2", zeros, 16);
+        }
         print_result("Result", result, 16);
         print_result("Expected", expected, 16);
         
