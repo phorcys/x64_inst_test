@@ -1,19 +1,19 @@
---- Testing VPACKUSDW (Pack with Unsigned Saturation) ---
+--- Testing VPACKSSDW (Pack with Signed Saturation) ---
 
 [128-bit test]
 Input A: 78 56 34 12 f0 de bc 9a ff ff ff 7f 00 00 00 80 
 Input B: 44 33 22 11 88 77 66 55 ff ff 00 00 00 00 ff ff 
-Result: ff ff 00 00 ff ff 00 00 ff ff ff ff ff ff 00 00 
+Result: ff 7f 00 80 ff 7f 00 80 ff 7f ff 7f ff 7f 00 80 
 128-bit reg-reg test PASSED
 
 [256-bit test]
 Input A: 78 56 34 12 f0 de bc 9a ff ff ff 7f 00 00 00 80 44 33 22 11 88 77 66 55 ff ff 00 00 00 00 ff ff 
 Input B: 44 33 22 11 88 77 66 55 ff ff 00 00 00 00 ff ff 78 56 34 12 f0 de bc 9a ff ff ff 7f 00 00 00 80 
-Result: ff ff 00 00 ff ff 00 00 ff ff ff ff ff ff 00 00 ff ff ff ff ff ff 00 00 ff ff 00 00 ff ff 00 00 
+Result: ff 7f 00 80 ff 7f 00 80 ff 7f ff 7f ff 7f 00 80 ff 7f ff 7f ff 7f 00 80 ff 7f 00 80 ff 7f 00 80 
 256-bit reg-reg test PASSED
 
 [Memory operand test]
 Input A: 78 56 34 12 f0 de bc 9a ff ff ff 7f 00 00 00 80 
 Memory operand: 11223344 55667788 0000ffff ffff0000 
-Result: ff ff 00 00 ff ff 00 00 ff ff ff ff ff ff 00 00 
+Result: ff 7f 00 80 ff 7f 00 80 ff 7f ff 7f ff 7f 00 80 
 Memory operand test PASSED
