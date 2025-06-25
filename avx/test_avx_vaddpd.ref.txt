@@ -21,18 +21,30 @@ Test 4: Boundary values
 --- Boundary Test Results ---
 Result: inf -inf nan 1.000000 
 --- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
 [PASS] Test 4: Boundary values
 
 Test 5: qNaN and sNaN handling
 --- NaN Test Results ---
 Result: nan 1.000000 nan 5.000000 
 --- MXCSR State After Operation ---
+MXCSR: 0x00001FA1
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:1
 [PASS] Test 5: qNaN and sNaN handling
 
 Test 6: Denormal values
 --- Denormal Test Results ---
 Result: 0.000000 0.000000 0.000000 3.000000 
 --- MXCSR State After Operation ---
+MXCSR: 0x00009FE1
+  [ ] DAZ - Denormals Are Zero: 1
+  [ ] FTZ - Flush To Zero: 1
+Flags: I:1 D:0 Z:0 O:0 U:0 P:1
 [PASS] Test 6: Denormal values
 
 --- Test Summary ---

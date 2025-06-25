@@ -21,11 +21,14 @@ static void test_reg_operand() {
     __m256 src2 = _mm256_loadu_ps(input+8);
     __m256i result1, result2;
     
+    uint32_t mxcsr_after;
     __asm__ __volatile__(
         "vcvttps2dq %[src1], %[dst1]\n\t"
-        "vcvttps2dq %[src2], %[dst2]"
-        : [dst1] "=x" (result1), [dst2] "=x" (result2)
+        "vcvttps2dq %[src2], %[dst2]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [dst1] "=x" (result1), [dst2] "=x" (result2), [mxcsr] "=m" (mxcsr_after)
         : [src1] "x" (src1), [src2] "x" (src2)
+        : 
     );
     
     int32_t res[16];
@@ -33,8 +36,8 @@ static void test_reg_operand() {
     _mm256_storeu_si256((__m256i*)res+8, result2);
     
     printf("VCVTTPS2DQ Test (Register Operand):\n");
-   // printf("MXCSR before: 0x%08X\n", old_mxcsr);
-    print_mxcsr(old_mxcsr);
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
     
     for (int i = 0; i < 8; i++) {
         printf("  Input: ");
@@ -61,11 +64,14 @@ static void test_mem_operand() {
     
     __m256i result1, result2;
     
+    uint32_t mxcsr_after;
     __asm__ __volatile__(
         "vcvttps2dq %[src1], %[dst1]\n\t"
-        "vcvttps2dq %[src2], %[dst2]"
-        : [dst1] "=x" (result1), [dst2] "=x" (result2)
+        "vcvttps2dq %[src2], %[dst2]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [dst1] "=x" (result1), [dst2] "=x" (result2), [mxcsr] "=m" (mxcsr_after)
         : [src1] "m" (input), [src2] "m" (input[8])
+        : 
     );
     
     int32_t res[16];
@@ -73,7 +79,8 @@ static void test_mem_operand() {
     _mm256_storeu_si256((__m256i*)res+8, result2);
     
     printf("VCVTTPS2DQ Test (Memory Operand):\n");
-   // printf("MXCSR: 0x%08X\n", get_mxcsr());
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
     
     for (int i = 0; i < 8; i++) {
         printf("  Input: ");

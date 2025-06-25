@@ -32,6 +32,10 @@ Test 4: Denormal values
 --- Denormal Test Results ---
 Result: 0.000000 0.000000 0.000000 3.000000 0.000000 0.000000 0.000000 3.000000 
 --- MXCSR State After Operation ---
+MXCSR: 0x00009FE0
+  [ ] DAZ - Denormals Are Zero: 1
+  [ ] FTZ - Flush To Zero: 1
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
 [PASS] Test 4: Denormal values
 
 --- Test Summary ---

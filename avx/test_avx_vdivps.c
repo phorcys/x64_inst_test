@@ -21,13 +21,15 @@ static void test_vdivps() {
     float result[8] ALIGNED(32) = {0};
     total_tests++;
     
+    unsigned int mxcsr_after = 0;
     __asm__ __volatile__(
-        "vmovaps %1, %%ymm0\n\t"
-        "vmovaps %2, %%ymm1\n\t"
+        "vmovaps %[src1], %%ymm0\n\t"
+        "vmovaps %[src2], %%ymm1\n\t"
         "vdivps %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovaps %%ymm2, %0\n\t"
-        : "=m"(*result)
-        : "m"(*src1), "m"(*src2)
+        "vmovaps %%ymm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*src1), [src2] "m"(*src2)
         : "ymm0", "ymm1", "ymm2"
     );
     
@@ -35,6 +37,8 @@ static void test_vdivps() {
     print_float_vec("Expected", expected, 8);
     printf("Result:   ");
     print_float_vec("Result", result, 8);
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
     
     int pass = 1;
     for (int i = 0; i < 8; i++) {
@@ -65,13 +69,15 @@ static void test_vdivps() {
     float result_128[4] ALIGNED(16) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovaps %1, %%xmm0\n\t"
-        "vmovaps %2, %%xmm1\n\t"
+        "vmovaps %[src1], %%xmm0\n\t"
+        "vmovaps %[src2], %%xmm1\n\t"
         "vdivps %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovaps %%xmm2, %0\n\t"
-        : "=m"(*result_128)
-        : "m"(*src1_128), "m"(*src2_128)
+        "vmovaps %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result_128), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*src1_128), [src2] "m"(*src2_128)
         : "xmm0", "xmm1", "xmm2"
     );
     
@@ -79,6 +85,8 @@ static void test_vdivps() {
     print_float_vec("Expected", expected_128, 4);
     printf("Result:   ");
     print_float_vec("Result", result_128, 4);
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
     
     pass = 1;
     for (int i = 0; i < 4; i++) {
@@ -116,13 +124,15 @@ static void test_vdivps() {
     unsigned int mxcsr_default = 0x1F80;
     __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_default));
     
+    
     __asm__ __volatile__(
-        "vmovaps %1, %%ymm0\n\t"
-        "vmovaps %2, %%ymm1\n\t"
+        "vmovaps %[src1], %%ymm0\n\t"
+        "vmovaps %[src2], %%ymm1\n\t"
         "vdivps %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovaps %%ymm2, %0\n\t"
-        : "=m"(*boundary_result)
-        : "m"(*boundary_src1), "m"(*boundary_src2)
+        "vmovaps %%ymm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*boundary_result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*boundary_src1), [src2] "m"(*boundary_src2)
         : "ymm0", "ymm1", "ymm2"
     );
     
@@ -130,6 +140,8 @@ static void test_vdivps() {
     print_float_vec("Expected", boundary_expected, 8);
     printf("Result:   ");
     print_float_vec("Result", boundary_result, 8);
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
     
     // Check results
     int boundary_pass = 1;
@@ -152,36 +164,27 @@ static void test_vdivps() {
         printf("[FAIL] Boundary values output check\n");
     }
     
-    // // Check MXCSR state
-    // unsigned int mxcsr = 0;
-    // __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
-    // printf("--- MXCSR State After Operation ---\n");
-    // printf("MXCSR: 0x%08X\n", mxcsr);
-    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-    //        (mxcsr >> 7) & 1, (mxcsr >> 8) & 1, (mxcsr >> 9) & 1,
-    //        (mxcsr >> 10) & 1, (mxcsr >> 11) & 1, (mxcsr >> 12) & 1);
-    
     // Check MXCSR flags
     int flags_pass = 1;
     
-    // // Expect division by zero flag (ZE)
-    // if (!(mxcsr & (1 << 2))) {
-    //     printf("[FAIL] Division by zero flag not set\n");
-    //     flags_pass = 0;
-    // }
+    // Expect division by zero flag (ZE)
+    if (!(mxcsr_after & (1 << 2))) {
+        printf("[FAIL] Division by zero flag not set\n");
+        flags_pass = 0;
+    }
     
-    // // Expect invalid operation flag (IE) for NaN operations
-    // if (!(mxcsr & (1 << 0))) {
-    //     printf("[FAIL] Invalid operation flag not set\n");
-    //     flags_pass = 0;
-    // }
+    // Expect invalid operation flag (IE) for NaN operations
+    if (!(mxcsr_after & (1 << 0))) {
+        printf("[FAIL] Invalid operation flag not set\n");
+        flags_pass = 0;
+    }
     
-    // if (flags_pass) {
-    //     printf("[PASS] Test 3: Boundary values (expected flags detected)\n\n");
-    //     passed_tests++;
-    // } else {
-    //     printf("[FAIL] Test 3: Boundary values (expected flags not detected)\n\n");
-    // }
+    if (flags_pass) {
+        printf("[PASS] Test 3: Boundary values (expected flags detected)\n\n");
+        passed_tests++;
+    } else {
+        printf("[FAIL] Test 3: Boundary values (expected flags not detected)\n\n");
+    }
     
     // Test summary
     printf("--- Test Summary ---\n");

@@ -20,15 +20,17 @@ static void test_vdivsd() {
         unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
-        __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vmovapd %2, %%xmm1\n\t"
-            "vdivsd %%xmm1, %%xmm0, %%xmm2\n\t"
-            "vmovapd %%xmm2, %0\n\t"
-            : "=m"(*result)
-            : "m"(*a), "m"(*b)
-            : "xmm0", "xmm1", "xmm2"
-        );
+    unsigned int mxcsr_after = 0;
+    __asm__ __volatile__(
+        "vmovapd %[a], %%xmm0\n\t"
+        "vmovapd %[b], %%xmm1\n\t"
+        "vdivsd %%xmm1, %%xmm0, %%xmm2\n\t"
+        "vmovapd %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result), [mxcsr] "=m"(mxcsr_after)
+        : [a] "m"(*a), [b] "m"(*b)
+        : "xmm0", "xmm1", "xmm2"
+    );
         
         printf("Input A: %.6f (low), %.6f (high)\n", a[0], a[1]);
         printf("Input B: %.6f (low), %.6f (high)\n", b[0], b[1]);
@@ -45,12 +47,15 @@ static void test_vdivsd() {
             pass = 0;
         }
         
-        if (pass) {
-            printf("[PASS] Test 1: Register-register operation\n");
-            passed_tests++;
-        } else {
-            printf("[FAIL] Test 1: Register-register operation\n");
-        }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
+    if (pass) {
+        printf("[PASS] Test 1: Register-register operation\n");
+        passed_tests++;
+    } else {
+        printf("[FAIL] Test 1: Register-register operation\n");
+    }
         total_tests++;
     }
     
@@ -66,14 +71,16 @@ static void test_vdivsd() {
         unsigned int mxcsr_before = 0x1F80;
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
-        __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vdivsd %2, %%xmm0, %%xmm1\n\t"
-            "vmovapd %%xmm1, %0\n\t"
-            : "=m"(*result)
-            : "m"(*a), "m"(b)
-            : "xmm0", "xmm1"
-        );
+    unsigned int mxcsr_after = 0;
+    __asm__ __volatile__(
+        "vmovapd %[a], %%xmm0\n\t"
+        "vdivsd %[b], %%xmm0, %%xmm1\n\t"
+        "vmovapd %%xmm1, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result), [mxcsr] "=m"(mxcsr_after)
+        : [a] "m"(*a), [b] "m"(b)
+        : "xmm0", "xmm1"
+    );
         
         printf("Input A: %.6f (low), %.6f (high)\n", a[0], a[1]);
         printf("Memory Input: %.6f\n", b);
@@ -90,12 +97,15 @@ static void test_vdivsd() {
             pass = 0;
         }
         
-        if (pass) {
-            printf("[PASS] Test 2: Register-memory operation\n");
-            passed_tests++;
-        } else {
-            printf("[FAIL] Test 2: Register-memory operation\n");
-        }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
+    if (pass) {
+        printf("[PASS] Test 2: Register-memory operation\n");
+        passed_tests++;
+    } else {
+        printf("[FAIL] Test 2: Register-memory operation\n");
+    }
         total_tests++;
     }
     
@@ -123,12 +133,14 @@ static void test_vdivsd() {
             unsigned int mxcsr_before = 0x1F80;
             __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
             
+            unsigned int mxcsr_after = 0;
             __asm__ __volatile__(
-                "vmovapd %1, %%xmm0\n\t"
-                "vdivsd %2, %%xmm0, %%xmm1\n\t"
-                "vmovapd %%xmm1, %0\n\t"
-                : "=m"(*result)
-                : "m"(*a), "m"(b)
+                "vmovapd %[a], %%xmm0\n\t"
+                "vdivsd %[b], %%xmm0, %%xmm1\n\t"
+                "vmovapd %%xmm1, %[result]\n\t"
+                "stmxcsr %[mxcsr]"
+                : [result] "=m"(*result), [mxcsr] "=m"(mxcsr_after)
+                : [a] "m"(*a), [b] "m"(b)
                 : "xmm0", "xmm1"
             );
             
@@ -159,9 +171,7 @@ static void test_vdivsd() {
                 pass = 0;
             }
             
-            // Check MXCSR flags
-            unsigned int mxcsr_after = 0;
-            __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
+            // MXCSR already captured in the assembly block above
             print_mxcsr(mxcsr_after);
             
             if (pass) {

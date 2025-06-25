@@ -17,13 +17,15 @@ static void test_vdppd() {
     
     // Immediate value control mask (0x31: use both elements)
     
+    unsigned int mxcsr_after = 0;
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
+        "vmovapd %[src1], %%xmm0\n\t"
+        "vmovapd %[src2], %%xmm1\n\t"
         "vdppd $0x31, %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovapd %%xmm2, %0\n\t"
-        : "=m"(*result)
-        : "m"(*src1), "m"(*src2)
+        "vmovapd %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*src1), [src2] "m"(*src2)
         : "xmm0", "xmm1", "xmm2"
     );
     
@@ -40,6 +42,9 @@ static void test_vdppd() {
             pass = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass) {
         printf("[PASS] Test 1: 128-bit register-register\n\n");
         passed_tests++;
@@ -57,13 +62,15 @@ static void test_vdppd() {
     
     // Immediate value control mask (0x11: use only first element)
     
+
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
+        "vmovapd %[src1], %%xmm0\n\t"
+        "vmovapd %[src2], %%xmm1\n\t"
         "vdppd $0x11, %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovapd %%xmm2, %0\n\t"
-        : "=m"(*result_mask)
-        : "m"(*src1_mask), "m"(*src2_mask)
+        "vmovapd %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result_mask), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*src1_mask), [src2] "m"(*src2_mask)
         : "xmm0", "xmm1", "xmm2"
     );
     
@@ -80,6 +87,9 @@ static void test_vdppd() {
             pass = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass) {
         printf("[PASS] Test 2: Different mask (0x11)\n\n");
         passed_tests++;
@@ -95,13 +105,15 @@ static void test_vdppd() {
     double boundary_result[2] ALIGNED(16) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
+        "vmovapd %[src1], %%xmm0\n\t"
+        "vmovapd %[src2], %%xmm1\n\t"
         "vdppd $0x31, %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovapd %%xmm2, %0\n\t"
-        : "=m"(*boundary_result)
-        : "m"(*boundary_src1), "m"(*boundary_src2)
+        "vmovapd %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*boundary_result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*boundary_src1), [src2] "m"(*boundary_src2)
         : "xmm0", "xmm1", "xmm2"
     );
     
@@ -124,6 +136,9 @@ static void test_vdppd() {
             pass = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass) {
         printf("[PASS] Test 3: Boundary values\n\n");
         passed_tests++;
@@ -139,13 +154,15 @@ static void test_vdppd() {
     double result_high[2] ALIGNED(16) = {0};
     total_tests++;
     
+
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
+        "vmovapd %[src1], %%xmm0\n\t"
+        "vmovapd %[src2], %%xmm1\n\t"
         "vdppd $0x22, %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovapd %%xmm2, %0\n\t"
-        : "=m"(*result_high)
-        : "m"(*src1_high), "m"(*src2_high)
+        "vmovapd %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result_high), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*src1_high), [src2] "m"(*src2_high)
         : "xmm0", "xmm1", "xmm2"
     );
     
@@ -162,6 +179,9 @@ static void test_vdppd() {
             pass = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass) {
         printf("[PASS] Test 4: High elements only (0x22)\n\n");
         passed_tests++;
@@ -186,12 +206,14 @@ static void test_vdppd() {
     double mem_result[2] ALIGNED(16) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vdppd $0x31, %2, %%xmm0, %%xmm1\n\t"
-        "vmovapd %%xmm1, %0\n\t"
-        : "=m"(*mem_result)
-        : "m"(*mem_src1), "m"(*mem_src2)
+        "vmovapd %[src1], %%xmm0\n\t"
+        "vdppd $0x31, %[src2], %%xmm0, %%xmm1\n\t"
+        "vmovapd %%xmm1, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*mem_result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*mem_src1), [src2] "m"(*mem_src2)
         : "xmm0", "xmm1"
     );
     
@@ -208,6 +230,9 @@ static void test_vdppd() {
             pass = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass) {
         printf("[PASS] Test 5: Memory operand\n\n");
         passed_tests++;
@@ -223,13 +248,15 @@ static void test_vdppd() {
     double nan_result[2] ALIGNED(16) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
+        "vmovapd %[src1], %%xmm0\n\t"
+        "vmovapd %[src2], %%xmm1\n\t"
         "vdppd $0x31, %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovapd %%xmm2, %0\n\t"
-        : "=m"(*nan_result)
-        : "m"(*nan_src1), "m"(*nan_src2)
+        "vmovapd %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*nan_result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*nan_src1), [src2] "m"(*nan_src2)
         : "xmm0", "xmm1", "xmm2"
     );
     
@@ -239,6 +266,9 @@ static void test_vdppd() {
     print_double_vec("Result", nan_result, 2);
     
     pass = isnan(nan_result[0]) && (fabs(nan_result[1] - nan_expected[1]) < 1e-6);
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass) {
         printf("[PASS] Test 6: NaN propagation\n\n");
         passed_tests++;

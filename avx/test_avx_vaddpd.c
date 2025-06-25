@@ -129,13 +129,15 @@ static void test_vaddpd() {
     
     // 保存原始MXCSR状态
     uint32_t original_mxcsr = get_mxcsr();
+    uint32_t mxcsr_after = 0;
     
     __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vmovapd %2, %%ymm1\n\t"
+        "vmovapd %2, %%ymm0\n\t"
+        "vmovapd %3, %%ymm1\n\t"
         "vaddpd %%ymm1, %%ymm0, %%ymm0\n\t"
         "vmovapd %%ymm0, %0\n\t"
-        : "=m"(result)
+        "stmxcsr %1\n\t"
+        : "=m"(result), "=m"(mxcsr_after)
         : "m"(boundary1), "m"(boundary2)
         : "ymm0", "ymm1"
     );
@@ -143,7 +145,7 @@ static void test_vaddpd() {
     printf("--- Boundary Test Results ---\n");
     print_double_vec("Result", result, 4);
     printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(get_mxcsr());
+    print_mxcsr(mxcsr_after);
     
     // 恢复原始MXCSR状态
     set_mxcsr(original_mxcsr);
@@ -181,12 +183,14 @@ static void test_vaddpd() {
     double nan_expected[4] = {NAN, 1.0, NAN, 5.0};
     total_tests++;
     
+    uint32_t mxcsr_after_nan = 0;
     __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vmovapd %2, %%ymm1\n\t"
+        "vmovapd %2, %%ymm0\n\t"
+        "vmovapd %3, %%ymm1\n\t"
         "vaddpd %%ymm1, %%ymm0, %%ymm0\n\t"
         "vmovapd %%ymm0, %0\n\t"
-        : "=m"(result)
+        "stmxcsr %1\n\t"
+        : "=m"(result), "=m"(mxcsr_after_nan)
         : "m"(nan1), "m"(nan2)
         : "ymm0", "ymm1"
     );
@@ -194,7 +198,7 @@ static void test_vaddpd() {
     printf("--- NaN Test Results ---\n");
     print_double_vec("Result", result, 4);
     printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(get_mxcsr());
+    print_mxcsr(mxcsr_after_nan);
     
     pass = 1;
     for (int i = 0; i < 4; i++) {
@@ -228,12 +232,14 @@ static void test_vaddpd() {
     mxcsr |= (1 << 15) | (1 << 6);  // 设置FTZ和DAZ
     set_mxcsr(mxcsr);
     
+    uint32_t mxcsr_after_denorm = 0;
     __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vmovapd %2, %%ymm1\n\t"
+        "vmovapd %2, %%ymm0\n\t"
+        "vmovapd %3, %%ymm1\n\t"
         "vaddpd %%ymm1, %%ymm0, %%ymm0\n\t"
         "vmovapd %%ymm0, %0\n\t"
-        : "=m"(result)
+        "stmxcsr %1\n\t"
+        : "=m"(result), "=m"(mxcsr_after_denorm)
         : "m"(denorm1), "m"(denorm2)
         : "ymm0", "ymm1"
     );
@@ -241,7 +247,7 @@ static void test_vaddpd() {
     printf("--- Denormal Test Results ---\n");
     print_double_vec("Result", result, 4);
     printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(get_mxcsr());
+    print_mxcsr(mxcsr_after_denorm);
     
     // 恢复原始MXCSR状态
     set_mxcsr(original_mxcsr);

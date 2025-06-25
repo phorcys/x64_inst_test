@@ -1,12 +1,14 @@
 #include "avx.h"
 #include <stdio.h>
 #include <math.h>
+#include <float.h>
+#include <fenv.h>
 
 static void test_vhaddpd() {
     printf("--- Testing vhaddpd (horizontal add packed double-precision) ---\n");
     int total_tests = 0;
     int passed_tests = 0;
-    
+        unsigned int mxcsr_after = 0;
     // 128-bit register-register test
     printf("Test 1: 128-bit register-register\n");
     double src1_128[2] ALIGNED(16) = {1.0, 2.0};
@@ -15,13 +17,15 @@ static void test_vhaddpd() {
     double result_128[2] ALIGNED(16) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"
-        "vmovapd %2, %%xmm1\n\t"
+        "vmovapd %[src1], %%xmm0\n\t"
+        "vmovapd %[src2], %%xmm1\n\t"
         "vhaddpd %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovapd %%xmm2, %0\n\t"
-        : "=m"(*result_128)
-        : "m"(*src1_128), "m"(*src2_128)
+        "vmovapd %%xmm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result_128), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*src1_128), [src2] "m"(*src2_128)
         : "xmm0", "xmm1", "xmm2"
     );
     
@@ -38,6 +42,9 @@ static void test_vhaddpd() {
             pass1 = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass1) {
         printf("[PASS] Test 1: 128-bit register-register\n\n");
         passed_tests++;
@@ -53,13 +60,15 @@ static void test_vhaddpd() {
     double result[4] ALIGNED(32) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vmovapd %2, %%ymm1\n\t"
+        "vmovapd %[src1], %%ymm0\n\t"
+        "vmovapd %[src2], %%ymm1\n\t"
         "vhaddpd %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovapd %%ymm2, %0\n\t"
-        : "=m"(*result)
-        : "m"(*src1), "m"(*src2)
+        "vmovapd %%ymm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*src1), [src2] "m"(*src2)
         : "ymm0", "ymm1", "ymm2"
     );
     
@@ -77,6 +86,9 @@ static void test_vhaddpd() {
             pass2 = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass2) {
         printf("[PASS] Test 2: 256-bit register-register\n\n");
         passed_tests++;
@@ -92,12 +104,14 @@ static void test_vhaddpd() {
     double mem_result[4] ALIGNED(32) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vhaddpd %2, %%ymm0, %%ymm1\n\t"
-        "vmovapd %%ymm1, %0\n\t"
-        : "=m"(*mem_result)
-        : "m"(*mem_src1), "m"(*mem_src2)
+        "vmovapd %[src1], %%ymm0\n\t"
+        "vhaddpd %[src2], %%ymm0, %%ymm1\n\t"
+        "vmovapd %%ymm1, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*mem_result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*mem_src1), [src2] "m"(*mem_src2)
         : "ymm0", "ymm1"
     );
     
@@ -114,6 +128,9 @@ static void test_vhaddpd() {
             pass3 = 0;
         }
     }
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
     if (pass3) {
         printf("[PASS] Test 3: Memory operand\n\n");
         passed_tests++;
@@ -135,13 +152,15 @@ static void test_vhaddpd() {
     double boundary_result[4] ALIGNED(32) = {0};
     total_tests++;
     
+    
     __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"
-        "vmovapd %2, %%ymm1\n\t"
+        "vmovapd %[src1], %%ymm0\n\t"
+        "vmovapd %[src2], %%ymm1\n\t"
         "vhaddpd %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovapd %%ymm2, %0\n\t"
-        : "=m"(*boundary_result)
-        : "m"(*boundary_src1), "m"(*boundary_src2)
+        "vmovapd %%ymm2, %[result]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [result] "=m"(*boundary_result), [mxcsr] "=m"(mxcsr_after)
+        : [src1] "m"(*boundary_src1), [src2] "m"(*boundary_src2)
         : "ymm0", "ymm1", "ymm2"
     );
     
@@ -159,8 +178,17 @@ static void test_vhaddpd() {
             pass4 = 0;
         }
     }
-    if (pass4) {
-        printf("[PASS] Test 4: Boundary values\n\n");
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after);
+    
+    // Check if any exception flags are set
+    int pass4_flag = (mxcsr_after & (FE_INVALID | FE_OVERFLOW | FE_UNDERFLOW | FE_DIVBYZERO)) ? 1 : 0;
+    
+    if (pass4 && pass4_flag) {
+        printf("[PASS] Test 4: Boundary values (exception detected)\n\n");
+        passed_tests++;
+    } else if (pass4) {
+        printf("[PASS] Test 4: Boundary values (no exception)\n\n");
         passed_tests++;
     } else {
         printf("[FAIL] Test 4: Boundary values\n\n");

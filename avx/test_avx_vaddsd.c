@@ -90,13 +90,15 @@ static void test_vaddsd() {
     for (size_t i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
         total_tests++;
         double boundary_result = 0;
+        uint32_t mxcsr_after = 0;
         
         __asm__ __volatile__(
-            "vmovsd %1, %%xmm0\n\t"
-            "vmovsd %2, %%xmm1\n\t"
+            "vmovsd %2, %%xmm0\n\t"
+            "vmovsd %3, %%xmm1\n\t"
             "vaddsd %%xmm1, %%xmm0, %%xmm2\n\t"
             "vmovsd %%xmm2, %0\n\t"
-            : "=m"(boundary_result)
+            "stmxcsr %1\n\t"
+            : "=m"(boundary_result), "=m"(mxcsr_after)
             : "m"(tests[i].a), "m"(tests[i].b)
             : "xmm0", "xmm1", "xmm2"
         );
@@ -104,6 +106,9 @@ static void test_vaddsd() {
         printf("Test %zu: %.15e + %.15e\n", i+1, tests[i].a, tests[i].b);
         printf("Expected: %.15e\n", tests[i].expected);
         printf("Result:   %.15e\n", boundary_result);
+        printf("--- MXCSR State After Operation ---\n");
+        print_mxcsr(mxcsr_after);
+        printf("\n");
         
         if (isnan(tests[i].expected)) {
             pass = isnan(boundary_result);

@@ -223,12 +223,14 @@ static void test_vaddps() {
     mxcsr |= (1 << 15) | (1 << 6);  // 设置FTZ和DAZ
     set_mxcsr(mxcsr);
     
+    uint32_t mxcsr_after_denorm = 0;
     __asm__ __volatile__(
-        "vmovaps %1, %%ymm0\n\t"
-        "vmovaps %2, %%ymm1\n\t"
+        "vmovaps %2, %%ymm0\n\t"
+        "vmovaps %3, %%ymm1\n\t"
         "vaddps %%ymm1, %%ymm0, %%ymm2\n\t"
         "vmovaps %%ymm2, %0\n\t"
-        : "=m"(*denorm_result)
+        "stmxcsr %1\n\t"
+        : "=m"(*denorm_result), "=m"(mxcsr_after_denorm)
         : "m"(*denorm1), "m"(*denorm2)
         : "ymm0", "ymm1", "ymm2"
     );
@@ -236,7 +238,7 @@ static void test_vaddps() {
     printf("--- Denormal Test Results ---\n");
     print_float_vec("Result", denorm_result, 8);
     printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(get_mxcsr());
+    print_mxcsr(mxcsr_after_denorm);
     
     // 恢复原始MXCSR状态
     set_mxcsr(original_mxcsr);

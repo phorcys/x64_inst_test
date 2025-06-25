@@ -15,6 +15,7 @@ static void test_vaddsubps() {
     float src1[8] ALIGNED(32) = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f};
     float src2[8] ALIGNED(32) = {0.5f, 1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f};
     float result[8] ALIGNED(32) = {0};
+    uint32_t mxcsr_after_test1 = 0;
     float expected[8] = {
         1.0f - 0.5f, 2.0f + 1.5f, 
         3.0f - 2.5f, 4.0f + 3.5f,
@@ -24,11 +25,12 @@ static void test_vaddsubps() {
     total_tests++;
     
     __asm__ __volatile__(
-        "vmovaps %1, %%ymm0\n\t"
-        "vmovaps %2, %%ymm1\n\t"
+        "vmovaps %2, %%ymm0\n\t"
+        "vmovaps %3, %%ymm1\n\t"
         "vaddsubps %%ymm1, %%ymm0, %%ymm2\n\t"
         "vmovaps %%ymm2, %0\n\t"
-        : "=m"(*result)
+        "stmxcsr %1\n\t"
+        : "=m"(*result), "=m"(mxcsr_after_test1)
         : "m"(*src1), "m"(*src2)
         : "ymm0", "ymm1", "ymm2"
     );
@@ -57,11 +59,16 @@ static void test_vaddsubps() {
         printf("[FAIL] Test 1: 256-bit register-register\n\n");
     }
     
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after_test1);
+    printf("\n");
+    
     // 128-bit register-register test
     printf("Test 2: 128-bit register-register\n");
     float src1_128[4] ALIGNED(16) = {10.0f, 20.0f, 30.0f, 40.0f};
     float src2_128[4] ALIGNED(16) = {1.0f, 2.0f, 3.0f, 4.0f};
     float result_128[4] ALIGNED(16) = {0};
+    uint32_t mxcsr_after_test2 = 0;
     float expected_128[4] = {
         10.0f - 1.0f, 20.0f + 2.0f,
         30.0f - 3.0f, 40.0f + 4.0f
@@ -69,11 +76,12 @@ static void test_vaddsubps() {
     total_tests++;
     
     __asm__ __volatile__(
-        "vmovaps %1, %%xmm0\n\t"
-        "vmovaps %2, %%xmm1\n\t"
+        "vmovaps %2, %%xmm0\n\t"
+        "vmovaps %3, %%xmm1\n\t"
         "vaddsubps %%xmm1, %%xmm0, %%xmm2\n\t"
         "vmovaps %%xmm2, %0\n\t"
-        : "=m"(*result_128)
+        "stmxcsr %1\n\t"
+        : "=m"(*result_128), "=m"(mxcsr_after_test2)
         : "m"(*src1_128), "m"(*src2_128)
         : "xmm0", "xmm1", "xmm2"
     );
@@ -101,6 +109,10 @@ static void test_vaddsubps() {
     } else {
         printf("[FAIL] Test 2: 128-bit register-register\n\n");
     }
+    
+    printf("--- MXCSR State After Operation ---\n");
+    print_mxcsr(mxcsr_after_test2);
+    printf("\n");
     
     // Boundary values test
     printf("Test 3: Boundary values\n");

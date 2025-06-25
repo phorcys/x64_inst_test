@@ -29,11 +29,13 @@ static int test_vcvtpd2dq() {
     set_mxcsr((old_mxcsr & ~0x6000) | 0x6000);
     
     // 128位版本测试
+    uint32_t mxcsr_after_128 = 0;
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"        // 加载双精度数据到xmm0
+        "vmovapd %2, %%xmm0\n\t"        // 加载双精度数据到xmm0
         "vcvtpd2dq %%xmm0, %%xmm1\n\t"  // 转换为32位整数
         "vmovdqa %%xmm1, %0\n\t"        // 存储结果
-        : "=m" (int_result128)
+        "stmxcsr %1\n\t"                // 保存MXCSR状态
+        : "=m" (int_result128), "=m"(mxcsr_after_128)
         : "m" (dbl_data)
         : "xmm0", "xmm1"
     );
@@ -54,17 +56,22 @@ static int test_vcvtpd2dq() {
             total_errors++;
         }
     }
+    printf("--- MXCSR State After 128-bit Operation ---\n");
+    print_mxcsr(mxcsr_after_128);
+    printf("\n");
     
     // 设置舍入模式为截断(向零舍入)
     uint32_t old_mxcsr2 = get_mxcsr();
     set_mxcsr((old_mxcsr2 & ~0x6000) | 0x6000);
     
     // 256位版本测试
+    uint32_t mxcsr_after_256 = 0;
     __asm__ __volatile__(
-        "vmovapd %1, %%ymm0\n\t"        // 加载双精度数据到ymm0
+        "vmovapd %2, %%ymm0\n\t"        // 加载双精度数据到ymm0
         "vcvtpd2dq %%ymm0, %%xmm1\n\t"  // 转换为32位整数
         "vmovdqa %%xmm1, %0\n\t"        // 存储结果
-        : "=m" (int_result256)
+        "stmxcsr %1\n\t"                // 保存MXCSR状态
+        : "=m" (int_result256), "=m"(mxcsr_after_256)
         : "m" (dbl_data)
         : "ymm0", "xmm1"
     );
@@ -85,6 +92,9 @@ static int test_vcvtpd2dq() {
             total_errors++;
         }
     }
+    printf("--- MXCSR State After 256-bit Operation ---\n");
+    print_mxcsr(mxcsr_after_256);
+    printf("\n");
     
     // // 测试MXCSR寄存器状态
     // uint32_t initial_mxcsr = get_mxcsr();
@@ -106,11 +116,13 @@ static int test_vcvtpd2dq() {
     
     // 测试内存操作数
     ALIGNED(32) int32_t mem_result[4] = {0};
+    uint32_t mxcsr_after_mem = 0;
     __asm__ __volatile__(
-        "vmovapd %1, %%xmm0\n\t"        // 先加载内存数据到xmm0
+        "vmovapd %2, %%xmm0\n\t"        // 先加载内存数据到xmm0
         "vcvtpd2dq %%xmm0, %%xmm1\n\t"  // 再进行转换
         "vmovdqa %%xmm1, %0\n\t"        // 存储结果
-        : "=m" (mem_result)
+        "stmxcsr %1\n\t"                // 保存MXCSR状态
+        : "=m" (mem_result), "=m"(mxcsr_after_mem)
         : "m" (*mem_data)
         : "xmm0", "xmm1"
     );
@@ -131,6 +143,9 @@ static int test_vcvtpd2dq() {
             total_errors++;
         }
     }
+    printf("--- MXCSR State After Memory Operand Operation ---\n");
+    print_mxcsr(mxcsr_after_mem);
+    printf("\n");
 
     return total_errors;
 }

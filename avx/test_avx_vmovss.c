@@ -22,6 +22,7 @@ void test_vmovss() {
         // 寄存器到寄存器传输 (正确语法: vmovss dst, src1, src2)
         asm volatile("vmovss %1, %1, %0" : "=x"(dst) : "x"(src), "x"(src));
         
+
         float dst_val = _mm_cvtss_f32(dst);
         if (src_val != dst_val) {
             printf("[128-bit] Reg-to-reg error\n");
@@ -32,6 +33,8 @@ void test_vmovss() {
 
         // 内存到寄存器传输
         asm volatile("vmovss %1, %0" : "=x"(dst) : "m" (src_val));
+
+        
         dst_val = _mm_cvtss_f32(dst);
         if (src_val != dst_val) {
             printf("[128-bit] Mem-to-reg error\n");
@@ -42,6 +45,8 @@ void test_vmovss() {
 
         // 寄存器到内存传输
         asm volatile("vmovss %1, %0" : "=m" (mem_val) : "x"(src));
+        
+        
         if (src_val != mem_val) {
             printf("[128-bit] Reg-to-mem error\n");
             printf("  Expected: %f\n", src_val);
@@ -58,6 +63,7 @@ void test_vmovss() {
 
         // 使用内联汇编实现VMOVSS (寄存器到寄存器)
         asm volatile("vmovss %1, %1, %0" : "=x"(dst) : "x"(src), "x"(src));
+        
         
         float dst_val = _mm_cvtss_f32(dst);
         if (src_val != dst_val) {
@@ -84,10 +90,6 @@ void test_vmovss() {
             __m128 dst128;
             float mem_val;
 
-            // 输出MXCSR状态
-            uint32_t mxcsr_before = get_mxcsr();
-            // 已取消注释print_mxcsr调用
-            print_mxcsr(mxcsr_before);
 
             // 128位寄存器传输
             asm volatile("vmovss %1, %1, %0" : "=x"(dst128) : "x"(src128), "x"(src128));
@@ -120,11 +122,6 @@ void test_vmovss() {
                 }
             }
 
-            // 输出MXCSR状态变化
-            uint32_t mxcsr_after = get_mxcsr();
-            if (mxcsr_before != mxcsr_after) {
-                printf("MXCSR changed: 0x%08X -> 0x%08X\n", mxcsr_before, mxcsr_after);
-            }
         }
     }
 

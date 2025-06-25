@@ -17,31 +17,67 @@ Test 3: Boundary values
 Test 1: 0.000000000000000e+00 + 0.000000000000000e+00
 Expected: 0.000000000000000e+00
 Result:   0.000000000000000e+00
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
 [PASS] Test 1: Boundary value
 
 Test 2: inf + 1.000000000000000e+00
 Expected: inf
 Result:   inf
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
 [PASS] Test 2: Boundary value
 
 Test 3: -inf + 1.000000000000000e+00
 Expected: -inf
 Result:   -inf
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
 [PASS] Test 3: Boundary value
 
 Test 4: nan + 1.000000000000000e+00
 Expected: nan
 Result:   nan
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
 [PASS] Test 4: Boundary value
 
 Test 5: 1.797693134862316e+308 + 1.797693134862316e+308
 Expected: inf
 Result:   inf
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA8
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:1 U:0 P:1
+
 [PASS] Test 5: Boundary value
 
 Test 6: 2.225073858507201e-308 + 2.225073858507201e-308
 Expected: 4.450147717014403e-308
 Result:   4.450147717014403e-308
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA8
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:1 U:0 P:1
+
 [PASS] Test 6: Boundary value
 
 --- Test Summary ---

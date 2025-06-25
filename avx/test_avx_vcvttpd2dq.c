@@ -7,21 +7,29 @@
 #include <float.h>
 
 // 内联汇编实现vcvttpd2dq指令 - 128位版本
-static void test_vcvttpd2dq_128(double *src, int32_t *dst) {
+static uint32_t test_vcvttpd2dq_128(double *src, int32_t *dst) {
+    uint32_t mxcsr_after;
     __asm__ __volatile__(
-        "vcvttpd2dq %1, %0"
-        : "=x" (*(__m128i*)dst)
-        : "x" (*(__m128d*)src)
+        "vcvttpd2dq %[src], %[dst]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [dst] "=x" (*(__m128i*)dst), [mxcsr] "=m" (mxcsr_after)
+        : [src] "x" (*(__m128d*)src)
+        : 
     );
+    return mxcsr_after;
 }
 
 // 内联汇编实现vcvttpd2dq指令 - 256位版本
-static void test_vcvttpd2dq_256(double *src, int32_t *dst) {
+static uint32_t test_vcvttpd2dq_256(double *src, int32_t *dst) {
+    uint32_t mxcsr_after;
     __asm__ __volatile__(
-        "vcvttpd2dq %1, %0"
-        : "=x" (*(__m128i*)dst)  // 256->128位结果
-        : "x" (*(__m256d*)src)
+        "vcvttpd2dq %[src], %[dst]\n\t"
+        "stmxcsr %[mxcsr]"
+        : [dst] "=x" (*(__m128i*)dst), [mxcsr] "=m" (mxcsr_after)
+        : [src] "x" (*(__m256d*)src)
+        : 
     );
+    return mxcsr_after;
 }
 
 // 测试用例
@@ -55,12 +63,14 @@ int main() {
         double src[2] ALIGNED(32) = {test_cases[i], test_cases[i+1]};
         int32_t dst[4] ALIGNED(32) = {0};
         
-        test_vcvttpd2dq_128(src, dst);
+        uint32_t mxcsr = test_vcvttpd2dq_128(src, dst);
         
         printf("Input:  ");
         print_double_vec("", src, 2);
         printf("Output: ");
         print_int_vec("", dst, 2);
+        printf("--- MXCSR State After Operation ---\n");
+        print_mxcsr(mxcsr);
         printf("\n");
     }
 
@@ -71,12 +81,14 @@ int main() {
                                    test_cases[i+2], test_cases[i+3]};
         int32_t dst[4] ALIGNED(32) = {0};
         
-        test_vcvttpd2dq_256(src, dst);
+        uint32_t mxcsr = test_vcvttpd2dq_256(src, dst);
         
         printf("Input:  ");
         print_double_vec("", src, 4);
         printf("Output: ");
         print_int_vec("", dst, 4);
+        printf("--- MXCSR State After Operation ---\n");
+        print_mxcsr(mxcsr);
         printf("\n");
     }
 

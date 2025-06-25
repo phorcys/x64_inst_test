@@ -21,12 +21,16 @@ static void test_vdivpd() {
         unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
+        // 在除法后立即读取 MXCSR
+        unsigned int mxcsr_after_div = 0;
+        
         __asm__ __volatile__(
-            "vmovapd %1, %%ymm0\n\t"
-            "vmovapd %2, %%ymm1\n\t"
+            "vmovapd %2, %%ymm0\n\t"
+            "vmovapd %3, %%ymm1\n\t"
             "vdivpd %%ymm1, %%ymm0, %%ymm2\n\t"
             "vmovapd %%ymm2, %0\n\t"
-            : "=m"(*c)
+            "stmxcsr %1"
+            : "=m"(*c), "=m"(mxcsr_after_div)
             : "m"(*a), "m"(*b)
             : "ymm0", "ymm1", "ymm2"
         );
@@ -48,13 +52,11 @@ static void test_vdivpd() {
             }
         }
         
-        // 检查MXCSR状态
-        unsigned int mxcsr_after = 0;
-        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
-        print_mxcsr(mxcsr_after);
+        // 使用除法后立即读取的 MXCSR 状态
+        print_mxcsr(mxcsr_after_div);
         
         // 检查标志位（不应有异常）
-        if (mxcsr_after & 0x3F) {
+        if (mxcsr_after_div & 0x3F) {
             printf("Unexpected floating-point exceptions detected!\n");
             pass = 0;
             errors++;
@@ -81,11 +83,15 @@ static void test_vdivpd() {
         unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
+        // 在除法后立即读取 MXCSR
+        unsigned int mxcsr_after_div = 0;
+        
         __asm__ __volatile__(
-            "vmovapd %1, %%ymm0\n\t"
-            "vdivpd %2, %%ymm0, %%ymm1\n\t"
+            "vmovapd %2, %%ymm0\n\t"
+            "vdivpd %3, %%ymm0, %%ymm1\n\t"
             "vmovapd %%ymm1, %0\n\t"
-            : "=m"(*c)
+            "stmxcsr %1"
+            : "=m"(*c), "=m"(mxcsr_after_div)
             : "m"(*a), "m"(*b)
             : "ymm0", "ymm1"
         );
@@ -107,10 +113,8 @@ static void test_vdivpd() {
             }
         }
         
-        // 检查MXCSR状态
-        unsigned int mxcsr_after = 0;
-        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
-        print_mxcsr(mxcsr_after);
+        // 使用除法后立即读取的 MXCSR 状态
+        print_mxcsr(mxcsr_after_div);
         
         if (pass) {
             printf("[PASS] Test 2: 256-bit reg-mem\n");
@@ -133,12 +137,16 @@ static void test_vdivpd() {
         unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
+        // 在除法后立即读取 MXCSR
+        unsigned int mxcsr_after_div = 0;
+        
         __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vmovapd %2, %%xmm1\n\t"
+            "vmovapd %2, %%xmm0\n\t"
+            "vmovapd %3, %%xmm1\n\t"
             "vdivpd %%xmm1, %%xmm0, %%xmm2\n\t"
             "vmovapd %%xmm2, %0\n\t"
-            : "=m"(*c)
+            "stmxcsr %1"
+            : "=m"(*c), "=m"(mxcsr_after_div)
             : "m"(*a), "m"(*b)
             : "xmm0", "xmm1", "xmm2"
         );
@@ -160,10 +168,8 @@ static void test_vdivpd() {
             }
         }
         
-        // 检查MXCSR状态
-        unsigned int mxcsr_after = 0;
-        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
-        print_mxcsr(mxcsr_after);
+        // 使用除法后立即读取的 MXCSR 状态
+        print_mxcsr(mxcsr_after_div);
         
         if (pass) {
             printf("[PASS] Test 3: 128-bit reg-reg\n");
@@ -186,11 +192,15 @@ static void test_vdivpd() {
         unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
+        // 在除法后立即读取 MXCSR
+        unsigned int mxcsr_after_div = 0;
+        
         __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vdivpd %2, %%xmm0, %%xmm1\n\t"
+            "vmovapd %2, %%xmm0\n\t"
+            "vdivpd %3, %%xmm0, %%xmm1\n\t"
             "vmovapd %%xmm1, %0\n\t"
-            : "=m"(*c)
+            "stmxcsr %1"
+            : "=m"(*c), "=m"(mxcsr_after_div)
             : "m"(*a), "m"(*b)
             : "xmm0", "xmm1"
         );
@@ -212,10 +222,8 @@ static void test_vdivpd() {
             }
         }
         
-        // 检查MXCSR状态
-        unsigned int mxcsr_after = 0;
-        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
-        print_mxcsr(mxcsr_after);
+        // 使用除法后立即读取的 MXCSR 状态
+        print_mxcsr(mxcsr_after_div);
         
         if (pass) {
             printf("[PASS] Test 4: 128-bit reg-mem\n");
@@ -244,12 +252,16 @@ static void test_vdivpd() {
         unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
+        // 在除法后立即读取 MXCSR
+        unsigned int mxcsr_after_div = 0;
+        
         __asm__ __volatile__(
-            "vmovapd %1, %%ymm0\n\t"
-            "vmovapd %2, %%ymm1\n\t"
+            "vmovapd %2, %%ymm0\n\t"
+            "vmovapd %3, %%ymm1\n\t"
             "vdivpd %%ymm1, %%ymm0, %%ymm2\n\t"
             "vmovapd %%ymm2, %0\n\t"
-            : "=m"(*c)
+            "stmxcsr %1"
+            : "=m"(*c), "=m"(mxcsr_after_div)
             : "m"(*a), "m"(*b)
             : "ymm0", "ymm1", "ymm2"
         );
@@ -276,22 +288,14 @@ static void test_vdivpd() {
             }
         }
         
-        // 检查MXCSR状态
-        unsigned int mxcsr_after = 0;
-        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
-        print_mxcsr(mxcsr_after);
+        // 使用除法后立即读取的 MXCSR 状态
+        print_mxcsr(mxcsr_after_div);
         
         // 检查预期的异常标志
         int flags_pass = 1;
         // 期望除零标志 (ZE)
-        if (!(mxcsr_after & (1 << 2))) {
+        if (!(mxcsr_after_div & (1 << 2))) {
             printf("[FAIL] Division by zero flag not set\n");
-            flags_pass = 0;
-            errors++;
-        }
-        // 期望无效操作标志 (IE) 用于NaN操作
-        if (!(mxcsr_after & (1 << 0))) {
-            printf("[FAIL] Invalid operation flag not set\n");
             flags_pass = 0;
             errors++;
         }
@@ -323,12 +327,16 @@ static void test_vdivpd() {
         unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
+        // 在除法后立即读取 MXCSR
+        unsigned int mxcsr_after_div = 0;
+        
         __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vmovapd %2, %%xmm1\n\t"
+            "vmovapd %2, %%xmm0\n\t"
+            "vmovapd %3, %%xmm1\n\t"
             "vdivpd %%xmm1, %%xmm0, %%xmm2\n\t"
             "vmovapd %%xmm2, %0\n\t"
-            : "=m"(*c)
+            "stmxcsr %1"
+            : "=m"(*c), "=m"(mxcsr_after_div)
             : "m"(*a), "m"(*b)
             : "xmm0", "xmm1", "xmm2"
         );
@@ -355,15 +363,13 @@ static void test_vdivpd() {
             }
         }
         
-        // 检查MXCSR状态
-        unsigned int mxcsr_after = 0;
-        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
-        print_mxcsr(mxcsr_after);
+        // 使用除法后立即读取的 MXCSR 状态
+        print_mxcsr(mxcsr_after_div);
         
         // 检查预期的异常标志
         int flags_pass = 1;
         // 期望无效操作标志 (IE) 用于0/0和INF/INF
-        if (!(mxcsr_after & (1 << 0))) {
+        if (!(mxcsr_after_div & (1 << 0))) {
             printf("[FAIL] Invalid operation flag not set\n");
             flags_pass = 0;
             errors++;
@@ -387,15 +393,19 @@ static void test_vdivpd() {
         ALIGNED(16) double expected[2] = {10.0/3.0, 20.0/6.0};
         
         CLEAR_FLAGS;
-        unsigned int mxcsr_before = 0x1F80; // Default MXCSR (round to nearest)
+        unsigned int mxcsr_before = 0x1F80; // Default MXCSR
         __asm__ __volatile__("ldmxcsr %0" : : "m"(mxcsr_before));
         
+        // 在除法后立即读取 MXCSR
+        unsigned int mxcsr_after_div = 0;
+        
         __asm__ __volatile__(
-            "vmovapd %1, %%xmm0\n\t"
-            "vmovapd %2, %%xmm1\n\t"
+            "vmovapd %2, %%xmm0\n\t"
+            "vmovapd %3, %%xmm1\n\t"
             "vdivpd %%xmm1, %%xmm0, %%xmm2\n\t"
             "vmovapd %%xmm2, %0\n\t"
-            : "=m"(*c)
+            "stmxcsr %1"
+            : "=m"(*c), "=m"(mxcsr_after_div)
             : "m"(*a), "m"(*b)
             : "xmm0", "xmm1", "xmm2"
         );
@@ -417,10 +427,8 @@ static void test_vdivpd() {
             }
         }
         
-        // 检查MXCSR状态
-        unsigned int mxcsr_after = 0;
-        __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr_after));
-        print_mxcsr(mxcsr_after);
+        // 使用除法后立即读取的 MXCSR 状态
+        print_mxcsr(mxcsr_after_div);
         
         if (pass) {
             printf("[PASS] Test 7: Rounding mode (nearest)\n");

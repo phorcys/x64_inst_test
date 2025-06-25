@@ -29,11 +29,13 @@ static int test_vcvtdq2ps() {
     ALIGNED(32) float flt_result256[8] = {0};
     
     // 128位版本测试
+    uint32_t mxcsr_after_128 = 0;
     __asm__ __volatile__(
-        "vmovdqa %1, %%xmm0\n\t"        // 加载整数数据到xmm0
+        "vmovdqa %2, %%xmm0\n\t"        // 加载整数数据到xmm0
         "vcvtdq2ps %%xmm0, %%xmm1\n\t"  // 转换为单精度浮点数
         "vmovups %%xmm1, %0\n\t"        // 存储结果
-        : "=m" (flt_result128)
+        "stmxcsr %1\n\t"                // 保存MXCSR状态
+        : "=m" (flt_result128), "=m"(mxcsr_after_128)
         : "m" (int_data)
         : "xmm0", "xmm1"
     );
@@ -50,13 +52,18 @@ static int test_vcvtdq2ps() {
             printf(" [FAIL]\n");
         }
     }
+    printf("--- MXCSR State After 128-bit Operation ---\n");
+    print_mxcsr(mxcsr_after_128);
+    printf("\n");
     
     // 256位版本测试
+    uint32_t mxcsr_after_256 = 0;
     __asm__ __volatile__(
-        "vmovdqa %1, %%ymm0\n\t"        // 加载整数数据到ymm0
+        "vmovdqa %2, %%ymm0\n\t"        // 加载整数数据到ymm0
         "vcvtdq2ps %%ymm0, %%ymm1\n\t"  // 转换为单精度浮点数
         "vmovups %%ymm1, %0\n\t"        // 存储结果
-        : "=m" (flt_result256)
+        "stmxcsr %1\n\t"                // 保存MXCSR状态
+        : "=m" (flt_result256), "=m"(mxcsr_after_256)
         : "m" (int_data)
         : "ymm0", "ymm1"
     );
@@ -73,6 +80,9 @@ static int test_vcvtdq2ps() {
             printf(" [FAIL]\n");
         }
     }
+    printf("--- MXCSR State After 256-bit Operation ---\n");
+    print_mxcsr(mxcsr_after_256);
+    printf("\n");
     
     // // // 测试MXCSR寄存器状态
     // // uint32_t initial_mxcsr = get_mxcsr();
@@ -90,10 +100,12 @@ static int test_vcvtdq2ps() {
 
     // 测试内存操作数
     ALIGNED(32) float mem_result[4] = {0};
+    uint32_t mxcsr_after_mem = 0;
     __asm__ __volatile__(
-        "vcvtdq2ps %1, %%xmm0\n\t"
+        "vcvtdq2ps %2, %%xmm0\n\t"
         "vmovups %%xmm0, %0\n\t"
-        : "=m" (mem_result)
+        "stmxcsr %1\n\t"                // 保存MXCSR状态
+        : "=m" (mem_result), "=m"(mxcsr_after_mem)
         : "m" (*mem_data)
         : "xmm0"
     );
@@ -111,6 +123,9 @@ static int test_vcvtdq2ps() {
             total_errors++;
         }
     }
+    printf("--- MXCSR State After Memory Operand Operation ---\n");
+    print_mxcsr(mxcsr_after_mem);
+    printf("\n");
 
     return total_errors;
 }
