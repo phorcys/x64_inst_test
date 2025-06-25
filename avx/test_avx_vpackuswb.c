@@ -2,90 +2,132 @@
 #include <stdio.h>
 #include <stdint.h>
 
-// vpackuswb指令测试函数
-static void test_vpackuswb() {
-    printf("--- Testing vpackuswb (pack with unsigned saturation word to byte) ---\n");
+// VPACKUSWB指令测试
+void test_vpackuswb() {
+    printf("--- Testing VPACKUSWB (Pack with Unsigned Saturation) ---\n");
     
-    // 测试数据
-    int16_t src1[16] = {0, 1, -1, 127, -128, 255, -32768, 32767,
-                       128, -129, 256, -257, 32767, -32768, 255, -256};
-    int16_t src2[16] = {255, -256, 32767, -32768, 127, -128, 1, 0,
-                       -1, 256, -257, 128, -129, 255, -128, 127};
-    uint8_t dst[32];
-    uint8_t expected[32];
-    
-    // 计算预期结果(带饱和处理)
-    for(int i=0; i<16; i++) {
-        expected[i] = (src1[i] > 255) ? 255 : 
-                     (src1[i] < 0) ? 0 : (uint8_t)src1[i];
-        expected[i+16] = (src2[i] > 255) ? 255 : 
-                       (src2[i] < 0) ? 0 : (uint8_t)src2[i];
-    }
-    
-    // 256位版本测试
-    __asm__ __volatile__(
-        "vmovdqu %1, %%ymm0\n\t"
-        "vmovdqu %2, %%ymm1\n\t"
-        "vpackuswb %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovdqu %%ymm2, %0\n\t"
-        : "=m"(dst)
-        : "m"(src1), "m"(src2)
-        : "ymm0", "ymm1", "ymm2"
-    );
-    
-    // 验证结果
-    int pass = 1;
-    for(int i=0; i<32; i++) {
-        if(dst[i] != expected[i]) {
-            printf("Mismatch at position %d: got %u, expected %u\n", 
-                  i, dst[i], expected[i]);
-            pass = 0;
+    // 测试128位版本
+    {
+        printf("\n[128-bit test]\n");
+        
+        // 寄存器-寄存器测试
+        __m128i a = _mm_setr_epi16(0x1234, 0x5678, 0x9ABC, 0xDEF0, 
+                                  0x7FFF, 0x8000, 0x00FF, 0x0100);
+        __m128i b = _mm_setr_epi16(0x1122, 0x3344, 0x5566, 0x7788,
+                                  0x00FF, 0x8000, 0x7FFF, 0x0000);
+        __m128i result;
+        
+        // 使用内联汇编 - 简化实现
+        asm volatile (
+            "vpackuswb %[b], %[a], %[res]"
+            : [res] "=x" (result)
+            : [a] "x" (a), [b] "x" (b)
+            : "memory"
+        );
+        
+        print_xmm("Input A", a);
+        print_xmm("Input B", b);
+        print_xmm("Result", result);
+        
+        // 预期结果 - 修正为饱和打包后的正确值
+        __m128i expected = _mm_setr_epi8(
+            0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x00
+        );
+        
+        if (cmp_xmm(result, expected)) {
+            printf("128-bit reg-reg test PASSED\n");
+        } else {
+            printf("128-bit reg-reg test FAILED\n");
         }
     }
     
-    if(pass) {
-        printf("256-bit test passed\n");
-    } else {
-        printf("256-bit test failed\n");
-    }
-    
-    // 128位版本测试
-    __asm__ __volatile__(
-        "vmovdqu %1, %%xmm0\n\t"
-        "vmovdqu %2, %%xmm1\n\t"
-        "vpackuswb %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovdqu %%xmm2, %0\n\t"
-        : "=m"(dst)
-        : "m"(src1), "m"(src2)
-        : "xmm0", "xmm1", "xmm2"
-    );
-    
-    // 验证结果
-    pass = 1;
-    for(int i=0; i<16; i++) {
-        if(dst[i] != expected[i]) {
-            printf("Mismatch at position %d: got %u, expected %u\n", 
-                  i, dst[i], expected[i]);
-            pass = 0;
+    // 测试256位版本
+    {
+        printf("\n[256-bit test]\n");
+        
+        // 寄存器-寄存器测试
+        __m256i a = _mm256_setr_epi16(
+            0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x7FFF, 0x8000, 0x00FF, 0x0100,
+            0x1122, 0x3344, 0x5566, 0x7788, 0x00FF, 0x8000, 0x7FFF, 0x0000
+        );
+        __m256i b = _mm256_setr_epi16(
+            0x1122, 0x3344, 0x5566, 0x7788, 0x00FF, 0x8000, 0x7FFF, 0x0000,
+            0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x7FFF, 0x8000, 0x00FF, 0x0100
+        );
+        __m256i result;
+        
+        // 使用内联汇编 - 简化实现
+        asm volatile (
+            "vpackuswb %[b], %[a], %[res]"
+            : [res] "=x" (result)
+            : [a] "x" (a), [b] "x" (b)
+            : "memory"
+        );
+        
+        print_ymm("Input A", a);
+        print_ymm("Input B", b);
+        print_ymm("Result", result);
+        
+        // 预期结果 - 修正为饱和打包后的正确值
+        __m256i expected = _mm256_setr_epi8(
+            0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x00,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x00,
+            0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00, 0xFF, 0xFF
+        );
+        
+        if (cmp_ymm(result, expected)) {
+            printf("256-bit reg-reg test PASSED\n");
+        } else {
+            printf("256-bit reg-reg test FAILED\n");
         }
     }
     
-    if(pass) {
-        printf("128-bit test passed\n");
-    } else {
-        printf("128-bit test failed\n");
+    // 测试内存操作数版本
+    {
+        printf("\n[Memory operand test]\n");
+        
+        // 准备内存操作数
+        ALIGNED(16) int16_t mem_data[8] = {
+            0x1122, 0x3344, 0x5566, 0x7788, 0x00FF, 0x8000, 0x7FFF, 0x0000
+        };
+        
+        __m128i a = _mm_setr_epi16(0x1234, 0x5678, 0x9ABC, 0xDEF0, 
+                                  0x7FFF, 0x8000, 0x00FF, 0x0100);
+        __m128i result;
+        
+        // 使用内联汇编 - 简化实现
+        asm volatile (
+            "vpackuswb %[mem], %[a], %[res]"
+            : [res] "=x" (result)
+            : [a] "x" (a), [mem] "m" (*mem_data)
+            : "memory"
+        );
+        
+        print_xmm("Input A", a);
+        printf("Memory operand: ");
+        for (int i = 0; i < 8; i++) {
+            printf("%04x ", mem_data[i]);
+        }
+        printf("\n");
+        print_xmm("Result", result);
+        
+        // 预期结果 - 修正为饱和打包后的正确值
+        __m128i expected = _mm_setr_epi8(
+            0xFF, 0xFF, 0x00, 0x00, 0xFF, 0x00, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x00
+        );
+        
+        if (cmp_xmm(result, expected)) {
+            printf("Memory operand test PASSED\n");
+        } else {
+            printf("Memory operand test FAILED\n");
+        }
     }
 }
 
-/*
- * 暂时注释掉测试，因为vpackuswb指令测试未通过
- * 问题可能出在：
- * 1. 指令操作顺序不正确
- * 2. 数据加载/存储方式有问题
- * 3. 预期结果计算逻辑错误
- * 需要进一步研究指令文档
- */
 int main() {
-    // test_vpackuswb();
+    test_vpackuswb();
     return 0;
 }
