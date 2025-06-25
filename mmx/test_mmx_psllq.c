@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <x86intrin.h>
+#include <mmintrin.h>  // 添加 MMX 头文件
 
 void print_mmx(__m64 value, const char* name) {
     uint64_t v = *(uint64_t*)&value;
@@ -10,8 +11,8 @@ void print_mmx(__m64 value, const char* name) {
 
 int main() {
     // Test data
-    __m64 a = _mm_set_pi64x(0x0000000000000001ULL);
-    __m64 b = _mm_set_pi64x(1);
+    __m64 a = _mm_setr_pi32(0, 1);  // 替代 _mm_set_pi64x
+    __m64 b = _mm_setr_pi32(0, 1);  // 替代 _mm_set_pi64x
     uint64_t mem = 2;
     
     printf("Testing MMX PSLLQ instruction\n\n");
@@ -41,8 +42,8 @@ int main() {
     
     // Edge cases
     printf("Edge case tests:\n");
-    __m64 max = _mm_set_pi64x(0x0000000000000001ULL);
-    __m64 shift = _mm_set_pi64x(64);
+    __m64 max = _mm_setr_pi32(0, 1);  // 替代 _mm_set_pi64x
+    __m64 shift = _mm_setr_pi32(0, 64);  // 替代 _mm_set_pi64x
     
     // Test 4: edge values
     printf("Test 4: Edge values\n");

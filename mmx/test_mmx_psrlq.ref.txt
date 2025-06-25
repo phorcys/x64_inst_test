@@ -1,21 +1,21 @@
 Testing MMX PSRLQ instruction
 
 Test 1: PSRLQ mm, mm
-a: [8000000000000000]
-b: [0000000000000001]
-result: [4000000000000000]
+a: [0000000080000000]
+b: [0000000100000000]
+result: [0000000000000000]
 
 Test 2: PSRLQ mm, imm8
-a: [8000000000000000]
-result (shift by 3): [1000000000000000]
+a: [0000000080000000]
+result (shift by 3): [0000000010000000]
 
 Test 3: PSRLQ mm, m64
-a: [8000000000000000]
+a: [0000000080000000]
 mem: [0000000000000002]
-result: [2000000000000000]
+result: [0000000020000000]
 
 Edge case tests:
 Test 4: Edge values
 max: [ffffffffffffffff]
-shift: [0000000000000040]
+shift: [0000004000000000]
 result: [0000000000000000]

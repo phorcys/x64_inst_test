@@ -1,59 +1,32 @@
-=== Testing VPSRLW (Shift Right Logical Words) ===
+=== VPSRLW tests ===
+  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 
+  imm     : 1
+  Expected: 00 40 01 20 02 10 04 08 08 04 10 02 20 01 c0 00 
+  Actual  : 00 40 01 20 02 10 04 08 08 04 10 02 20 01 c0 00 
+  [PASS] VPSRLW xmm, 1
 
---- 128-bit Tests (Immediate Shift) ---
-Test: VPSRLW xmm, xmm, 1
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 
-Result: 1a 09 ff 3f 00 40 6e 7f b2 43 aa 2a 55 55 56 6f 
-Comparison: PASS
-Test: VPSRLW xmm, xmm, 4
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 
-Result: 23 01 ff 07 00 08 ed 0f 76 08 55 05 aa 0a ea 0d 
-Comparison: PASS
-Test: VPSRLW xmm, xmm, 8
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 
-Result: 12 00 7f 00 80 00 fe 00 87 00 55 00 aa 00 de 00 
-Comparison: PASS
-Test: VPSRLW xmm, xmm, 15
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 
-Result: 00 00 00 00 01 00 01 00 01 00 00 00 01 00 01 00 
-Comparison: PASS
-Test: VPSRLW xmm, xmm, 16
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 
-Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Comparison: PASS
+  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 
+  imm     : 2
+  Expected: 00 20 00 10 01 08 02 04 04 02 08 01 90 00 60 00 
+  Actual  : 00 20 00 10 01 08 02 04 04 02 08 01 90 00 60 00 
+  [PASS] VPSRLW xmm, 2
 
---- 128-bit Tests (Register Shift) ---
-Test: VPSRLW xmm, xmm, xmm
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 
-Shift Count: 03 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
-Result: 46 02 ff 0f 00 10 db 1f ec 10 aa 0a 55 15 d5 1b 
-Comparison: PASS
+  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 02 80 04 40 08 20 10 10 20 08 40 04 80 02 00 01 
+  imm     : 3
+  Expected: 00 10 00 08 00 04 01 02 02 01 84 00 48 00 30 00 01 40 02 20 04 10 08 08 10 04 20 02 40 01 80 00 
+  Actual  : 00 10 00 08 00 04 01 02 02 01 84 00 48 00 30 00 00 10 00 08 01 04 02 02 04 01 88 00 50 00 20 00 
+  [FAIL] VPSRLW ymm, 3
 
---- 256-bit Tests (Immediate Shift) ---
-Test: VPSRLW ymm, ymm, 1
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 68 24 57 13 bc 9a f0 de 11 11 22 22 33 33 44 44 
-Result: 1a 09 ff 3f 00 40 6e 7f b2 43 aa 2a 55 55 56 6f 34 12 ab 09 5e 4d 78 6f 88 08 11 11 99 19 22 22 
-Comparison: PASS
-Test: VPSRLW ymm, ymm, 4
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 68 24 57 13 bc 9a f0 de 11 11 22 22 33 33 44 44 
-Result: 23 01 ff 07 00 08 ed 0f 76 08 55 05 aa 0a ea 0d 46 02 35 01 ab 09 ef 0d 11 01 22 02 33 03 44 04 
-Comparison: PASS
-Test: VPSRLW ymm, ymm, 8
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 68 24 57 13 bc 9a f0 de 11 11 22 22 33 33 44 44 
-Result: 12 00 7f 00 80 00 fe 00 87 00 55 00 aa 00 de 00 24 00 13 00 9a 00 de 00 11 00 22 00 33 00 44 00 
-Comparison: PASS
-Test: VPSRLW ymm, ymm, 15
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 68 24 57 13 bc 9a f0 de 11 11 22 22 33 33 44 44 
-Result: 00 00 00 00 01 00 01 00 01 00 00 00 01 00 01 00 00 00 00 00 01 00 01 00 00 00 00 00 00 00 00 00 
-Comparison: PASS
-Test: VPSRLW ymm, ymm, 16
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 68 24 57 13 bc 9a f0 de 11 11 22 22 33 33 44 44 
-Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Comparison: PASS
+  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 
+  imm     : 15
+  Expected: 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  Actual  : 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [PASS] VPSRLW xmm, 15
 
---- 256-bit Tests (Register Shift) ---
-Test: VPSRLW ymm, ymm, xmm
-Source: 34 12 ff 7f 00 80 dc fe 65 87 55 55 aa aa ad de 68 24 57 13 bc 9a f0 de 11 11 22 22 33 33 44 44 
-Shift Count: 03 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
-Result: 46 02 ff 0f 00 10 db 1f ec 10 aa 0a 55 15 d5 1b 8d 04 6a 02 57 13 de 1b 22 02 44 04 66 06 88 08 
-Comparison: PASS
+  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 02 80 04 40 08 20 10 10 20 08 40 04 80 02 00 01 
+  imm     : 16
+  Expected: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  Actual  : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [PASS] VPSRLW ymm, 16
+
+=== VPSRLW tests FAILED ===

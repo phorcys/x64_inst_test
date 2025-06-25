@@ -1,44 +1,32 @@
-=== Testing VPSLLW (Vector Packed Shift Left Logical Word) ===
+=== VPSLLW tests ===
+  SRC     : 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 00 
+  imm     : 1
+  Expected: 02 00 04 00 08 00 10 00 20 00 40 00 80 00 00 01 
+  Actual  : 02 00 04 00 08 00 10 00 20 00 40 00 80 00 00 01 
+  [PASS] VPSLLW xmm, 1
 
---- 128-bit Tests ---
-Test 1: VPSLLW xmm, xmm, 1
-Source: 23 01 67 45 ab 89 ef cd 55 55 aa aa ff 7f 00 80 
-Result: 46 02 ce 8a 56 13 de 9b aa aa 54 55 fe ff 00 00 
-Comparison: PASS
+  SRC     : 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 00 
+  imm     : 2
+  Expected: 04 00 08 00 10 00 20 00 40 00 80 00 00 01 00 02 
+  Actual  : 04 00 08 00 10 00 20 00 40 00 80 00 00 01 00 02 
+  [PASS] VPSLLW xmm, 2
 
-Test 2: VPSLLW xmm, xmm, 2
-Result: 8c 04 9c 15 ac 26 bc 37 54 55 a8 aa fc ff 00 00 
-Comparison: PASS
+  SRC     : 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 00 00 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 
+  imm     : 3
+  Expected: 08 00 10 00 20 00 40 00 80 00 00 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 00 00 00 00 00 00 
+  Actual  : 08 00 10 00 20 00 40 00 80 00 00 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 00 00 00 00 00 00 
+  [PASS] VPSLLW ymm, 3
 
-Test 3: VPSLLW xmm, xmm, 15
-Result: 00 80 00 80 00 80 00 80 00 80 00 00 00 80 00 00 
-Comparison: PASS
+  SRC     : 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 00 
+  imm     : 15
+  Expected: 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  Actual  : 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [PASS] VPSLLW xmm, 15
 
---- 256-bit Tests ---
+  SRC     : 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 00 00 01 00 02 00 04 00 08 00 10 00 20 00 40 00 80 
+  imm     : 16
+  Expected: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  Actual  : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  [PASS] VPSLLW ymm, 16
 
-Test 4: VPSLLW ymm, ymm, 1
-Source: 23 01 67 45 ab 89 ef cd 55 55 aa aa ff 7f 00 80 01 00 ff ff 33 33 cc cc 0f 0f f0 f0 ff 00 00 ff 
-Result: 46 02 ce 8a 56 13 de 9b aa aa 54 55 fe ff 00 00 02 00 fe ff 66 66 98 99 1e 1e e0 e1 fe 01 00 fe 
-Comparison: PASS
-
-Test 5: VPSLLW ymm, ymm, 2
-Result: 8c 04 9c 15 ac 26 bc 37 54 55 a8 aa fc ff 00 00 04 00 fc ff cc cc 30 33 3c 3c c0 c3 fc 03 00 fc 
-Comparison: PASS
-
-Test 6: VPSLLW ymm, ymm, 15
-Result: 00 80 00 80 00 80 00 80 00 80 00 00 00 80 00 00 00 80 00 80 00 80 00 00 00 80 00 00 00 80 00 00 
-Comparison: PASS
-
---- Boundary Tests ---
-
-Test 7: Shift count 0 (no change)
-Result: 23 01 67 45 ab 89 ef cd 55 55 aa aa ff 7f 00 80 
-Comparison: PASS
-
-Test 8: Shift count 16 (should be 0)
-Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Comparison: PASS
-
-Test 9: Shift count 17 (should be 0)
-Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Comparison: PASS
+=== VPSLLW tests PASSED ===

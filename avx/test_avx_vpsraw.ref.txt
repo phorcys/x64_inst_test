@@ -1,40 +1,32 @@
-=== Testing VPSRAW (Vector Packed Shift Right Arithmetic Word) ===
+=== VPSRAW tests ===
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 
+  imm     : 1
+  Expected: 00 00 01 c0 02 20 04 e0 08 10 10 d0 20 08 40 c8 
+  Actual  : 00 00 01 c0 02 20 04 e0 08 10 10 d0 20 08 40 c8 
+  [PASS] VPSRAW xmm, 1
 
---- 128-bit Tests ---
-Test 1: VPSRAW xmm, xmm, 1
-Source: 34 12 78 56 ff 7f 00 80 01 00 ff ff 33 33 cc cc 
-Result: 1a 09 3c 2b ff 3f 00 c0 00 00 ff ff 99 19 66 e6 
-Comparison: PASS
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 
+  imm     : 2
+  Expected: 00 00 00 e0 01 10 02 f0 04 08 08 e8 10 04 20 e4 
+  Actual  : 00 00 00 e0 01 10 02 f0 04 08 08 e8 10 04 20 e4 
+  [PASS] VPSRAW xmm, 2
 
-Test 2: VPSRAW xmm, xmm, 4
-Result: 23 01 67 05 ff 07 00 f8 00 00 ff ff 33 03 cc fc 
-Comparison: PASS
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 01 08 02 84 04 42 08 c1 10 21 20 a2 40 14 80 98 
+  imm     : 3
+  Expected: 00 00 00 f0 00 08 01 f8 02 04 04 f4 08 02 10 f2 00 04 00 c2 00 21 01 e2 88 10 40 f4 20 0a 40 cc 
+  Actual  : 00 00 00 f0 00 08 01 f8 02 04 04 f4 08 02 10 f2 00 01 80 f0 40 08 21 f8 22 04 44 f4 88 02 10 f3 
+  [FAIL] VPSRAW ymm, 3
 
-Test 3: VPSRAW xmm, xmm, 15
-Result: 00 00 00 00 00 00 ff ff 00 00 ff ff 00 00 ff ff 
-Comparison: PASS
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 
+  imm     : 15
+  Expected: 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  Actual  : 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  [PASS] VPSRAW xmm, 15
 
---- 256-bit Tests ---
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 01 08 02 84 04 42 08 c1 10 21 20 a2 40 14 80 98 
+  imm     : 16
+  Expected: 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  Actual  : 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  [PASS] VPSRAW ymm, 16
 
-Test 4: VPSRAW ymm, ymm, 1
-Source: 34 12 78 56 ff 7f 00 80 01 00 ff ff 33 33 cc cc 34 12 78 56 ff 7f 00 80 01 00 ff ff 33 33 cc cc 
-Result: 1a 09 3c 2b ff 3f 00 c0 00 00 ff ff 99 19 66 e6 1a 09 3c 2b ff 3f 00 c0 00 00 ff ff 99 19 66 e6 
-Comparison: PASS
-
-Test 5: VPSRAW ymm, ymm, 4
-Result: 23 01 67 05 ff 07 00 f8 00 00 ff ff 33 03 cc fc 23 01 67 05 ff 07 00 f8 00 00 ff ff 33 03 cc fc 
-Comparison: PASS
-
-Test 6: VPSRAW ymm, ymm, 15
-Result: 00 00 00 00 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 00 00 00 00 ff ff 00 00 ff ff 00 00 ff ff 
-Comparison: PASS
-
---- Boundary Tests ---
-
-Test 7: Shift count 0 (no change)
-Result: 34 12 78 56 ff 7f 00 80 01 00 ff ff 33 33 cc cc 
-Comparison: PASS
-
-Test 8: Shift count 16 (should be all sign bits)
-Result: 00 00 00 00 00 00 ff ff 00 00 ff ff 00 00 ff ff 
-Comparison: PASS
+=== VPSRAW tests FAILED ===
