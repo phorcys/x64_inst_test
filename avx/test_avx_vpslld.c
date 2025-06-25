@@ -3,211 +3,414 @@
 #include <stdint.h>
 #include <string.h>
 
-// 定义128位向量类型（4个32位整数）
-typedef union {
-    __m128i v;
-    int32_t i[4];
-} v4si;
+// 测试VPSLLD指令
+int test_vpslld() {
+    int ret = 0;
+    const char* test_name = "VPSLLD tests  128-bits";
+    
+    printf("=== %s ===\n", test_name);
+    
+    // 测试数据
+    ALIGNED(32) int32_t src_data[8] = {
+        0x00000001, 0x00000002, 0x00000004, 0x00000008,
+        0x00000010, 0x00000020, 0x00000040, 0x00000080
+    };
+    
+    // 测试128位立即数移位
+    {
+        __m128i src = _mm_load_si128((__m128i*)src_data);
+        __m128i dst;
+        
+        // vpslld xmm, xmm, imm8 (移位1位)
+        asm volatile (
+            "vpslld $1, %1, %0"
+            : "=x"(dst)
+            : "x"(src)
+        );
+        
+        __m128i expected = _mm_setr_epi32(
+            0x00000002, 0x00000004, 0x00000008, 0x00000010
+        );
+        print_xmm("  SRC     ", src);
+        printf("  imm     : %d\n", 1);
+        print_xmm("  Expected", expected);
+        print_xmm("  Actual  ", dst);        
+        if (!cmp_xmm(dst, expected)) {
+            printf("  [FAIL] VPSLLD xmm, xmm, 1\n\n");
+            ret = 1;
+        } else {
+            printf("  [PASS] VPSLLD xmm, xmm, 1\n\n");
+        }
+    }
+    
+    // 测试128位寄存器移位
+    {
+        __m128i src = _mm_load_si128((__m128i*)src_data);
+        __m128i count = _mm_set1_epi32(2);
+        __m128i dst;
+        
+        // vpslld xmm, xmm, xmm (使用vmovd加载移位值)
+        asm volatile (
+            "vmovd %1, %%xmm2\n\t"
+            "vpslld %%xmm2, %2, %0"
+            : "=x"(dst)
+            : "r"(_mm_cvtsi128_si32(count)), "x"(src)
+            : "xmm2"
+        );
+        
+        __m128i expected = _mm_setr_epi32(
+            0x00000004, 0x00000008, 0x00000010, 0x00000020
+        );
+        print_xmm("  SRC     ", src);
+        print_xmm("  COUNT   ", count);
+        print_xmm("  Expected", expected);
+        print_xmm("  Actual  ", dst);        
+        if (!cmp_xmm(dst, expected)) {
+            printf("  [FAIL] VPSLLD xmm, xmm, xmm (count=2)\n\n");
+            ret = 1;
+        } else {
+            printf("  [PASS] VPSLLD xmm, xmm, xmm (count=2)\n\n");
+        }
+    }
+    
+    // 测试128位内存操作数移位
+    {
+        __m128i src = _mm_load_si128((__m128i*)src_data);
+        ALIGNED(16) int32_t shift_val = 1;
+        __m128i dst;
+        
+        // vpslld xmm, xmm, m128
+        asm volatile (
+            "vmovd %1, %%xmm2\n\t"
+            "vpslld %%xmm2, %2, %0"
+            : "=x"(dst)
+            : "r"(shift_val), "x"(src)
+            : "xmm2"
+        );
+        
+        __m128i expected = _mm_setr_epi32(
+            0x00000002, 0x00000004, 0x00000008, 0x00000010
+        );
+        
+        print_xmm("  SRC     ", src);
+        printf("  mem_shift: %d\n", shift_val);
+        print_xmm("  Expected", expected);
+        print_xmm("  Actual  ", dst);
+        if (!cmp_xmm(dst, expected)) {
+            printf("  [FAIL] VPSLLD xmm, xmm, m128 (shift=1)\n\n");
+            ret = 1;
+        } else {
+            printf("  [PASS] VPSLLD xmm, xmm, m128 (shift=1)\n\n");
+        }
+    }
 
-// 定义256位向量类型（8个32位整数）
-typedef union {
-    __m256i v;
-    int32_t i[8];
-} v8si;
-
-void test_vpslld_128() {
-    printf("=== Testing 128-bit VPSLLD instruction ===\n");
-    
-    // 测试用例1: 基本逻辑左移（立即数）
+    // 测试256位内存操作数移位
     {
-        v4si src = { .i = {0x12345678, 0x87654321, 0x00000001, 0xFFFFFFFF} };
-        v4si result;
-        uint8_t shift = 4;
+        __m256i src = _mm256_load_si256((__m256i*)src_data);
+        ALIGNED(16) int32_t shift_val = 2;
+        __m256i dst;
         
-        __asm__ __volatile__ (
-            "vpslld $4, %1, %0"
-            : "=x" (result.v)
-            : "x" (src.v)
+        // vpslld ymm, ymm, m128
+        asm volatile (
+            "vmovd %1, %%xmm2\n\t"
+            "vpslld %%xmm2, %2, %0"
+            : "=x"(dst)
+            : "r"(shift_val), "x"(src)
+            : "xmm2"
         );
         
-        v4si expected = {
-            .i = {
-                src.i[0] << shift,
-                src.i[1] << shift,
-                src.i[2] << shift,
-                src.i[3] << shift
+        __m256i expected = _mm256_setr_epi32(
+            0x00000004, 0x00000008, 0x00000010, 0x00000020,
+            0x00000040, 0x00000080, 0x00000100, 0x00000200
+        );
+        
+        print_ymm("  SRC     ", src);
+        printf("  mem_shift: %d\n", shift_val);
+        print_ymm("  Expected", expected);
+        print_ymm("  Actual  ", dst);
+        if (!cmp_ymm(dst, expected)) {
+            printf("  [FAIL] VPSLLD ymm, ymm, m128 (shift=2)\n\n");
+            ret = 1;
+        } else {
+            printf("  [PASS] VPSLLD ymm, ymm, m128 (shift=2)\n\n");
+        }
+    }
+    
+    // 测试256位立即数移位
+    {
+        __m256i src = _mm256_load_si256((__m256i*)src_data);
+        __m256i dst;
+        
+        // vpslld ymm, ymm, imm8 (移位3位)
+        asm volatile (
+            "vpslld $3, %1, %0"
+            : "=x"(dst)
+            : "x"(src)
+        );
+        
+        __m256i expected = _mm256_setr_epi32(
+            0x00000008, 0x00000010, 0x00000020, 0x00000040,
+            0x00000080, 0x00000100, 0x00000200, 0x00000400
+        );
+        
+        print_ymm("  SRC     ", src);
+        printf("  imm     : %d\n", 3);
+        print_ymm("  Expected", expected);
+        print_ymm("  Actual  ", dst);
+        if (!cmp_ymm(dst, expected)) {
+            printf("  [FAIL] VPSLLD ymm, ymm, 3\n\n");
+            ret = 1;
+        } else {
+            printf("  [PASS] VPSLLD ymm, ymm, 3\n\n");
+        }
+    }
+    
+    // 测试256位寄存器移位
+    {
+        __m256i src = _mm256_load_si256((__m256i*)src_data);
+        __m128i count = _mm_set1_epi32(4);
+        __m256i dst;
+        
+        // vpslld ymm, ymm, xmm (使用vmovd加载移位值)
+        asm volatile (
+            "vmovd %1, %%xmm2\n\t"
+            "vpslld %%xmm2, %2, %0"
+            : "=x"(dst)
+            : "r"(_mm_cvtsi128_si32(count)), "x"(src)
+            : "xmm2"
+        );
+        
+        __m256i expected = _mm256_setr_epi32(
+            0x00000010, 0x00000020, 0x00000040, 0x00000080,
+            0x00000100, 0x00000200, 0x00000400, 0x00000800
+        );
+        
+        print_ymm("  SRC     ", src);
+        print_xmm("  COUNT   ", count);
+        print_ymm("  Expected", expected);
+        print_ymm("  Actual  ", dst);
+        if (!cmp_ymm(dst, expected)) {
+            printf("  [FAIL] VPSLLD ymm, ymm, xmm (count=4)\n\n");
+            ret = 1;
+        } else {
+            printf("  [PASS] VPSLLD ymm, ymm, xmm (count=4)\n\n");
+        }
+    }
+    
+    // 测试128位边界情况
+    {
+        __m128i src = _mm_setr_epi32(0xFFFFFFFF, 0x7FFFFFFF, 0x80000000, 0x00000001);
+        ALIGNED(16) int32_t shift_val = 31;
+        __m128i count = _mm_set1_epi32(31);
+        
+        // 测试31位移位 - 立即数
+        {
+            __m128i dst;
+            asm volatile ("vpslld $31, %1, %0" : "=x"(dst) : "x"(src));
+            __m128i expected = _mm_setr_epi32(0x80000000, 0x80000000, 0x00000000, 0x80000000);
+            print_xmm("  SRC     ", src);
+            printf("  imm     : %d\n", 31);
+            print_xmm("  Expected", expected);
+            print_xmm("  Actual  ", dst);
+            if (!cmp_xmm(dst, expected)) {
+                printf("  [FAIL] VPSLLD xmm, xmm, 31 (imm)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD xmm, xmm, 31 (imm)\n\n");
             }
-        };
-        
-        printf("Test 1: VPSLLD(immediate shift %d)\n", shift);
-        printf("  Input:    [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               src.i[0], src.i[1], src.i[2], src.i[3]);
-        printf("  Result:   [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               result.i[0], result.i[1], result.i[2], result.i[3]);
-        printf("  Expected: [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               expected.i[0], expected.i[1], expected.i[2], expected.i[3]);
-        
-        if (memcmp(&result, &expected, sizeof(v4si))) {
-            printf("  [ERROR] Result mismatch!\n");
-        } else {
-            printf("  [OK]\n");
         }
-    }
-    
-    // 测试用例2: 移位0（立即数）
-    {
-        v4si src = { .i = {0x12345678, 0x87654321, 0x00000001, 0xFFFFFFFF} };
-        v4si result;
-        uint8_t shift = 0;
         
-        __asm__ __volatile__ (
-            "vpslld $0, %1, %0"
-            : "=x" (result.v)
-            : "x" (src.v)
-        );
-        
-        v4si expected = src; // 直接赋值整个联合体
-        
-        printf("Test 2: VPSLLD(immediate shift %d)\n", shift);
-        printf("  Input:    [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               src.i[0], src.i[1], src.i[2], src.i[3]);
-        printf("  Result:   [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               result.i[0], result.i[1], result.i[2], result.i[3]);
-        printf("  Expected: [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               expected.i[0], expected.i[1], expected.i[2], expected.i[3]);
-        
-        if (memcmp(&result, &expected, sizeof(v4si))) {
-            printf("  [ERROR] Result mismatch!\n");
-        } else {
-            printf("  [OK]\n");
-        }
-    }
-    
-    // 测试用例3: 边界情况（移位31）
-    {
-        v4si src = { .i = {0x00000001, 0x00000002, 0x00000004, 0x00000008} };
-        v4si result;
-        uint8_t shift = 31;
-        
-        __asm__ __volatile__ (
-            "vpslld $31, %1, %0"
-            : "=x" (result.v)
-            : "x" (src.v)
-        );
-        
-        v4si expected = {
-            .i = {
-                src.i[0] << shift,
-                src.i[1] << shift,
-                src.i[2] << shift,
-                src.i[3] << shift
+        // 测试31位移位 - 寄存器
+        {
+            __m128i dst;
+            asm volatile ("vmovd %1, %%xmm2\n\t"
+                         "vpslld %%xmm2, %2, %0"
+                         : "=x"(dst)
+                         : "r"(_mm_cvtsi128_si32(count)), "x"(src)
+                         : "xmm2");
+            __m128i expected = _mm_setr_epi32(0x80000000, 0x80000000, 0x00000000, 0x80000000);
+            print_xmm("  SRC     ", src);
+            print_xmm("  COUNT   ", count);
+            print_xmm("  Expected", expected);
+            print_xmm("  Actual  ", dst);
+            if (!cmp_xmm(dst, expected)) {
+                printf("  [FAIL] VPSLLD xmm, xmm, xmm (count=31)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD xmm, xmm, xmm (count=31)\n\n");
             }
-        };
-        
-        printf("Test 3: VPSLLD(immediate shift %d)\n", shift);
-        printf("  Input:    [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               src.i[0], src.i[1], src.i[2], src.i[3]);
-        printf("  Result:   [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               result.i[0], result.i[1], result.i[2], result.i[3]);
-        printf("  Expected: [0x%08X, 0x%08X, 0x%08X, 0x%08X]\n", 
-               expected.i[0], expected.i[1], expected.i[2], expected.i[3]);
-        
-        if (memcmp(&result, &expected, sizeof(v4si))) {
-            printf("  [ERROR] Result mismatch!\n");
-        } else {
-            printf("  [OK]\n");
         }
-    }
-}
-
-void test_vpslld_256() {
-    printf("=== Testing 256-bit VPSLLD instruction ===\n");
-    
-    // 测试用例1: 基本逻辑左移（立即数）
-    {
-        v8si src = { .i = {
-            0x12345678, 0x87654321, 0x00000001, 0xFFFFFFFF,
-            0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00
-        } };
-        v8si result;
-        uint8_t shift = 8;
         
-        __asm__ __volatile__ (
-            "vpslld $8, %1, %0"
-            : "=x" (result.v)
-            : "x" (src.v)
-        );
-        
-        v8si expected = {
-            .i = {
-                src.i[0] << shift,
-                src.i[1] << shift,
-                src.i[2] << shift,
-                src.i[3] << shift,
-                src.i[4] << shift,
-                src.i[5] << shift,
-                src.i[6] << shift,
-                src.i[7] << shift
+        // 测试31位移位 - 内存
+        {
+            __m128i dst;
+            asm volatile ("vmovd %1, %%xmm2\n\t"
+                         "vpslld %%xmm2, %2, %0"
+                         : "=x"(dst)
+                         : "r"(shift_val), "x"(src)
+                         : "xmm2");
+            __m128i expected = _mm_setr_epi32(0x80000000, 0x80000000, 0x00000000, 0x80000000);
+            print_xmm("  SRC     ", src);
+            printf("  mem_shift: %d\n", shift_val);
+            print_xmm("  Expected", expected);
+            print_xmm("  Actual  ", dst);
+            if (!cmp_xmm(dst, expected)) {
+                printf("  [FAIL] VPSLLD xmm, xmm, m128 (shift=31)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD xmm, xmm, m128 (shift=31)\n\n");
             }
-        };
+        }
         
-        printf("Test 1: VPSLLD(immediate shift %d)\n", shift);
-        printf("  Input:    [");
-        for (int i = 0; i < 8; i++) printf("0x%08X%s", src.i[i], i<7 ? ", " : "");
-        printf("]\n");
-        printf("  Result:   [");
-        for (int i = 0; i < 8; i++) printf("0x%08X%s", result.i[i], i<7 ? ", " : "");
-        printf("]\n");
-        printf("  Expected: [");
-        for (int i = 0; i < 8; i++) printf("0x%08X%s", expected.i[i], i<7 ? ", " : "");
-        printf("]\n");
+        // 测试32位移位 - 立即数
+        {
+            __m128i dst;
+            asm volatile ("vpslld $32, %1, %0" : "=x"(dst) : "x"(src));
+            __m128i expected = _mm_setzero_si128();
+            print_xmm("  SRC     ", src);
+            printf("  imm     : %d\n", 32);
+            print_xmm("  Expected", expected);
+            print_xmm("  Actual  ", dst);
+            if (!cmp_xmm(dst, expected)) {
+                printf("  [FAIL] VPSLLD xmm, xmm, 32 (imm)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD xmm, xmm, 32 (imm)\n\n");
+            }
+        }
         
-        if (memcmp(&result, &expected, sizeof(v8si))) {
-            printf("  [ERROR] Result mismatch!\n");
-        } else {
-            printf("  [OK]\n");
+        // 测试33位移位 - 立即数
+        {
+            __m128i dst;
+            asm volatile ("vpslld $33, %1, %0" : "=x"(dst) : "x"(src));
+            __m128i expected = _mm_setzero_si128();
+            print_xmm("  SRC     ", src);
+            printf("  imm     : %d\n", 33);
+            print_xmm("  Expected", expected);
+            print_xmm("  Actual  ", dst);
+            if (!cmp_xmm(dst, expected)) {
+                printf("  [FAIL] VPSLLD xmm, xmm, 33 (imm)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD xmm, xmm, 33 (imm)\n\n");
+            }
         }
     }
     
-    // 测试用例2: 移位0（立即数）
+    // 测试256位边界情况
     {
-        v8si src = { .i = {
-            0x12345678, 0x87654321, 0x00000001, 0xFFFFFFFF,
-            0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00
-        } };
-        v8si result;
-        uint8_t shift = 0;
-        
-        __asm__ __volatile__ (
-            "vpslld $0, %1, %0"
-            : "=x" (result.v)
-            : "x" (src.v)
+        __m256i src = _mm256_setr_epi32(
+            0xFFFFFFFF, 0x7FFFFFFF, 0x80000000, 0x00000001,
+            0xFFFFFFFF, 0x7FFFFFFF, 0x80000000, 0x00000001
         );
+        ALIGNED(16) int32_t shift_val = 31;
+        __m128i count = _mm_set1_epi32(31);
         
-        v8si expected = src; // 直接赋值整个联合体
+        // 测试31位移位 - 立即数
+        {
+            __m256i dst;
+            asm volatile ("vpslld $31, %1, %0" : "=x"(dst) : "x"(src));
+            __m256i expected = _mm256_setr_epi32(
+                0x80000000, 0x80000000, 0x00000000, 0x80000000,
+                0x80000000, 0x80000000, 0x00000000, 0x80000000
+            );
+            print_ymm("  SRC     ", src);
+            printf("  imm     : %d\n", 31);
+            print_ymm("  Expected", expected);
+            print_ymm("  Actual  ", dst);
+            if (!cmp_ymm(dst, expected)) {
+                printf("  [FAIL] VPSLLD ymm, ymm, 31 (imm)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD ymm, ymm, 31 (imm)\n\n");
+            }
+        }
         
-        printf("Test 2: VPSLLD(immediate shift %d)\n", shift);
-        printf("  Input:    [");
-        for (int i = 0; i < 8; i++) printf("0x%08X%s", src.i[i], i<7 ? ", " : "");
-        printf("]\n");
-        printf("  Result:   [");
-        for (int i = 0; i < 8; i++) printf("0x%08X%s", result.i[i], i<7 ? ", " : "");
-        printf("]\n");
-        printf("  Expected: [");
-        for (int i = 0; i < 8; i++) printf("0x%08X%s", expected.i[i], i<7 ? ", " : "");
-        printf("]\n");
+        // 测试31位移位 - 寄存器
+        {
+            __m256i dst;
+            asm volatile ("vmovd %1, %%xmm2\n\t"
+                         "vpslld %%xmm2, %2, %0"
+                         : "=x"(dst)
+                         : "r"(_mm_cvtsi128_si32(count)), "x"(src)
+                         : "xmm2");
+            __m256i expected = _mm256_setr_epi32(
+                0x80000000, 0x80000000, 0x00000000, 0x80000000,
+                0x80000000, 0x80000000, 0x00000000, 0x80000000
+            );
+            print_ymm("  SRC     ", src);
+            print_xmm("  COUNT   ", count);
+            print_ymm("  Expected", expected);
+            print_ymm("  Actual  ", dst);
+            if (!cmp_ymm(dst, expected)) {
+                printf("  [FAIL] VPSLLD ymm, ymm, xmm (count=31)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD ymm, ymm, xmm (count=31)\n\n");
+            }
+        }
         
-        if (memcmp(&result, &expected, sizeof(v8si))) {
-            printf("  [ERROR] Result mismatch!\n");
-        } else {
-            printf("  [OK]\n");
+        // 测试31位移位 - 内存
+        {
+            __m256i dst;
+            asm volatile ("vpslld %1, %2, %0"
+                         : "=x"(dst)
+                         : "m"(shift_val), "x"(src));
+            __m256i expected = _mm256_setr_epi32(
+                0x80000000, 0x80000000, 0x00000000, 0x80000000,
+                0x80000000, 0x80000000, 0x00000000, 0x80000000
+            );
+            print_ymm("  SRC     ", src);
+            printf("  mem_shift: %d\n", shift_val);
+            print_ymm("  Expected", expected);
+            print_ymm("  Actual  ", dst);
+            if (!cmp_ymm(dst, expected)) {
+                printf("  [FAIL] VPSLLD ymm, ymm, m128 (shift=31)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD ymm, ymm, m128 (shift=31)\n\n");
+            }
+        }
+        
+        // 测试32位移位 - 立即数
+        {
+            __m256i dst;
+            asm volatile ("vpslld $32, %1, %0" : "=x"(dst) : "x"(src));
+            __m256i expected = _mm256_setzero_si256();
+            print_ymm("  SRC     ", src);
+            printf("  imm     : %d\n", 32);
+            print_ymm("  Expected", expected);
+            print_ymm("  Actual  ", dst);
+            if (!cmp_ymm(dst, expected)) {
+                printf("  [FAIL] VPSLLD ymm, ymm, 32 (imm)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD ymm, ymm, 32 (imm)\n\n");
+            }
+        }
+        
+        // 测试33位移位 - 立即数
+        {
+            __m256i dst;
+            asm volatile ("vpslld $33, %1, %0" : "=x"(dst) : "x"(src));
+            __m256i expected = _mm256_setzero_si256();
+            print_ymm("  SRC     ", src);
+            printf("  imm     : %d\n", 33);
+            print_ymm("  Expected", expected);
+            print_ymm("  Actual  ", dst);
+            if (!cmp_ymm(dst, expected)) {
+                printf("  [FAIL] VPSLLD ymm, ymm, 33 (imm)\n\n");
+                ret = 1;
+            } else {
+                printf("  [PASS] VPSLLD ymm, ymm, 33 (imm)\n\n");
+            }
         }
     }
+    
+    printf("=== %s %s ===\n", test_name, ret ? "FAILED" : "PASSED");
+    return ret;
 }
 
 int main() {
-    test_vpslld_128();
-    test_vpslld_256();
-    printf("All VPSLLD tests completed successfully.\n");
-    return 0;
+    return test_vpslld();
 }
