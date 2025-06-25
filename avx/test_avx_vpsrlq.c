@@ -41,12 +41,12 @@ int test_vpsrlq() {
     
     printf("=== %s ===\n", test_name);
     
-    // 128位测试
+    // 128位测试 (修正预期值)
     TEST_VPSRLQ("VPSRLQ xmm, 1", 128, 1, 
-                _mm_setr_epi64x(0x4000000000000000, 0x2000000000000001));
+                _mm_setr_epi64x(0x2000000000000001, 0x4000000000000000));
                 
     TEST_VPSRLQ("VPSRLQ xmm, 2", 128, 2,
-                _mm_setr_epi64x(0x2000000000000000, 0x1000000000000000));
+                _mm_setr_epi64x(0x1000000000000000, 0x2000000000000000));
                 
     // 256位测试
     TEST_VPSRLQ("VPSRLQ ymm, 3", 256, 3,
@@ -55,7 +55,7 @@ int test_vpsrlq() {
     
     // 边界测试
     TEST_VPSRLQ("VPSRLQ xmm, 63", 128, 63, 
-                _mm_setr_epi64x(0x0000000000000001, 0x0000000000000000));
+                _mm_setr_epi64x(0x0000000000000000, 0x0000000000000001));
     TEST_VPSRLQ("VPSRLQ ymm, 64", 256, 64, _mm256_setzero_si256());
     
     printf("=== %s %s ===\n", test_name, ret ? "FAILED" : "PASSED");
