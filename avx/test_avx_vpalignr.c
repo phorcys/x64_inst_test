@@ -36,17 +36,24 @@ static void test_vpalignr_128() {
         0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F
     };
 
-    // 测试不同偏移量 (VPALIGNR指令实际上只使用低4位偏移量，所以测试0-15)
+    // 测试不同偏移量 (VPALIGNR指令只使用低4位偏移量，有效范围0-15)
     for (int offset = 0; offset < 32; offset++) {
         ALIGNED(16) uint8_t result[16] = {0};
         ALIGNED(16) uint8_t expected[16] = {0};
         
         // 计算预期结果
-        int effective_offset = offset % 16;  // VPALIGNR只使用低4位偏移量
-        int copy_len = 16 - effective_offset;
-        memcpy(expected, src2 + effective_offset, copy_len);
-        if (copy_len < 16) {
-            memcpy(expected + copy_len, src1, 16 - copy_len);
+        memset(expected, 0, 16);
+        if(offset < 16) {
+            // 如果偏移量小于16，从src2开始复制
+            int copy_len = 16 - offset;
+            memcpy(expected, src2 + offset, copy_len);
+            if (copy_len < 16) {
+                memcpy(expected + copy_len, src1, 16 - copy_len);
+            }
+        } else {
+            // 如果偏移量大于等于16，从src1开始复制
+            int copy_len = offset - 16;
+            memcpy(expected, src1 + copy_len, 16 - copy_len);
         }
         
         __m128i a = _mm_load_si128((__m128i*)src1);
@@ -93,6 +100,7 @@ static void test_vpalignr_128() {
         case 29: TEST_VPALIGNR_128(29); break;
         case 30: TEST_VPALIGNR_128(30); break;
         case 31: TEST_VPALIGNR_128(31); break;
+        case 32: TEST_VPALIGNR_128(32); break;
         default: break;
     }
         
@@ -100,14 +108,8 @@ static void test_vpalignr_128() {
         
         printf("\nOffset %d:\n", offset);
         print_result("Src1", src1, 16);
-        // 安全打印 Src2，避免越界
-        if (effective_offset < 16) {
-            print_result("Src2", src2, 16);
-        } else {
-            // 偏移量超出时只打印16个0
-            uint8_t zeros[16] = {0};
-            print_result("Src2", zeros, 16);
-        }
+        print_result("Src2", src2, 16);
+
         print_result("Result", result, 16);
         print_result("Expected", expected, 16);
         
@@ -136,26 +138,28 @@ static void test_vpalignr_256() {
         0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F
     };
 
-    // 测试不同偏移量 (VPALIGNR指令实际上只使用低4位偏移量，所以测试0-15)
-    for (int offset = 0; offset < 32; offset++) {
+    // 测试不同偏移量 (VPALIGNR指令只使用低4位偏移量，有效范围0-15)
+    for (int offset = 0; offset < 33; offset++) {
         ALIGNED(32) uint8_t result[32] = {0};
         ALIGNED(32) uint8_t expected[32] = {0};
         
         // 计算预期结果 (256位版本处理两个128位lane)
-        int effective_offset = offset % 16;  // VPALIGNR只使用低4位偏移量
-        int copy_len = 16 - effective_offset;
-        
-        // 高位lane
-        memcpy(expected, src2 + effective_offset, copy_len);
-        if (copy_len < 16) {
-            memcpy(expected + copy_len, src1, 16 - copy_len);
+        memset(expected, 0, 32);
+        if(offset < 16) {
+            int copy_len = 16 - offset;
+            memcpy(expected, src2 + offset, copy_len);
+            memcpy(expected +16, src2 +16 + offset, copy_len);
+            if (copy_len < 16) {
+                memcpy(expected + copy_len, src1, 16 - copy_len);
+                memcpy(expected + 16 + copy_len, src1 + 16, 16 - copy_len);
+            }
+        } else {
+            // 如果偏移量大于等于16，从src1开始复制
+            int copy_len = offset - 16;
+            memcpy(expected, src1 + copy_len, 16 - copy_len);
+            memcpy(expected + 16, src1 + 16 + copy_len, 16 - copy_len);
         }
         
-        // 低位lane
-        memcpy(expected + 16, src2 + 16 + effective_offset, copy_len);
-        if (copy_len < 16) {
-            memcpy(expected + 16 + copy_len, src1 + 16, 16 - copy_len);
-        }
         
         __m256i a = _mm256_load_si256((__m256i*)src1);
         __m256i b = _mm256_load_si256((__m256i*)src2);
@@ -201,6 +205,7 @@ static void test_vpalignr_256() {
         case 29: TEST_VPALIGNR_256(29); break;
         case 30: TEST_VPALIGNR_256(30); break;
         case 31: TEST_VPALIGNR_256(31); break;
+        case 32: TEST_VPALIGNR_256(32); break;
         default: break;
     }
         
@@ -208,14 +213,7 @@ static void test_vpalignr_256() {
         
         printf("\nOffset %d:\n", offset);
         print_result("Src1", src1, 32);
-        // 安全打印 Src2，避免越界
-        if (effective_offset < 32) {
-            print_result("Src2", src2, 32);
-        } else {
-            // 偏移量超出时只打印32个0
-            uint8_t zeros[32] = {0};
-            print_result("Src2", zeros, 32);
-        }
+        print_result("Src2", src2, 32);
         print_result("Result", result, 32);
         print_result("Expected", expected, 32);
         
@@ -240,16 +238,23 @@ static void test_vpalignr_mem() {
     };
 
     // 测试不同偏移量 (VPALIGNR指令的立即数范围是0-255，我们测试0-15)
-    for (int offset = 0; offset < 16; offset++) {
+    for (int offset = 0; offset < 33; offset++) {
         ALIGNED(16) uint8_t result[16] = {0};
         ALIGNED(16) uint8_t expected[16] = {0};
         
-        // 计算预期结果 (VPALIGNR只使用低4位偏移量)
-        int effective_offset = offset % 16;
-        int copy_len = 16 - effective_offset;
-        memcpy(expected, src2 + effective_offset, copy_len);
-        if (copy_len < 16) {
-            memcpy(expected + copy_len, src1, 16 - copy_len);
+        // 计算预期结果
+        memset(expected, 0, 16);
+        if(offset < 16) {
+            // 如果偏移量小于16，从src2开始复制
+            int copy_len = 16 - offset;
+            memcpy(expected, src2 + offset, copy_len);
+            if (copy_len < 16) {
+                memcpy(expected + copy_len, src1, 16 - copy_len);
+            }
+        } else {
+            // 如果偏移量大于等于16，从src1开始复制
+            int copy_len = offset - 16;
+            memcpy(expected, src1 + copy_len, 16 - copy_len);
         }
         
         __m128i a = _mm_load_si128((__m128i*)src1);
@@ -280,6 +285,23 @@ static void test_vpalignr_mem() {
         case 13: TEST_VPALIGNR_MEM(13); break;
         case 14: TEST_VPALIGNR_MEM(14); break;
         case 15: TEST_VPALIGNR_MEM(15); break;
+        case 16: TEST_VPALIGNR_MEM(16); break;
+        case 17: TEST_VPALIGNR_MEM(17); break;
+        case 18: TEST_VPALIGNR_MEM(18); break;
+        case 19: TEST_VPALIGNR_MEM(19); break;
+        case 20: TEST_VPALIGNR_MEM(20); break;
+        case 21: TEST_VPALIGNR_MEM(21); break;
+        case 22: TEST_VPALIGNR_MEM(22); break;
+        case 23: TEST_VPALIGNR_MEM(23); break;
+        case 24: TEST_VPALIGNR_MEM(24); break;
+        case 25: TEST_VPALIGNR_MEM(25); break;
+        case 26: TEST_VPALIGNR_MEM(26); break;
+        case 27: TEST_VPALIGNR_MEM(27); break;
+        case 28: TEST_VPALIGNR_MEM(28); break;
+        case 29: TEST_VPALIGNR_MEM(29); break;
+        case 30: TEST_VPALIGNR_MEM(30); break;
+        case 31: TEST_VPALIGNR_MEM(31); break;
+        case 32: TEST_VPALIGNR_MEM(32); break;
         default: break;
     }
         
@@ -287,14 +309,7 @@ static void test_vpalignr_mem() {
         
         printf("\nOffset %d:\n", offset);
         print_result("Src1", src1, 16);
-        // 安全打印 Src2，避免越界
-        if (effective_offset < 16) {
-            print_result("Src2", src2, 16);
-        } else {
-            // 偏移量超出时只打印16个0
-            uint8_t zeros[16] = {0};
-            print_result("Src2", zeros, 16);
-        }
+        print_result("Src2", src2, 16);
         print_result("Result", result, 16);
         print_result("Expected", expected, 16);
         

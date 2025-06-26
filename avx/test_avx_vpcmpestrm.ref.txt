@@ -1,36 +1,95 @@
 === Testing VPCMPESTRM ===
 
 Test 1: Equal comparison (byte mode, bit mask)
-Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Input1: ABC
+Input2: ABC
+Len1: 3, Len2: 3, Imm8: 0x00
+Result: 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+EFLAGS: 0x00000AC3
   [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
   [X] ZF - Zero Flag
   [X] SF - Sign Flag
   [X] OF - Overflow Flag
+Expected result: 0x00000007
+Expected EFLAGS: CF=1, OF=1
+PASS: Result mask
+PASS: EFLAGS (CF, OF)
 
-Test 2: Unequal comparison (byte mode, byte mask)
-Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 2: Unequal comparison (byte mode, bit mask)
+Input1: HelloWorld12345
+Input2: HelloBox64
+Len1: 10, Len2: 10, Imm8: 0x00
+Result: 5f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+EFLAGS: 0x00000AC3
   [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
   [X] ZF - Zero Flag
   [X] SF - Sign Flag
   [X] OF - Overflow Flag
+Expected result: 0x0000001F
+Expected EFLAGS: CF=1, OF=1
+PASS: Result mask
+PASS: EFLAGS (CF, OF)
 
 Test 3: Boundary values (byte mode)
-Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Input1: 00 00 80 80 01 01 81 81 
+Input2: 00 FF 80 7F 01 FE 81 7E 
+Len1: 8, Len2: 8, Imm8: 0x00 (default equality)
+Result: 55 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+EFLAGS: 0x00000AC3
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+Expected result: 0x00000055
+Expected EFLAGS: CF=1, OF=1
+PASS: Result mask
+PASS: EFLAGS (CF, OF)
 
 Test 4: Length overflow
   [X] CF - Carry Flag
   [ ] ZF - Zero Flag
   [ ] SF - Sign Flag
   [X] OF - Overflow Flag
+PASS: EFLAGS
 
 Test 5: Empty strings
-Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Input1: (empty)
+Input2: (empty)
+Len1: 0, Len2: 0, Imm8: 0x00
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+EFLAGS: 0x000002C2
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+Expected result: 0
+Expected EFLAGS: ZF=1, SF=1
+PASS: EFLAGS (ZF, SF)
 
-Test 6: Negative length
-Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-
-Test 7: Word mode comparison
-Result mask: 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Test 6: Special values (NaN/zero)
+Input1: FF FF FF FF 00 00 00 00 
+Input2: FF FF FF FF 00 00 00 00 
+Len1: 8, Len2: 8, Imm8: 0x00
+Result: ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+EFLAGS: 0x00000AC3
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+Expected result: 0x000000FF
+Expected EFLAGS: CF=1, OF=1
+PASS: Result mask
+PASS: EFLAGS (CF, OF)
 
 === Test Summary ===
 Total failures: 0

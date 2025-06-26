@@ -214,7 +214,7 @@ static void __attribute__((unused)) print_vector256d(const char* name, __m256d v
 
 // 清除标志寄存器（EFLAGS）的宏
 #define CLEAR_FLAGS \
-    asm volatile ("push $0\n\tpopfq" : : : "cc", "memory")
+    asm volatile ("push $0\n\tpopfq\n\tpush $0\n\tpopfq" : : : "cc", "memory")
 
 // 打印128位整型向量（十六进制）
 static inline void print_m128i_hex(__m128i xmm, const char* name) {
