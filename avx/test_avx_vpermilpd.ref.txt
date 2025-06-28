@@ -1,11 +1,173 @@
-=== Testing VPERMILPD (256-bit) ===
-Source: 1.100000 2.200000 3.300000 4.400000 
-Control: 0x00000005
-Result: 2.200000 1.100000 4.400000 3.300000 
-Test PASSED
+Testing vpermilpd imm8 (xmm)
 
-=== Testing VPERMILPS (128-bit) ===
-Source: 1.100000 2.200000 
-Control: 0x00000001
-Result: 2.200000 1.100000 
-Test PASSED
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Testing vpermilpd reg (xmm)
+Input: [0.000000, -0.000000]
+Control control bits: [0, 0] (hex: 0x0, 0x0)
+Control int: [0, 0] (bits: [0, 0])
+Output: [0.000000, 0.000000]
+
+Input: [1.000000, -1.000000]
+Control control bits: [0, 0] (hex: 0x0, 0x0)
+Control int: [0, 0] (bits: [0, 0])
+Output: [1.000000, 1.000000]
+
+Input: [inf, -inf]
+Control control bits: [0, 0] (hex: 0x0, 0x0)
+Control int: [0, 0] (bits: [0, 0])
+Output: [inf, inf]
+
+Input: [nan, 123.456000]
+Control control bits: [0, 0] (hex: 0x0, 0x0)
+Control int: [0, 0] (bits: [0, 0])
+Output: [nan, nan]
+
+Input: [0.000000, -0.000000]
+Control control bits: [1, 0] (hex: 0xffffffffffffffff, 0x0)
+Control int: [18446744073709551615, 0] (bits: [1, 0])
+Output: [-0.000000, 0.000000]
+
+Input: [1.000000, -1.000000]
+Control control bits: [1, 0] (hex: 0xffffffffffffffff, 0x0)
+Control int: [18446744073709551615, 0] (bits: [1, 0])
+Output: [-1.000000, 1.000000]
+
+Input: [inf, -inf]
+Control control bits: [1, 0] (hex: 0xffffffffffffffff, 0x0)
+Control int: [18446744073709551615, 0] (bits: [1, 0])
+Output: [-inf, inf]
+
+Input: [nan, 123.456000]
+Control control bits: [1, 0] (hex: 0xffffffffffffffff, 0x0)
+Control int: [18446744073709551615, 0] (bits: [1, 0])
+Output: [123.456000, nan]
+
+Input: [0.000000, -0.000000]
+Control control bits: [0, 1] (hex: 0x0, 0xffffffffffffffff)
+Control int: [0, 18446744073709551615] (bits: [0, 1])
+Output: [0.000000, -0.000000]
+
+Input: [1.000000, -1.000000]
+Control control bits: [0, 1] (hex: 0x0, 0xffffffffffffffff)
+Control int: [0, 18446744073709551615] (bits: [0, 1])
+Output: [1.000000, -1.000000]
+
+Input: [inf, -inf]
+Control control bits: [0, 1] (hex: 0x0, 0xffffffffffffffff)
+Control int: [0, 18446744073709551615] (bits: [0, 1])
+Output: [inf, -inf]
+
+Input: [nan, 123.456000]
+Control control bits: [0, 1] (hex: 0x0, 0xffffffffffffffff)
+Control int: [0, 18446744073709551615] (bits: [0, 1])
+Output: [nan, 123.456000]
+
+Input: [0.000000, -0.000000]
+Control control bits: [1, 1] (hex: 0xffffffffffffffff, 0xffffffffffffffff)
+Control int: [18446744073709551615, 18446744073709551615] (bits: [1, 1])
+Output: [-0.000000, -0.000000]
+
+Input: [1.000000, -1.000000]
+Control control bits: [1, 1] (hex: 0xffffffffffffffff, 0xffffffffffffffff)
+Control int: [18446744073709551615, 18446744073709551615] (bits: [1, 1])
+Output: [-1.000000, -1.000000]
+
+Input: [inf, -inf]
+Control control bits: [1, 1] (hex: 0xffffffffffffffff, 0xffffffffffffffff)
+Control int: [18446744073709551615, 18446744073709551615] (bits: [1, 1])
+Output: [-inf, -inf]
+
+Input: [nan, 123.456000]
+Control control bits: [1, 1] (hex: 0xffffffffffffffff, 0xffffffffffffffff)
+Control int: [18446744073709551615, 18446744073709551615] (bits: [1, 1])
+Output: [123.456000, 123.456000]
+
+Testing vpermilpd imm8 (ymm)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Testing vpermilpd reg (ymm)
+Input: [0.000000, -0.000000, inf, -inf]
+Control control bits: [0, 0, 0, 0] (hex: 0x0, 0x0, 0x0, 0x0)
+Control int: [0, 0, 0, 0] (bits: [0, 0, 0, 0])
+Output: [0.000000, 0.000000, inf, inf]
+
+Input: [1.000000, -1.000000, 123.456000, nan]
+Control control bits: [0, 0, 0, 0] (hex: 0x0, 0x0, 0x0, 0x0)
+Control int: [0, 0, 0, 0] (bits: [0, 0, 0, 0])
+Output: [1.000000, 1.000000, 123.456000, 123.456000]
+
+Input: [0.000000, -0.000000, inf, -inf]
+Control control bits: [1, 0, 1, 0] (hex: 0xffffffffffffffff, 0x0, 0xffffffffffffffff, 0x0)
+Control int: [18446744073709551615, 0, 18446744073709551615, 0] (bits: [1, 0, 1, 0])
+Output: [-0.000000, 0.000000, -inf, inf]
+
+Input: [1.000000, -1.000000, 123.456000, nan]
+Control control bits: [1, 0, 1, 0] (hex: 0xffffffffffffffff, 0x0, 0xffffffffffffffff, 0x0)
+Control int: [18446744073709551615, 0, 18446744073709551615, 0] (bits: [1, 0, 1, 0])
+Output: [-1.000000, 1.000000, nan, 123.456000]
+
+Input: [0.000000, -0.000000, inf, -inf]
+Control control bits: [0, 1, 0, 1] (hex: 0x0, 0xffffffffffffffff, 0x0, 0xffffffffffffffff)
+Control int: [0, 18446744073709551615, 0, 18446744073709551615] (bits: [0, 1, 0, 1])
+Output: [0.000000, -0.000000, inf, -inf]
+
+Input: [1.000000, -1.000000, 123.456000, nan]
+Control control bits: [0, 1, 0, 1] (hex: 0x0, 0xffffffffffffffff, 0x0, 0xffffffffffffffff)
+Control int: [0, 18446744073709551615, 0, 18446744073709551615] (bits: [0, 1, 0, 1])
+Output: [1.000000, -1.000000, 123.456000, nan]
+
+Input: [0.000000, -0.000000, inf, -inf]
+Control control bits: [1, 1, 1, 1] (hex: 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff)
+Control int: [18446744073709551615, 18446744073709551615, 18446744073709551615, 18446744073709551615] (bits: [1, 1, 1, 1])
+Output: [-0.000000, -0.000000, -inf, -inf]
+
+Input: [1.000000, -1.000000, 123.456000, nan]
+Control control bits: [1, 1, 1, 1] (hex: 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff)
+Control int: [18446744073709551615, 18446744073709551615, 18446744073709551615, 18446744073709551615] (bits: [1, 1, 1, 1])
+Output: [-1.000000, -1.000000, nan, nan]
+
+All tests passed!

@@ -261,6 +261,20 @@ static inline void print_xmmd(const char* name, __m128d xmm) {
     printf("%s: [%.6f, %.6f]\n", name, d[0], d[1]);
 }
 
+// 打印双精度向量控制字
+static inline void print_control_bits(const char* name, __m128d ctrl) {
+    uint64_t *vals = (uint64_t*)&ctrl;
+    printf("%s control bits: [%lu, %lu] (hex: 0x%lx, 0x%lx)\n", 
+           name, vals[0] & 1, vals[1] & 1, vals[0], vals[1]);
+}
+
+static inline void print_control_bits_ymm(const char* name, __m256d ctrl) {
+    uint64_t *vals = (uint64_t*)&ctrl;
+    printf("%s control bits: [%lu, %lu, %lu, %lu] (hex: 0x%lx, 0x%lx, 0x%lx, 0x%lx)\n", 
+           name, vals[0] & 1, vals[1] & 1, vals[2] & 1, vals[3] & 1,
+           vals[0], vals[1], vals[2], vals[3]);
+}
+
 // 打印256位双精度向量
 static inline void print_ymmd(const char* name, __m256d ymm) {
     double d[4];
