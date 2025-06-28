@@ -55,7 +55,24 @@ static void test_vblendps() {
     );
     printf("Imm: 01010101 (0x55)\n");
     print_float_vec("Result", result, 8);
+    print_hex_float_vec("Result", result, 8);
     printf("\n");
+
+    // 测试imm=0xAA (交替选择)
+    __asm__ __volatile__(
+        "vmovaps %1, %%ymm0\n\t"
+        "vmovaps %2, %%ymm1\n\t"
+        "vblendps $0xAA, %%ymm1, %%ymm0, %%ymm0\n\t"
+        "vmovaps %%ymm0, %0\n\t"
+        : "=m"(result)
+        : "m"(src1), "m"(src2)
+        : "ymm0", "ymm1"
+    );
+    printf("Imm: 01010101 (0x55)\n");
+    print_float_vec("Result", result, 8);
+    print_hex_float_vec("Result", result, 8);
+    printf("\n");
+
 
     // 测试边界值
     float boundary1[8] ALIGNED(32) = {

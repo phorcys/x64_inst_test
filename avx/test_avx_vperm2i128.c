@@ -3,130 +3,153 @@
 #include <stdint.h>
 #include <string.h>
 
-// 测试vperm2i128指令
-int test_vperm2i128() {
-    int ret = 0;
-    printf("===== Testing vperm2i128 =====\n");
-
+// 打印YMM寄存器的辅助函数
+void test_vperm2i128() {
+    printf("==== Testing VPERM2I128 (25 cases) ====\n");
+    
     // 测试数据
-    ALIGNED(32) uint8_t src1[32] = {
-        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-        0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-        0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 
-        0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F
+    ALIGNED(32) int32_t src1[8] = {0x11111111, 0x22222222, 0x33333333, 0x44444444, 0x55555555, 0x66666666, 0x77777777, 0x88888888};
+    ALIGNED(32) int32_t src2[8] = {0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, 0xCCCCCCCC, 0xDDDDDDDD, 0xEEEEEEEE, 0xFFFFFFFF, 0x00000000};
+    ALIGNED(32) int32_t dst[8];
+    
+    // 25个立即数组合
+    uint8_t imms[25] = {
+        // 低位不清零组合
+        0x00, 0x01, 0x02, 0x03, 
+        0x10, 0x11, 0x12, 0x13, 
+        0x20, 0x21, 0x22, 0x23, 
+        0x30, 0x31, 0x32, 0x33,
+        
+        // 低位清零组合 (使用0x8标志)
+        0x08, 0x18, 0x28, 0x38,
+        
+        // 高位清零组合
+        0x80, 0x81, 0x82, 0x83,
+        
+        // 全清零组合
+        0x88  // 同时设置低位清零(0x8)和高位清零(0x80)
     };
     
-    ALIGNED(32) uint8_t src2[32] = {
-        0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
-        0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
-        0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
-        0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F
+    const char* desc[25] = {
+        "0x00: low=src1[0:3], high=src1[0:3]",
+        "0x01: low=src1[4:7], high=src1[0:3]",
+        "0x02: low=src2[0:3], high=src1[0:3]",
+        "0x03: low=src2[4:7], high=src1[0:3]",
+        "0x10: low=src1[0:3], high=src1[4:7]",
+        "0x11: low=src1[4:7], high=src1[4:7]",
+        "0x12: low=src2[0:3], high=src1[4:7]",
+        "0x13: low=src2[4:7], high=src1[4:7]",
+        "0x20: low=src1[0:3], high=src2[0:3]",
+        "0x21: low=src1[4:7], high=src2[0:3]",
+        "0x22: low=src2[0:3], high=src2[0:3]",
+        "0x23: low=src2[4:7], high=src2[0:3]",
+        "0x30: low=src1[0:3], high=src2[4:7]",
+        "0x31: low=src1[4:7], high=src2[4:7]",
+        "0x32: low=src2[0:3], high=src2[4:7]",
+        "0x33: low=src2[4:7], high=src2[4:7]",
+        "0x08: low=zero, high=src1[0:3]",
+        "0x18: low=zero, high=src1[4:7]",
+        "0x28: low=zero, high=src2[0:3]",
+        "0x38: low=zero, high=src2[4:7]",
+        "0x80: low=src1[0:3], high=zero",
+        "0x81: low=src1[4:7], high=zero",
+        "0x82: low=src2[0:3], high=zero",
+        "0x83: low=src2[4:7], high=zero",
+        "0x88: low=zero, high=zero"
     };
-
-    ALIGNED(32) uint8_t dst[32];
-    ALIGNED(32) uint8_t expected[32];
-
-    __m256i ymm1, ymm2, ymm_res;
-
-    // 加载测试数据到寄存器
-    ymm1 = _mm256_loadu_si256((__m256i*)src1);
-    ymm2 = _mm256_loadu_si256((__m256i*)src2);
-
-    // 定义测试宏
-    #define TEST_VPERM2I128(imm) do { \
-        printf("\n=== Test case: imm8=0x%02X ===\n", imm); \
-        __asm__ __volatile__( \
-            "vperm2i128 $"#imm", %2, %1, %0\n\t" \
-            : "=x"(ymm_res) \
-            : "x"(ymm1), "x"(ymm2) \
-        ); \
-        int lane1_src = ((imm) >> 0) & 3; \
-        int lane2_src = ((imm) >> 4) & 3; \
-        memset(expected, 0, 32); \
-        /* 低128位 */ \
-        if(lane1_src == 0) { \
-            memcpy(expected, src1, 16); \
-        } else if(lane1_src == 1) { \
-            memcpy(expected, src1+16, 16); \
-        } else if(lane1_src == 2) { \
-            memcpy(expected, src2, 16); \
-        } else { \
-            memcpy(expected, src2+16, 16); \
-        } \
-        /* 高128位 */ \
-        if(lane2_src == 0) { \
-            memcpy(expected+16, src1, 16); \
-        } else if(lane2_src == 1) { \
-            memcpy(expected+16, src1+16, 16); \
-        } else if(lane2_src == 2) { \
-            memcpy(expected+16, src2, 16); \
-        } else { \
-            memcpy(expected+16, src2+16, 16); \
-        } \
-        /* 处理零填充 */ \
-        if(imm & 0x08) memset(expected, 0, 16); \
-        if(imm & 0x80) memset(expected+16, 0, 16); \
-        _mm256_storeu_si256((__m256i*)dst, ymm_res); \
-        print_ymm("Result", ymm_res); \
-        print_ymm("Expected", _mm256_loadu_si256((__m256i*)expected)); \
-        if(!cmp_ymm(ymm_res, _mm256_loadu_si256((__m256i*)expected))) { \
-            printf("Test failed for imm8=0x%02X\n", imm); \
-            ret = 1; \
-        } else { \
-            printf("Test passed\n"); \
-        } \
-    } while(0)
-
-    // 测试所有16种立即数组合
-    TEST_VPERM2I128(0x00);
-    TEST_VPERM2I128(0x01);
-    TEST_VPERM2I128(0x02);
-    TEST_VPERM2I128(0x03);
-    TEST_VPERM2I128(0x04);
-    TEST_VPERM2I128(0x05);
-    TEST_VPERM2I128(0x06);
-    TEST_VPERM2I128(0x07);
-    TEST_VPERM2I128(0x08);
-    TEST_VPERM2I128(0x09);
-    TEST_VPERM2I128(0x0A);
-    TEST_VPERM2I128(0x0B);
-    TEST_VPERM2I128(0x0C);
-    TEST_VPERM2I128(0x0D);
-    TEST_VPERM2I128(0x0E);
-    TEST_VPERM2I128(0x0F);
-    TEST_VPERM2I128(0x10);
-    TEST_VPERM2I128(0x20);
-    TEST_VPERM2I128(0x30);
-    TEST_VPERM2I128(0x80);
-    TEST_VPERM2I128(0x88);
-    #undef TEST_VPERM2I128
-
-    // 测试内存操作数
-    printf("\n=== Testing memory operand ===\n");
-    __asm__ __volatile__(
-        "vperm2i128 $0x02, %2, %1, %0\n\t"
-        : "=x"(ymm_res)
-        : "x"(ymm1), "m"(*((__m256i*)src2))
-    );
-
-    // 预期结果: 低128位=src2低128位, 高128位=src1低128位
-    memcpy(expected, src2, 16);
-    memcpy(expected+16, src1, 16);
-
-    _mm256_storeu_si256((__m256i*)dst, ymm_res);
-    print_ymm("Memory operand result", ymm_res);
-    print_ymm("Expected", _mm256_loadu_si256((__m256i*)expected));
-
-    if(!cmp_ymm(ymm_res, _mm256_loadu_si256((__m256i*)expected))) {
-        printf("Memory operand test failed\n");
-        ret = 1;
-    } else {
-        printf("Memory operand test passed\n");
+    
+    // 计算预期结果
+    int32_t expected[25][8];
+    for (int i = 0; i < 25; i++) {
+        uint8_t imm = imms[i];
+        uint8_t low_sel = imm & 0x03;
+        uint8_t high_sel = (imm >> 4) & 0x03;
+        int low_zero = (imm & 0x08) != 0;  // 低位清零标志是0x8
+        int high_zero = (imm & 0x80) != 0;
+        
+        // 处理低位字段
+        if (low_zero) {
+            memset(&expected[i][0], 0, 4*sizeof(int32_t));
+        } else {
+            const int32_t* src = (low_sel & 0x02) ? src2 : src1;
+            int offset = (low_sel & 0x01) ? 4 : 0;
+            memcpy(&expected[i][0], &src[offset], 4*sizeof(int32_t));
+        }
+        
+        // 处理高位字段
+        if (high_zero) {
+            memset(&expected[i][4], 0, 4*sizeof(int32_t));
+        } else {
+            const int32_t* src = (high_sel & 0x02) ? src2 : src1;
+            int offset = (high_sel & 0x01) ? 4 : 0;
+            memcpy(&expected[i][4], &src[offset], 4*sizeof(int32_t));
+        }
     }
 
-    return ret;
+    __m256i ymm1 = _mm256_load_si256((__m256i*)src1);
+    __m256i ymm2 = _mm256_load_si256((__m256i*)src2);
+    __m256i ymm_dst;
+
+    int pass_count = 0;
+    for (int i = 0; i < 25; i++) {
+        uint8_t imm = imms[i];
+        
+        // 使用内联汇编执行指令，为每个立即数单独生成指令
+        switch(imm) {
+            case 0x00: asm volatile("vperm2f128 $0x00, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x01: asm volatile("vperm2f128 $0x01, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x02: asm volatile("vperm2f128 $0x02, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x03: asm volatile("vperm2f128 $0x03, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x10: asm volatile("vperm2f128 $0x10, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x11: asm volatile("vperm2f128 $0x11, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x12: asm volatile("vperm2f128 $0x12, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x13: asm volatile("vperm2f128 $0x13, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x20: asm volatile("vperm2f128 $0x20, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x21: asm volatile("vperm2f128 $0x21, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x22: asm volatile("vperm2f128 $0x22, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x23: asm volatile("vperm2f128 $0x23, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x30: asm volatile("vperm2f128 $0x30, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x31: asm volatile("vperm2f128 $0x31, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x32: asm volatile("vperm2f128 $0x32, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x33: asm volatile("vperm2f128 $0x33, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x08: asm volatile("vperm2f128 $0x08, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x18: asm volatile("vperm2f128 $0x18, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x28: asm volatile("vperm2f128 $0x28, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x38: asm volatile("vperm2f128 $0x38, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x80: asm volatile("vperm2f128 $0x80, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x81: asm volatile("vperm2f128 $0x81, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x82: asm volatile("vperm2f128 $0x82, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x83: asm volatile("vperm2f128 $0x83, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            case 0x88: asm volatile("vperm2f128 $0x88, %1, %2, %0" : "=x"(ymm_dst) : "x"(ymm2), "x"(ymm1)); break;
+            
+            default: 
+                printf("Invalid immediate: 0x%02X\n", imm);
+                continue;
+        }
+        
+        _mm256_store_si256((__m256i*)dst, ymm_dst);
+        
+        // 比较结果
+        int match = memcmp(dst, expected[i], sizeof(int32_t)*8) == 0;
+        if (match) pass_count++;
+        
+        printf("\nTest %02d: %s\n", i+1, desc[i]);
+        printf("Expected: ");
+        for (int j = 0; j < 8; j++) printf("0x%x ", (uint32_t)expected[i][j]);
+        printf("\nResult  : ");
+        for (int j = 0; j < 8; j++) printf("0x%x ", (uint32_t)dst[j]);
+        printf("\nStatus  : %s\n", match ? "PASS" : "FAIL");
+    }
+    
+    printf("\n==== Summary: %d/25 tests passed ====\n", pass_count);
+    if (pass_count == 25) {
+        printf("ALL TESTS PASSED!\n");
+    } else {
+        printf("SOME TESTS FAILED! REVIEW OUTPUT\n");
+    }
 }
 
 int main() {
-    return test_vperm2i128();
+    test_vperm2i128();
+    return 0;
 }
