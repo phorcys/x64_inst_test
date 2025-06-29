@@ -1,32 +1,20 @@
 #include "avx.h"
 #include <stdio.h>
 
-// 临时调试函数
-static void print_xmmd_debug(const char* name, __m128d xmm) {
-    double d[2];
-    _mm_storeu_pd(d, xmm);
-    printf("%s: [%.6f, %.6f]\n", name, d[0], d[1]);
-}
+static void print_control_bits_xmm_pd(const char* name, __m128d ctrl) {
 
-static void print_ymmd_debug(const char* name, __m256d ymm) {
-    double d[4];
-    _mm256_storeu_pd(d, ymm);
-    printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", name, d[0], d[1], d[2], d[3]);
-}
-
-static void print_control_bits_debug(const char* name, __m128d ctrl) {
     uint64_t *vals = (uint64_t*)&ctrl;
-    printf("%s control bits: [%lu, %lu] (hex: 0x%lx, 0x%lx)\n", 
-           name, vals[0] & 1, vals[1] & 1, vals[0], vals[1]);
+    printf("%s control bits: [%u, %u] (hex: 0x%x, 0x%x)\n", 
+           name, vals[0] & 3, vals[1] & 3,
+           vals[0], vals[1]);
 }
 
-static void print_control_bits_ymm_debug(const char* name, __m256d ctrl) {
+static void print_control_bits_ymm_pd(const char* name, __m256d ctrl) {
     uint64_t *vals = (uint64_t*)&ctrl;
-    printf("%s control bits: [%lu, %lu, %lu, %lu] (hex: 0x%lx, 0x%lx, 0x%lx, 0x%lx)\n", 
-           name, vals[0] & 1, vals[1] & 1, vals[2] & 1, vals[3] & 1,
+    printf("%s control bits: [%u, %u, %u, %u] (hex: 0x%x, 0x%x, 0x%x, 0x%x)\n", 
+           name, vals[0] & 3, vals[1] & 3, vals[2] & 3, vals[3] & 3,
            vals[0], vals[1], vals[2], vals[3]);
 }
-
 // 测试128位立即数版本
 static int test_imm_xmm() {
     int errors = 0;
@@ -85,10 +73,15 @@ static int test_imm_xmm() {
             }
             
             if (!valid) {
-                printf("  Error: imm=%d, input=[%f, %f]\n", imm, inputs[i][0], inputs[i][1]);
-                printf("    Expected: [%f, %f]\n", expected[0], expected[1]);
-                printf("    Got     : [%f, %f]\n\n", out[0], out[1]);
+                printf("  Error: imm=%d\n", imm);
+                print_double_vec_hex("    Input", inputs[i], 2);
+                print_double_vec_hex("    Expected", expected, 2);
+                print_double_vec_hex("    Got", out, 2);
                 errors++;
+            }else {
+                print_double_vec_hex("Input", inputs[i], 2);
+                printf("Control imm= %d\n", imm);
+                print_double_vec_hex("Output", out, 2);
             }
             printf("\n");
         }
@@ -129,25 +122,21 @@ static int test_reg_xmm() {
             ctrl_ptr[0] = (ctrls[c][0] & 0x1) ? 0xFFFFFFFFFFFFFFFF : 0x0;
             ctrl_ptr[1] = (ctrls[c][1] & 0x1) ? 0xFFFFFFFFFFFFFFFF : 0x0;
             
-            // 打印输入和控制向量
-            print_xmmd_debug("Input", src);
-            print_control_bits_debug("Control", _mm_castsi128_pd(ctrl_int));
+            // 打印输入
+            double in_arr[2];
+            _mm_storeu_pd(in_arr, src);
+            
             
             // 直接使用向量寄存器传递控制向量
             asm("vpermilpd %1, %2, %0" 
                 : "=v"(result) 
                 : "v"(_mm_castsi128_pd(ctrl_int)), "v"(src));
             
-            // 调试输出
-            uint64_t *vals = (uint64_t*)&ctrl_int;
-            printf("Control int: [%lu, %lu] (bits: [%lu, %lu])\n", 
-                   vals[0], vals[1],
-                   vals[0] & 1,
-                   vals[1] & 1);
-            
             double out[2];
             _mm_storeu_pd(out, result);
-            print_xmmd("Output", result);
+            print_double_vec_hex("Input", in_arr, 2);
+            print_control_bits_xmm_pd("Control", _mm_castsi128_pd(ctrl_int));
+            print_double_vec_hex("Output", out, 2);
             
             // 正确计算预期结果：使用控制向量的最低位选择源元素
             double expected[2];
@@ -171,10 +160,11 @@ static int test_reg_xmm() {
             }
             
             if (!valid) {
-                printf("  Error: ctrl=[%lu,%lu], input=[%f, %f]\n", 
-                      ctrls[c][0], ctrls[c][1], inputs[i][0], inputs[i][1]);
-                printf("    Expected: [%f, %f]\n", expected[0], expected[1]);
-                printf("    Got     : [%f, %f]\n\n", out[0], out[1]);
+                printf("  Error: ctrl=[%lu,%lu]\n", 
+                      ctrls[c][0], ctrls[c][1]);
+                print_double_vec_hex("    Input", inputs[i], 2);
+                print_double_vec_hex("    Expected", expected, 2);
+                print_double_vec_hex("    Got", out, 2);
                 errors++;
             }
             printf("\n");
@@ -252,13 +242,15 @@ static int test_imm_ymm() {
             }
             
             if (!valid) {
-                printf("  Error: imm=%d, input=[%f, %f, %f, %f]\n", 
-                      imm, inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
-                printf("    Expected: [%f, %f, %f, %f]\n", 
-                      expected[0], expected[1], expected[2], expected[3]);
-                printf("    Got     : [%f, %f, %f, %f]\n\n", 
-                      out[0], out[1], out[2], out[3]);
+                printf("  Error: imm=%d\n", imm);
+                print_double_vec_hex("    Input", inputs[i], 4);
+                print_double_vec_hex("    Expected", expected, 4);
+                print_double_vec_hex("    Got", out, 4);
                 errors++;
+            }else{
+                print_double_vec_hex("Input", inputs[i], 4);
+                printf("Control imm= %d\n", imm);
+                print_double_vec_hex("Output", out, 4);
             }
             printf("\n");
         }
@@ -299,27 +291,21 @@ static int test_reg_ymm() {
             ctrl_ptr[2] = (ctrls[c][2] & 0x1) ? 0xFFFFFFFFFFFFFFFF : 0x0;
             ctrl_ptr[3] = (ctrls[c][3] & 0x1) ? 0xFFFFFFFFFFFFFFFF : 0x0;
             
-            // 打印输入和控制向量
-            print_ymmd_debug("Input", src);
-            print_control_bits_ymm_debug("Control", _mm256_castsi256_pd(ctrl_int));
+            // 打印输入
+            double in_arr[4];
+            _mm256_storeu_pd(in_arr, src);
+            
             
             // 直接使用向量寄存器传递控制向量
             asm("vpermilpd %1, %2, %0" 
                 : "=v"(result) 
                 : "v"(_mm256_castsi256_pd(ctrl_int)), "v"(src));
             
-            // 调试输出
-            uint64_t *vals = (uint64_t*)&ctrl_int;
-            printf("Control int: [%lu, %lu, %lu, %lu] (bits: [%lu, %lu, %lu, %lu])\n", 
-                   vals[0], vals[1], vals[2], vals[3],
-                   vals[0] & 1,
-                   vals[1] & 1,
-                   vals[2] & 1,
-                   vals[3] & 1);
-            
             double out[4];
             _mm256_storeu_pd(out, result);
-            print_ymmd("Output", result);
+            print_double_vec_hex("Input", in_arr, 4);
+            print_control_bits_ymm_pd("Control", _mm256_castsi256_pd(ctrl_int));
+            print_double_vec_hex("Output", out, 4);
             
             // 正确计算256位预期结果：每个128位通道独立处理
             double expected[4];
@@ -347,13 +333,11 @@ static int test_reg_ymm() {
             }
             
             if (!valid) {
-                printf("  Error: ctrl=[%lu,%lu,%lu,%lu], input=[%f, %f, %f, %f]\n", 
-                      ctrls[c][0], ctrls[c][1], ctrls[c][2], ctrls[c][3],
-                      inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
-                printf("    Expected: [%f, %f, %f, %f]\n", 
-                      expected[0], expected[1], expected[2], expected[3]);
-                printf("    Got     : [%f, %f, %f, %f]\n\n", 
-                      out[0], out[1], out[2], out[3]);
+                printf("  Error: ctrl=[%lu,%lu,%lu,%lu]\n", 
+                      ctrls[c][0], ctrls[c][1], ctrls[c][2], ctrls[c][3]);
+                print_double_vec_hex("    Input", inputs[i], 4);
+                print_double_vec_hex("    Expected", expected, 4);
+                print_double_vec_hex("    Got", out, 4);
                 errors++;
             }
             printf("\n");
