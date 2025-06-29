@@ -19,114 +19,74 @@ static inline unsigned long long rdtsc() {
     return ((unsigned long long)hi << 32) | lo;
 }
 
-// VPBLENDD 测试函数
-double test_vpblendd(uint8_t imm8) {
-    // 预热缓存 (确保CPU频率稳定)
-    for (int i = 0; i < 1000; i++) {
-        asm volatile (
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $8, %%ymm1, %%ymm0, %%ymm2\n\t"
-            : 
-            : 
-            : "ymm2"
-        );
-    }
-    
-    double min_cycles = 1e20;
-    
-    for (int test = 0; test < NUM_TESTS; test++) {
-        unsigned long long start = rdtsc();
-        
-        // 核心测试循环 (完全在汇编中)
-        asm volatile (
-            "mov $100000000, %%ecx\n\t"   // 设置循环计数器
-            
-            // 设置源寄存器
-            "vpcmpeqd %%ymm0, %%ymm0, %%ymm0\n\t"  // src1 = 全1
-            "vpxor %%ymm1, %%ymm1, %%ymm1\n\t"     // src2 = 全0
-            
-            "1:\n\t"
-            // 执行 10 条 VPBLENDD 指令
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-           "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-           "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-           "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-           "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-	    "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-            "vpblendd $33, %%ymm1, %%ymm0, %%ymm2\n\t"
-
-            "dec %%ecx\n\t"             // 减少计数器
-            "jnz 1b\n\t"                // 循环直到零
-            
-            : 
-            : 
-            : "ecx", "ymm0", "ymm1", "ymm2", "cc"
-        );
-        
-        unsigned long long end = rdtsc();
-        double cycles_per_ins = (double)(end - start) / (NUM_ITERATIONS * INS_PER_ITER);
-        
-        if (cycles_per_ins < min_cycles) {
-            min_cycles = cycles_per_ins;
-        }
-        
-        printf(".");
-        fflush(stdout);
-    }
-    
-    return min_cycles;
-}
+#define TEST(imm) do{\
+    min_cycles = 1e20; \
+    for (int test = 0; test < NUM_TESTS; test++) { \
+        start = rdtsc(); \
+        asm volatile ( \
+            "mov %1, %%ecx\n\t" \
+            "vpcmpeqd %%ymm0, %%ymm0, %%ymm0\n\t" \
+            "vpxor %%ymm1, %%ymm1, %%ymm1\n\t"  \
+            "1:\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+           "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t"  \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+           "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+           "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+           "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+	    "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "vblendps %0, %%ymm1, %%ymm0, %%ymm2\n\t" \
+            "dec %%ecx\n\t"       \
+            "jnz 1b\n\t"           \
+            : :"i"(imm), "i"(NUM_ITERATIONS) : "ecx", "ymm0", "ymm1", "ymm2", "cc"); \
+        end = rdtsc(); \
+        cycles_per_ins = (double)(end - start) / (NUM_ITERATIONS * INS_PER_ITER); \
+        if (cycles_per_ins < min_cycles) {  min_cycles = cycles_per_ins; } \
+         cycles=cycles_per_ins;\
+    } \
+}while(0)
 
 int main() {
     // 测试不同的掩码模式
@@ -152,14 +112,29 @@ int main() {
     printf("Iterations: %d, Instructions per iteration: %d\n\n", 
            NUM_ITERATIONS, INS_PER_ITER);
     
-    for (int i = 0; i < sizeof(imm8_patterns)/sizeof(imm8_patterns[0]); i++) {
-        uint8_t imm8 = imm8_patterns[i];
-        printf("Testing %-20s", pattern_names[i]);
-        
-        double cycles = test_vpblendd(imm8);
-        
+        unsigned long long start,end;
+	double min_cycles, cycles_per_ins, cycles;
+
+	printf("Testing %-20s", pattern_names[0]);
+        TEST(0x00);
         printf(" %.4f cycles/instruction\n", cycles);
-    }
+
+	printf("Testing %-20s", pattern_names[1]);
+        TEST(0xFF);
+        printf(" %.4f cycles/instruction\n", cycles);
+ 	printf("Testing %-20s", pattern_names[2]);
+        TEST(0xAA);
+        printf(" %.4f cycles/instruction\n", cycles);
+ 	printf("Testing %-20s", pattern_names[3]);
+        TEST(0x55);
+        printf(" %.4f cycles/instruction\n", cycles);
+ 	printf("Testing %-20s", pattern_names[4]);
+        TEST(0x96);
+        printf(" %.4f cycles/instruction\n", cycles);
+ 	printf("Testing %-20s", pattern_names[5]);
+        TEST(0x3c);
+        printf(" %.4f cycles/instruction\n", cycles);
+ 
     
     return 0;
 }

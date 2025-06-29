@@ -2,63 +2,67 @@
 #include <stdio.h>
 #include <stdint.h>
 
+// VPBROADCASTB指令测试
 void test_vpbroadcastb() {
     printf("=== Testing VPBROADCASTB ===\n");
     
     // 测试数据
-    uint8_t src = 0xAB;
-    ALIGNED(16) uint8_t dst128[16];
-    ALIGNED(32) uint8_t dst256[32];
+    uint8_t test_values[] = {0x00, 0xFF, 0x7F, 0x80};
+    const char* value_names[] = {"0x00", "0xFF", "0x7F", "0x80"};
     
-    // 128位测试
-    ALIGNED(1) uint8_t src_mem = src;
-    __m128i xmm;
-    asm volatile (
-        "vpbroadcastb %1, %0"
-        : "=x"(xmm)
-        : "m"(src_mem)
-    );
-    _mm_store_si128((__m128i*)dst128, xmm);
-    
-    printf("Test1 - 128bit broadcast:\n");
-    printf("Expected: ");
-    for(int i=0; i<16; i++) printf("ab ");
-    printf("\nResult  : ");
-    for(int i=0; i<16; i++) printf("%02x ", dst128[i]);
-    printf("\nMatch: %s\n\n", memcmp(dst128, "\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB", 16) == 0 ? "YES" : "NO");
+    for (size_t i = 0; i < sizeof(test_values)/sizeof(test_values[0]); i++) {
+        uint8_t val = test_values[i];
+        printf("\nTesting value: %s\n", value_names[i]);
+        __m128i val128 = _mm_set1_epi8(val);
+        
+        // 测试128位版本
+        __m128i xmm;
+        asm volatile (
+            "vpbroadcastb %1, %0"
+            : "=x"(xmm)
+            : "m"(val)
+        );
+        
+        printf("XMM result: ");
+        print_m128i_hex(xmm, "");
 
-    // 256位测试
-    __m256i ymm;
-    asm volatile (
-        "vpbroadcastb %1, %0"
-        : "=x"(ymm)
-        : "m"(src_mem)
-    );
-    _mm256_store_si256((__m256i*)dst256, ymm);
-    
-    printf("Test2 - 256bit broadcast:\n");
-    printf("Expected: ");
-    for(int i=0; i<32; i++) printf("ab ");
-    printf("\nResult  : ");
-    for(int i=0; i<32; i++) printf("%02x ", dst256[i]);
-    printf("\nMatch: %s\n\n", memcmp(dst256, "\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB", 32) == 0 ? "YES" : "NO");
+        asm volatile (
+            "vmovd %1, %%xmm2\n\t"
+            "vpbroadcastb %%xmm2, %0\n\t"
+            : "=x"(xmm)
+            : "m"(val)
+            : "xmm2"
+        );
+        
+        printf("XMM Reg result: ");
+        print_m128i_hex(xmm, "");
 
-    // 内存操作测试
-    ALIGNED(1) uint8_t mem_src = 0xCD;
-    __m128i xmm_mem;
-    asm volatile (
-        "vpbroadcastb (%1), %0"
-        : "=x"(xmm_mem)
-        : "r"(&mem_src)
-    );
-    _mm_store_si128((__m128i*)dst128, xmm_mem);
-    
-    printf("Test3 - Memory broadcast:\n");
-    printf("Expected: ");
-    for(int i=0; i<16; i++) printf("cd ");
-    printf("\nResult  : ");
-    for(int i=0; i<16; i++) printf("%02x ", dst128[i]);
-    printf("\nMatch: %s\n\n", memcmp(dst128, "\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD", 16) == 0 ? "YES" : "NO");
+        // 测试256位版本
+        __m256i ymm;
+        asm volatile (
+            "vpbroadcastb %1, %0"
+            : "=x"(ymm)
+            : "m"(val128)
+        );
+        
+        printf("YMM result: ");
+        print_m256i_hex(ymm, "");
+        
+        // 测试256位版本
+        asm volatile (
+            "vmovd %1, %%xmm2\n\t"
+            "vpbroadcastb %%xmm2, %0"
+            : "=x"(ymm)
+            : "m"(val128)
+            : "xmm2"
+        );
+        
+        printf("YMM REG result: ");
+        print_m256i_hex(ymm, "");
+
+        // 输出MXCSR状态
+        //print_mxcsr(get_mxcsr());
+    }
 }
 
 int main() {
