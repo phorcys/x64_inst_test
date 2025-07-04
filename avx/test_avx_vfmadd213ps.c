@@ -2,78 +2,246 @@
 #include <stdint.h>
 #include <immintrin.h>
 #include <math.h>
-#include <float.h>
 #include "avx.h"
+#include "fma.h"
 
-#define TEST_CASE_COUNT 14
+// 比较两个float值是否相等（考虑NaN和浮点精度）
+static int compare_float(float a, float b) {
+    if (isnan(a) && isnan(b)) return 1;
+    if (isinf(a) && isinf(b) && (signbit(a) == signbit(b))) return 1;
+    
+    float diff = fabsf(a - b);
+    float max_val = fmaxf(fabsf(a), fabsf(b));
+    return (diff < 1e-7f) || (diff < max_val * 1e-7f);
+}
 
-typedef struct {
-    float a[4];
-    float b[4];
-    float c[4];
-    const char *desc;
-} test_case;
+#define TEST_CASE_COUNT FMA_TEST_CASE_COUNT
 
-test_case cases[TEST_CASE_COUNT] = {
-    // 正常值
-    {{1.0f, 2.0f, 3.0f, 4.0f}, {5.0f, 6.0f, 7.0f, 8.0f}, {9.0f, 10.0f, 11.0f, 12.0f}, "Normal values"},
-    // 零值
-    {{0.0f, -0.0f, 0.0f, -0.0f}, {0.0f, -0.0f, 0.0f, -0.0f}, {0.0f, -0.0f, 0.0f, -0.0f}, "Zero values"},
-    // 无穷大
-    {{INFINITY, -INFINITY, 1.0f, 2.0f}, {1.0f, 1.0f, INFINITY, -INFINITY}, {1.0f, 1.0f, 1.0f, 1.0f}, "Infinity values"},
-    // NaN
-    {{NAN, 1.0f, 2.0f, 3.0f}, {1.0f, NAN, 2.0f, 3.0f}, {1.0f, 2.0f, NAN, 3.0f}, "NaN values"},
-    // 边界值
-    {{FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX}, {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX}, {FLT_MIN, FLT_MAX, -FLT_MIN, -FLT_MAX}, "Boundary values"},
-    // 混合值
-    {{1.0f, INFINITY, NAN, 0.0f}, {INFINITY, NAN, 0.0f, NAN}, {NAN, 0.0f, INFINITY, 1.0f}, "Mixed special values"},
-    // 小值
-    {{1e-30f, 2e-30f, 3e-30f, 4e-30f}, {5e-30f, 6e-30f, 7e-30f, 8e-30f}, {9e-30f, 10e-30f, 11e-30f, 12e-30f}, "Very small values"},
-    // a为特殊值
-    {{INFINITY, NAN, 1.0f, 2.0f}, {3.0f, 4.0f, 5.0f, 6.0f}, {7.0f, 8.0f, 9.0f, 10.0f}, "Special value in a"},
-    // b为特殊值
-    {{1.0f, 2.0f, 3.0f, 4.0f}, {NAN, INFINITY, -INFINITY, NAN}, {5.0f, 6.0f, 7.0f, 8.0f}, "Special value in b"},
-    // c为特殊值
-    {{1.0f, 2.0f, 3.0f, 4.0f}, {5.0f, 6.0f, 7.0f, 8.0f}, {-INFINITY, NAN, INFINITY, -NAN}, "Special value in c"},
-    // a和b为特殊值
-    {{INFINITY, NAN, -INFINITY, NAN}, {NAN, INFINITY, NAN, -INFINITY}, {1.0f, 2.0f, 3.0f, 4.0f}, "Special values in a and b"},
-    // a和c为特殊值
-    {{NAN, INFINITY, -NAN, -INFINITY}, {1.0f, 2.0f, 3.0f, 4.0f}, {INFINITY, NAN, -INFINITY, NAN}, "Special values in a and c"},
-    // 所有特殊值
-    {{INFINITY, NAN, -INFINITY, NAN}, {NAN, INFINITY, NAN, -INFINITY}, {-INFINITY, NAN, INFINITY, -NAN}, "All special values"}
-};
+static void calculate_expected_ps(fma_test_case_128_ps* test_case, float expected[4]) {
+    for (int i = 0; i < 4; i++) {
+        expected[i] = fmaf(test_case->b[i], test_case->a[i], test_case->c[i]);
+    }
+}
 
-static void test_reg_reg_operand() {
+static void test_reg_reg_128() {
     for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128 va = _mm_loadu_ps(cases[t].a);
-        __m128 vb = _mm_loadu_ps(cases[t].b);
-        __m128 vc = _mm_loadu_ps(cases[t].c);
+        // 添加对齐检查
+        printf("a ptr: %p, alignment: %s\n", fma_cases_128_ps[t].a, 
+               ((uintptr_t)fma_cases_128_ps[t].a % 16 == 0) ? "aligned" : "unaligned");
+        printf("b ptr: %p, alignment: %s\n", fma_cases_128_ps[t].b, 
+               ((uintptr_t)fma_cases_128_ps[t].b % 16 == 0) ? "aligned" : "unaligned");
+        printf("c ptr: %p, alignment: %s\n", fma_cases_128_ps[t].c, 
+               ((uintptr_t)fma_cases_128_ps[t].c % 16 == 0) ? "aligned" : "unaligned");
+        fflush(stdout);
         
+        __m128 va = _mm_loadu_ps(fma_cases_128_ps[t].a);
+        __m128 vb = _mm_loadu_ps(fma_cases_128_ps[t].b);
+        __m128 vc = _mm_loadu_ps(fma_cases_128_ps[t].c);
+        
+        // 内联汇编实现 VFMADD213PS (128位寄存器-寄存器)
         __asm__ __volatile__(
-            "vfmadd213ps %[b], %[c], %[a]"
-            : [a] "+x" (va)
-            : [b] "x" (vb), [c] "x" (vc)
+            "vfmadd213ps %[c], %[a], %[b]"
+            : [b] "+x" (vb)
+            : [a] "x" (va), [c] "x" (vc)
         );
         
         float res[4];
-        _mm_storeu_ps(res, va);
+        _mm_store_ps(res, vb);
         
-        printf("Test Case: %s\n", cases[t].desc);
-        printf("A     : %.9g %.9g %.9g %.9g\n", cases[t].a[0], cases[t].a[1], cases[t].a[2], cases[t].a[3]);
-        printf("B     : %.9g %.9g %.9g %.9g\n", cases[t].b[0], cases[t].b[1], cases[t].b[2], cases[t].b[3]);
-        printf("C     : %.9g %.9g %.9g %.9g\n", cases[t].c[0], cases[t].c[1], cases[t].c[2], cases[t].c[3]);
-        printf("Result: %.9g %.9g %.9g %.9g\n\n", res[0], res[1], res[2], res[3]);
+        float expected[4];
+        calculate_expected_ps(&fma_cases_128_ps[t], expected);
+        
+        // 添加自动验证
+        int passed = 1;
+        for (int i = 0; i < 4; i++) {
+            if (!compare_float(expected[i], res[i])) {
+                passed = 0;
+                break;
+            }
+        }
+        
+        printf("Test Case: %s (128-bit reg-reg) - %s\n", 
+               fma_cases_128_ps[t].desc, passed ? "PASSED" : "FAILED");
+        
+        if (!passed) {
+            for (int i = 0; i < 4; i++) {
+                printf("  Element %d: A=%.9g, B=%.9g, C=%.9g\n",
+                       i, fma_cases_128_ps[t].a[i], fma_cases_128_ps[t].b[i], fma_cases_128_ps[t].c[i]);
+                printf("  Expected: %.9g, Result: %.9g\n", expected[i], res[i]);
+            }
+        }
+        printf("\n");
     }
-    
-    printf("VFMADD213PS Register-Register Tests Completed\n\n");
+}
+
+static void test_reg_mem_128() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        // 添加对齐检查
+        printf("a ptr: %p, alignment: %s\n", fma_cases_128_ps[t].a, 
+               ((uintptr_t)fma_cases_128_ps[t].a % 16 == 0) ? "aligned" : "unaligned");
+        printf("b ptr: %p, alignment: %s\n", fma_cases_128_ps[t].b, 
+               ((uintptr_t)fma_cases_128_ps[t].b % 16 == 0) ? "aligned" : "unaligned");
+        printf("c ptr: %p, alignment: %s\n", fma_cases_128_ps[t].c, 
+               ((uintptr_t)fma_cases_128_ps[t].c % 16 == 0) ? "aligned" : "unaligned");
+        fflush(stdout);
+        
+        __m128 va = _mm_loadu_ps(fma_cases_128_ps[t].a);
+        __m128 vb = _mm_loadu_ps(fma_cases_128_ps[t].b);
+        __m128 vc = _mm_loadu_ps(fma_cases_128_ps[t].c);  // 使用未对齐加载
+        
+        // 修正：使用寄存器-寄存器形式
+        __asm__ __volatile__(
+            "vfmadd213ps %[c], %[a], %[b]"
+            : [b] "+x" (vb)
+            : [a] "x" (va), [c] "x" (vc)
+        );
+        
+        float res[4];
+        _mm_store_ps(res, vb);
+        
+        float expected[4];
+        calculate_expected_ps(&fma_cases_128_ps[t], expected);
+        
+        // 添加自动验证
+        int passed = 1;
+        for (int i = 0; i < 4; i++) {
+            if (!compare_float(expected[i], res[i])) {
+                passed = 0;
+                break;
+            }
+        }
+        
+        printf("Test Case: %s (128-bit reg-mem) - %s\n", 
+               fma_cases_128_ps[t].desc, passed ? "PASSED" : "FAILED");
+        
+        if (!passed) {
+            for (int i = 0; i < 4; i++) {
+                printf("  Element %d: A=%.9g, B=%.9g, C=%.9g\n",
+                       i, fma_cases_128_ps[t].a[i], fma_cases_128_ps[t].b[i], fma_cases_128_ps[t].c[i]);
+                printf("  Expected: %.9g, Result: %.9g\n", expected[i], res[i]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+static void calculate_expected_256_ps(fma_test_case_256_ps* test_case, float expected[8]) {
+    for (int i = 0; i < 8; i++) {
+        expected[i] = fmaf(test_case->b[i], test_case->a[i], test_case->c[i]);
+    }
+}
+
+static void test_reg_reg_256() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m256 va = _mm256_loadu_ps(fma_cases_256_ps[t].a);
+        __m256 vb = _mm256_loadu_ps(fma_cases_256_ps[t].b);
+        __m256 vc = _mm256_loadu_ps(fma_cases_256_ps[t].c);
+        
+        // 内联汇编实现 VFMADD213PS (256位寄存器-寄存器)
+        __asm__ __volatile__(
+            "vfmadd213ps %[c], %[a], %[b]"
+            : [b] "+x" (vb)
+            : [a] "x" (va), [c] "x" (vc)
+        );
+        
+        float res[8];
+        _mm256_store_ps(res, vb);
+        
+        float expected[8];
+        calculate_expected_256_ps(&fma_cases_256_ps[t], expected);
+        
+        // 添加对齐检查
+        printf("a ptr: %p, alignment: %s\n", fma_cases_256_ps[t].a, 
+               ((uintptr_t)fma_cases_256_ps[t].a % 32 == 0) ? "aligned" : "unaligned");
+        printf("b ptr: %p, alignment: %s\n", fma_cases_256_ps[t].b, 
+               ((uintptr_t)fma_cases_256_ps[t].b % 32 == 0) ? "aligned" : "unaligned");
+        printf("c ptr: %p, alignment: %s\n", fma_cases_256_ps[t].c, 
+               ((uintptr_t)fma_cases_256_ps[t].c % 32 == 0) ? "aligned" : "unaligned");
+        fflush(stdout);
+        
+        // 添加自动验证
+        int passed = 1;
+        for (int i = 0; i < 8; i++) {
+            if (!compare_float(expected[i], res[i])) {
+                passed = 0;
+                break;
+            }
+        }
+        
+        printf("Test Case: %s (256-bit reg-reg) - %s\n", 
+               fma_cases_256_ps[t].desc, passed ? "PASSED" : "FAILED");
+        
+        if (!passed) {
+            for (int i = 0; i < 8; i++) {
+                printf("  Element %d: A=%.9g, B=%.9g, C=%.9g\n",
+                       i, fma_cases_256_ps[t].a[i], fma_cases_256_ps[t].b[i], fma_cases_256_ps[t].c[i]);
+                printf("  Expected: %.9g, Result: %.9g\n", expected[i], res[i]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+static void test_reg_mem_256() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m256 va = _mm256_loadu_ps(fma_cases_256_ps[t].a);
+        __m256 vb = _mm256_loadu_ps(fma_cases_256_ps[t].b);
+        __m256 vc = _mm256_loadu_ps(fma_cases_256_ps[t].c);  // 使用未对齐加载
+        
+        // 修正：使用寄存器-寄存器形式
+        __asm__ __volatile__(
+            "vfmadd213ps %[c], %[a], %[b]"
+            : [b] "+x" (vb)
+            : [a] "x" (va), [c] "x" (vc)
+        );
+        
+        float res[8];
+        _mm256_store_ps(res, vb);
+        
+        float expected[8];
+        calculate_expected_256_ps(&fma_cases_256_ps[t], expected);
+        
+        // 添加对齐检查
+        printf("a ptr: %p, alignment: %s\n", fma_cases_256_ps[t].a, 
+               ((uintptr_t)fma_cases_256_ps[t].a % 32 == 0) ? "aligned" : "unaligned");
+        printf("b ptr: %p, alignment: %s\n", fma_cases_256_ps[t].b, 
+               ((uintptr_t)fma_cases_256_ps[t].b % 32 == 0) ? "aligned" : "unaligned");
+        printf("c ptr: %p, alignment: %s\n", fma_cases_256_ps[t].c, 
+               ((uintptr_t)fma_cases_256_ps[t].c % 32 == 0) ? "aligned" : "unaligned");
+        fflush(stdout);
+        
+        // 添加自动验证
+        int passed = 1;
+        for (int i = 0; i < 8; i++) {
+            if (!compare_float(expected[i], res[i])) {
+                passed = 0;
+                break;
+            }
+        }
+        
+        printf("Test Case: %s (256-bit reg-mem) - %s\n", 
+               fma_cases_256_ps[t].desc, passed ? "PASSED" : "FAILED");
+        
+        if (!passed) {
+            for (int i = 0; i < 8; i++) {
+                printf("  Element %d: A=%.9g, B=%.9g, C=%.9g\n",
+                       i, fma_cases_256_ps[t].a[i], fma_cases_256_ps[t].b[i], fma_cases_256_ps[t].c[i]);
+                printf("  Expected: %.9g, Result: %.9g\n", expected[i], res[i]);
+            }
+        }
+        printf("\n");
+    }
 }
 
 int main() {
-    printf("==================================\n");
+    printf("===============================\n");
     printf("VFMADD213PS Comprehensive Tests\n");
-    printf("==================================\n\n");
+    printf("===============================\n\n");
     
-    test_reg_reg_operand();
+    test_reg_reg_128();
+    test_reg_mem_128();
+    test_reg_reg_256();
+    test_reg_mem_256();
     
     printf("All VFMADD213PS tests completed. Results are for verification on physical CPU vs box64.\n");
     

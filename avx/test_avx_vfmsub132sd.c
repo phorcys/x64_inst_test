@@ -2,78 +2,74 @@
 #include <stdint.h>
 #include <immintrin.h>
 #include <math.h>
-#include <float.h>
 #include "avx.h"
+#include "fma.h"
 
-#define TEST_CASE_COUNT 14
+#define TEST_CASE_COUNT FMA_TEST_CASE_COUNT
 
-typedef struct {
-    double a;
-    double b;
-    double c;
-    const char *desc;
-} test_case;
-
-test_case cases[TEST_CASE_COUNT] = {
-    // 正常值
-    {1.0, 2.0, 3.0, "Normal values"},
-    // 零值
-    {0.0, -0.0, 0.0, "Zero values"},
-    // 无穷大
-    {INFINITY, 1.0, 1.0, "Infinity values"},
-    // NaN
-    {NAN, 2.0, 3.0, "NaN values"},
-    // 边界值
-    {DBL_MIN, -DBL_MIN, DBL_MIN, "Boundary values"},
-    // 混合值
-    {1.0, NAN, INFINITY, "Mixed special values"},
-    // 小值
-    {1e-300, 2e-300, 3e-300, "Very small values"},
-    // a为特殊值
-    {INFINITY, 2.0, 3.0, "Special value in a"},
-    // b为特殊值
-    {1.0, NAN, 2.0, "Special value in b"},
-    // c为特殊值
-    {1.0, 2.0, -INFINITY, "Special value in c"},
-    // a和b为特殊值
-    {INFINITY, NAN, 1.0, "Special values in a and b"},
-    // a和c为特殊值
-    {NAN, 1.0, INFINITY, "Special values in a and c"},
-    // 所有特殊值
-    {INFINITY, NAN, -INFINITY, "All special values"}
-};
-
-static void test_reg_reg_operand() {
+static void test_reg_reg() {
     for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128d va = _mm_set_sd(cases[t].a);
-        __m128d vb = _mm_set_sd(cases[t].b);
-        __m128d vc = _mm_set_sd(cases[t].c);
+        __m128d va = _mm_load_pd(fma_cases_128[t].a);
+        __m128d vb = _mm_load_pd(fma_cases_128[t].b);
+        __m128d vc = _mm_load_pd(fma_cases_128[t].c);
         
+        // 保存原始高位值
+        double original_high = va[1];
+        
+        // 内联汇编实现 VFMSUB132SD (标量双精度)
         __asm__ __volatile__(
             "vfmsub132sd %[b], %[c], %[a]"
             : [a] "+x" (va)
             : [b] "x" (vb), [c] "x" (vc)
         );
         
-        double res;
-        _mm_store_sd(&res, va);
+        double res = va[0];
+        double expected = fma(fma_cases_128[t].a[0], fma_cases_128[t].b[0], -fma_cases_128[t].c[0]);
         
-        printf("Test Case: %s\n", cases[t].desc);
-        printf("A     : %.17g\n", cases[t].a);
-        printf("B     : %.17g\n", cases[t].b);
-        printf("C     : %.17g\n", cases[t].c);
-        printf("Result: %.17g\n\n", res);
+        printf("Test Case: %s (reg-reg)\n", fma_cases_128[t].desc);
+        printf("A=%.18g, B=%.18g, C=%.18g\n",
+               fma_cases_128[t].a[0], fma_cases_128[t].b[0], fma_cases_128[t].c[0]);
+        printf("Expected: %.18g, Result: %.18g\n", expected, res);
+        printf("High element unchanged: %.18g (original: %.18g)\n", va[1], original_high);
+        printf("\n");
     }
-    
-    printf("VFMSUB132SD Register-Register Tests Completed\n\n");
+}
+
+static void test_reg_mem() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_load_pd(fma_cases_128[t].a);
+        double b_val = fma_cases_128[t].b[0];  // 标量值
+        __m128d vc = _mm_load_pd(fma_cases_128[t].c);
+        
+        // 保存原始高位值
+        double original_high = va[1];
+        
+        // 内联汇编实现 VFMSUB132SD (寄存器-内存)
+        __asm__ __volatile__(
+            "vfmsub132sd %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "m" (b_val), [c] "x" (vc)
+        );
+        
+        double res = va[0];
+        double expected = fma(fma_cases_128[t].a[0], fma_cases_128[t].b[0], -fma_cases_128[t].c[0]);
+        
+        printf("Test Case: %s (reg-mem)\n", fma_cases_128[t].desc);
+        printf("A=%.18g, B=%.18g, C=%.18g\n",
+               fma_cases_128[t].a[0], fma_cases_128[t].b[0], fma_cases_128[t].c[0]);
+        printf("Expected: %.18g, Result: %.18g\n", expected, res);
+        printf("High element unchanged: %.18g (original: %.18g)\n", va[1], original_high);
+        printf("\n");
+    }
 }
 
 int main() {
-    printf("==================================\n");
+    printf("==============================\n");
     printf("VFMSUB132SD Comprehensive Tests\n");
-    printf("==================================\n\n");
+    printf("==============================\n\n");
     
-    test_reg_reg_operand();
+    test_reg_reg();
+    test_reg_mem();
     
     printf("All VFMSUB132SD tests completed. Results are for verification on physical CPU vs box64.\n");
     

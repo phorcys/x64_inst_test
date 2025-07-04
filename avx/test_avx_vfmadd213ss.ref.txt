@@ -1,177 +1,185 @@
-==================================
+===============================
 VFMADD213SS Comprehensive Tests
-==================================
+===============================
 
-Test Case: Normal values
-A     : 1
-B     : 2
-C     : 3
-Result: 5
+a ptr: 0x404030, alignment: aligned
+b ptr: 0x404040, alignment: aligned
+c ptr: 0x404050, alignment: aligned
+Test Case: Normal values (128-bit single precision) (reg-reg) - PASSED
+A=1, B=5, C=9
+Expected: 14, Result: 14
+High element 1: 6 (original: 6) - unchanged
+High element 2: 7 (original: 7) - unchanged
+High element 3: 8 (original: 8) - unchanged
 
-Test Case: Zero values
-A     : 0
-B     : -0
-C     : 0
-Result: 0
+a ptr: 0x404068, alignment: unaligned
+b ptr: 0x404078, alignment: unaligned
+c ptr: 0x404088, alignment: unaligned
+Test Case: NaN values (128-bit single precision) (reg-reg) - PASSED
+A=nan, B=1, C=5
+Expected: nan, Result: nan
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: Infinity values
-A     : inf
-B     : -inf
-C     : 1
-Result: -nan
+a ptr: 0x4040a0, alignment: aligned
+b ptr: 0x4040b0, alignment: aligned
+c ptr: 0x4040c0, alignment: aligned
+Test Case: INF values (128-bit single precision) (reg-reg) - PASSED
+A=inf, B=1, C=5
+Expected: inf, Result: inf
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: NaN values
-A     : nan
-B     : 1
-C     : 2
-Result: nan
+a ptr: 0x4040d8, alignment: unaligned
+b ptr: 0x4040e8, alignment: unaligned
+c ptr: 0x4040f8, alignment: unaligned
+Test Case: Zero values (128-bit single precision) (reg-reg) - PASSED
+A=0, B=1, C=5
+Expected: 5, Result: 5
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: Boundary values
-A     : 1.17549435e-38
-B     : 3.40282347e+38
-C     : -1.17549435e-38
-Result: 3.40282347e+38
+a ptr: 0x404110, alignment: aligned
+b ptr: 0x404120, alignment: aligned
+c ptr: 0x404130, alignment: aligned
+Test Case: Boundary values (128-bit single precision) (reg-reg) - PASSED
+A=3.40282347e+38, B=1, C=5
+Expected: 3.40282347e+38, Result: 3.40282347e+38
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: Mixed special values
-A     : 1
-B     : inf
-C     : nan
-Result: nan
+a ptr: 0x404148, alignment: unaligned
+b ptr: 0x404158, alignment: unaligned
+c ptr: 0x404168, alignment: unaligned
+Test Case: NaN and INF mix (128-bit single precision) (reg-reg) - PASSED
+A=nan, B=1, C=5
+Expected: nan, Result: nan
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: Very small values
-A     : 1e-30
-B     : 2.00000001e-30
-C     : 3.00000001e-30
-Result: 2.00000001e-30
+a ptr: 0x404180, alignment: aligned
+b ptr: 0x404190, alignment: aligned
+c ptr: 0x4041a0, alignment: aligned
+Test Case: Zero and boundary mix (128-bit single precision) (reg-reg) - PASSED
+A=0, B=1, C=5
+Expected: 5, Result: 5
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: Special value in a
-A     : inf
-B     : 2
-C     : 3
-Result: inf
+a ptr: 0x4041b8, alignment: unaligned
+b ptr: 0x4041c8, alignment: unaligned
+c ptr: 0x4041d8, alignment: unaligned
+Test Case: Denormal values (128-bit single precision) (reg-reg) - PASSED
+A=5.87747175e-39, B=1, C=5
+Expected: 5, Result: 5
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: Special value in b
-A     : 1
-B     : nan
-C     : 2
-Result: nan
+a ptr: 0x4041f0, alignment: aligned
+b ptr: 0x404200, alignment: aligned
+c ptr: 0x404210, alignment: aligned
+Test Case: Overflow case (128-bit single precision) (reg-reg) - PASSED
+A=3.40282347e+38, B=2, C=3.40282347e+38
+Expected: inf, Result: inf
+High element 1: 2 (original: 2) - unchanged
+High element 2: 2 (original: 2) - unchanged
+High element 3: 2 (original: 2) - unchanged
 
-Test Case: Special value in c
-A     : 1
-B     : 2
-C     : -inf
-Result: -inf
+a ptr: 0x404030, alignment: aligned
+b ptr: 0x404040, alignment: aligned
+c ptr: 0x404050, alignment: aligned
+Test Case: Normal values (128-bit single precision) (reg-mem) - PASSED
+A=1, B=5, C=9
+Expected: 14, Result: 14
+High element 1: 6 (original: 6) - unchanged
+High element 2: 7 (original: 7) - unchanged
+High element 3: 8 (original: 8) - unchanged
 
-Test Case: Special values in a and b
-A     : inf
-B     : nan
-C     : 1
-Result: nan
+a ptr: 0x404068, alignment: unaligned
+b ptr: 0x404078, alignment: unaligned
+c ptr: 0x404088, alignment: unaligned
+Test Case: NaN values (128-bit single precision) (reg-mem) - PASSED
+A=nan, B=1, C=5
+Expected: nan, Result: nan
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: Special values in a and c
-A     : nan
-B     : 1
-C     : inf
-Result: nan
+a ptr: 0x4040a0, alignment: aligned
+b ptr: 0x4040b0, alignment: aligned
+c ptr: 0x4040c0, alignment: aligned
+Test Case: INF values (128-bit single precision) (reg-mem) - PASSED
+A=inf, B=1, C=5
+Expected: inf, Result: inf
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: All special values
-A     : inf
-B     : nan
-C     : -inf
-Result: nan
+a ptr: 0x4040d8, alignment: unaligned
+b ptr: 0x4040e8, alignment: unaligned
+c ptr: 0x4040f8, alignment: unaligned
+Test Case: Zero values (128-bit single precision) (reg-mem) - PASSED
+A=0, B=1, C=5
+Expected: 5, Result: 5
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Test Case: (null)
-A     : 0
-B     : 0
-C     : 0
-Result: 0
+a ptr: 0x404110, alignment: aligned
+b ptr: 0x404120, alignment: aligned
+c ptr: 0x404130, alignment: aligned
+Test Case: Boundary values (128-bit single precision) (reg-mem) - PASSED
+A=3.40282347e+38, B=1, C=5
+Expected: 3.40282347e+38, Result: 3.40282347e+38
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-VFMADD213SS Register-Register Tests Completed
+a ptr: 0x404148, alignment: unaligned
+b ptr: 0x404158, alignment: unaligned
+c ptr: 0x404168, alignment: unaligned
+Test Case: NaN and INF mix (128-bit single precision) (reg-mem) - PASSED
+A=nan, B=1, C=5
+Expected: nan, Result: nan
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Memory Operand Test: Normal values
-A     : 1
-B     : 2
-C     : 3
-Result: 5
+a ptr: 0x404180, alignment: aligned
+b ptr: 0x404190, alignment: aligned
+c ptr: 0x4041a0, alignment: aligned
+Test Case: Zero and boundary mix (128-bit single precision) (reg-mem) - PASSED
+A=0, B=1, C=5
+Expected: 5, Result: 5
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Memory Operand Test: Zero values
-A     : 0
-B     : -0
-C     : 0
-Result: 0
+a ptr: 0x4041b8, alignment: unaligned
+b ptr: 0x4041c8, alignment: unaligned
+c ptr: 0x4041d8, alignment: unaligned
+Test Case: Denormal values (128-bit single precision) (reg-mem) - PASSED
+A=5.87747175e-39, B=1, C=5
+Expected: 5, Result: 5
+High element 1: 2 (original: 2) - unchanged
+High element 2: 3 (original: 3) - unchanged
+High element 3: 4 (original: 4) - unchanged
 
-Memory Operand Test: Infinity values
-A     : inf
-B     : -inf
-C     : 1
-Result: -nan
-
-Memory Operand Test: NaN values
-A     : nan
-B     : 1
-C     : 2
-Result: nan
-
-Memory Operand Test: Boundary values
-A     : 1.17549435e-38
-B     : 3.40282347e+38
-C     : -1.17549435e-38
-Result: 3.40282347e+38
-
-Memory Operand Test: Mixed special values
-A     : 1
-B     : inf
-C     : nan
-Result: nan
-
-Memory Operand Test: Very small values
-A     : 1e-30
-B     : 2.00000001e-30
-C     : 3.00000001e-30
-Result: 2.00000001e-30
-
-Memory Operand Test: Special value in a
-A     : inf
-B     : 2
-C     : 3
-Result: inf
-
-Memory Operand Test: Special value in b
-A     : 1
-B     : nan
-C     : 2
-Result: nan
-
-Memory Operand Test: Special value in c
-A     : 1
-B     : 2
-C     : -inf
-Result: -inf
-
-Memory Operand Test: Special values in a and b
-A     : inf
-B     : nan
-C     : 1
-Result: nan
-
-Memory Operand Test: Special values in a and c
-A     : nan
-B     : 1
-C     : inf
-Result: nan
-
-Memory Operand Test: All special values
-A     : inf
-B     : nan
-C     : -inf
-Result: nan
-
-Memory Operand Test: (null)
-A     : 0
-B     : 0
-C     : 0
-Result: 0
-
-VFMADD213SS Register-Memory Tests Completed
+a ptr: 0x4041f0, alignment: aligned
+b ptr: 0x404200, alignment: aligned
+c ptr: 0x404210, alignment: aligned
+Test Case: Overflow case (128-bit single precision) (reg-mem) - PASSED
+A=3.40282347e+38, B=2, C=3.40282347e+38
+Expected: inf, Result: inf
+High element 1: 2 (original: 2) - unchanged
+High element 2: 2 (original: 2) - unchanged
+High element 3: 2 (original: 2) - unchanged
 
 All VFMADD213SS tests completed. Results are for verification on physical CPU vs box64.

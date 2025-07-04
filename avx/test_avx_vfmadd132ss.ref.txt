@@ -2,175 +2,103 @@
 VFMADD132SS Comprehensive Tests
 ==================================
 
-Test Case: Normal values
+Test Case: Normal values (128-bit single precision)
 A     : 1
-B     : 2
-C     : 3
-Result: 5
+B     : 5
+C     : 9
+Result: 14
 
-Test Case: Zero values
-A     : 0
-B     : -0
-C     : 0
-Result: 0
-
-Test Case: Infinity values
-A     : inf
-B     : -inf
-C     : 1
-Result: -inf
-
-Test Case: NaN values
+Test Case: NaN values (128-bit single precision)
 A     : nan
 B     : 1
-C     : 2
+C     : 5
 Result: nan
 
-Test Case: Boundary values
-A     : 1.17549435e-38
-B     : 3.40282347e+38
-C     : -1.17549435e-38
-Result: 3.99999976
-
-Test Case: Mixed special values
-A     : 1
-B     : inf
-C     : nan
-Result: nan
-
-Test Case: Very small values
-A     : 1e-30
-B     : 2.00000001e-30
-C     : 3.00000001e-30
-Result: 3.00000001e-30
-
-Test Case: Special value in a
+Test Case: INF values (128-bit single precision)
 A     : inf
-B     : 2
-C     : 3
+B     : 1
+C     : 5
 Result: inf
 
-Test Case: Special value in b
-A     : 1
-B     : nan
-C     : 2
-Result: nan
+Test Case: Zero values (128-bit single precision)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
 
-Test Case: Special value in c
-A     : 1
-B     : 2
-C     : -inf
-Result: -inf
+Test Case: Boundary values (128-bit single precision)
+A     : 3.40282347e+38
+B     : 1
+C     : 5
+Result: 3.40282347e+38
 
-Test Case: Special values in a and b
-A     : inf
-B     : nan
-C     : 1
-Result: nan
-
-Test Case: Special values in a and c
+Test Case: NaN and INF mix (128-bit single precision)
 A     : nan
 B     : 1
-C     : inf
+C     : 5
 Result: nan
 
-Test Case: All special values
-A     : inf
-B     : nan
-C     : -inf
-Result: nan
-
-Test Case: (null)
+Test Case: Zero and boundary mix (128-bit single precision)
 A     : 0
-B     : 0
-C     : 0
-Result: 0
+B     : 1
+C     : 5
+Result: 5
+
+Special Test: Negative Zero Handling
+A     : -0
+B     : 1
+C     : 2
+Result: 2
 
 VFMADD132SS Register-Register Tests Completed
 
-Memory Operand Test: Normal values
+Memory Operand Test: Normal values (128-bit single precision)
 A     : 1
-B     : 2
-C     : 3
-Result: 5
+B     : 5
+C     : 9
+Result: 14
 
-Memory Operand Test: Zero values
-A     : 0
-B     : -0
-C     : 0
-Result: 0
-
-Memory Operand Test: Infinity values
-A     : inf
-B     : -inf
-C     : 1
-Result: -inf
-
-Memory Operand Test: NaN values
+Memory Operand Test: NaN values (128-bit single precision)
 A     : nan
 B     : 1
-C     : 2
+C     : 5
 Result: nan
 
-Memory Operand Test: Boundary values
-A     : 1.17549435e-38
-B     : 3.40282347e+38
-C     : -1.17549435e-38
-Result: 3.99999976
-
-Memory Operand Test: Mixed special values
-A     : 1
-B     : inf
-C     : nan
-Result: nan
-
-Memory Operand Test: Very small values
-A     : 1e-30
-B     : 2.00000001e-30
-C     : 3.00000001e-30
-Result: 3.00000001e-30
-
-Memory Operand Test: Special value in a
+Memory Operand Test: INF values (128-bit single precision)
 A     : inf
-B     : 2
-C     : 3
+B     : 1
+C     : 5
 Result: inf
 
-Memory Operand Test: Special value in b
-A     : 1
-B     : nan
-C     : 2
-Result: nan
+Memory Operand Test: Zero values (128-bit single precision)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
 
-Memory Operand Test: Special value in c
-A     : 1
-B     : 2
-C     : -inf
-Result: -inf
+Memory Operand Test: Boundary values (128-bit single precision)
+A     : 3.40282347e+38
+B     : 1
+C     : 5
+Result: 3.40282347e+38
 
-Memory Operand Test: Special values in a and b
-A     : inf
-B     : nan
-C     : 1
-Result: nan
-
-Memory Operand Test: Special values in a and c
+Memory Operand Test: NaN and INF mix (128-bit single precision)
 A     : nan
 B     : 1
-C     : inf
+C     : 5
 Result: nan
 
-Memory Operand Test: All special values
-A     : inf
-B     : nan
-C     : -inf
-Result: nan
-
-Memory Operand Test: (null)
+Memory Operand Test: Zero and boundary mix (128-bit single precision)
 A     : 0
-B     : 0
-C     : 0
-Result: 0
+B     : 1
+C     : 5
+Result: 5
+
+Special Memory Test: Negative Zero Handling
+A     : -0
+B     : 1
+C     : 2
+Result: 2
 
 VFMADD132SS Register-Memory Tests Completed
 

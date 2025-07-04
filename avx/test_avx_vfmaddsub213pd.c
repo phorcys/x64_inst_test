@@ -2,52 +2,214 @@
 #include <stdint.h>
 #include <immintrin.h>
 #include <math.h>
-#include <float.h>
 #include "avx.h"
+#include "fma.h"
 
-#define TEST_CASE_COUNT 14
+#define TEST_CASE_COUNT FMA_TEST_CASE_COUNT
 
-typedef struct {
-    double a[2];
-    double b[2];
-    double c[2];
-    const char *desc;
-} test_case;
+// 计算预期值：偶数索引元素为 a*b - c，奇数索引元素为 a*b + c
+static void calculate_expected(fma_test_case_128* test_case, double expected[2]) {
+    for (int i = 0; i < 2; i++) {
+        if (i % 2 == 0) {
+            expected[i] = fma(test_case->a[i], test_case->b[i], -test_case->c[i]);
+        } else {
+            expected[i] = fma(test_case->a[i], test_case->b[i], test_case->c[i]);
+        }
+    }
+}
 
-test_case cases[TEST_CASE_COUNT] = {
-    // 正常值
-    {{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, "Normal values"},
-    // 零值
-    {{0.0, -0.0}, {0.0, -0.0}, {0.0, -0.0}, "Zero values"},
-    // 无穷大
-    {{INFINITY, -INFINITY}, {1.0, 1.0}, {1.0, 1.0}, "Infinity values"},
-    // NaN
-    {{NAN, 1.0}, {2.0, NAN}, {3.0, 4.0}, "NaN values"},
-    // 边界值
-    {{DBL_MIN, DBL_MAX}, {-DBL_MIN, -DBL_MAX}, {DBL_MIN, DBL_MAX}, "Boundary values"},
-    // 混合值
-    {{1.0, INFINITY}, {NAN, 2.0}, {3.0, NAN}, "Mixed special values"},
-    // 小值
-    {{1e-300, 2e-300}, {3e-300, 4e-300}, {5e-300, 6e-300}, "Very small values"},
-    // a为特殊值
-    {{INFINITY, NAN}, {2.0, 3.0}, {4.0, 5.0}, "Special value in a"},
-    // b为特殊值
-    {{1.0, 2.0}, {NAN, INFINITY}, {3.0, 4.0}, "Special value in b"},
-    // c为特殊值
-    {{1.0, 2.0}, {3.0, 4.0}, {-INFINITY, NAN}, "Special value in c"},
-    // a和b为特殊值
-    {{INFINITY, NAN}, {NAN, INFINITY}, {1.0, 2.0}, "Special values in a and b"},
-    // a和c为特殊值
-    {{NAN, INFINITY}, {1.0, 2.0}, {INFINITY, NAN}, "Special values in a and c"},
-    // 所有特殊值
-    {{INFINITY, NAN}, {NAN, INFINITY}, {-INFINITY, NAN}, "All special values"}
-};
-
-static void test_reg_reg_operand() {
+static void test_reg_reg_128() {
     for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128d va = _mm_loadu_pd(cases[t].a);
-        __m128d vb = _mm_loadu_pd(cases[t].b);
-        __m128d vc = _mm_loadu_pd(cases[t].c);
+        __m128d va = _mm_load_pd(fma_cases_128[t].a);
+        __m128d vb = _mm_load_pd(fma_cases_128[t].b);
+        __m128d vc = _mm_load_pd(fma_cases_128[t].c);
+        
+        // 内联汇编实现 VFMADDSUB213PD (128位寄存器-寄存器)
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        double res[2];
+        _mm_store_pd(res, va);
+        
+        double expected[2];
+        calculate_expected(&fma_cases_128[t], expected);
+        
+        printf("Test Case: %s (128-bit reg-reg)\n", fma_cases_128[t].desc);
+        for (int i = 0; i < 2; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, fma_cases_128[t].a[i], fma_cases_128[t].b[i], fma_cases_128[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
+    }
+    
+    // 添加特殊值测试
+    printf("\nStarting Special Value Tests for 128-bit reg-reg\n");
+    fma_test_case_128 special_cases_128[] = {
+        { {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, "All zeros" },
+        { {1.0, 1.0}, {INFINITY, INFINITY}, {1.0, 1.0}, "Infinity * finite + finite" },
+        { {INFINITY, INFINITY}, {0.0, 0.0}, {INFINITY, INFINITY}, "Infinity + (0 * Infinity)" },
+        { {NAN, NAN}, {1.0, 1.0}, {1.0, 1.0}, "NaN operand" },
+        { {-0.0, -0.0}, {-0.0, -0.0}, {-0.0, -0.0}, "Negative zeros" },
+        { {DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN}, "Denormal values" },
+        { {DBL_MAX, DBL_MAX}, {2.0, 2.0}, {DBL_MAX, DBL_MAX}, "Overflow case" },
+    };
+    
+    int special_count = sizeof(special_cases_128) / sizeof(special_cases_128[0]);
+    for (int t = 0; t < special_count; t++) {
+        __m128d va = _mm_load_pd(special_cases_128[t].a);
+        __m128d vb = _mm_load_pd(special_cases_128[t].b);
+        __m128d vc = _mm_load_pd(special_cases_128[t].c);
+        
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        double res[2];
+        _mm_store_pd(res, va);
+        
+        double expected[2];
+        calculate_expected(&special_cases_128[t], expected);
+        
+        printf("Special Test Case: %s (128-bit reg-reg)\n", special_cases_128[t].desc);
+        for (int i = 0; i < 2; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, special_cases_128[t].a[i], special_cases_128[t].b[i], special_cases_128[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
+    }
+}
+
+static void test_reg_mem_128() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_load_pd(fma_cases_128[t].a);
+        __m128d vb = _mm_load_pd(fma_cases_128[t].b);
+        double* c_ptr = fma_cases_128[t].c;
+        
+        // 内联汇编实现 VFMADDSUB213PD (128位寄存器-内存)
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "m" (*c_ptr)
+        );
+        
+        double res[2];
+        _mm_store_pd(res, va);
+        
+        double expected[2];
+        calculate_expected(&fma_cases_128[t], expected);
+        
+        printf("Test Case: %s (128-bit reg-mem)\n", fma_cases_128[t].desc);
+        for (int i = 0; i < 2; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, fma_cases_128[t].a[i], fma_cases_128[t].b[i], fma_cases_128[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
+    }
+    
+    // 添加特殊值测试
+    printf("\nStarting Special Value Tests for 128-bit reg-mem\n");
+    fma_test_case_128 special_cases_128[] = {
+        { {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, "All zeros" },
+        { {1.0, 1.0}, {INFINITY, INFINITY}, {1.0, 1.0}, "Infinity * finite + finite" },
+        { {INFINITY, INFINITY}, {0.0, 0.0}, {INFINITY, INFINITY}, "Infinity + (0 * Infinity)" },
+        { {NAN, NAN}, {1.0, 1.0}, {1.0, 1.0}, "NaN operand" },
+        { {-0.0, -0.0}, {-0.0, -0.0}, {-0.0, -0.0}, "Negative zeros" },
+        { {DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN}, "Denormal values" },
+        { {DBL_MAX, DBL_MAX}, {2.0, 2.0}, {DBL_MAX, DBL_MAX}, "Overflow case" },
+    };
+    
+    int special_count = sizeof(special_cases_128) / sizeof(special_cases_128[0]);
+    for (int t = 0; t < special_count; t++) {
+        __m128d va = _mm_load_pd(special_cases_128[t].a);
+        __m128d vb = _mm_load_pd(special_cases_128[t].b);
+        double* c_ptr = special_cases_128[t].c;
+        
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "m" (*(const __m128d*)c_ptr)
+        );
+        
+        double res[2];
+        _mm_store_pd(res, va);
+        
+        double expected[2];
+        calculate_expected(&special_cases_128[t], expected);
+        
+        printf("Special Test Case: %s (128-bit reg-mem)\n", special_cases_128[t].desc);
+        for (int i = 0; i < 2; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, special_cases_128[t].a[i], special_cases_128[t].b[i], special_cases_128[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
+    }
+}
+
+// 计算预期值：偶数索引元素为 a*b - c，奇数索引元素为 a*b + c
+static void calculate_expected_256(fma_test_case_256* test_case, double expected[4]) {
+    for (int i = 0; i < 4; i++) {
+        if (i % 2 == 0) {
+            expected[i] = fma(test_case->a[i], test_case->b[i], -test_case->c[i]);
+        } else {
+            expected[i] = fma(test_case->a[i], test_case->b[i], test_case->c[i]);
+        }
+    }
+}
+
+static void test_reg_reg_256() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m256d va = _mm256_load_pd(fma_cases_256[t].a);
+        __m256d vb = _mm256_load_pd(fma_cases_256[t].b);
+        __m256d vc = _mm256_load_pd(fma_cases_256[t].c);
+        
+        // 内联汇编实现 VFMADDSUB213PD (256位寄存器-寄存器)
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        double res[4];
+        _mm256_store_pd(res, va);
+        
+        double expected[4];
+        calculate_expected_256(&fma_cases_256[t], expected);
+        
+        printf("Test Case: %s (256-bit reg-reg)\n", fma_cases_256[t].desc);
+        for (int i = 0; i < 4; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, fma_cases_256[t].a[i], fma_cases_256[t].b[i], fma_cases_256[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
+    }
+    
+    // 添加特殊值测试
+    printf("\nStarting Special Value Tests for 256-bit reg-reg\n");
+    fma_test_case_256 special_cases_256[] = {
+        { {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, "All zeros" },
+        { {1.0, 1.0, 1.0, 1.0}, {INFINITY, INFINITY, INFINITY, INFINITY}, {1.0, 1.0, 1.0, 1.0}, "Infinity * finite + finite" },
+        { {INFINITY, INFINITY, INFINITY, INFINITY}, {0.0, 0.0, 0.0, 0.0}, {INFINITY, INFINITY, INFINITY, INFINITY}, "Infinity + (0 * Infinity)" },
+        { {NAN, NAN, NAN, NAN}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, "NaN operand" },
+        { {-0.0, -0.0, -0.0, -0.0}, {-0.0, -0.0, -0.0, -0.0}, {-0.0, -0.0, -0.0, -0.0}, "Negative zeros" },
+        { {DBL_MIN, DBL_MIN, DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN, DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN, DBL_MIN, DBL_MIN}, "Denormal values" },
+        { {DBL_MAX, DBL_MAX, DBL_MAX, DBL_MAX}, {2.0, 2.0, 2.0, 2.0}, {DBL_MAX, DBL_MAX, DBL_MAX, DBL_MAX}, "Overflow case" },
+    };
+    
+    int special_count = sizeof(special_cases_256) / sizeof(special_cases_256[0]);
+    for (int t = 0; t < special_count; t++) {
+        __m256d va = _mm256_load_pd(special_cases_256[t].a);
+        __m256d vb = _mm256_load_pd(special_cases_256[t].b);
+        __m256d vc = _mm256_load_pd(special_cases_256[t].c);
         
         __asm__ __volatile__(
             "vfmaddsub213pd %[b], %[c], %[a]"
@@ -55,17 +217,88 @@ static void test_reg_reg_operand() {
             : [b] "x" (vb), [c] "x" (vc)
         );
         
-        double res[2];
-        _mm_storeu_pd(res, va);
+        double res[4];
+        _mm256_store_pd(res, va);
         
-        printf("Test Case: %s\n", cases[t].desc);
-        printf("A     : %.17g %.17g\n", cases[t].a[0], cases[t].a[1]);
-        printf("B     : %.17g %.17g\n", cases[t].b[0], cases[t].b[1]);
-        printf("C     : %.17g %.17g\n", cases[t].c[0], cases[t].c[1]);
-        printf("Result: %.17g %.17g\n\n", res[0], res[1]);
+        double expected[4];
+        calculate_expected_256(&special_cases_256[t], expected);
+        
+        printf("Special Test Case: %s (256-bit reg-reg)\n", special_cases_256[t].desc);
+        for (int i = 0; i < 4; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, special_cases_256[t].a[i], special_cases_256[t].b[i], special_cases_256[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
+    }
+}
+
+static void test_reg_mem_256() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        __m256d va = _mm256_load_pd(fma_cases_256[t].a);
+        __m256d vb = _mm256_load_pd(fma_cases_256[t].b);
+        double* c_ptr = fma_cases_256[t].c;
+        
+        // 内联汇编实现 VFMADDSUB213PD (256位寄存器-内存)
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "m" (*(const __m256d*)c_ptr)
+        );
+        
+        double res[4];
+        _mm256_store_pd(res, va);
+        
+        double expected[4];
+        calculate_expected_256(&fma_cases_256[t], expected);
+        
+        printf("Test Case: %s (256-bit reg-mem)\n", fma_cases_256[t].desc);
+        for (int i = 0; i < 4; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, fma_cases_256[t].a[i], fma_cases_256[t].b[i], fma_cases_256[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
     }
     
-    printf("VFMADDSUB213PD Register-Register Tests Completed\n\n");
+    // 添加特殊值测试
+    printf("\nStarting Special Value Tests for 256-bit reg-mem\n");
+    fma_test_case_256 special_cases_256[] = {
+        { {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, "All zeros" },
+        { {1.0, 1.0, 1.0, 1.0}, {INFINITY, INFINITY, INFINITY, INFINITY}, {1.0, 1.0, 1.0, 1.0}, "Infinity * finite + finite" },
+        { {INFINITY, INFINITY, INFINITY, INFINITY}, {0.0, 0.0, 0.0, 0.0}, {INFINITY, INFINITY, INFINITY, INFINITY}, "Infinity + (0 * Infinity)" },
+        { {NAN, NAN, NAN, NAN}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, "NaN operand" },
+        { {-0.0, -0.0, -0.0, -0.0}, {-0.0, -0.0, -0.0, -0.0}, {-0.0, -0.0, -0.0, -0.0}, "Negative zeros" },
+        { {DBL_MIN, DBL_MIN, DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN, DBL_MIN, DBL_MIN}, {DBL_MIN, DBL_MIN, DBL_MIN, DBL_MIN}, "Denormal values" },
+        { {DBL_MAX, DBL_MAX, DBL_MAX, DBL_MAX}, {2.0, 2.0, 2.0, 2.0}, {DBL_MAX, DBL_MAX, DBL_MAX, DBL_MAX}, "Overflow case" },
+    };
+    
+    int special_count = sizeof(special_cases_256) / sizeof(special_cases_256[0]);
+    for (int t = 0; t < special_count; t++) {
+        __m256d va = _mm256_load_pd(special_cases_256[t].a);
+        __m256d vb = _mm256_load_pd(special_cases_256[t].b);
+        double* c_ptr = special_cases_256[t].c;
+        
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "m" (*(const __m256d*)c_ptr)
+        );
+        
+        double res[4];
+        _mm256_store_pd(res, va);
+        
+        double expected[4];
+        calculate_expected_256(&special_cases_256[t], expected);
+        
+        printf("Special Test Case: %s (256-bit reg-mem)\n", special_cases_256[t].desc);
+        for (int i = 0; i < 4; i++) {
+            printf("Element %d: A=%.18g, B=%.18g, C=%.18g\n",
+                   i, special_cases_256[t].a[i], special_cases_256[t].b[i], special_cases_256[t].c[i]);
+            printf("Expected: %.18g, Result: %.18g\n", expected[i], res[i]);
+        }
+        printf("\n");
+    }
 }
 
 int main() {
@@ -73,7 +306,10 @@ int main() {
     printf("VFMADDSUB213PD Comprehensive Tests\n");
     printf("==================================\n\n");
     
-    test_reg_reg_operand();
+    test_reg_reg_128();
+    test_reg_mem_128();
+    test_reg_reg_256();
+    test_reg_mem_256();
     
     printf("All VFMADDSUB213PD tests completed. Results are for verification on physical CPU vs box64.\n");
     

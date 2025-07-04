@@ -2,175 +2,103 @@
 VFMADD132SD Comprehensive Tests
 ==================================
 
-Test Case: Normal values
+Test Case: Normal values (128-bit)
 A     : 1
-B     : 2
-C     : 3
-Result: 5
+B     : 5
+C     : 9
+Result: 14
 
-Test Case: Zero values
-A     : 0
-B     : -0
-C     : 0
-Result: 0
-
-Test Case: Infinity values
-A     : inf
-B     : -inf
-C     : 1
-Result: -inf
-
-Test Case: NaN values
+Test Case: NaN values (128-bit)
 A     : nan
 B     : 1
-C     : 2
+C     : 5
 Result: nan
 
-Test Case: Boundary values
-A     : 2.2250738585072014e-308
-B     : 1.7976931348623157e+308
-C     : -2.2250738585072014e-308
-Result: 3.9999999999999996
-
-Test Case: Mixed special values
-A     : 1
-B     : inf
-C     : nan
-Result: nan
-
-Test Case: Very small values
-A     : 1e-300
-B     : 2.0000000000000001e-300
-C     : 3.0000000000000002e-300
-Result: 3.0000000000000002e-300
-
-Test Case: Special value in a
+Test Case: INF values (128-bit)
 A     : inf
-B     : 2
-C     : 3
+B     : 1
+C     : 5
 Result: inf
 
-Test Case: Special value in b
-A     : 1
-B     : nan
-C     : 2
-Result: nan
+Test Case: Zero values (128-bit)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
 
-Test Case: Special value in c
-A     : 1
-B     : 2
-C     : -inf
-Result: -inf
+Test Case: Boundary values (128-bit)
+A     : 1.7976931348623157e+308
+B     : 1
+C     : 5
+Result: 1.7976931348623157e+308
 
-Test Case: Special values in a and b
-A     : inf
-B     : nan
-C     : 1
-Result: nan
-
-Test Case: Special values in a and c
+Test Case: NaN and INF mix (128-bit)
 A     : nan
 B     : 1
-C     : inf
+C     : 5
 Result: nan
 
-Test Case: All special values
-A     : inf
-B     : nan
-C     : -inf
-Result: nan
-
-Test Case: (null)
+Test Case: Zero and boundary mix (128-bit)
 A     : 0
-B     : 0
-C     : 0
-Result: 0
+B     : 1
+C     : 5
+Result: 5
+
+Special Test: Negative Zero Handling
+A     : -0
+B     : 1
+C     : 2
+Result: 2
 
 VFMADD132SD Register-Register Tests Completed
 
-Memory Operand Test: Normal values
+Memory Operand Test: Normal values (128-bit)
 A     : 1
-B     : 2
-C     : 3
-Result: 5
+B     : 5
+C     : 9
+Result: 14
 
-Memory Operand Test: Zero values
-A     : 0
-B     : -0
-C     : 0
-Result: 0
-
-Memory Operand Test: Infinity values
-A     : inf
-B     : -inf
-C     : 1
-Result: -inf
-
-Memory Operand Test: NaN values
+Memory Operand Test: NaN values (128-bit)
 A     : nan
 B     : 1
-C     : 2
+C     : 5
 Result: nan
 
-Memory Operand Test: Boundary values
-A     : 2.2250738585072014e-308
-B     : 1.7976931348623157e+308
-C     : -2.2250738585072014e-308
-Result: 3.9999999999999996
-
-Memory Operand Test: Mixed special values
-A     : 1
-B     : inf
-C     : nan
-Result: nan
-
-Memory Operand Test: Very small values
-A     : 1e-300
-B     : 2.0000000000000001e-300
-C     : 3.0000000000000002e-300
-Result: 3.0000000000000002e-300
-
-Memory Operand Test: Special value in a
+Memory Operand Test: INF values (128-bit)
 A     : inf
-B     : 2
-C     : 3
+B     : 1
+C     : 5
 Result: inf
 
-Memory Operand Test: Special value in b
-A     : 1
-B     : nan
-C     : 2
-Result: nan
+Memory Operand Test: Zero values (128-bit)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
 
-Memory Operand Test: Special value in c
-A     : 1
-B     : 2
-C     : -inf
-Result: -inf
+Memory Operand Test: Boundary values (128-bit)
+A     : 1.7976931348623157e+308
+B     : 1
+C     : 5
+Result: 1.7976931348623157e+308
 
-Memory Operand Test: Special values in a and b
-A     : inf
-B     : nan
-C     : 1
-Result: nan
-
-Memory Operand Test: Special values in a and c
+Memory Operand Test: NaN and INF mix (128-bit)
 A     : nan
 B     : 1
-C     : inf
+C     : 5
 Result: nan
 
-Memory Operand Test: All special values
-A     : inf
-B     : nan
-C     : -inf
-Result: nan
-
-Memory Operand Test: (null)
+Memory Operand Test: Zero and boundary mix (128-bit)
 A     : 0
-B     : 0
-C     : 0
-Result: 0
+B     : 1
+C     : 5
+Result: 5
+
+Special Memory Test: Negative Zero Handling
+A     : -0
+B     : 1
+C     : 2
+Result: 2
 
 VFMADD132SD Register-Memory Tests Completed
 

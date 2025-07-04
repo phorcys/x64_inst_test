@@ -2,29 +2,20 @@
 #include <stdint.h>
 #include "avx.h"
 
-// 打印128位向量
-void print_m128i(__m128i value, const char* name) {
-    uint8_t *v = (uint8_t*)&value;
-    printf("%s: ", name);
-    for (int i = 0; i < 16; i++) {
-        printf("%02X ", v[i]);
-    }
-    printf("\n");
-}
+// 定义EFLAGS条件掩码
+#define MPSADBW_EFLAGS_COND (X_CF|X_PF|X_ZF|X_SF|X_OF)
 
-// 打印128位向量中的字
-void print_words(__m128i value, const char* name) {
-    uint16_t *v = (uint16_t*)&value;
-    printf("%s: ", name);
-    for (int i = 0; i < 8; i++) {
-        printf("%04X ", v[i]);
-    }
-    printf("\n");
+// 打印测试标题
+static void print_test_header(int test_num, const char* desc, uint8_t imm8) {
+    printf("\nTest %d: %s (imm8=0x%02X)\n", test_num, desc, imm8);
 }
 
 int main() {
     printf("Testing VMPSADBW instruction\n");
     printf("===========================\n");
+    
+    uint32_t mxcsr_before, mxcsr_after;
+    uint64_t eflags_after;
     
     // 测试1: 基本测试 - 寄存器操作数
     {
@@ -39,17 +30,27 @@ int main() {
         );
         
         __m128i result;
-        // 立即数在指令中直接使用，不需要变量
+        
+        // 获取执行前状态
+        mxcsr_before = get_mxcsr();
+        (void)__builtin_ia32_readeflags_u64(); // 清除标志寄存器
         
         asm volatile(
             "vmpsadbw $0, %[b], %[a], %[res]"
             : [res] "=x" (result)
-            : [a] "x" (a), [b] "x" (b));
+            : [a] "x" (a), [b] "x" (b)
+            : "cc");
         
-        printf("\nTest 1: Basic register operands (imm8=0)\n");
-        print_m128i(a, "Input A");
-        print_m128i(b, "Input B");
-        print_words(result, "Result  ");
+        // 获取执行后状态
+        mxcsr_after = get_mxcsr();
+        eflags_after = __builtin_ia32_readeflags_u64();
+        
+        print_test_header(1, "Basic register operands", 0);
+        print_m128i_hex(a, "Input A");
+        print_m128i_hex(b, "Input B");
+        print_m128i_hex(result, "Result  ");
+        print_eflags_cond(eflags_after, MPSADBW_EFLAGS_COND);
+        printf("MXCSR before: 0x%08X, after: 0x%08X\n", mxcsr_before, mxcsr_after);
         
         // 预期结果: 每个SAD计算
         // 块A[0:3] vs 块B[0:3] = |00-10|+|01-11|+|02-12|+|03-13| = 10+10+10+10 = 40 (0x40)
@@ -66,7 +67,7 @@ int main() {
             printf("[PASS]\n");
         } else {
             printf("[FAIL] - Result mismatch\n");
-            print_words(expected_result, "Expected");
+            print_m128i_hex(expected_result, "Expected");
         }
     }
     
@@ -91,9 +92,9 @@ int main() {
             : [a] "x" (a), [b] "x" (b));
         
         printf("\nTest 2: Different immediate offset (imm8=0x25)\n");
-        print_m128i(a, "Input A");
-        print_m128i(b, "Input B");
-        print_words(result, "Result  ");
+        print_m128i_hex(a, "Input A");
+        print_m128i_hex(b, "Input B");
+        print_m128i_hex(result, "Result  ");
         
         // 预期结果:
         // 块A[4:7] vs 块B[4:7] = |24-34|+|25-35|+|26-36|+|27-37| = 10+10+10+10 = 40 (0x40)
@@ -110,7 +111,7 @@ int main() {
             printf("[PASS]\n");
         } else {
             printf("[FAIL] - Result mismatch\n");
-            print_words(expected_result, "Expected");
+            print_m128i_hex(expected_result, "Expected");
         }
     }
     
@@ -135,9 +136,9 @@ int main() {
             : [a] "x" (a), [b] "m" (b_mem));
         
         printf("\nTest 3: Memory operand (imm8=0x0A)\n");
-        print_m128i(a, "Input A");
-        print_m128i(b_mem, "Input B");
-        print_words(result, "Result  ");
+        print_m128i_hex(a, "Input A");
+        print_m128i_hex(b_mem, "Input B");
+        print_m128i_hex(result, "Result  ");
         
         // 预期结果:
         // 块A[0:3] vs 块B[8:11] = |40-58|+|41-59|+|42-5A|+|43-5B| = 18+18+18+18 = 60 (0x60)
@@ -154,7 +155,7 @@ int main() {
             printf("[PASS]\n");
         } else {
             printf("[FAIL] - Result mismatch\n");
-            print_words(expected_result, "Expected");
+            print_m128i_hex(expected_result, "Expected");
         }
     }
     
@@ -179,9 +180,9 @@ int main() {
             : [a] "x" (a), [b] "x" (b));
         
         printf("\nTest 4: Boundary values (imm8=0x31)\n");
-        print_m128i(a, "Input A");
-        print_m128i(b, "Input B");
-        print_words(result, "Result  ");
+        print_m128i_hex(a, "Input A");
+        print_m128i_hex(b, "Input B");
+        print_m128i_hex(result, "Result  ");
         
         // 预期结果:
         // 块A[4:7] vs 块B[12:15] = |00-FF|+|00-FF|+|00-FF|+|00-FF| = FF*4 = 3FC (0x3FC)
@@ -198,16 +199,125 @@ int main() {
             printf("[PASS]\n");
         } else {
             printf("[FAIL] - Result mismatch\n");
-            print_words(expected_result, "Expected");
+            print_m128i_hex(expected_result, "Expected");
         }
     }
     
-    /*
-    // 测试5: 256位操作测试(暂时注释掉，待后续专门调试)
+    // 测试5: 256位操作测试
     {
-        // 测试代码...
+        __m256i a = _mm256_setr_epi8(
+            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+            0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F
+        );
+        
+        __m256i b = _mm256_setr_epi8(
+            0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
+            0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
+            0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
+            0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F
+        );
+        
+        __m256i result;
+        
+        mxcsr_before = get_mxcsr();
+        (void)__builtin_ia32_readeflags_u64(); // 清除标志寄存器
+        
+        asm volatile(
+            "vmpsadbw $0x07, %[b], %[a], %[res]"
+            : [res] "=x" (result)
+            : [a] "x" (a), [b] "x" (b)
+            : "cc", "memory");
+        
+        mxcsr_after = get_mxcsr();
+        eflags_after = __builtin_ia32_readeflags_u64();
+        
+        print_test_header(5, "256-bit operation", 0x07);
+        print_m256i_hex(a, "Input A");
+        print_m256i_hex(b, "Input B");
+        print_m256i_hex(result, "Result  ");
+        print_eflags_cond(eflags_after, MPSADBW_EFLAGS_COND);
+        printf("MXCSR before: 0x%08X, after: 0x%08X\n", mxcsr_before, mxcsr_after);
+        
+        // 验证结果
+        // 根据Intel手册，256位VMPSADBW实际上是对两个128位lane分别执行操作
+        // 低128位:
+        // 块A[0:3] vs 块B[0:3] = |00-20|+|01-21|+|02-22|+|03-23| = 20+20+20+20 = 80 (0x80)
+        // 块A[1:4] vs 块B[0:3] = |01-20|+|02-21|+|03-22|+|04-23| = 1F+1F+1F+1F = 7C (0x7C)
+        // 块A[2:5] vs 块B[0:3] = |02-20|+|03-21|+|04-22|+|05-23| = 1E+1E+1E+1E = 78 (0x78)
+        // 块A[3:6] vs 块B[0:3] = |03-20|+|04-21|+|05-22|+|06-23| = 1D+1D+1D+1D = 74 (0x74)
+        // 高128位:
+        // 块A[16:19] vs 块B[16:19] = |10-30|+|11-31|+|12-32|+|13-33| = 20+20+20+20 = 80 (0x80)
+        // 块A[17:20] vs 块B[16:19] = |11-30|+|12-31|+|13-32|+|14-33| = 1F+1F+1F+1F = 7C (0x7C)
+        // 块A[18:21] vs 块B[16:19] = |12-30|+|13-31|+|14-32|+|15-33| = 1E+1E+1E+1E = 78 (0x78)
+        // 块A[19:22] vs 块B[16:19] = |13-30|+|14-31|+|15-32|+|16-33| = 1D+1D+1D+1D = 74 (0x74)
+        uint16_t expected[16] = {
+            0xA0, 0x9C, 0x98, 0x94, 0x90, 0x8C, 0x88, 0x84,
+            0x80, 0x7C, 0x78, 0x74, 0x70, 0x6C, 0x68, 0x64
+        };
+        
+        // 修正比较方式 - 使用分lane比较
+        __m128i low_expected = _mm_loadu_si128((__m128i*)expected);
+        __m128i high_expected = _mm_loadu_si128((__m128i*)(expected + 8));
+        __m128i low_result = _mm256_extractf128_si256(result, 0);
+        __m128i high_result = _mm256_extractf128_si256(result, 1);
+        
+        int pass = 1;
+        if (!_mm_test_all_zeros(_mm_xor_si128(low_result, low_expected), _mm_set1_epi32(-1))) {
+            printf("[FAIL] - Low 128-bit result mismatch\n");
+            print_m128i_hex(low_expected, "Expected Low");
+            print_m128i_hex(low_result, "Actual Low");
+            pass = 0;
+        }
+        if (!_mm_test_all_zeros(_mm_xor_si128(high_result, high_expected), _mm_set1_epi32(-1))) {
+            printf("[FAIL] - High 128-bit result mismatch\n");
+            print_m128i_hex(high_expected, "Expected High");
+            print_m128i_hex(high_result, "Actual High");
+            pass = 0;
+        }
+        if (pass) {
+            printf("[PASS]\n");
+        }
     }
-    */
+    
+    // 测试6: 所有立即数组合测试
+    #define TEST_IMM8_CASE(n) \
+        do { \
+            __m128i a = _mm_setr_epi8( \
+                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, \
+                0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F \
+            ); \
+            __m128i b = _mm_setr_epi8( \
+                0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, \
+                0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F \
+            ); \
+            __m128i result; \
+            mxcsr_before = get_mxcsr(); \
+            (void)__builtin_ia32_readeflags_u64(); \
+            asm volatile( \
+                "vmpsadbw $"#n", %[b], %[a], %[res]" \
+                : [res] "=x" (result) \
+                : [a] "x" (a), [b] "x" (b) \
+                : "cc"); \
+            mxcsr_after = get_mxcsr(); \
+            eflags_after = __builtin_ia32_readeflags_u64(); \
+            print_test_header(6 + n, "All imm8 combinations", n); \
+            print_m128i_hex(a, "Input A"); \
+            print_m128i_hex(b, "Input B"); \
+            print_m128i_hex(result, "Result  "); \
+            print_eflags_cond(eflags_after, MPSADBW_EFLAGS_COND); \
+            printf("MXCSR before: 0x%08X, after: 0x%08X\n", mxcsr_before, mxcsr_after); \
+        } while(0)
+
+    TEST_IMM8_CASE(0);
+    TEST_IMM8_CASE(1);
+    TEST_IMM8_CASE(2);
+    TEST_IMM8_CASE(3);
+    TEST_IMM8_CASE(4);
+    TEST_IMM8_CASE(5);
+    TEST_IMM8_CASE(6);
+    TEST_IMM8_CASE(7);
     
     printf("\nVMPSADBW tests completed.\n");
     return 0;

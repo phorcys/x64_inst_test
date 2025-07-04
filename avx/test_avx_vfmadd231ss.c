@@ -4,53 +4,23 @@
 #include <math.h>
 #include <float.h>
 #include "avx.h"
+#include "fma.h"
 
-#define TEST_CASE_COUNT 14
-
-typedef struct {
-    float a;
-    float b;
-    float c;
-    const char *desc;
-} test_case;
-
-test_case cases[TEST_CASE_COUNT] = {
-    // 正常值
-    {1.0f, 2.0f, 3.0f, "Normal values"},
-    // 零值
-    {0.0f, -0.0f, 0.0f, "Zero values"},
-    // 无穷大
-    {INFINITY, -INFINITY, 1.0f, "Infinity values"},
-    // NaN
-    {NAN, 1.0f, 2.0f, "NaN values"},
-    // 边界值
-    {FLT_MIN, FLT_MAX, -FLT_MIN, "Boundary values"},
-    // 混合值
-    {1.0f, INFINITY, NAN, "Mixed special values"},
-    // 小值
-    {1e-30f, 2.00000001e-30f, 3.00000001e-30f, "Very small values"},
-    // a为特殊值
-    {INFINITY, 2.0f, 3.0f, "Special value in a"},
-    // b为特殊值
-    {1.0f, NAN, 2.0f, "Special value in b"},
-    // c为特殊值
-    {1.0f, 2.0f, -INFINITY, "Special value in c"},
-    // a和b为特殊值
-    {INFINITY, NAN, 1.0f, "Special values in a and b"},
-    // a和c为特殊值
-    {NAN, 1.0f, INFINITY, "Special values in a and c"},
-    // 所有特殊值
-    {INFINITY, NAN, -INFINITY, "All special values"}
-};
+#define TEST_CASE_COUNT FMA_TEST_CASE_COUNT
 
 static void test_reg_reg_operand() {
     for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128 va = _mm_load_ss(&cases[t].a);
-        __m128 vb = _mm_load_ss(&cases[t].b);
-        __m128 vc = _mm_load_ss(&cases[t].c);
+        // 使用128位单精度测试用例的第一个元素作为标量值
+        float a = fma_cases_128_ps[t].a[0];
+        float b = fma_cases_128_ps[t].b[0];
+        float c = fma_cases_128_ps[t].c[0];
+        
+        __m128 va = _mm_load_ss(&a);
+        __m128 vb = _mm_load_ss(&b);
+        __m128 vc = _mm_load_ss(&c);
         
         __asm__ __volatile__(
-            "vfmadd231ss %[b], %[c], %[a]"
+            "vfmadd231ss %[c], %[b], %[a]"
             : [a] "+x" (va)
             : [b] "x" (vb), [c] "x" (vc)
         );
@@ -58,14 +28,94 @@ static void test_reg_reg_operand() {
         float res;
         _mm_store_ss(&res, va);
         
-        printf("Test Case: %s\n", cases[t].desc);
-        printf("A     : %.9g\n", cases[t].a);
-        printf("B     : %.9g\n", cases[t].b);
-        printf("C     : %.9g\n", cases[t].c);
-        printf("Result: %.9g\n\n", res);
+        // 计算预期值: a + (b * c)
+        float expected = fmaf(a, b, c);
+        
+        printf("Test Case: %s\n", fma_cases_128_ps[t].desc);
+        printf("A     : %.9g\n", a);
+        printf("B     : %.9g\n", b);
+        printf("C     : %.9g\n", c);
+        printf("Expected: %.9g\n", expected);
+        printf("Result  : %.9g\n\n", res);
     }
     
     printf("VFMADD231SS Register-Register Tests Completed\n\n");
+    
+    // 添加特殊值测试
+    printf("Special Value Tests for VFMADD231SS\n");
+    printf("===================================\n");
+    
+    // 测试 +/-0.0, +/-INF, NaN 等边界情况
+    struct {
+        float a, b, c;
+        const char* desc;
+    } special_cases[] = {
+        {0.0f, 0.0f, 0.0f, "All zeros"},
+        {1.0f, INFINITY, 1.0f, "Infinity * finite + finite"},
+        {INFINITY, 0.0f, INFINITY, "Infinity + (0 * Infinity)"},
+        {NAN, 1.0f, 1.0f, "NaN operand"},
+        {-0.0f, -0.0f, -0.0f, "Negative zeros"},
+        {FLT_MIN, FLT_MIN, FLT_MIN, "Denormal values"},
+        {FLT_MAX, 2.0f, FLT_MAX, "Overflow case"},
+    };
+    
+    for (int i = 0; i < sizeof(special_cases)/sizeof(special_cases[0]); i++) {
+        __m128 va = _mm_load_ss(&special_cases[i].a);
+        __m128 vb = _mm_load_ss(&special_cases[i].b);
+        __m128 vc = _mm_load_ss(&special_cases[i].c);
+        
+        __asm__ __volatile__(
+            "vfmadd231ss %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        float res;
+        _mm_store_ss(&res, va);
+        float expected = fmaf(special_cases[i].a, special_cases[i].b, special_cases[i].c);
+        
+        printf("Test Case: %s\n", special_cases[i].desc);
+        printf("A: %.9g, B: %.9g, C: %.9g\n", 
+               special_cases[i].a, special_cases[i].b, special_cases[i].c);
+        printf("Expected: %.9g, Result: %.9g\n\n", expected, res);
+    }
+    
+    printf("Special Value Tests Completed\n\n");
+}
+
+static void test_reg_mem_operand() {
+    for (int t = 0; t < TEST_CASE_COUNT; t++) {
+        // 使用128位单精度测试用例的第一个元素作为标量值
+        float a = fma_cases_128_ps[t].a[0];
+        float b = fma_cases_128_ps[t].b[0];
+        float c = fma_cases_128_ps[t].c[0];
+        
+        __m128 va = _mm_load_ss(&a);
+        __m128 vb = _mm_load_ss(&b);
+        
+        // 测试内存操作数
+        __m128 va1 = va;
+        __asm__ __volatile__(
+            "vfmadd231ss %[c], %[b], %[a]"
+            : [a] "+x" (va1)
+            : [b] "x" (vb), [c] "m" (c)
+        );
+        
+        float res;
+        _mm_store_ss(&res, va1);
+        
+        // 计算预期值: (b * c) + a
+        float expected = fmaf(b, c, a);
+        
+        printf("Memory Operand Test: %s\n", fma_cases_128_ps[t].desc);
+        printf("A     : %.9g\n", a);
+        printf("B     : %.9g\n", b);
+        printf("C     : %.9g\n", c);
+        printf("Expected: %.9g\n", expected);
+        printf("Result  : %.9g\n\n", res);
+    }
+    
+    printf("VFMADD231SS Register-Memory Tests Completed\n\n");
 }
 
 int main() {
@@ -73,7 +123,9 @@ int main() {
     printf("VFMADD231SS Comprehensive Tests\n");
     printf("==================================\n\n");
     
+    // 执行测试
     test_reg_reg_operand();
+    test_reg_mem_operand();
     
     printf("All VFMADD231SS tests completed. Results are for verification on physical CPU vs box64.\n");
     

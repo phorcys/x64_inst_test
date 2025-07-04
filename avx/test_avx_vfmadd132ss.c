@@ -1,53 +1,24 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <immintrin.h>
-#include <math.h>
-#include <float.h>
 #include "avx.h"
+#include "fma.h"
 
-#define TEST_CASE_COUNT 14
-
-typedef struct {
-    float a;
-    float b;
-    float c;
-    const char *desc;
-} test_case;
-
-test_case cases[TEST_CASE_COUNT] = {
-    // 正常值
-    {1.0f, 2.0f, 3.0f, "Normal values"},
-    // 零值
-    {0.0f, -0.0f, 0.0f, "Zero values"},
-    // 无穷大
-    {INFINITY, -INFINITY, 1.0f, "Infinity values"},
-    // NaN
-    {NAN, 1.0f, 2.0f, "NaN values"},
-    // 边界值
-    {FLT_MIN, FLT_MAX, -FLT_MIN, "Boundary values"},
-    // 混合值
-    {1.0f, INFINITY, NAN, "Mixed special values"},
-    // 小值
-    {1e-30f, 2e-30f, 3e-30f, "Very small values"},
-    // a为特殊值
-    {INFINITY, 2.0f, 3.0f, "Special value in a"},
-    // b为特殊值
-    {1.0f, NAN, 2.0f, "Special value in b"},
-    // c为特殊值
-    {1.0f, 2.0f, -INFINITY, "Special value in c"},
-    // a和b为特殊值
-    {INFINITY, NAN, 1.0f, "Special values in a and b"},
-    // a和c为特殊值
-    {NAN, 1.0f, INFINITY, "Special values in a and c"},
-    // 所有特殊值
-    {INFINITY, NAN, -INFINITY, "All special values"}
-};
+// 使用公共测试用例，只取每个向量的第一个元素
+static float get_scalar_value_ps(const float* vec) {
+    return vec[0];
+}
 
 static void test_reg_reg_operand() {
-    for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128 va = _mm_load_ss(&cases[t].a);
-        __m128 vb = _mm_load_ss(&cases[t].b);
-        __m128 vc = _mm_load_ss(&cases[t].c);
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        float a = get_scalar_value_ps(fma_cases_128_ps[t].a);
+        float b = get_scalar_value_ps(fma_cases_128_ps[t].b);
+        float c = get_scalar_value_ps(fma_cases_128_ps[t].c);
+        const char *desc = fma_cases_128_ps[t].desc;
+        
+        __m128 va = _mm_load_ss(&a);
+        __m128 vb = _mm_load_ss(&b);
+        __m128 vc = _mm_load_ss(&c);
         
         __asm__ __volatile__(
             "vfmadd132ss %[b], %[c], %[a]"
@@ -58,10 +29,36 @@ static void test_reg_reg_operand() {
         float res;
         _mm_store_ss(&res, va);
         
-        printf("Test Case: %s\n", cases[t].desc);
-        printf("A     : %.9g\n", cases[t].a);
-        printf("B     : %.9g\n", cases[t].b);
-        printf("C     : %.9g\n", cases[t].c);
+        printf("Test Case: %s\n", desc);
+        printf("A     : %.9g\n", a);
+        printf("B     : %.9g\n", b);
+        printf("C     : %.9g\n", c);
+        printf("Result: %.9g\n\n", res);
+    }
+    
+    // 添加特定测试：负零处理
+    {
+        float a = -0.0f;
+        float b = 1.0f;
+        float c = 2.0f;
+        
+        __m128 va = _mm_load_ss(&a);
+        __m128 vb = _mm_load_ss(&b);
+        __m128 vc = _mm_load_ss(&c);
+        
+        __asm__ __volatile__(
+            "vfmadd132ss %[b], %[c], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        float res;
+        _mm_store_ss(&res, va);
+        
+        printf("Special Test: Negative Zero Handling\n");
+        printf("A     : %.9g\n", a);
+        printf("B     : %.9g\n", b);
+        printf("C     : %.9g\n", c);
         printf("Result: %.9g\n\n", res);
     }
     
@@ -69,25 +66,56 @@ static void test_reg_reg_operand() {
 }
 
 static void test_reg_mem_operand() {
-    for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128 va = _mm_load_ss(&cases[t].a);
-        __m128 vc = _mm_load_ss(&cases[t].c);
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        float a = get_scalar_value_ps(fma_cases_128_ps[t].a);
+        float b = get_scalar_value_ps(fma_cases_128_ps[t].b);
+        float c = get_scalar_value_ps(fma_cases_128_ps[t].c);
+        const char *desc = fma_cases_128_ps[t].desc;
+        
+        __m128 va = _mm_load_ss(&a);
+        __m128 vc = _mm_load_ss(&c);
         
         // 测试内存操作数
         __m128 va1 = va;
         __asm__ __volatile__(
             "vfmadd132ss %[b], %[c], %[a]"
             : [a] "+x" (va1)
-            : [b] "m" (cases[t].b), [c] "x" (vc)
+            : [b] "m" (b), [c] "x" (vc)
         );
         
         float res;
         _mm_store_ss(&res, va1);
         
-        printf("Memory Operand Test: %s\n", cases[t].desc);
-        printf("A     : %.9g\n", cases[t].a);
-        printf("B     : %.9g\n", cases[t].b);
-        printf("C     : %.9g\n", cases[t].c);
+        printf("Memory Operand Test: %s\n", desc);
+        printf("A     : %.9g\n", a);
+        printf("B     : %.9g\n", b);
+        printf("C     : %.9g\n", c);
+        printf("Result: %.9g\n\n", res);
+    }
+    
+    // 添加特定测试：负零处理
+    {
+        float a = -0.0f;
+        float b = 1.0f;
+        float c = 2.0f;
+        
+        __m128 va = _mm_load_ss(&a);
+        __m128 vc = _mm_load_ss(&c);
+        
+        __m128 va1 = va;
+        __asm__ __volatile__(
+            "vfmadd132ss %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (b), [c] "x" (vc)
+        );
+        
+        float res;
+        _mm_store_ss(&res, va1);
+        
+        printf("Special Memory Test: Negative Zero Handling\n");
+        printf("A     : %.9g\n", a);
+        printf("B     : %.9g\n", b);
+        printf("C     : %.9g\n", c);
         printf("Result: %.9g\n\n", res);
     }
     

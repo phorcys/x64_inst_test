@@ -2,90 +2,166 @@
 VFMADD231SS Comprehensive Tests
 ==================================
 
-Test Case: Normal values
+Test Case: Normal values (128-bit single precision)
 A     : 1
-B     : 2
-C     : 3
-Result: 7
+B     : 5
+C     : 9
+Expected: 14
+Result  : 46
 
-Test Case: Zero values
-A     : 0
-B     : -0
-C     : 0
-Result: 0
-
-Test Case: Infinity values
-A     : inf
-B     : -inf
-C     : 1
-Result: -nan
-
-Test Case: NaN values
+Test Case: NaN values (128-bit single precision)
 A     : nan
 B     : 1
-C     : 2
-Result: nan
+C     : 5
+Expected: nan
+Result  : nan
 
-Test Case: Boundary values
-A     : 1.17549435e-38
-B     : 3.40282347e+38
-C     : -1.17549435e-38
-Result: -3.99999976
-
-Test Case: Mixed special values
-A     : 1
-B     : inf
-C     : nan
-Result: nan
-
-Test Case: Very small values
-A     : 1e-30
-B     : 2.00000001e-30
-C     : 3.00000001e-30
-Result: 1e-30
-
-Test Case: Special value in a
+Test Case: INF values (128-bit single precision)
 A     : inf
-B     : 2
-C     : 3
-Result: inf
+B     : 1
+C     : 5
+Expected: inf
+Result  : inf
 
-Test Case: Special value in b
-A     : 1
-B     : nan
-C     : 2
-Result: nan
+Test Case: Zero values (128-bit single precision)
+A     : 0
+B     : 1
+C     : 5
+Expected: 5
+Result  : 5
 
-Test Case: Special value in c
-A     : 1
-B     : 2
-C     : -inf
-Result: -inf
+Test Case: Boundary values (128-bit single precision)
+A     : 3.40282347e+38
+B     : 1
+C     : 5
+Expected: 3.40282347e+38
+Result  : 3.40282347e+38
 
-Test Case: Special values in a and b
-A     : inf
-B     : nan
-C     : 1
-Result: nan
-
-Test Case: Special values in a and c
+Test Case: NaN and INF mix (128-bit single precision)
 A     : nan
 B     : 1
-C     : inf
-Result: nan
+C     : 5
+Expected: nan
+Result  : nan
 
-Test Case: All special values
-A     : inf
-B     : nan
-C     : -inf
-Result: nan
-
-Test Case: (null)
+Test Case: Zero and boundary mix (128-bit single precision)
 A     : 0
-B     : 0
-C     : 0
-Result: 0
+B     : 1
+C     : 5
+Expected: 5
+Result  : 5
+
+Test Case: Denormal values (128-bit single precision)
+A     : 5.87747175e-39
+B     : 1
+C     : 5
+Expected: 5
+Result  : 5
+
+Test Case: Overflow case (128-bit single precision)
+A     : 3.40282347e+38
+B     : 2
+C     : 3.40282347e+38
+Expected: inf
+Result  : inf
 
 VFMADD231SS Register-Register Tests Completed
+
+Special Value Tests for VFMADD231SS
+===================================
+Test Case: All zeros
+A: 0, B: 0, C: 0
+Expected: 0, Result: 0
+
+Test Case: Infinity * finite + finite
+A: 1, B: inf, C: 1
+Expected: inf, Result: inf
+
+Test Case: Infinity + (0 * Infinity)
+A: inf, B: 0, C: inf
+Expected: -nan, Result: -nan
+
+Test Case: NaN operand
+A: nan, B: 1, C: 1
+Expected: nan, Result: nan
+
+Test Case: Negative zeros
+A: -0, B: -0, C: -0
+Expected: 0, Result: 0
+
+Test Case: Denormal values
+A: 1.17549435e-38, B: 1.17549435e-38, C: 1.17549435e-38
+Expected: 1.17549435e-38, Result: 1.17549435e-38
+
+Test Case: Overflow case
+A: 3.40282347e+38, B: 2, C: 3.40282347e+38
+Expected: inf, Result: inf
+
+Special Value Tests Completed
+
+Memory Operand Test: Normal values (128-bit single precision)
+A     : 1
+B     : 5
+C     : 9
+Expected: 46
+Result  : 46
+
+Memory Operand Test: NaN values (128-bit single precision)
+A     : nan
+B     : 1
+C     : 5
+Expected: nan
+Result  : nan
+
+Memory Operand Test: INF values (128-bit single precision)
+A     : inf
+B     : 1
+C     : 5
+Expected: inf
+Result  : inf
+
+Memory Operand Test: Zero values (128-bit single precision)
+A     : 0
+B     : 1
+C     : 5
+Expected: 5
+Result  : 5
+
+Memory Operand Test: Boundary values (128-bit single precision)
+A     : 3.40282347e+38
+B     : 1
+C     : 5
+Expected: 3.40282347e+38
+Result  : 3.40282347e+38
+
+Memory Operand Test: NaN and INF mix (128-bit single precision)
+A     : nan
+B     : 1
+C     : 5
+Expected: nan
+Result  : nan
+
+Memory Operand Test: Zero and boundary mix (128-bit single precision)
+A     : 0
+B     : 1
+C     : 5
+Expected: 5
+Result  : 5
+
+Memory Operand Test: Denormal values (128-bit single precision)
+A     : 5.87747175e-39
+B     : 1
+C     : 5
+Expected: 5
+Result  : 5
+
+Memory Operand Test: Overflow case (128-bit single precision)
+A     : 3.40282347e+38
+B     : 2
+C     : 3.40282347e+38
+Expected: inf
+Result  : inf
+
+VFMADD231SS Register-Memory Tests Completed
 
 All VFMADD231SS tests completed. Results are for verification on physical CPU vs box64.
