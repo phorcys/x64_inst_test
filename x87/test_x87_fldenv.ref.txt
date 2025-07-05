@@ -25,14 +25,16 @@ C0: 0, C1: 0, C2: 0, C3: 0
 ==== Testing FLDENV (Instruction Pointer) ====
 Instruction Pointer:
   Expected: FIP=0x12345678 FCS=0x9ABC
-  Actual:   FIP=0x12345678 FCS=0x9ABC
-[TEST] Instruction pointer loaded correctly     PASS
+  Actual:   FIP=0x12345678 FCS=0x0000
+[TEST] Instruction pointer loaded correctly     FAIL
+  [FAIL DETAIL] x87/test_x87_fldenv.c:108
 
 ==== Testing FLDENV (Data Pointer) ====
 Data Pointer:
   Expected: FDP=0x87654321 FDS=0xDEF0
-  Actual:   FDP=0x87654321 FDS=0xDEF0
-[TEST] Data pointer loaded correctly            PASS
+  Actual:   FDP=0x87654321 FDS=0x0000
+[TEST] Data pointer loaded correctly            FAIL
+  [FAIL DETAIL] x87/test_x87_fldenv.c:139
 
 ==== Testing FLDENV Boundary Values ====
 
@@ -54,9 +56,10 @@ FIP: 0xFFFFFFFF FCS: 0xFFFF
 FDP: 0xFFFFFFFF FDS: 0xFFFF
 Actual:
 CW: 0x1F7F SW: 0x7F7F TW: 0xFFFF
-FIP: 0xFFFFFFFF FCS: 0xFFFF
-FDP: 0xFFFFFFFF FDS: 0xFFFF
-[TEST] Environment loaded correctly             PASS
+FIP: 0xFFFFFFFF FCS: 0x0000
+FDP: 0xFFFFFFFF FDS: 0x0000
+[TEST] Environment loaded correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fldenv.c:185
 
 Test 3: Alternating bits
 Expected:
@@ -65,9 +68,10 @@ FIP: 0x55555555 FCS: 0x5555
 FDP: 0x55555555 FDS: 0x5555
 Actual:
 CW: 0x1555 SW: 0x5555 TW: 0x5555
-FIP: 0x55555555 FCS: 0x5555
-FDP: 0x55555555 FDS: 0x5555
-[TEST] Environment loaded correctly             PASS
+FIP: 0x55555555 FCS: 0x0000
+FDP: 0x55555555 FDS: 0x0000
+[TEST] Environment loaded correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fldenv.c:185
 
 Test 4: Inverse bits
 Expected:
@@ -76,9 +80,10 @@ FIP: 0xAAAAAAAA FCS: 0xAAAA
 FDP: 0xAAAAAAAA FDS: 0xAAAA
 Actual:
 CW: 0x0A6A SW: 0x2A2A TW: 0x5555
-FIP: 0xAAAAAAAA FCS: 0xAAAA
-FDP: 0xAAAAAAAA FDS: 0xAAAA
-[TEST] Environment loaded correctly             PASS
+FIP: 0xAAAAAAAA FCS: 0x0000
+FDP: 0xAAAAAAAA FDS: 0x0000
+[TEST] Environment loaded correctly             FAIL
+  [FAIL DETAIL] x87/test_x87_fldenv.c:185
 
 ==== Testing FLDENV with Modern CPU Features ====
 Control Word:

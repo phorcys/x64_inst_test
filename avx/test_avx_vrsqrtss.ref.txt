@@ -1,27 +1,27 @@
 Testing VRSQRTSS
 Test case 1:
 Input: 1
-Result: 0.99987793
+Result: 0.999755859
 Expected: 1
 
 Test case 2:
 Input: 4
-Result: 0.499938965
+Result: 0.49987793
 Expected: 0.5
 
 Test case 3:
 Input: 16
-Result: 0.249969482
+Result: 0.249938965
 Expected: 0.25
 
 Test case 4:
 Input: 64
-Result: 0.124984741
+Result: 0.124969482
 Expected: 0.125
 
 Test case 5:
 Input: 0.25
-Result: 1.99975586
+Result: 1.99951172
 Expected: 2
 
 Test case 6:

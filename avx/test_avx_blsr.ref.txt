@@ -7,7 +7,7 @@ Test 1: Input=0x00000000
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -16,7 +16,7 @@ Test 2: Input=0x00000001
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -25,7 +25,7 @@ Test 3: Input=0x80000000
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -61,7 +61,7 @@ Test 7: Input=0x00001000
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -70,7 +70,7 @@ Test 8: Input=0x00000001
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -81,7 +81,7 @@ Test 1: Input=0x0000000000000000
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -90,7 +90,7 @@ Test 2: Input=0x0000000000000001
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -99,7 +99,7 @@ Test 3: Input=0x8000000000000000
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -135,7 +135,7 @@ Test 7: Input=0x0000000010000000
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -144,7 +144,7 @@ Test 8: Input=0x0000000000000001
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
+  [ ] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 

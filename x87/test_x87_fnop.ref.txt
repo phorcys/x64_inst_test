@@ -210,8 +210,8 @@ MXCSR after:  0x00001F80
 [TEST] MXCSR unchanged with FNOP                PASS
 
 -- Test 2: With AVX --
-XCR0 before: 0x0000000000000207
-XCR0 after:  0x0000000000000207
+XCR0 before: 0x00000000000000FF
+XCR0 after:  0x00000000000000FF
 [TEST] XCR0 unchanged with FNOP                 PASS
 
 ==== Testing FNOP in Multithreaded Context ====

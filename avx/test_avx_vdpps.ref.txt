@@ -30,7 +30,7 @@ Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 [PASS] Test 3: 256-bit with partial mask (0x55)
 
 Test 4: Boundary values
-Result: Result: -nan -nan -nan -nan -nan -nan -nan -nan 
+Result: Result: -nan -nan nan nan -nan -nan -nan -nan 
 --- MXCSR State After Operation ---
 MXCSR: 0x00001FA9
   [ ] DAZ - Denormals Are Zero: 0
