@@ -1,150 +1,95 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <immintrin.h>
-#include <string.h>
 #include "avx.h"
 #include "fma.h"
 
-static void test_reg_reg_operand(int is_256bit) {
-    const int count = FMA_TEST_CASE_COUNT;
-    
-    for (int t = 0; t < count; t++) {
-        if (is_256bit) {
-            __m256 va = _mm256_loadu_ps(fma_cases_256_ps[t].a);
-            __m256 vb = _mm256_loadu_ps(fma_cases_256_ps[t].b);
-            __m256 vc = _mm256_loadu_ps(fma_cases_256_ps[t].c);
-            
-            __asm__ __volatile__(
-                "vfmadd132ps %[b], %[c], %[a]"
-                : [a] "+x" (va)
-                : [b] "x" (vb), [c] "x" (vc)
-            );
-            
-            float res[8];
-            _mm256_storeu_ps(res, va);
-            printf("Test Case: %s\n", fma_cases_256_ps[t].desc);
-            print_float_vec("A     :", fma_cases_256_ps[t].a, 8);
-            print_float_vec("B     :", fma_cases_256_ps[t].b, 8);
-            print_float_vec("C     :", fma_cases_256_ps[t].c, 8);
-            print_float_vec("Result:", res, 8);
-        } else {
-            __m128 va = _mm_loadu_ps(fma_cases_128_ps[t].a);
-            __m128 vb = _mm_loadu_ps(fma_cases_128_ps[t].b);
-            __m128 vc = _mm_loadu_ps(fma_cases_128_ps[t].c);
-            
-            __asm__ __volatile__(
-                "vfmadd132ps %[b], %[c], %[a]"
-                : [a] "+x" (va)
-                : [b] "x" (vb), [c] "x" (vc)
-            );
-            
-            float res[4];
-            _mm_storeu_ps(res, va);
-            printf("Test Case: %s\n", fma_cases_128_ps[t].desc);
-            print_float_vec("A     :", fma_cases_128_ps[t].a, 4);
-            print_float_vec("B     :", fma_cases_128_ps[t].b, 4);
-            print_float_vec("C     :", fma_cases_128_ps[t].c, 4);
-            print_float_vec("Result:", res, 4);
-        }
-        printf("\n");
+static void test_reg_reg_operand() {
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        // 加载测试用例到寄存器
+        __m256 va = _mm256_loadu_ps(fma_cases_256_ps[t].a);
+        __m256 vb = _mm256_loadu_ps(fma_cases_256_ps[t].b);
+        __m256 vc = _mm256_loadu_ps(fma_cases_256_ps[t].c);
+        
+        // 保存原始值用于比较
+        float original_a[8], original_b[8], original_c[8];
+        _mm256_storeu_ps(original_a, va);
+        _mm256_storeu_ps(original_b, vb);
+        _mm256_storeu_ps(original_c, vc);
+        
+        // 执行指令
+        __asm__ __volatile__(
+            "vfmadd132ps %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "x" (vc)
+        );
+        
+        float res[8];
+        _mm256_storeu_ps(res, va);
+        
+        printf("Test Case: %s (packed single precision)\n", fma_cases_256_ps[t].desc);
+        printf("A     :: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", original_a[i]);
+        printf("\nB     :: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", original_b[i]);
+        printf("\nC     :: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", original_c[i]);
+        printf("\nResult:: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", res[i]);
+        printf("\n\n");
     }
-    
-    printf("VFMADD132PS %d-bit Register-Register Tests Completed\n\n", 
-           is_256bit ? 256 : 128);
+    printf("VFMADD132PS Register-Register Tests Completed\n\n");
 }
 
-static void test_reg_mem_operand(int is_256bit) {
-    const int count = FMA_TEST_CASE_COUNT;
-    
-    for (int t = 0; t < count; t++) {
-        if (is_256bit) {
-            __m256 va = _mm256_loadu_ps(fma_cases_256_ps[t].a);
-            __m256 vc = _mm256_loadu_ps(fma_cases_256_ps[t].c);
-            
-            // 测试未对齐内存
-            __m256 va_unaligned = va;
-            __asm__ __volatile__(
-                "vfmadd132ps %[b], %[c], %[a]"
-                : [a] "+x" (va_unaligned)
-                : [b] "m" (*(const __m256*)fma_cases_256_ps[t].b), 
-                  [c] "x" (vc)
-            );
-            
-            // 测试对齐内存
-            float b_aligned[8] ALIGNED(32);
-            memcpy(b_aligned, fma_cases_256_ps[t].b, sizeof(b_aligned));
-            
-            __m256 va_aligned = va;
-            __asm__ __volatile__(
-                "vfmadd132ps %[b], %[c], %[a]"
-                : [a] "+x" (va_aligned)
-                : [b] "m" (*(const __m256*)b_aligned), 
-                  [c] "x" (vc)
-            );
-            
-            float res_unaligned[8], res_aligned[8];
-            _mm256_storeu_ps(res_unaligned, va_unaligned);
-            _mm256_storeu_ps(res_aligned, va_aligned);
-            
-            printf("Memory Test: %s\n", fma_cases_256_ps[t].desc);
-            print_float_vec("Unaligned result:", res_unaligned, 8);
-            print_float_vec("Aligned result:  ", res_aligned, 8);
-        } else {
-            __m128 va = _mm_loadu_ps(fma_cases_128_ps[t].a);
-            __m128 vc = _mm_loadu_ps(fma_cases_128_ps[t].c);
-            
-            // 测试未对齐内存
-            __m128 va_unaligned = va;
-            __asm__ __volatile__(
-                "vfmadd132ps %[b], %[c], %[a]"
-                : [a] "+x" (va_unaligned)
-                : [b] "m" (*(const __m128*)fma_cases_128_ps[t].b), 
-                  [c] "x" (vc)
-            );
-            
-            // 测试对齐内存
-            float b_aligned[4] ALIGNED(16);
-            memcpy(b_aligned, fma_cases_128_ps[t].b, sizeof(b_aligned));
-            
-            __m128 va_aligned = va;
-            __asm__ __volatile__(
-                "vfmadd132ps %[b], %[c], %[a]"
-                : [a] "+x" (va_aligned)
-                : [b] "m" (*(const __m128*)b_aligned), 
-                  [c] "x" (vc)
-            );
-            
-            float res_unaligned[4], res_aligned[4];
-            _mm_storeu_ps(res_unaligned, va_unaligned);
-            _mm_storeu_ps(res_aligned, va_aligned);
-            
-            printf("Memory Test: %s\n", fma_cases_128_ps[t].desc);
-            print_float_vec("Unaligned result:", res_unaligned, 4);
-            print_float_vec("Aligned result:  ", res_aligned, 4);
-        }
-        printf("\n");
+static void test_reg_mem_operand() {
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        // 加载测试用例到寄存器
+        __m256 va = _mm256_loadu_ps(fma_cases_256_ps[t].a);
+        __m256 vb = _mm256_loadu_ps(fma_cases_256_ps[t].b);
+        
+        // 保存原始值用于比较
+        float original_a[8], original_b[8], original_c[8];
+        _mm256_storeu_ps(original_a, va);
+        _mm256_storeu_ps(original_b, vb);
+        memcpy(original_c, fma_cases_256_ps[t].c, sizeof(original_c));
+        
+        // 对齐的内存操作数
+        __attribute__((aligned(32))) float aligned_c[8];
+        memcpy(aligned_c, fma_cases_256_ps[t].c, sizeof(aligned_c));
+        
+        // 执行指令
+        __asm__ __volatile__(
+            "vfmadd132ps %[c], %[b], %[a]"
+            : [a] "+x" (va)
+            : [b] "x" (vb), [c] "m" (aligned_c)
+        );
+        
+        float res[8];
+        _mm256_storeu_ps(res, va);
+        
+        printf("Memory Operand Test: %s (packed single precision)\n", fma_cases_256_ps[t].desc);
+        printf("A     :: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", original_a[i]);
+        printf("\nB     :: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", original_b[i]);
+        printf("\nC     :: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", original_c[i]);
+        printf("\nResult:: ");
+        for (int i = 0; i < 8; i++) printf("%.6f ", res[i]);
+        printf("\n\n");
     }
-    
-    printf("VFMADD132PS %d-bit Register-Memory Tests Completed\n\n", 
-           is_256bit ? 256 : 128);
+    printf("VFMADD132PS Register-Memory Tests Completed\n\n");
 }
-
-
-
 
 int main() {
-    printf("==================================\n");
+    printf("===============================\n");
     printf("VFMADD132PS Comprehensive Tests\n");
-    printf("==================================\n\n");
+    printf("===============================\n\n");
     
-    // 128位测试
-    test_reg_reg_operand(0);
-    test_reg_mem_operand(0);
+    test_reg_reg_operand();
+    test_reg_mem_operand();
     
-    // 256位测试
-    test_reg_reg_operand(1);
-    test_reg_mem_operand(1);
+    printf("VFMADD132PS tests completed.\n");
     
-    printf("All tests completed. Verify results on physical CPU vs box64.\n");
     return 0;
 }

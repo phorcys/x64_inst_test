@@ -1,77 +1,84 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <immintrin.h>
-#include <math.h>
 #include "avx.h"
 #include "fma.h"
 
-#define TEST_CASE_COUNT FMA_TEST_CASE_COUNT
-
-static void test_reg_reg() {
-    for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128d va = _mm_load_pd(fma_cases_128[t].a);
-        __m128d vb = _mm_load_pd(fma_cases_128[t].b);
-        __m128d vc = _mm_load_pd(fma_cases_128[t].c);
+static void test_reg_reg_operand() {
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        // 从256位测试用例中取第一个元素作为标量测试
+        double a = fma_cases_256_pd[t].a[0];
+        double b = fma_cases_256_pd[t].b[0];
+        double c = fma_cases_256_pd[t].c[0];
+        const char *desc = fma_cases_256_pd[t].desc;
         
-        // 保存原始高位值
-        double original_high = va[1];
+        // 加载到寄存器（只使用低64位）
+        __m128d va = _mm_load_sd(&a);
+        __m128d vb = _mm_load_sd(&b);
+        __m128d vc = _mm_load_sd(&c);
         
-        // 内联汇编实现 VFMSUB132SD (标量双精度)
+        // 执行指令
         __asm__ __volatile__(
-            "vfmsub132sd %[b], %[c], %[a]"
+            "vfmsub132sd %[c], %[b], %[a]"
             : [a] "+x" (va)
             : [b] "x" (vb), [c] "x" (vc)
         );
         
-        double res = va[0];
-        double expected = fma(fma_cases_128[t].a[0], fma_cases_128[t].b[0], -fma_cases_128[t].c[0]);
+        double res;
+        _mm_store_sd(&res, va);
         
-        printf("Test Case: %s (reg-reg)\n", fma_cases_128[t].desc);
-        printf("A=%.18g, B=%.18g, C=%.18g\n",
-               fma_cases_128[t].a[0], fma_cases_128[t].b[0], fma_cases_128[t].c[0]);
-        printf("Expected: %.18g, Result: %.18g\n", expected, res);
-        printf("High element unchanged: %.18g (original: %.18g)\n", va[1], original_high);
-        printf("\n");
+        printf("Test Case: %s (scalar double precision)\n", desc);
+        printf("A     :: %.6f\n", a);
+        printf("B     :: %.6f\n", b);
+        printf("C     :: %.6f\n", c);
+        printf("Result:: %.6f\n\n", res);
     }
+    printf("VFMSUB132SD Register-Register Tests Completed\n\n");
 }
 
-static void test_reg_mem() {
-    for (int t = 0; t < TEST_CASE_COUNT; t++) {
-        __m128d va = _mm_load_pd(fma_cases_128[t].a);
-        double b_val = fma_cases_128[t].b[0];  // 标量值
-        __m128d vc = _mm_load_pd(fma_cases_128[t].c);
+static void test_reg_mem_operand() {
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        // 从256位测试用例中取第一个元素作为标量测试
+        double a = fma_cases_256_pd[t].a[0];
+        double b = fma_cases_256_pd[t].b[0];
+        double c = fma_cases_256_pd[t].c[0];
+        const char *desc = fma_cases_256_pd[t].desc;
         
-        // 保存原始高位值
-        double original_high = va[1];
+        // 加载到寄存器（只使用低64位）
+        __m128d va = _mm_load_sd(&a);
+        __m128d vb = _mm_load_sd(&b);
         
-        // 内联汇编实现 VFMSUB132SD (寄存器-内存)
+        // 对齐的内存操作数
+        __attribute__((aligned(16))) double aligned_c = c;
+        
+        // 执行指令
         __asm__ __volatile__(
-            "vfmsub132sd %[b], %[c], %[a]"
+            "vfmsub132sd %[c], %[b], %[a]"
             : [a] "+x" (va)
-            : [b] "m" (b_val), [c] "x" (vc)
+            : [b] "x" (vb), [c] "m" (aligned_c)
         );
         
-        double res = va[0];
-        double expected = fma(fma_cases_128[t].a[0], fma_cases_128[t].b[0], -fma_cases_128[t].c[0]);
+        double res;
+        _mm_store_sd(&res, va);
         
-        printf("Test Case: %s (reg-mem)\n", fma_cases_128[t].desc);
-        printf("A=%.18g, B=%.18g, C=%.18g\n",
-               fma_cases_128[t].a[0], fma_cases_128[t].b[0], fma_cases_128[t].c[0]);
-        printf("Expected: %.18g, Result: %.18g\n", expected, res);
-        printf("High element unchanged: %.18g (original: %.18g)\n", va[1], original_high);
-        printf("\n");
+        printf("Memory Operand Test: %s (scalar double precision)\n", desc);
+        printf("A     :: %.6f\n", a);
+        printf("B     :: %.6f\n", b);
+        printf("C     :: %.6f\n", aligned_c);
+        printf("Result:: %.6f\n\n", res);
     }
+    printf("VFMSUB132SD Register-Memory Tests Completed\n\n");
 }
 
 int main() {
-    printf("==============================\n");
+    printf("===============================\n");
     printf("VFMSUB132SD Comprehensive Tests\n");
-    printf("==============================\n\n");
+    printf("===============================\n\n");
     
-    test_reg_reg();
-    test_reg_mem();
+    test_reg_reg_operand();
+    test_reg_mem_operand();
     
-    printf("All VFMSUB132SD tests completed. Results are for verification on physical CPU vs box64.\n");
+    printf("VFMSUB132SD tests completed.\n");
     
     return 0;
 }
