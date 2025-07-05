@@ -1,0 +1,85 @@
+Input,Input Hex,Description,Rounding Mode,Result,Result Hex
+0,0x0,"Positive zero","Round to nearest",0,0x0
+0,0x0,"Positive zero","Round toward -inf",0,0x0
+0,0x0,"Positive zero","Round toward +inf",0,0x0
+0,0x0,"Positive zero","Round toward zero",0,0x0
+-0,0x80000000,"Negative zero","Round to nearest",0,0x0
+-0,0x80000000,"Negative zero","Round toward -inf",0,0x0
+-0,0x80000000,"Negative zero","Round toward +inf",0,0x0
+-0,0x80000000,"Negative zero","Round toward zero",0,0x0
+1,0x3f800000,"Positive one","Round to nearest",1,0x1
+1,0x3f800000,"Positive one","Round toward -inf",1,0x1
+1,0x3f800000,"Positive one","Round toward +inf",1,0x1
+1,0x3f800000,"Positive one","Round toward zero",1,0x1
+-1,0xbf800000,"Negative one","Round to nearest",-1,0xffffffff
+-1,0xbf800000,"Negative one","Round toward -inf",-1,0xffffffff
+-1,0xbf800000,"Negative one","Round toward +inf",-1,0xffffffff
+-1,0xbf800000,"Negative one","Round toward zero",-1,0xffffffff
+12345.6787109375,0x4640e6b7,"Positive fractional","Round to nearest",12346,0x303a
+12345.6787109375,0x4640e6b7,"Positive fractional","Round toward -inf",12345,0x3039
+12345.6787109375,0x4640e6b7,"Positive fractional","Round toward +inf",12346,0x303a
+12345.6787109375,0x4640e6b7,"Positive fractional","Round toward zero",12345,0x3039
+-12345.6787109375,0xc640e6b7,"Negative fractional","Round to nearest",-12346,0xffffcfc6
+-12345.6787109375,0xc640e6b7,"Negative fractional","Round toward -inf",-12346,0xffffcfc6
+-12345.6787109375,0xc640e6b7,"Negative fractional","Round toward +inf",-12345,0xffffcfc7
+-12345.6787109375,0xc640e6b7,"Negative fractional","Round toward zero",-12345,0xffffcfc7
+nan,0x7fc00000,"NaN","Round to nearest",-2147483648,0x80000000
+nan,0x7fc00000,"NaN","Round toward -inf",-2147483648,0x80000000
+nan,0x7fc00000,"NaN","Round toward +inf",-2147483648,0x80000000
+nan,0x7fc00000,"NaN","Round toward zero",-2147483648,0x80000000
+-nan,0xffc00000,"-NaN","Round to nearest",-2147483648,0x80000000
+-nan,0xffc00000,"-NaN","Round toward -inf",-2147483648,0x80000000
+-nan,0xffc00000,"-NaN","Round toward +inf",-2147483648,0x80000000
+-nan,0xffc00000,"-NaN","Round toward zero",-2147483648,0x80000000
+inf,0x7f800000,"+Inf","Round to nearest",-2147483648,0x80000000
+inf,0x7f800000,"+Inf","Round toward -inf",-2147483648,0x80000000
+inf,0x7f800000,"+Inf","Round toward +inf",-2147483648,0x80000000
+inf,0x7f800000,"+Inf","Round toward zero",-2147483648,0x80000000
+-inf,0xff800000,"-Inf","Round to nearest",-2147483648,0x80000000
+-inf,0xff800000,"-Inf","Round toward -inf",-2147483648,0x80000000
+-inf,0xff800000,"-Inf","Round toward +inf",-2147483648,0x80000000
+-inf,0xff800000,"-Inf","Round toward zero",-2147483648,0x80000000
+3.4028234663852886e+38,0x7f7fffff,"FLT_MAX","Round to nearest",-2147483648,0x80000000
+3.4028234663852885e+38,0x7f7fffff,"FLT_MAX","Round toward -inf",-2147483648,0x80000000
+3.4028234663852886e+38,0x7f7fffff,"FLT_MAX","Round toward +inf",-2147483648,0x80000000
+3.4028234663852885e+38,0x7f7fffff,"FLT_MAX","Round toward zero",-2147483648,0x80000000
+1.1754943508222875e-38,0x800000,"FLT_MIN","Round to nearest",0,0x0
+1.1754943508222875e-38,0x800000,"FLT_MIN","Round toward -inf",0,0x0
+1.1754943508222876e-38,0x800000,"FLT_MIN","Round toward +inf",1,0x1
+1.1754943508222875e-38,0x800000,"FLT_MIN","Round toward zero",0,0x0
+-3.4028234663852886e+38,0xff7fffff,"-FLT_MAX","Round to nearest",-2147483648,0x80000000
+-3.4028234663852886e+38,0xff7fffff,"-FLT_MAX","Round toward -inf",-2147483648,0x80000000
+-3.4028234663852885e+38,0xff7fffff,"-FLT_MAX","Round toward +inf",-2147483648,0x80000000
+-3.4028234663852885e+38,0xff7fffff,"-FLT_MAX","Round toward zero",-2147483648,0x80000000
+-1.1754943508222875e-38,0x80800000,"-FLT_MIN","Round to nearest",0,0x0
+-1.1754943508222876e-38,0x80800000,"-FLT_MIN","Round toward -inf",-1,0xffffffff
+-1.1754943508222875e-38,0x80800000,"-FLT_MIN","Round toward +inf",0,0x0
+-1.1754943508222875e-38,0x80800000,"-FLT_MIN","Round toward zero",0,0x0
+0,0x0,"Subnormal","Round to nearest",0,0x0
+0,0x0,"Subnormal","Round toward -inf",0,0x0
+0,0x0,"Subnormal","Round toward +inf",0,0x0
+0,0x0,"Subnormal","Round toward zero",0,0x0
+3.1415927410125732,0x40490fdb,"Pi","Round to nearest",3,0x3
+3.1415927410125732,0x40490fdb,"Pi","Round toward -inf",3,0x3
+3.1415927410125733,0x40490fdb,"Pi","Round toward +inf",4,0x4
+3.1415927410125732,0x40490fdb,"Pi","Round toward zero",3,0x3
+-2.7182817459106445,0xc02df854,"-e","Round to nearest",-3,0xfffffffd
+-2.7182817459106446,0xc02df854,"-e","Round toward -inf",-3,0xfffffffd
+-2.7182817459106445,0xc02df854,"-e","Round toward +inf",-2,0xfffffffe
+-2.7182817459106445,0xc02df854,"-e","Round toward zero",-2,0xfffffffe
+2147483648,0x4f000000,"Max int32","Round to nearest",-2147483648,0x80000000
+2147483648,0x4f000000,"Max int32","Round toward -inf",-2147483648,0x80000000
+2147483648,0x4f000000,"Max int32","Round toward +inf",-2147483648,0x80000000
+2147483648,0x4f000000,"Max int32","Round toward zero",-2147483648,0x80000000
+2147483648,0x4f000000,"> Max int32","Round to nearest",-2147483648,0x80000000
+2147483648,0x4f000000,"> Max int32","Round toward -inf",-2147483648,0x80000000
+2147483648,0x4f000000,"> Max int32","Round toward +inf",-2147483648,0x80000000
+2147483648,0x4f000000,"> Max int32","Round toward zero",-2147483648,0x80000000
+-2147483648,0xcf000000,"Min int32","Round to nearest",-2147483648,0x80000000
+-2147483648,0xcf000000,"Min int32","Round toward -inf",-2147483648,0x80000000
+-2147483648,0xcf000000,"Min int32","Round toward +inf",-2147483648,0x80000000
+-2147483648,0xcf000000,"Min int32","Round toward zero",-2147483648,0x80000000
+-2147483648,0xcf000000,"< Min int32","Round to nearest",-2147483648,0x80000000
+-2147483648,0xcf000000,"< Min int32","Round toward -inf",-2147483648,0x80000000
+-2147483648,0xcf000000,"< Min int32","Round toward +inf",-2147483648,0x80000000
+-2147483648,0xcf000000,"< Min int32","Round toward zero",-2147483648,0x80000000

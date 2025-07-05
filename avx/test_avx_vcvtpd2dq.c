@@ -97,12 +97,13 @@ static int test_vcvtpd2dq() {
         
         // 2. 256位寄存器操作数测试
         ALIGNED(32) int32_t int_result256[4] = {0};
+        ALIGNED(32) double srcs[4] = {dbl_data[0], dbl_data[1], dbl_data[2], dbl_data[3]};
         __asm__ __volatile__(
             "vmovapd %1, %%ymm0\n\t"
             "vcvtpd2dq %%ymm0, %%xmm1\n\t"
             "vmovdqa %%xmm1, %0\n\t"
             : "=m" (int_result256)
-            : "m" (dbl_data[0])
+            : "m" (srcs)
             : "ymm0", "xmm1"
         );
         
