@@ -11,15 +11,17 @@ static int test_vcvtdq2pd() {
     int total_errors = 0;
     
     // 测试数据 - 各种边界值
-    ALIGNED(32) int32_t int_data[8] = {
+    ALIGNED(32) int32_t int_data[4] = {
         0,                      // 零
         1,                      // 最小正整数
         -1,                     // 最大负整数
         INT_MAX,                // 最大32位整数
+    };
+    ALIGNED(32) int32_t int_data_2[4] = {
         INT_MIN,                // 最小32位整数
         123456789,              // 一般正整数
         -987654321,             // 一般负整数
-        0x7FFFFFFF              // 最大正数（同INT_MAX）
+        0x7FFFFFFF,              // 最大正数（同INT_MAX）
     };
     
     // 内存操作数测试
@@ -34,7 +36,6 @@ static int test_vcvtdq2pd() {
         "vmovdqa %2, %%xmm0\n\t"        // 加载整数数据到xmm0
         "vcvtdq2pd %%xmm0, %%xmm1\n\t"  // 转换为双精度浮点数
         "vmovupd %%xmm1, %0\n\t"        // 存储结果
-        "stmxcsr %1\n\t"                // 保存MXCSR状态
         : "=m" (dbl_result128), "=m"(mxcsr_after_128)
         : "m" (int_data)
         : "xmm0", "xmm1"
@@ -62,7 +63,6 @@ static int test_vcvtdq2pd() {
         "vmovdqa %2, %%xmm0\n\t"        // 加载整数数据到xmm0
         "vcvtdq2pd %%xmm0, %%ymm1\n\t"  // 转换为双精度浮点数
         "vmovupd %%ymm1, %0\n\t"        // 存储结果
-        "stmxcsr %1\n\t"                // 保存MXCSR状态
         : "=m" (dbl_result256), "=m"(mxcsr_after_256)
         : "m" (int_data)
         : "xmm0", "ymm1"
@@ -80,22 +80,26 @@ static int test_vcvtdq2pd() {
             printf(" [FAIL]\n");
         }
     }
-    printf("--- MXCSR State After 256-bit Operation ---\n");
-    print_mxcsr(mxcsr_after_256);
-    printf("\n");
+    __asm__ __volatile__(
+        "vmovdqa %2, %%xmm0\n\t"        // 加载整数数据到xmm0
+        "vcvtdq2pd %%xmm0, %%ymm1\n\t"  // 转换为双精度浮点数
+        "vmovupd %%ymm1, %0\n\t"        // 存储结果
+        : "=m" (dbl_result256), "=m"(mxcsr_after_256)
+        : "m" (int_data_2) // 使用后半部分数据
+        : "xmm0", "ymm1"
+    );
     
-    // 测试MXCSR寄存器状态
-    uint32_t initial_mxcsr = get_mxcsr();
-    printf("\nInitial MXCSR: 0x%08X\n", initial_mxcsr);
-    
-    // 执行转换后检查MXCSR
-    uint32_t final_mxcsr = get_mxcsr();
-    printf("Final MXCSR: 0x%08X\n", final_mxcsr);
-    
-    if (initial_mxcsr != final_mxcsr) {
-        printf("MXCSR changed during operation!\n");
-        print_mxcsr(final_mxcsr);
-        total_errors++;
+    printf("\n[Testing VCVTDQ2PD 2 (256-bit)]\n");
+    for (int i = 0; i < 4; i++) {
+        double expected = (double)int_data_2[i];
+        printf("Element %d: int=0x%08X (%d) => double=%.6f (expected %.6f)",
+               i, int_data_2[i], int_data_2[i], dbl_result256[i], expected);
+        
+        if (double_equal(dbl_result256[i], expected, 1e-9)) {
+            printf(" [PASS]\n");
+        } else {
+            printf(" [FAIL]\n");
+        }
     }
 
     // 测试内存操作数

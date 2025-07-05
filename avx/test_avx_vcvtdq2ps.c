@@ -52,9 +52,6 @@ static int test_vcvtdq2ps() {
             printf(" [FAIL]\n");
         }
     }
-    printf("--- MXCSR State After 128-bit Operation ---\n");
-    print_mxcsr(mxcsr_after_128);
-    printf("\n");
     
     // 256位版本测试
     uint32_t mxcsr_after_256 = 0;
@@ -80,23 +77,6 @@ static int test_vcvtdq2ps() {
             printf(" [FAIL]\n");
         }
     }
-    printf("--- MXCSR State After 256-bit Operation ---\n");
-    print_mxcsr(mxcsr_after_256);
-    printf("\n");
-    
-    // // // 测试MXCSR寄存器状态
-    // // uint32_t initial_mxcsr = get_mxcsr();
-    // // printf("\nInitial MXCSR: 0x%08X\n", initial_mxcsr);
-    
-    // // // 执行转换后检查MXCSR
-    // // uint32_t final_mxcsr = get_mxcsr();
-    // // printf("Final MXCSR: 0x%08X\n", final_mxcsr);
-    
-    // if (initial_mxcsr != final_mxcsr) {
-    //     printf("MXCSR changed during operation!\n");
-    //     print_mxcsr(final_mxcsr);
-    //     total_errors++;
-    // }
 
     // 测试内存操作数
     ALIGNED(32) float mem_result[4] = {0};
@@ -123,9 +103,6 @@ static int test_vcvtdq2ps() {
             total_errors++;
         }
     }
-    printf("--- MXCSR State After Memory Operand Operation ---\n");
-    print_mxcsr(mxcsr_after_mem);
-    printf("\n");
 
     return total_errors;
 }
