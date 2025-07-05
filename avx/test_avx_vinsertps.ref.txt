@@ -81,33 +81,33 @@ Result does not match expected value
 
 === Test Case: Insert NaN ===
 Destination: [1.000000, 2.000000, 3.000000, 4.000000]
-Source: [nan, inf, -inf, -0.000000]
+Source: [-nan, inf, -inf, -0.000000]
 imm8: 0x00
-Result: [nan, 0.000000, 0.000000, 0.000000]
-Expected: [nan, 0.000000, 0.000000, 0.000000]
+Result: [-nan, 0.000000, 0.000000, 0.000000]
+Expected: [-nan, 0.000000, 0.000000, 0.000000]
 Result matches expected value
 
 === Test Case: Insert +Inf ===
 Destination: [1.000000, 2.000000, 3.000000, 4.000000]
-Source: [nan, inf, -inf, -0.000000]
+Source: [-nan, inf, -inf, -0.000000]
 imm8: 0x10
-Result: [0.000000, nan, 0.000000, 0.000000]
+Result: [0.000000, -nan, 0.000000, 0.000000]
 Expected: [0.000000, inf, 0.000000, 0.000000]
 Result does not match expected value
 
 === Test Case: Insert -Inf ===
 Destination: [1.000000, 2.000000, 3.000000, 4.000000]
-Source: [nan, inf, -inf, -0.000000]
+Source: [-nan, inf, -inf, -0.000000]
 imm8: 0x20
-Result: [0.000000, 0.000000, nan, 0.000000]
+Result: [0.000000, 0.000000, -nan, 0.000000]
 Expected: [0.000000, 0.000000, -inf, 0.000000]
 Result does not match expected value
 
 === Test Case: Insert -0.0 ===
 Destination: [1.000000, 2.000000, 3.000000, 4.000000]
-Source: [nan, inf, -inf, -0.000000]
+Source: [-nan, inf, -inf, -0.000000]
 imm8: 0x30
-Result: [0.000000, 0.000000, 0.000000, nan]
+Result: [0.000000, 0.000000, 0.000000, -nan]
 Expected: [0.000000, 0.000000, 0.000000, -0.000000]
 Result does not match expected value
 

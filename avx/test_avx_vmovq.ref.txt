@@ -1,7 +1,7 @@
 === Testing VMOVQ ===
 
 Test 1: Load 64-bit integer from memory to XMM register
-Source: 0x1234567890ABCDEF
+Source: 0x0000000000000000
 Result: 0x1234567890ABCDEF
 Expected: 0x1234567890ABCDEF
 Test 1 PASSED

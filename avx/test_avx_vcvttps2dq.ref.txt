@@ -8,14 +8,14 @@ MXCSR: 0x00001FA1
   [ ] DAZ - Denormals Are Zero: 0
   [ ] FTZ - Flush To Zero: 0
 Flags: I:1 D:0 Z:0 O:0 U:0 P:1
-  Input: 0.0, Expected: 0x00000001, Result: 0x00000001 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
-  Input: 0.0, Expected: 0x00000002, Result: 0x00000002 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
-  Input: 0.0, Expected: 0x00000003, Result: 0x00000003 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
-  Input: 0.0, Expected: 0x00000004, Result: 0x00000004 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
 --- MXCSR State After Operation ---
@@ -40,14 +40,14 @@ MXCSR: 0x00001FA1
   [ ] DAZ - Denormals Are Zero: 0
   [ ] FTZ - Flush To Zero: 0
 Flags: I:1 D:0 Z:0 O:0 U:0 P:1
-  Input: 0.0, Expected: 0x00000001, Result: 0x00000001 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
-  Input: 0.0, Expected: 0x00000002, Result: 0x00000002 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
-  Input: 0.0, Expected: 0x00000003, Result: 0x00000003 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
-  Input: 0.0, Expected: 0x00000004, Result: 0x00000004 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
 --- MXCSR State After Operation ---
@@ -72,14 +72,14 @@ MXCSR: 0x00003FA1
   [ ] DAZ - Denormals Are Zero: 0
   [ ] FTZ - Flush To Zero: 0
 Flags: I:1 D:0 Z:0 O:0 U:0 P:1
-  Input: 0.0, Expected: 0x00000001, Result: 0x00000001 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
-  Input: 0.0, Expected: 0x00000002, Result: 0x00000002 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
-  Input: 0.0, Expected: 0x00000003, Result: 0x00000003 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
-  Input: 0.0, Expected: 0x00000004, Result: 0x00000004 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
 --- MXCSR State After Operation ---
@@ -104,14 +104,14 @@ MXCSR: 0x00005FA1
   [ ] DAZ - Denormals Are Zero: 0
   [ ] FTZ - Flush To Zero: 0
 Flags: I:1 D:0 Z:0 O:0 U:0 P:1
-  Input: 0.0, Expected: 0x00000001, Result: 0x00000001 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
-  Input: 0.0, Expected: 0x00000002, Result: 0x00000002 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
-  Input: 0.0, Expected: 0x00000003, Result: 0x00000003 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
-  Input: 0.0, Expected: 0x00000004, Result: 0x00000004 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
 --- MXCSR State After Operation ---
@@ -136,14 +136,14 @@ MXCSR: 0x00007FA1
   [ ] DAZ - Denormals Are Zero: 0
   [ ] FTZ - Flush To Zero: 0
 Flags: I:1 D:0 Z:0 O:0 U:0 P:1
-  Input: 0.0, Expected: 0x00000001, Result: 0x00000001 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
-  Input: 0.0, Expected: 0x00000002, Result: 0x00000002 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
-  Input: 0.0, Expected: 0x00000003, Result: 0x00000003 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
-  Input: 0.0, Expected: 0x00000004, Result: 0x00000004 - PASS
-  Input: -0.0, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
+  Input: 1.5, Expected: 0x00000001, Result: 0x00000001 - PASS
+  Input: -1.5, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 2.5, Expected: 0x00000002, Result: 0x00000002 - PASS
+  Input: -2.5, Expected: 0xFFFFFFFE, Result: 0xFFFFFFFE - PASS
+  Input: 3.5, Expected: 0x00000003, Result: 0x00000003 - PASS
+  Input: -3.5, Expected: 0xFFFFFFFD, Result: 0xFFFFFFFD - PASS
+  Input: 4.5, Expected: 0x00000004, Result: 0x00000004 - PASS
+  Input: -4.5, Expected: 0xFFFFFFFC, Result: 0xFFFFFFFC - PASS
 
 VCVTTPS2DQ Test (Memory Operand):
 --- MXCSR State After Operation ---

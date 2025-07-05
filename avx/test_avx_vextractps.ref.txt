@@ -40,21 +40,21 @@ Result: 0.000000, Expected: 0.000000
 Result matches expected value
 
 === Test Case: Extract NaN ===
-Source: [nan inf -inf -0.000000 ], imm8=0
-Result: nan, Expected: nan
+Source: [-nan inf -inf -0.000000 ], imm8=0
+Result: -nan, Expected: -nan
 Result matches expected value
 
 === Test Case: Extract +Inf ===
-Source: [nan inf -inf -0.000000 ], imm8=1
+Source: [-nan inf -inf -0.000000 ], imm8=1
 Result: inf, Expected: inf
 Result matches expected value
 
 === Test Case: Extract -Inf ===
-Source: [nan inf -inf -0.000000 ], imm8=2
+Source: [-nan inf -inf -0.000000 ], imm8=2
 Result: -inf, Expected: -inf
 Result matches expected value
 
 === Test Case: Extract -0.0 ===
-Source: [nan inf -inf -0.000000 ], imm8=3
+Source: [-nan inf -inf -0.000000 ], imm8=3
 Result: -0.000000, Expected: -0.000000
 Result matches expected value

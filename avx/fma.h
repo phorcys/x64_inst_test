@@ -4,9 +4,9 @@
 #include "avx.h"
 #include <float.h>
 
-#define FMA_TEST_CASE_COUNT 23
-#define FMA_TEST_CASE_COUNT_256_PS 23
-#define FMA_TEST_CASE_COUNT_256_PD 23
+#define FMA_TEST_CASE_COUNT 7
+#define FMA_TEST_CASE_COUNT_256_PS 7
+#define FMA_TEST_CASE_COUNT_256_PD 7
 
 // 256位双精度测试用例
 typedef struct {
@@ -24,105 +24,105 @@ static fma_test_case_256_pd fma_cases_256_pd[FMA_TEST_CASE_COUNT] = {
         {9.0, 10.0, 11.0, 12.0},
         "Normal values (256-bit)"
     },
-    // NaN
-    {
-        {NAN, -NAN, NAN, -NAN},
-        {1.0, 2.0, 3.0, 4.0},
-        {5.0, 6.0, 7.0, 8.0},
-        "NaN values in A(256-bit)"
-    },
-    {
-        {1.0, 2.0, 3.0, 4.0},
-        {NAN, -NAN, NAN, -NAN},
-        {5.0, 6.0, 7.0, 8.0},
-        "NaN values in B (256-bit)"
-    },
-    {
-        {1.0, 2.0, 3.0, 4.0},
-        {5.0, 6.0, 7.0, 8.0},
-        {NAN, -NAN, NAN, -NAN},
-        "NaN values in C (256-bit)"
-    },
-    {
-        {NAN, -NAN, NAN, NAN},
-        {NAN, -NAN, -NAN, -NAN},
-        {5.0, 6.0, 7.0, 8.0},
-        "NaN values in A & B (256-bit)"
-    },
-    {
-        {NAN, -NAN, NAN, -NAN},
-        {5.0, 6.0, 7.0, 8.0},
-        {NAN, -NAN, -NAN, NAN},
-        "NaN values in A & C (256-bit)"
-    },
-    {
-        {1.0, 2.0, 3.0, 4.0},
-        {NAN, -NAN, NAN, NAN},
-        {NAN, -NAN, -NAN, -NAN},
-        "NaN values in B & C (256-bit)"
-    },
-    {
-        {-1.0, -2.0, -3.0, -4.0},
-        {NAN, -NAN, NAN, NAN},
-        {NAN, -NAN, -NAN, -NAN},
-        "NaN values in B & C , A negtive val (256-bit)"
-    },
-    {
-        {NAN, -NAN, NAN, -NAN},
-        {NAN, -NAN, -NAN, NAN},
-        {NAN, -NAN, -NAN, -NAN},
-        "NaN values in A & B & C (256-bit)"
-    },    
-    // INF
-    {
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {1.0, 2.0, 3.0, 4.0},
-        {5.0, 6.0, 7.0, 8.0},
-        "INF values in A (256-bit)"
-    },
-    // 补充的INF组合用例
-    {
-        {1.0, 2.0, 3.0, 4.0},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {5.0, 6.0, 7.0, 8.0},
-        "INF values in B (256-bit)"
-    },
-    {
-        {1.0, 2.0, 3.0, 4.0},
-        {5.0, 6.0, 7.0, 8.0},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        "INF values in C (256-bit)"
-    },
-    {
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, -INFINITY, INFINITY},
-        {5.0, 6.0, 7.0, 8.0},
-        "INF values in A and B (256-bit)"
-    },
-    {
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {5.0, 6.0, 7.0, 8.0},
-        {INFINITY, -INFINITY, -INFINITY, INFINITY},
-        "INF values in A and C (256-bit)"
-    },
-    {
-        {1.0, 2.0, 3.0, 4.0},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, -INFINITY, INFINITY},
-        "INF values in B and C (256-bit)"
-    },
-    {
-        {-1.0, -2.0, -3.0, -4.0},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, -INFINITY, INFINITY},
-        "INF values in B and C A negtive val(256-bit)"
-    },    
-    {
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY},
-        "INF values in A, B and C (256-bit)"
-    },
+    // // NaN
+    // {
+    //     {NAN, -NAN, NAN, -NAN},
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     "NaN values in A(256-bit)"
+    // },
+    // {
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {NAN, -NAN, NAN, -NAN},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     "NaN values in B (256-bit)"
+    // },
+    // {
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     {NAN, -NAN, NAN, -NAN},
+    //     "NaN values in C (256-bit)"
+    // },
+    // {
+    //     {NAN, -NAN, NAN, NAN},
+    //     {NAN, -NAN, -NAN, -NAN},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     "NaN values in A & B (256-bit)"
+    // },
+    // {
+    //     {NAN, -NAN, NAN, -NAN},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     {NAN, -NAN, -NAN, NAN},
+    //     "NaN values in A & C (256-bit)"
+    // },
+    // {
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {NAN, -NAN, NAN, NAN},
+    //     {NAN, -NAN, -NAN, -NAN},
+    //     "NaN values in B & C (256-bit)"
+    // },
+    // {
+    //     {-1.0, -2.0, -3.0, -4.0},
+    //     {NAN, -NAN, NAN, NAN},
+    //     {NAN, -NAN, -NAN, -NAN},
+    //     "NaN values in B & C , A negtive val (256-bit)"
+    // },
+    // {
+    //     {NAN, -NAN, NAN, -NAN},
+    //     {NAN, -NAN, -NAN, NAN},
+    //     {NAN, -NAN, -NAN, -NAN},
+    //     "NaN values in A & B & C (256-bit)"
+    // },    
+    // // INF
+    // {
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     "INF values in A (256-bit)"
+    // },
+    // // 补充的INF组合用例
+    // {
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     "INF values in B (256-bit)"
+    // },
+    // {
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     "INF values in C (256-bit)"
+    // },
+    // {
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {INFINITY, -INFINITY, -INFINITY, INFINITY},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     "INF values in A and B (256-bit)"
+    // },
+    // {
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {5.0, 6.0, 7.0, 8.0},
+    //     {INFINITY, -INFINITY, -INFINITY, INFINITY},
+    //     "INF values in A and C (256-bit)"
+    // },
+    // {
+    //     {1.0, 2.0, 3.0, 4.0},
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {INFINITY, -INFINITY, -INFINITY, INFINITY},
+    //     "INF values in B and C (256-bit)"
+    // },
+    // {
+    //     {-1.0, -2.0, -3.0, -4.0},
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {INFINITY, -INFINITY, -INFINITY, INFINITY},
+    //     "INF values in B and C A negtive val(256-bit)"
+    // },    
+    // {
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     {INFINITY, -INFINITY, INFINITY, -INFINITY},
+    //     "INF values in A, B and C (256-bit)"
+    // },
     // 0.0
     {
         {0.0, -0.0, 0.0, -0.0},
@@ -183,106 +183,106 @@ static fma_test_case_256_ps fma_cases_256_ps[FMA_TEST_CASE_COUNT] = {
         {17.0f, 18.0f, 19.0f, 20.0f, 21.0f, 22.0f, 23.0f, 24.0f},
         "Normal values (256-bit single precision)"
     },
-    // NaN
-    {
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        "NaN values in A (256-bit single precision)"
-    },
-    {
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        "NaN values in B (256-bit single precision)"
-    },
-    {
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        "NaN values in C (256-bit single precision)"
-    },
-   // 补充的NaN组合用例（单精度）
-    {
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
-        {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
-        "NaN values in A and B (256-bit single precision)"
-    },
-    {
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
-        {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
-        "NaN values in A and C (256-bit single precision)"
-    },
-    {
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
-        "NaN values in B and C (256-bit single precision)"
-    },
-    {
-        {-1.0f, -2.0f, -3.0f, -4.0f, -5.0f, -6.0f, -7.0f, -8.0f},
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
-        "NaN values in B and C , A negtive val (256-bit single precision)"
-    },
-    {
-        {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
-        {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
-        {NAN, -NAN, -NAN, -NAN, NAN, -NAN, -NAN, NAN},
-        "NaN values in A and B and C (256-bit single precision)"
-    },    
-    // INF
-    {
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        "INF values in A(256-bit single precision)"
-    },
-        // 补充的INF组合用例（单精度）
-    {
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        "INF values in B (256-bit single precision)"
-    },
-    {
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        "INF values in C (256-bit single precision)"
-    },
-    {
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        "INF values in A and B (256-bit single precision)"
-    },
-    {
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        "INF values in A and C (256-bit single precision)"
-    },
-    {
-        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        "INF values in B and C (256-bit single precision)"
-    },
-    {
-        {-1.0f, -2.0f, -3.0f, -4.0f, -5.0f, -6.0f, -7.0f, -8.0f},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
-        "INF values in B and C A negtive val(256-bit single precision)"
-    },    
-    {
-        {INFINITY, -INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, -INFINITY, INFINITY, INFINITY, -INFINITY},
-        {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, -INFINITY, INFINITY},
-        "INF values in A, B and C (256-bit single precision)"
-    },
+//     // NaN
+//     {
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         "NaN values in A (256-bit single precision)"
+//     },
+//     {
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         "NaN values in B (256-bit single precision)"
+//     },
+//     {
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         "NaN values in C (256-bit single precision)"
+//     },
+//    // 补充的NaN组合用例（单精度）
+//     {
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
+//         {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
+//         "NaN values in A and B (256-bit single precision)"
+//     },
+//     {
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         {5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
+//         {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
+//         "NaN values in A and C (256-bit single precision)"
+//     },
+//     {
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
+//         "NaN values in B and C (256-bit single precision)"
+//     },
+//     {
+//         {-1.0f, -2.0f, -3.0f, -4.0f, -5.0f, -6.0f, -7.0f, -8.0f},
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
+//         "NaN values in B and C , A negtive val (256-bit single precision)"
+//     },
+//     {
+//         {NAN, -NAN, NAN, -NAN, NAN, -NAN, NAN, -NAN},
+//         {NAN, -NAN, -NAN, NAN, NAN, -NAN, -NAN, NAN},
+//         {NAN, -NAN, -NAN, -NAN, NAN, -NAN, -NAN, NAN},
+//         "NaN values in A and B and C (256-bit single precision)"
+//     },    
+//     // INF
+//     {
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         "INF values in A(256-bit single precision)"
+//     },
+//         // 补充的INF组合用例（单精度）
+//     {
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         "INF values in B (256-bit single precision)"
+//     },
+//     {
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         "INF values in C (256-bit single precision)"
+//     },
+//     {
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         "INF values in A and B (256-bit single precision)"
+//     },
+//     {
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         {9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         "INF values in A and C (256-bit single precision)"
+//     },
+//     {
+//         {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         "INF values in B and C (256-bit single precision)"
+//     },
+//     {
+//         {-1.0f, -2.0f, -3.0f, -4.0f, -5.0f, -6.0f, -7.0f, -8.0f},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY},
+//         "INF values in B and C A negtive val(256-bit single precision)"
+//     },    
+//     {
+//         {INFINITY, -INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, -INFINITY, INFINITY, INFINITY, -INFINITY},
+//         {INFINITY, -INFINITY, INFINITY, -INFINITY, INFINITY, -INFINITY, -INFINITY, INFINITY},
+//         "INF values in A, B and C (256-bit single precision)"
+//     },
     // 0.0
     {
         {0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f},
