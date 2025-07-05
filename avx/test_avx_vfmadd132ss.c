@@ -33,7 +33,7 @@ static void test_reg_reg_operand() {
         printf("C     :: %.6f\n", c);
         printf("Result:: %.6f\n\n", res);
     }
-    printf("VFMADD132SS Register-Register Tests Completed\n\n");
+    printf("vfmadd132SS Register-Register Tests Completed\n\n");
 }
 
 static void test_reg_mem_operand() {
@@ -67,18 +67,18 @@ static void test_reg_mem_operand() {
         printf("C     :: %.6f\n", aligned_c);
         printf("Result:: %.6f\n\n", res);
     }
-    printf("VFMADD132SS Register-Memory Tests Completed\n\n");
+    printf("vfmadd132SS Register-Memory Tests Completed\n\n");
 }
 
 int main() {
     printf("===============================\n");
-    printf("VFMADD132SS Comprehensive Tests\n");
+    printf("vfmadd132SS Comprehensive Tests\n");
     printf("===============================\n\n");
     
     test_reg_reg_operand();
     test_reg_mem_operand();
     
-    printf("VFMADD132SS tests completed.\n");
+    printf("vfmadd132SS tests completed.\n");
     
     return 0;
 }

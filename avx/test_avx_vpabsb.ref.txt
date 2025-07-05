@@ -1,0 +1,20 @@
+Testing VPABSB instruction
+=========================
+
+Test 1: 128-bit register operands (mixed positive/negative)
+Input: 80 c0 e0 f0 f8 fc fe ff 00 01 02 04 08 10 20 40 
+Result: 80 40 20 10 08 04 02 01 00 01 02 04 08 10 20 40 
+[PASS]
+
+Test 2: 128-bit memory operand (boundary values)
+Input: 7f 81 00 ff 01 fe 02 80 40 c0 20 e0 10 f0 08 f8 
+Result: 7F 7F 00 01 01 02 02 80 40 40 20 20 10 10 08 08 
+[PASS]
+
+Test 3: 256-bit register operands
+Input: 80 c0 e0 f0 f8 fc fe ff 00 01 02 04 08 10 20 40 7f 81 00 ff 01 fe 02 80 40 c0 20 e0 10 f0 08 f8 
+Result (low): 80 40 20 10 08 04 02 01 00 01 02 04 08 10 20 40 
+Result (high): 7F 7F 00 01 01 02 02 80 40 40 20 20 10 10 08 08 
+[PASS]
+
+VPABSB tests completed.

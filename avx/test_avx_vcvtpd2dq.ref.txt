@@ -1,0 +1,35 @@
+--- Testing vcvtpd2dq ---
+
+[Testing VCVTPD2DQ (128-bit)]
+Element 0: double=0.000000 => int=0x00000000 (0) (expected 0x00000000) [PASS]
+Element 1: double=1.500000 => int=0x00000001 (1) (expected 0x00000001) [PASS]
+--- MXCSR State After 128-bit Operation ---
+MXCSR: 0x00007FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
+
+[Testing VCVTPD2DQ (256-bit)]
+Element 0: double=0.000000 => int=0x00000000 (0) (expected 0x00000000) [PASS]
+Element 1: double=1.500000 => int=0x00000001 (1) (expected 0x00000001) [PASS]
+Element 2: double=-2.500000 => int=0xFFFFFFFE (-2) (expected 0xFFFFFFFE) [PASS]
+Element 3: double=nan => int=0x80000000 (-2147483648) (expected 0x80000000) [PASS]
+--- MXCSR State After 256-bit Operation ---
+MXCSR: 0x00007FA1
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:1
+
+
+[Testing Memory Operand]
+Element 0: double=100.250000 => int=100 (expected 100) [PASS]
+Element 1: double=-200.750000 => int=-200 (expected -200) [PASS]
+--- MXCSR State After Memory Operand Operation ---
+MXCSR: 0x00007FA1
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:1
+
+
+Total errors: 0

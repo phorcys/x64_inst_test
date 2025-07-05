@@ -1,0 +1,14 @@
+=== Testing VMOVLPS ===
+
+Test 1: Load low 64-bit from memory to XMM register
+Register initial: [1.0, 2.0, 3.0, 4.0]
+Memory value: [100.0, 200.0]
+Result: [100.0, 200.0, 3.0, 4.0]
+Expected: [100.0, 200.0, 3.0, 4.0]
+Test 1 PASSED
+
+Test 2: Store low 64-bit from XMM register to memory
+Source vector: [10.0, 20.0, 30.0, 40.0]
+Memory dest: [10.0, 20.0]
+Expected: [10.0, 20.0]
+Test 2 PASSED

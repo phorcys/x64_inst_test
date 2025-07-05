@@ -1,0 +1,6 @@
+=== Testing VPHSUBSW ===
+-- Testing 128-bit operation --
+Result: ff 7f ff 7f ef ee ef ee ff 7f 01 00 11 11 11 11 
+Expected: 32767 32767 -4369 -4369 32767 1 4369 4369 
+
+=== VPHSUBSW test completed ===

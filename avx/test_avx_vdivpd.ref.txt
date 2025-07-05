@@ -1,0 +1,85 @@
+=== Testing vdivpd (packed double-precision division) ===
+
+[Test 1: 256-bit reg-reg]
+Input A: 10.000000 20.000000 30.000000 40.000000 
+Input B: 2.000000 4.000000 5.000000 8.000000 
+Result: 5.000000 5.000000 6.000000 5.000000 
+Expected: 5.000000 5.000000 6.000000 5.000000 
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 1: 256-bit reg-reg
+
+[Test 2: 256-bit reg-mem]
+Input A: 100.000000 200.000000 300.000000 400.000000 
+Memory Input: 10.000000 20.000000 30.000000 40.000000 
+Result: 10.000000 10.000000 10.000000 10.000000 
+Expected: 10.000000 10.000000 10.000000 10.000000 
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 2: 256-bit reg-mem
+
+[Test 3: 128-bit reg-reg]
+Input A: 123456000000000005759609754958370837187179404854424083601901871619573041364387364142040694435485832329387990228389723911344414950002343399418505037341539305316834965754382168842649663952090469396119552.000000 0.000000 
+Input B: 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000 0.000000 
+Result: 12345600000000000425099421233153899630495353968241873038778265116473121857184095013291246131504742400.000000 0.000000 
+Expected: 12345600000000000425099421233153899630495353968241873038778265116473121857184095013291246131504742400.000000 0.000000 
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+[PASS] Test 3: 128-bit reg-reg
+
+[Test 4: 128-bit reg-mem]
+Input A: 100.000000 200.000000 
+Memory Input: 25.000000 50.000000 
+Result: 4.000000 4.000000 
+Expected: 4.000000 4.000000 
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 4: 128-bit reg-mem
+
+[Test 5: 256-bit boundary values]
+Input A: inf -inf nan 1.000000 
+Input B: 1.000000 0.000000 1.000000 0.000000 
+Result: inf -inf nan inf 
+Expected: inf -inf nan inf 
+MXCSR: 0x00001F84
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:1 O:0 U:0 P:0
+[PASS] Test 5: 256-bit boundary values
+
+[Test 6: 128-bit boundary values]
+Input A: 0.000000 inf 
+Input B: 0.000000 inf 
+Result: -nan -nan 
+Expected: nan nan 
+MXCSR: 0x00001F81
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 6: 128-bit boundary values
+
+[Test 7: Rounding mode (nearest)]
+Input A: 10.000000 20.000000 
+Input B: 3.000000 6.000000 
+Result: 3.333333 3.333333 
+Expected: 3.333333 3.333333 
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+[PASS] Test 7: Rounding mode (nearest)
+
+=== Test Summary ===
+Total tests: 7
+Passed tests: 7
+Failed tests: 0
+Total errors: 0
+All vdivpd tests passed successfully!

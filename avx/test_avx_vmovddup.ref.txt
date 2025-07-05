@@ -1,0 +1,21 @@
+=== Testing VMOVDDUP (128-bit) ===
+Testing register-register operation
+a: [1.000000, 2.000000]
+result: [1.000000, 1.000000]
+expected: [1.000000, 1.000000]
+
+Testing register-memory operation
+Memory operand: 3.000000 4.000000
+result: [3.000000, 3.000000]
+expected: [3.000000, 3.000000]
+
+=== Testing VMOVDDUP (256-bit) ===
+Testing register-register operation
+a: [1.000000, 2.000000, 3.000000, 4.000000]
+result: [1.000000, 1.000000, 3.000000, 3.000000]
+expected: [1.000000, 1.000000, 3.000000, 3.000000]
+
+Testing register-memory operation
+Memory operand: 5.000000 6.000000 7.000000 8.000000
+result: [5.000000, 5.000000, 7.000000, 7.000000]
+expected: [5.000000, 5.000000, 7.000000, 7.000000]

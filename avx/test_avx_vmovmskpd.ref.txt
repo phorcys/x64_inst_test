@@ -1,0 +1,13 @@
+=== Testing VMOVMSKPD ===
+
+Test 1: 128-bit operand
+Source: [-1.0, 2.0]
+Result: 0b01 (decimal: 1)
+Expected: 0b01 (decimal: 1)
+Test 1 PASSED
+
+Test 2: 256-bit operand
+Source: [-1.0, 2.0, -3.0, 4.0]
+Result: 0b0101 (decimal: 5)
+Expected: 0b0101 (decimal: 5)
+Test 2 PASSED

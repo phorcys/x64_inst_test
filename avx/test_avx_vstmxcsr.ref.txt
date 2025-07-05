@@ -1,0 +1,27 @@
+Testing VSTMXCSR instruction
+
+Test case 1:
+Expected MXCSR: 0x00000000
+Stored MXCSR:   0x00000000
+
+Test case 2:
+Expected MXCSR: 0x00001F80
+Stored MXCSR:   0x00001F80
+
+Test case 3:
+Expected MXCSR: 0x00009FC0
+Stored MXCSR:   0x00009FC0
+
+Test case 4:
+Expected MXCSR: 0x00008000
+Stored MXCSR:   0x00008000
+
+Test case 5:
+Expected MXCSR: 0x00004000
+Stored MXCSR:   0x00004000
+
+Test case 6:
+Expected MXCSR: 0x00003F00
+Stored MXCSR:   0x00003F00
+
+VSTMXCSR test completed

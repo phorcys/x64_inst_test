@@ -1,0 +1,25 @@
+=== Testing VPBROADCASTD ===
+
+Testing value: 0x00000000
+XMM result: : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+XMM REG result: : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+YMM result: : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+YMM REG result: : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Testing value: 0xFFFFFFFF
+XMM result: : ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+XMM REG result: : ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+YMM result: : ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+YMM REG result: : ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+
+Testing value: 0x7FFFFFFF
+XMM result: : ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f 
+XMM REG result: : ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f 
+YMM result: : ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f 
+YMM REG result: : ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f ff ff ff 7f 
+
+Testing value: 0x80000000
+XMM result: : 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 
+XMM REG result: : 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 
+YMM result: : 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 
+YMM REG result: : 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00 80 

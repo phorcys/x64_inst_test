@@ -1,0 +1,16 @@
+=== Testing VPCMPESTRI ===
+
+Test 1: Equal comparison (byte mode, 128-bit)
+Result index: 0
+  [X] CF - Carry Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+PASS: Index should be 0 for equal strings
+PASS: CF should be set (IntRes2 not zero)
+PASS: ZF should be set (EDX < 16)
+PASS: SF should be set (EAX < 16)
+PASS: OF should be set (IntRes2[0] = 1)
+
+=== Test Summary ===
+Total failures: 0

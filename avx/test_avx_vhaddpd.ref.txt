@@ -1,0 +1,49 @@
+--- Testing vhaddpd (horizontal add packed double-precision) ---
+Test 1: 128-bit register-register
+Expected: Expected: 3.000000 7.000000 
+Result:   Result: 3.000000 7.000000 
+--- MXCSR State After Operation ---
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 1: 128-bit register-register
+
+Test 2: 256-bit register-register
+Expected: Expected: 3.000000 11.000000 7.000000 15.000000 
+Result:   Result: 3.000000 11.000000 7.000000 15.000000 
+--- MXCSR State After Operation ---
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 2: 256-bit register-register
+
+Test 3: Memory operand
+Expected: Expected: 3.000000 11.000000 7.000000 15.000000 
+Result:   Result: 3.000000 11.000000 7.000000 15.000000 
+--- MXCSR State After Operation ---
+MXCSR: 0x00001F80
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 3: Memory operand
+
+Test 4: Boundary values
+Expected: Expected: nan nan nan 2.000000 
+Result:   Result: -nan 2.000000 nan 2.000000 
+--- MXCSR State After Operation ---
+MXCSR: 0x00001F81
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:1 D:0 Z:0 O:0 U:0 P:0
+[PASS] Test 4: Boundary values (exception detected)
+
+--- MXCSR State After Operations ---
+MXCSR: 0x00001F81
+Flags: I:1 D:0 Z:0 O:0 U:0 P:0
+--- Test Summary ---
+Total tests: 4
+Passed tests: 4
+Failed tests: 0
+All vhaddpd tests passed!

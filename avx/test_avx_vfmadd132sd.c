@@ -23,7 +23,7 @@ static void test_scalar_reg_reg_operand() {
         printf("C     : %.17g\n", fma_cases_256_pd[t].c[0]);
         printf("Result: %.17g\n\n", a);
     }
-    printf("VFMADD132SD Scalar Register-Register Tests Completed\n\n");
+    printf("vfmadd132SD Scalar Register-Register Tests Completed\n\n");
 }
 
 static void test_scalar_reg_mem_operand() {
@@ -45,18 +45,18 @@ static void test_scalar_reg_mem_operand() {
         printf("C     : %.17g\n", fma_cases_256_pd[t].c[0]);
         printf("Result: %.17g\n\n", a1);
     }
-    printf("VFMADD132SD Scalar Register-Memory Tests Completed\n\n");
+    printf("vfmadd132SD Scalar Register-Memory Tests Completed\n\n");
 }
 
 int main() {
     printf("==================================\n");
-    printf("VFMADD132SD Comprehensive Tests\n");
+    printf("vfmadd132SD Comprehensive Tests\n");
     printf("==================================\n\n");
     
     test_scalar_reg_reg_operand();
     test_scalar_reg_mem_operand();
     
-    printf("VFMADD132SD normal values tests completed.\n");
+    printf("vfmadd132SD normal values tests completed.\n");
     
     return 0;
 }

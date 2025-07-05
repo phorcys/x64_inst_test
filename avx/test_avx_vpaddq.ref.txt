@@ -1,0 +1,33 @@
+Testing VPADDQ instruction
+=========================
+Test 1: Basic functionality
+Operand A: 10000000000 20000000000 
+Operand B: 5000000000 10000000000 
+Result: 15000000000 30000000000 
+[PASS]
+
+Test 2: Boundary values (with overflow)
+Operand A: 9223372036854775807 -9223372036854775808 
+Operand B: 1 -1 
+Result: -9223372036854775808 9223372036854775807 
+[PASS]
+
+Test 3: All zeros
+Operand A: 0 0 
+Operand B: 0 0 
+Result: 0 0 
+[PASS]
+
+Test 4: Memory operand
+Operand A (Memory): 10000000000 20000000000 
+Operand B: 5000000000 10000000000 
+Result: 15000000000 30000000000 
+[PASS]
+
+Test 5: 256-bit AVX
+Operand A: 10000000000 20000000000 -10000000000 -20000000000 
+Operand B: 5000000000 10000000000 -5000000000 -10000000000 
+Result: 15000000000 30000000000 -15000000000 -30000000000 
+[PASS]
+
+VPADDQ tests completed.

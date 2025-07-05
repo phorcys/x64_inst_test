@@ -1,0 +1,13 @@
+=== Testing VPMOVSXWQ ===
+
+Test 1: 128-bit operand
+Source: [-32768, 32767]
+Result: [-32768, 32767]
+Expected: [-32768, 32767]
+Test 1 PASSED
+
+Test 2: 256-bit operand
+Source: [-32768, -1, 0, 32767]
+Result: [-32768, -1, 0, 32767]
+Expected: [-32768, -1, 0, 32767]
+Test 2 PASSED

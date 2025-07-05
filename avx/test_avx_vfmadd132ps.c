@@ -38,7 +38,7 @@ static void test_reg_reg_operand() {
         for (int i = 0; i < 8; i++) printf("%.6f ", res[i]);
         printf("\n\n");
     }
-    printf("VFMADD132PS Register-Register Tests Completed\n\n");
+    printf("vfmadd132PS Register-Register Tests Completed\n\n");
 }
 
 static void test_reg_mem_operand() {
@@ -78,18 +78,18 @@ static void test_reg_mem_operand() {
         for (int i = 0; i < 8; i++) printf("%.6f ", res[i]);
         printf("\n\n");
     }
-    printf("VFMADD132PS Register-Memory Tests Completed\n\n");
+    printf("vfmadd132PS Register-Memory Tests Completed\n\n");
 }
 
 int main() {
     printf("===============================\n");
-    printf("VFMADD132PS Comprehensive Tests\n");
+    printf("vfmadd132PS Comprehensive Tests\n");
     printf("===============================\n\n");
     
     test_reg_reg_operand();
     test_reg_mem_operand();
     
-    printf("VFMADD132PS tests completed.\n");
+    printf("vfmadd132PS tests completed.\n");
     
     return 0;
 }

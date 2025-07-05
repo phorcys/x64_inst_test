@@ -1,0 +1,168 @@
+Testing PDEP instruction
+========================
+
+32-bit PDEP tests:
+Test 1: Input=0x00000000, Mask=0x00000000
+  Expected: 0x00000000, Result: 0x00000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 2: Input=0xFFFFFFFF, Mask=0xFFFFFFFF
+  Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 3: Input=0x12345678, Mask=0x55555555
+  Expected: 0x11141540, Result: 0x11141540
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 4: Input=0x9ABCDEF0, Mask=0x0F0F0F0F
+  Expected: 0x0D0E0F00, Result: 0x0D0E0F00
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 5: Input=0x12345678, Mask=0x0000FFFF
+  Expected: 0x00005678, Result: 0x00005678
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 6: Input=0x12345678, Mask=0xFFFF0000
+  Expected: 0x56780000, Result: 0x56780000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 7: Input=0x80000000, Mask=0x80000000
+  Expected: 0x00000000, Result: 0x00000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 8: Input=0x00000001, Mask=0x80000000
+  Expected: 0x80000000, Result: 0x80000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 9: Input=0x12345678, Mask=0xAAAAAAAA
+  Expected: 0x22282A80, Result: 0x22282A80
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 10: Input=0x12345678, Mask=0x00000001
+  Expected: 0x00000000, Result: 0x00000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+
+64-bit PDEP tests:
+Test 1: Input=0x0000000000000000, Mask=0x0000000000000000
+  Expected: 0x0000000000000000, Result: 0x0000000000000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 2: Input=0xFFFFFFFFFFFFFFFF, Mask=0xFFFFFFFFFFFFFFFF
+  Expected: 0xFFFFFFFFFFFFFFFF, Result: 0xFFFFFFFFFFFFFFFF
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 3: Input=0x123456789ABCDEF0, Mask=0x5555555555555555
+  Expected: 0x4144455051545500, Result: 0x4144455051545500
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 4: Input=0x123456789ABCDEF0, Mask=0x0F0F0F0F0F0F0F0F
+  Expected: 0x090A0B0C0D0E0F00, Result: 0x090A0B0C0D0E0F00
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 5: Input=0x123456789ABCDEF0, Mask=0x00000000FFFFFFFF
+  Expected: 0x000000009ABCDEF0, Result: 0x000000009ABCDEF0
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 6: Input=0x123456789ABCDEF0, Mask=0xFFFFFFFF00000000
+  Expected: 0x9ABCDEF000000000, Result: 0x9ABCDEF000000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 7: Input=0x8000000000000000, Mask=0x8000000000000000
+  Expected: 0x0000000000000000, Result: 0x0000000000000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 8: Input=0x0000000000000001, Mask=0x8000000000000000
+  Expected: 0x8000000000000000, Result: 0x8000000000000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 9: Input=0x123456789ABCDEF0, Mask=0xAAAAAAAAAAAAAAAA
+  Expected: 0x82888AA0A2A8AA00, Result: 0x82888AA0A2A8AA00
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 10: Input=0x123456789ABCDEF0, Mask=0x0000000000000001
+  Expected: 0x0000000000000000, Result: 0x0000000000000000
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+
+PDEP tests completed.

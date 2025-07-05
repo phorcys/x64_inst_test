@@ -1,0 +1,9 @@
+=== Testing vpgatherdd (256-bit) ===
+Base: 10 20 30 40 50 60 70 80 
+Index: 4 12 20 28 0 8 16 24 
+Result: 20 40 60 80 10 30 50 70 
+Expected: 20 40 60 80 10 30 50 70 
+Test 1: PASS
+Result: 30 30 30 30 60 60 60 60 
+Expected: 30 30 30 30 60 60 60 60 
+Test 2: PASS

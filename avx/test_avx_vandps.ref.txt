@@ -1,0 +1,18 @@
+--- Testing vandps (packed single-precision bitwise AND) ---
+Test 1: 256-bit register-register
+256-bit register-register test:
+Expected: -1431655766 0 -1431655766 0 35930656 -1701012992 0 0 
+Result: -1431655766 0 -1431655766 0 35930656 -1701012992 0 0 
+[PASS] Test 1: 256-bit register-register
+
+Test 2: 128-bit register-register
+128-bit register-register test:
+Expected: 0 572662306 0 1145324612 
+Result: 0 572662306 0 1145324612 
+[PASS] Test 2: 128-bit register-register
+
+--- Test Summary ---
+Total tests: 2
+Passed tests: 2
+Failed tests: 0
+All vandps tests passed!

@@ -1,0 +1,13 @@
+--- Testing VPEXTRD ---
+Register       : res=0x11223344 exp=0x11223344 PASSED
+Register       : res=0x55667788 exp=0x55667788 PASSED
+Register       : res=0x99aabbcc exp=0x99aabbcc PASSED
+Register       : res=0xddeeff00 exp=0xddeeff00 PASSED
+Memory         : res=0x11223344 exp=0x11223344 PASSED
+Memory         : res=0x55667788 exp=0x55667788 PASSED
+Memory         : res=0x99aabbcc exp=0x99aabbcc PASSED
+Memory         : res=0xddeeff00 exp=0xddeeff00 PASSED
+Edge Case      : res=0xffffffff exp=0xffffffff PASSED
+Edge Case      : res=0x80000000 exp=0x80000000 PASSED
+Edge Case      : res=0x7fffffff exp=0x7fffffff PASSED
+Edge Case      : res=0x00000000 exp=0x00000000 PASSED

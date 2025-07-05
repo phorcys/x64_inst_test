@@ -1,0 +1,182 @@
+=== Testing 32-bit BLSMSK instruction ===
+Test 1: Input=0x12345678
+  Expected: 0x0000000F, Result: 0x0000000F
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000206
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 2: Input=0x00000000
+  Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF
+  Expected CF: 1, Actual CF: 1
+  RFLAGS: 0x0000000000000287
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 3: Input=0x80000000
+  Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000286
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 4: Input=0x00000001
+  Expected: 0x00000001, Result: 0x00000001
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 5: Input=0xFFFFFFF0
+  Expected: 0x0000001F, Result: 0x0000001F
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 6: Input=0x0000000F
+  Expected: 0x00000001, Result: 0x00000001
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 7: Input=0x00001000
+  Expected: 0x00001FFF, Result: 0x00001FFF
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000206
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 8: Input=0x00000000
+  Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF
+  Expected CF: 1, Actual CF: 1
+  RFLAGS: 0x0000000000000287
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 9: Input=0x00000001
+  Expected: 0x00000001, Result: 0x00000001
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+=== Testing 64-bit BLSMSK instruction ===
+Test 1: Input=0x123456789ABCDEF0
+  Expected: 0x000000000000001F, Result: 0x000000000000001F
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 2: Input=0x0000000000000000
+  Expected: 0xFFFFFFFFFFFFFFFF, Result: 0xFFFFFFFFFFFFFFFF
+  Expected CF: 1, Actual CF: 1
+  RFLAGS: 0x0000000000000287
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 3: Input=0x8000000000000000
+  Expected: 0xFFFFFFFFFFFFFFFF, Result: 0xFFFFFFFFFFFFFFFF
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000286
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 4: Input=0x0000000000000001
+  Expected: 0x0000000000000001, Result: 0x0000000000000001
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 5: Input=0xFFFFFFFFFFFFFFF0
+  Expected: 0x000000000000001F, Result: 0x000000000000001F
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 6: Input=0x000000000000000F
+  Expected: 0x0000000000000001, Result: 0x0000000000000001
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 7: Input=0x0000000010000000
+  Expected: 0x000000001FFFFFFF, Result: 0x000000001FFFFFFF
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000206
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 8: Input=0x0000000000000000
+  Expected: 0xFFFFFFFFFFFFFFFF, Result: 0xFFFFFFFFFFFFFFFF
+  Expected CF: 1, Actual CF: 1
+  RFLAGS: 0x0000000000000287
+  [PASS] Test passed!
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+
+Test 9: Input=0x0000000000000001
+  Expected: 0x0000000000000001, Result: 0x0000000000000001
+  Expected CF: 0, Actual CF: 0
+  RFLAGS: 0x0000000000000202
+  [PASS] Test passed!
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [ ] OF - Overflow Flag
+

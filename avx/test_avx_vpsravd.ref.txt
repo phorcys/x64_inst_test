@@ -1,0 +1,32 @@
+=== Testing VPSRAVD (Variable Packed Shift Right Arithmetic Doubleword) ===
+
+--- 128-bit Tests ---
+Test 1: VPSRAVD xmm, xmm, xmm
+Source: 67 45 23 01 ef cd ab 89 ff ff ff 7f 00 00 00 80 
+Shift Counts: 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 
+Result: b3 a2 91 00 7b f3 6a e2 ff ff ff 0f 00 00 00 f8 
+Comparison: PASS
+
+Test 2: VPSRAVD xmm, xmm, xmm (large shifts)
+Shift Counts: 20 00 00 00 21 00 00 00 28 00 00 00 3f 00 00 00 
+Result: 00 00 00 00 ff ff ff ff 00 00 00 00 ff ff ff ff 
+Comparison: PASS
+
+--- 256-bit Tests ---
+
+Test 3: VPSRAVD ymm, ymm, ymm
+Source: 67 45 23 01 ef cd ab 89 ff ff ff 7f 00 00 00 80 01 00 00 00 ff ff ff ff 33 33 33 33 cc cc cc cc 
+Shift Counts: 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 1f 00 00 00 20 00 00 00 00 00 00 00 10 00 00 00 
+Result: b3 a2 91 00 7b f3 6a e2 ff ff ff 0f 00 00 00 f8 00 00 00 00 ff ff ff ff 33 33 33 33 cc cc ff ff 
+Comparison: PASS
+
+Test 4: VPSRAVD ymm, ymm, ymm (large shifts)
+Shift Counts: 20 00 00 00 21 00 00 00 28 00 00 00 3f 00 00 00 40 00 00 00 64 00 00 00 00 00 00 00 10 00 00 00 
+Result: 00 00 00 00 ff ff ff ff 00 00 00 00 ff ff ff ff 00 00 00 00 ff ff ff ff 33 33 33 33 cc cc ff ff 
+Comparison: PASS
+
+--- Boundary Tests ---
+
+Test 5: Shift count 0 (no change)
+Result: 67 45 23 01 ef cd ab 89 ff ff ff 7f 00 00 00 80 
+Comparison: PASS

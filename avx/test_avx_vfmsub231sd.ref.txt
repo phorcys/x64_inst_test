@@ -1,0 +1,285 @@
+==================================
+vfmsub231SD Comprehensive Tests
+==================================
+
+Test Case: Normal values (256-bit)
+A     : 1
+B     : 5
+C     : 9
+Result: 44
+
+Test Case: NaN values in A(256-bit)
+A     : nan
+B     : 1
+C     : 5
+Result: nan
+
+Test Case: NaN values in B (256-bit)
+A     : 1
+B     : nan
+C     : 5
+Result: nan
+
+Test Case: NaN values in C (256-bit)
+A     : 1
+B     : 5
+C     : nan
+Result: nan
+
+Test Case: NaN values in A & B (256-bit)
+A     : nan
+B     : nan
+C     : 5
+Result: nan
+
+Test Case: NaN values in A & C (256-bit)
+A     : nan
+B     : 5
+C     : nan
+Result: nan
+
+Test Case: NaN values in B & C (256-bit)
+A     : 1
+B     : nan
+C     : nan
+Result: nan
+
+Test Case: NaN values in B & C , A negtive val (256-bit)
+A     : -1
+B     : nan
+C     : nan
+Result: nan
+
+Test Case: NaN values in A & B & C (256-bit)
+A     : nan
+B     : nan
+C     : nan
+Result: nan
+
+Test Case: INF values in A (256-bit)
+A     : inf
+B     : 1
+C     : 5
+Result: -inf
+
+Test Case: INF values in B (256-bit)
+A     : 1
+B     : inf
+C     : 5
+Result: inf
+
+Test Case: INF values in C (256-bit)
+A     : 1
+B     : 5
+C     : inf
+Result: inf
+
+Test Case: INF values in A and B (256-bit)
+A     : inf
+B     : inf
+C     : 5
+Result: -nan
+
+Test Case: INF values in A and C (256-bit)
+A     : inf
+B     : 5
+C     : inf
+Result: -nan
+
+Test Case: INF values in B and C (256-bit)
+A     : 1
+B     : inf
+C     : inf
+Result: inf
+
+Test Case: INF values in B and C A negtive val(256-bit)
+A     : -1
+B     : inf
+C     : inf
+Result: inf
+
+Test Case: INF values in A, B and C (256-bit)
+A     : inf
+B     : inf
+C     : inf
+Result: -nan
+
+Test Case: Zero values (256-bit)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
+
+Test Case: Boundary values (256-bit)
+A     : 1.7976931348623157e+308
+B     : 1
+C     : 5
+Result: -1.7976931348623157e+308
+
+Test Case: NaN and INF mix (256-bit)
+A     : nan
+B     : 1
+C     : 5
+Result: nan
+
+Test Case: Zero and boundary mix (256-bit)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
+
+Test Case: Denormal values (256-bit)
+A     : 1.1125369292536007e-308
+B     : 1
+C     : 5
+Result: 5
+
+Test Case: Overflow case (256-bit)
+A     : 1.7976931348623157e+308
+B     : 2
+C     : 1.7976931348623157e+308
+Result: 1.7976931348623157e+308
+
+vfmsub231SD Scalar Register-Register Tests Completed
+
+Memory Operand Test: Normal values (256-bit)
+A     : 1
+B     : 5
+C     : 9
+Result: 44
+
+Memory Operand Test: NaN values in A(256-bit)
+A     : nan
+B     : 1
+C     : 5
+Result: nan
+
+Memory Operand Test: NaN values in B (256-bit)
+A     : 1
+B     : nan
+C     : 5
+Result: nan
+
+Memory Operand Test: NaN values in C (256-bit)
+A     : 1
+B     : 5
+C     : nan
+Result: nan
+
+Memory Operand Test: NaN values in A & B (256-bit)
+A     : nan
+B     : nan
+C     : 5
+Result: nan
+
+Memory Operand Test: NaN values in A & C (256-bit)
+A     : nan
+B     : 5
+C     : nan
+Result: nan
+
+Memory Operand Test: NaN values in B & C (256-bit)
+A     : 1
+B     : nan
+C     : nan
+Result: nan
+
+Memory Operand Test: NaN values in B & C , A negtive val (256-bit)
+A     : -1
+B     : nan
+C     : nan
+Result: nan
+
+Memory Operand Test: NaN values in A & B & C (256-bit)
+A     : nan
+B     : nan
+C     : nan
+Result: nan
+
+Memory Operand Test: INF values in A (256-bit)
+A     : inf
+B     : 1
+C     : 5
+Result: -inf
+
+Memory Operand Test: INF values in B (256-bit)
+A     : 1
+B     : inf
+C     : 5
+Result: inf
+
+Memory Operand Test: INF values in C (256-bit)
+A     : 1
+B     : 5
+C     : inf
+Result: inf
+
+Memory Operand Test: INF values in A and B (256-bit)
+A     : inf
+B     : inf
+C     : 5
+Result: -nan
+
+Memory Operand Test: INF values in A and C (256-bit)
+A     : inf
+B     : 5
+C     : inf
+Result: -nan
+
+Memory Operand Test: INF values in B and C (256-bit)
+A     : 1
+B     : inf
+C     : inf
+Result: inf
+
+Memory Operand Test: INF values in B and C A negtive val(256-bit)
+A     : -1
+B     : inf
+C     : inf
+Result: inf
+
+Memory Operand Test: INF values in A, B and C (256-bit)
+A     : inf
+B     : inf
+C     : inf
+Result: -nan
+
+Memory Operand Test: Zero values (256-bit)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
+
+Memory Operand Test: Boundary values (256-bit)
+A     : 1.7976931348623157e+308
+B     : 1
+C     : 5
+Result: -1.7976931348623157e+308
+
+Memory Operand Test: NaN and INF mix (256-bit)
+A     : nan
+B     : 1
+C     : 5
+Result: nan
+
+Memory Operand Test: Zero and boundary mix (256-bit)
+A     : 0
+B     : 1
+C     : 5
+Result: 5
+
+Memory Operand Test: Denormal values (256-bit)
+A     : 1.1125369292536007e-308
+B     : 1
+C     : 5
+Result: 5
+
+Memory Operand Test: Overflow case (256-bit)
+A     : 1.7976931348623157e+308
+B     : 2
+C     : 1.7976931348623157e+308
+Result: 1.7976931348623157e+308
+
+vfmsub231SD Scalar Register-Memory Tests Completed
+
+vfmsub231SD normal values tests completed.

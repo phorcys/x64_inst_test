@@ -1,0 +1,19 @@
+Testing VPACKSSDW (pack with signed saturation)
+Testing 128-bit operations:
+Reg-Reg test:
+Src1: 7fffffff 80000000 00bc614e ff694bc1 
+Src2: 00000000 ffffffff 0054c563 ffcd232b 
+Result: 7fff ffff8000 7fff ffff8000 0000 ffffffff 7fff ffff8000 
+
+Reg-Mem test:
+Src1: 000f4240 fff0bdc0 7fffffff 80000000 
+Src2: 0007a120 fff85ee0 00000000 ffffffff 
+Result: 7fff ffff8000 7fff ffff8000 7fff ffff8000 0000 ffffffff 
+
+Testing 256-bit operations:
+Reg-Reg test:
+Src1: 7fffffff 80000000 00bc614e ff694bc1 0054c563 ffcd232b 3b9aca00 c4653600 
+Src2: 00000000 ffffffff 0054c563 ffcd232b 7fffffff 80000000 1dcd6500 e2329b00 
+Result: 7fff ffff8000 7fff ffff8000 0000 ffffffff 7fff ffff8000 7fff ffff8000 7fff ffff8000 7fff ffff8000 7fff ffff8000 
+
+VPACKSSDW tests completed.

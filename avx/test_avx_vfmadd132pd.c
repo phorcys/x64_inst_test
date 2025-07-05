@@ -26,7 +26,7 @@ static void test_256bit_reg_reg_operand() {
         print_double_vec("Result:", res, 4);
         printf("\n");
     }
-    printf("VFMADD132PD 256-bit Register-Register Tests Completed\n\n");
+    printf("vfmadd132PD 256-bit Register-Register Tests Completed\n\n");
 }
 
 static void test_128bit_reg_reg_operand() {
@@ -51,7 +51,7 @@ static void test_128bit_reg_reg_operand() {
         print_double_vec("Result:", res, 2);
         printf("\n");
     }
-    printf("VFMADD132PD 128-bit Register-Register Tests Completed\n\n");
+    printf("vfmadd132PD 128-bit Register-Register Tests Completed\n\n");
 }
 
 static void test_256bit_reg_mem_operand() {
@@ -77,7 +77,7 @@ static void test_256bit_reg_mem_operand() {
         print_double_vec("Aligned memory:", res, 4);
         printf("\n");
     }
-    printf("VFMADD132PD 256-bit Register-Memory Tests Completed\n\n");
+    printf("vfmadd132PD 256-bit Register-Memory Tests Completed\n\n");
 }
 
 static void test_128bit_reg_mem_operand() {
@@ -104,12 +104,12 @@ static void test_128bit_reg_mem_operand() {
         print_double_vec("Aligned memory:", res, 2);
         printf("\n");
     }
-    printf("VFMADD132PD 128-bit Register-Memory Tests Completed\n\n");
+    printf("vfmadd132PD 128-bit Register-Memory Tests Completed\n\n");
 }
 
 int main() {
     printf("==================================\n");
-    printf("VFMADD132PD Comprehensive Tests\n");
+    printf("vfmadd132PD Comprehensive Tests\n");
     printf("==================================\n\n");
     
     test_128bit_reg_reg_operand();
@@ -117,7 +117,7 @@ int main() {
     test_128bit_reg_mem_operand();
     test_256bit_reg_mem_operand();
     
-    printf("VFMADD132PD normal values tests completed.\n");
+    printf("vfmadd132PD normal values tests completed.\n");
     
     return 0;
 }

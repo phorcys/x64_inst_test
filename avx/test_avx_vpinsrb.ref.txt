@@ -1,0 +1,13 @@
+Starting VPINSRB tests
+=====================
+Testing VPINSRB with register source
+  Position 0: 0xab (expected 0xAB) - PASS
+  Position 15: 0xab (expected 0xAB) - PASS
+
+Testing VPINSRB with memory source
+  Position 7: 0xcd (expected 0xCD) - PASS
+
+Testing VPINSRB boundary values
+  Boundary test: 0x00 (expected 0x00) - PASS
+
+VPINSRB tests completed

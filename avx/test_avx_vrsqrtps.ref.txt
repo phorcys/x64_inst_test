@@ -1,0 +1,64 @@
+Testing VRSQRTPS
+Testing VRSQRTPS (128-bit)
+Test case 1 (128-bit):
+Input: 1
+Result: 0.99987793
+Expected: 1
+
+Test case 2 (128-bit):
+Input: 4
+Result: 0.499938965
+Expected: 0.5
+
+Test case 3 (128-bit):
+Input: 16
+Result: 0.249969482
+Expected: 0.25
+
+Test case 4 (128-bit):
+Input: 64
+Result: 0.124984741
+Expected: 0.125
+
+Testing VRSQRTPS (256-bit)
+Test case 1 (256-bit):
+Input: 1
+Result: 0.99987793
+Expected: 1
+
+Test case 2 (256-bit):
+Input: 4
+Result: 0.499938965
+Expected: 0.5
+
+Test case 3 (256-bit):
+Input: 16
+Result: 0.249969482
+Expected: 0.25
+
+Test case 4 (256-bit):
+Input: 64
+Result: 0.124984741
+Expected: 0.125
+
+Test case 5 (256-bit):
+Input: 0.25
+Result: 1.99975586
+Expected: 2
+
+Test case 6 (256-bit):
+Input: -0.25
+Result: -nan
+Expected: nan
+
+Test case 7 (256-bit):
+Input: inf
+Result: 0
+Expected: 0
+
+Test case 8 (256-bit):
+Input: nan
+Result: nan
+Expected: nan
+
+VRSQRTPS tests completed

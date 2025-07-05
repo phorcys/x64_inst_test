@@ -28,7 +28,7 @@ all: $(EXES)
 	elif echo "$@" | grep -q '^sse/'; then \
 		$(CC) $(SSE_CFLAGS) -o $@ $<; \
 	elif echo "$@" | grep -q '^avx/'; then \
-		$(CC) $(AVX_CFLAGS) -o $@ $<; \
+		$(CC) $(AVX_CFLAGS) -o $@ $< -lm; \
 	elif [ "$@" = "x87/test_x87_ficom" ]; then \
 		$(CC) $(X87_CFLAGS) -c x87/ficom_asm.s -o x87/ficom_asm.o; \
 		$(CC) $(X87_CFLAGS) -o $@ $< x87/ficom_asm.o -lm; \

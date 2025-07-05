@@ -1,0 +1,285 @@
+===============================
+vfmsub213PS Comprehensive Tests
+===============================
+
+Test Case: Normal values (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: 17.000000 18.000000 19.000000 20.000000 21.000000 22.000000 23.000000 24.000000 
+Result:: -8.000000 2.000000 14.000000 28.000000 44.000000 62.000000 82.000000 104.000000 
+
+Test Case: NaN values in A (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Test Case: NaN values in B (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: nan -nan nan -nan nan -nan nan -nan 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Test Case: NaN values in C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: nan -nan nan -nan nan -nan nan -nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Test Case: NaN values in A and B (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: nan -nan -nan nan nan -nan -nan nan 
+C     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+Result:: nan -nan -nan nan nan -nan -nan nan 
+
+Test Case: NaN values in A and C (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+C     :: nan -nan -nan nan nan -nan -nan nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Test Case: NaN values in B and C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: nan -nan nan -nan nan -nan nan -nan 
+C     :: nan -nan -nan nan nan -nan -nan nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Test Case: NaN values in B and C , A negtive val (256-bit single precision) (packed single precision)
+A     :: -1.000000 -2.000000 -3.000000 -4.000000 -5.000000 -6.000000 -7.000000 -8.000000 
+B     :: nan -nan nan -nan nan -nan nan -nan 
+C     :: nan -nan -nan nan nan -nan -nan nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Test Case: NaN values in A and B and C (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: nan -nan -nan nan nan -nan -nan nan 
+C     :: nan -nan -nan -nan nan -nan -nan nan 
+Result:: nan -nan -nan nan nan -nan -nan nan 
+
+Test Case: INF values in A(256-bit single precision) (packed single precision)
+A     :: inf -inf inf -inf inf -inf inf -inf 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: inf -inf inf -inf inf -inf inf -inf 
+
+Test Case: INF values in B (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: inf -inf inf -inf inf -inf inf -inf 
+
+Test Case: INF values in C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -inf inf -inf inf -inf inf -inf inf 
+
+Test Case: INF values in A and B (256-bit single precision) (packed single precision)
+A     :: inf -inf inf -inf inf -inf inf -inf 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: inf inf inf inf inf inf inf inf 
+
+Test Case: INF values in A and C (256-bit single precision) (packed single precision)
+A     :: inf -inf inf -inf inf -inf inf -inf 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -nan -nan -nan -nan -nan -nan -nan -nan 
+
+Test Case: INF values in B and C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -nan -nan -nan -nan -nan -nan -nan -nan 
+
+Test Case: INF values in B and C A negtive val(256-bit single precision) (packed single precision)
+A     :: -1.000000 -2.000000 -3.000000 -4.000000 -5.000000 -6.000000 -7.000000 -8.000000 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -inf inf -inf inf -inf inf -inf inf 
+
+Test Case: INF values in A, B and C (256-bit single precision) (packed single precision)
+A     :: inf -inf -inf inf -inf inf -inf inf 
+B     :: inf -inf inf -inf -inf inf inf -inf 
+C     :: inf -inf inf -inf inf -inf -inf inf 
+Result:: -nan inf -inf -nan -nan inf -nan -inf 
+
+Test Case: Zero values (256-bit single precision) (packed single precision)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: -9.000000 -10.000000 -11.000000 -12.000000 -13.000000 -14.000000 -15.000000 -16.000000 
+
+Test Case: Boundary values (256-bit single precision) (packed single precision)
+A     :: 340282346638528859811704183484516925440.000000 0.000000 -340282346638528859811704183484516925440.000000 -0.000000 340282346638528859811704183484516925440.000000 0.000000 -340282346638528859811704183484516925440.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: 340282346638528859811704183484516925440.000000 -10.000000 -inf -12.000000 inf -14.000000 -inf -16.000000 
+
+Test Case: NaN and INF mix (256-bit single precision) (packed single precision)
+A     :: nan inf -nan -inf nan inf -nan -inf 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: nan inf -nan -inf nan inf -nan -inf 
+
+Test Case: Denormal values (256-bit single precision) (packed single precision)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: -9.000000 -10.000000 -11.000000 -12.000000 -13.000000 -14.000000 -15.000000 -16.000000 
+
+Test Case: Zero and boundary mix (256-bit single precision) (packed single precision)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 340282346638528859811704183484516925440.000000 -340282346638528859811704183484516925440.000000 0.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: -9.000000 -10.000000 -11.000000 -12.000000 inf -inf -15.000000 -16.000000 
+
+Test Case: Overflow case (256-bit single precision) (packed single precision)
+A     :: 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 
+B     :: 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 
+C     :: 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 
+Result:: 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 
+
+vfmsub213PS Register-Register Tests Completed
+
+Memory Operand Test: Normal values (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: 17.000000 18.000000 19.000000 20.000000 21.000000 22.000000 23.000000 24.000000 
+Result:: -8.000000 2.000000 14.000000 28.000000 44.000000 62.000000 82.000000 104.000000 
+
+Memory Operand Test: NaN values in A (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Memory Operand Test: NaN values in B (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: nan -nan nan -nan nan -nan nan -nan 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Memory Operand Test: NaN values in C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: nan -nan nan -nan nan -nan nan -nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Memory Operand Test: NaN values in A and B (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: nan -nan -nan nan nan -nan -nan nan 
+C     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+Result:: nan -nan -nan nan nan -nan -nan nan 
+
+Memory Operand Test: NaN values in A and C (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: 5.000000 6.000000 7.000000 8.000000 9.000000 10.000000 11.000000 12.000000 
+C     :: nan -nan -nan nan nan -nan -nan nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Memory Operand Test: NaN values in B and C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: nan -nan nan -nan nan -nan nan -nan 
+C     :: nan -nan -nan nan nan -nan -nan nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Memory Operand Test: NaN values in B and C , A negtive val (256-bit single precision) (packed single precision)
+A     :: -1.000000 -2.000000 -3.000000 -4.000000 -5.000000 -6.000000 -7.000000 -8.000000 
+B     :: nan -nan nan -nan nan -nan nan -nan 
+C     :: nan -nan -nan nan nan -nan -nan nan 
+Result:: nan -nan nan -nan nan -nan nan -nan 
+
+Memory Operand Test: NaN values in A and B and C (256-bit single precision) (packed single precision)
+A     :: nan -nan nan -nan nan -nan nan -nan 
+B     :: nan -nan -nan nan nan -nan -nan nan 
+C     :: nan -nan -nan -nan nan -nan -nan nan 
+Result:: nan -nan -nan nan nan -nan -nan nan 
+
+Memory Operand Test: INF values in A(256-bit single precision) (packed single precision)
+A     :: inf -inf inf -inf inf -inf inf -inf 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: inf -inf inf -inf inf -inf inf -inf 
+
+Memory Operand Test: INF values in B (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: inf -inf inf -inf inf -inf inf -inf 
+
+Memory Operand Test: INF values in C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -inf inf -inf inf -inf inf -inf inf 
+
+Memory Operand Test: INF values in A and B (256-bit single precision) (packed single precision)
+A     :: inf -inf inf -inf inf -inf inf -inf 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: inf inf inf inf inf inf inf inf 
+
+Memory Operand Test: INF values in A and C (256-bit single precision) (packed single precision)
+A     :: inf -inf inf -inf inf -inf inf -inf 
+B     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -nan -nan -nan -nan -nan -nan -nan -nan 
+
+Memory Operand Test: INF values in B and C (256-bit single precision) (packed single precision)
+A     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -nan -nan -nan -nan -nan -nan -nan -nan 
+
+Memory Operand Test: INF values in B and C A negtive val(256-bit single precision) (packed single precision)
+A     :: -1.000000 -2.000000 -3.000000 -4.000000 -5.000000 -6.000000 -7.000000 -8.000000 
+B     :: inf -inf inf -inf inf -inf inf -inf 
+C     :: inf -inf inf -inf inf -inf inf -inf 
+Result:: -inf inf -inf inf -inf inf -inf inf 
+
+Memory Operand Test: INF values in A, B and C (256-bit single precision) (packed single precision)
+A     :: inf -inf -inf inf -inf inf -inf inf 
+B     :: inf -inf inf -inf -inf inf inf -inf 
+C     :: inf -inf inf -inf inf -inf -inf inf 
+Result:: -nan inf -inf -nan -nan inf -nan -inf 
+
+Memory Operand Test: Zero values (256-bit single precision) (packed single precision)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: -9.000000 -10.000000 -11.000000 -12.000000 -13.000000 -14.000000 -15.000000 -16.000000 
+
+Memory Operand Test: Boundary values (256-bit single precision) (packed single precision)
+A     :: 340282346638528859811704183484516925440.000000 0.000000 -340282346638528859811704183484516925440.000000 -0.000000 340282346638528859811704183484516925440.000000 0.000000 -340282346638528859811704183484516925440.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: 340282346638528859811704183484516925440.000000 -10.000000 -inf -12.000000 inf -14.000000 -inf -16.000000 
+
+Memory Operand Test: NaN and INF mix (256-bit single precision) (packed single precision)
+A     :: nan inf -nan -inf nan inf -nan -inf 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: nan inf -nan -inf nan inf -nan -inf 
+
+Memory Operand Test: Denormal values (256-bit single precision) (packed single precision)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 0.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: -9.000000 -10.000000 -11.000000 -12.000000 -13.000000 -14.000000 -15.000000 -16.000000 
+
+Memory Operand Test: Zero and boundary mix (256-bit single precision) (packed single precision)
+A     :: 0.000000 -0.000000 0.000000 -0.000000 340282346638528859811704183484516925440.000000 -340282346638528859811704183484516925440.000000 0.000000 -0.000000 
+B     :: 1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000 8.000000 
+C     :: 9.000000 10.000000 11.000000 12.000000 13.000000 14.000000 15.000000 16.000000 
+Result:: -9.000000 -10.000000 -11.000000 -12.000000 inf -inf -15.000000 -16.000000 
+
+Memory Operand Test: Overflow case (256-bit single precision) (packed single precision)
+A     :: 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 
+B     :: 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 
+C     :: 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 
+Result:: 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 340282346638528859811704183484516925440.000000 
+
+vfmsub213PS Register-Memory Tests Completed
+
+vfmsub213PS tests completed.

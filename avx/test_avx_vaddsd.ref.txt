@@ -1,0 +1,87 @@
+--- Testing vaddsd (scalar double-precision addition) ---
+Test 1: Register-register
+Input1:   1.234567890123456
+Input2:   9.876543210987654
+Expected: 11.111111101111110
+Result:   11.111111101111110
+[PASS] Test 1: Register-register
+
+Test 2: Register-memory
+Input1:   1.234567890123456e+00
+Input2:   1.000000000000000e-15
+Expected: 1.234567890123457e+00
+Result:   1.234567890123457e+00
+[PASS] Test 2: Register-memory
+
+Test 3: Boundary values
+Test 1: 0.000000000000000e+00 + 0.000000000000000e+00
+Expected: 0.000000000000000e+00
+Result:   0.000000000000000e+00
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
+[PASS] Test 1: Boundary value
+
+Test 2: inf + 1.000000000000000e+00
+Expected: inf
+Result:   inf
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
+[PASS] Test 2: Boundary value
+
+Test 3: -inf + 1.000000000000000e+00
+Expected: -inf
+Result:   -inf
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
+[PASS] Test 3: Boundary value
+
+Test 4: nan + 1.000000000000000e+00
+Expected: nan
+Result:   nan
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA0
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:0 U:0 P:1
+
+[PASS] Test 4: Boundary value
+
+Test 5: 1.797693134862316e+308 + 1.797693134862316e+308
+Expected: inf
+Result:   inf
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA8
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:1 U:0 P:1
+
+[PASS] Test 5: Boundary value
+
+Test 6: 2.225073858507201e-308 + 2.225073858507201e-308
+Expected: 4.450147717014403e-308
+Result:   4.450147717014403e-308
+--- MXCSR State After Operation ---
+MXCSR: 0x00001FA8
+  [ ] DAZ - Denormals Are Zero: 0
+  [ ] FTZ - Flush To Zero: 0
+Flags: I:0 D:0 Z:0 O:1 U:0 P:1
+
+[PASS] Test 6: Boundary value
+
+--- Test Summary ---
+Total tests: 8
+Passed tests: 8
+Failed tests: 0
+All vaddsd tests passed!

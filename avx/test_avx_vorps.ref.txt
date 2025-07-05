@@ -1,0 +1,15 @@
+--- Testing vorps (bitwise OR of packed single-precision) ---
+Test 1: 256-bit register-register
+Expected: Expected: 0xFFFFFFFF 0xFFFFFFFF 0xFEFCFEF8 0xFEFCFEF0 0x55555555 0xAAAAAAAA 0xFFFFFFFF 0x44444444 
+Result:   Result: 0xFFFFFFFF 0xFFFFFFFF 0xFEFCFEF8 0xFEFCFEF0 0x55555555 0xAAAAAAAA 0xFFFFFFFF 0x44444444 
+[PASS] Test 1: 256-bit register-register
+
+Test 2: Boundary values
+Expected: Expected: 0x00000000 0x80000000 0x7F800000 0x7FC00000 0xFFFFFFFF 0x40000000 0x55555555 0xEAAAAAAA 
+Result:   Result: 0x00000000 0x80000000 0x7F800000 0x7FC00000 0xFFFFFFFF 0x40000000 0x55555555 0xEAAAAAAA 
+[PASS] Boundary values output check
+--- Test Summary ---
+Total tests: 2
+Passed tests: 2
+Failed tests: 0
+All vorps tests passed!

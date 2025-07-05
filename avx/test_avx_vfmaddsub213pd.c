@@ -1,94 +1,123 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <immintrin.h>
+#include <float.h>
 #include "avx.h"
 #include "fma.h"
 
-static void test_reg_reg_operand() {
+static void test_256bit_reg_reg_operand() {
     for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
         __m256d va = _mm256_loadu_pd(fma_cases_256_pd[t].a);
         __m256d vb = _mm256_loadu_pd(fma_cases_256_pd[t].b);
         __m256d vc = _mm256_loadu_pd(fma_cases_256_pd[t].c);
         
-        // 保存原始值用于比较
-        double original_a[4];
-        _mm256_storeu_pd(original_a, va);
-        
         __asm__ __volatile__(
-            "vfmaddsub213pd %[c], %[b], %[a]"
+            "vfmaddsub213pd %[b], %[c], %[a]"
             : [a] "+x" (va)
             : [b] "x" (vb), [c] "x" (vc)
         );
         
         double res[4];
         _mm256_storeu_pd(res, va);
-        
         printf("Test Case: %s\n", fma_cases_256_pd[t].desc);
-        printf("A     :: %.15f %.15f %.15f %.15f\n", 
-               original_a[0], original_a[1], original_a[2], original_a[3]);
-        printf("B     :: %.15f %.15f %.15f %.15f\n", 
-               fma_cases_256_pd[t].b[0], fma_cases_256_pd[t].b[1],
-               fma_cases_256_pd[t].b[2], fma_cases_256_pd[t].b[3]);
-        printf("C     :: %.15f %.15f %.15f %.15f\n", 
-               fma_cases_256_pd[t].c[0], fma_cases_256_pd[t].c[1],
-               fma_cases_256_pd[t].c[2], fma_cases_256_pd[t].c[3]);
-        printf("Result:: %.15f %.15f %.15f %.15f\n", 
-               res[0], res[1], res[2], res[3]);
+        print_double_vec("A     :", fma_cases_256_pd[t].a, 4);
+        print_double_vec("B     :", fma_cases_256_pd[t].b, 4);
+        print_double_vec("C     :", fma_cases_256_pd[t].c, 4);
+        print_double_vec("Result:", res, 4);
         printf("\n");
     }
-    printf("VFMADDSUB213PD Register-Register Tests Completed\n\n");
+    printf("vfmaddsub213PD 256-bit Register-Register Tests Completed\n\n");
 }
 
-static void test_reg_mem_operand() {
+static void test_128bit_reg_reg_operand() {
     for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
-        __m256d va = _mm256_loadu_pd(fma_cases_256_pd[t].a);
-        __m256d vb = _mm256_loadu_pd(fma_cases_256_pd[t].b);
-        
-        // 保存原始值用于比较
-        double original_a[4];
-        _mm256_storeu_pd(original_a, va);
-        
-        // 对齐内存操作数
-        __attribute__((aligned(32))) double aligned_c[4] = {
-            fma_cases_256_pd[t].c[0],
-            fma_cases_256_pd[t].c[1],
-            fma_cases_256_pd[t].c[2],
-            fma_cases_256_pd[t].c[3]
-        };
+        __m128d va = _mm_loadu_pd(fma_cases_256_pd[t].a);
+        __m128d vb = _mm_loadu_pd(fma_cases_256_pd[t].b);
+        __m128d vc = _mm_loadu_pd(fma_cases_256_pd[t].c);
         
         __asm__ __volatile__(
-            "vfmaddsub213pd %[c], %[b], %[a]"
+            "vfmaddsub213pd %[b], %[c], %[a]"
             : [a] "+x" (va)
-            : [b] "x" (vb), [c] "m" (*aligned_c)
+            : [b] "x" (vb), [c] "x" (vc)
         );
         
-        double res[4];
-        _mm256_storeu_pd(res, va);
+        double res[2];
+        _mm_storeu_pd(res, va);
         
-        printf("Memory Operand Test: %s\n", fma_cases_256_pd[t].desc);
-        printf("A     :: %.15f %.15f %.15f %.15f\n", 
-               original_a[0], original_a[1], original_a[2], original_a[3]);
-        printf("B     :: %.15f %.15f %.15f %.15f\n", 
-               fma_cases_256_pd[t].b[0], fma_cases_256_pd[t].b[1],
-               fma_cases_256_pd[t].b[2], fma_cases_256_pd[t].b[3]);
-        printf("C     :: %.15f %.15f %.15f %.15f\n", 
-               aligned_c[0], aligned_c[1], aligned_c[2], aligned_c[3]);
-        printf("Result:: %.15f %.15f %.15f %.15f\n", 
-               res[0], res[1], res[2], res[3]);
+        printf("Test Case: %s\n", fma_cases_256_pd[t].desc);
+        print_double_vec("A     :", fma_cases_256_pd[t].a, 2);
+        print_double_vec("B     :", fma_cases_256_pd[t].b, 2);
+        print_double_vec("C     :", fma_cases_256_pd[t].c, 2);
+        print_double_vec("Result:", res, 2);
         printf("\n");
     }
-    printf("VFMADDSUB213PD Register-Memory Tests Completed\n\n");
+    printf("vfmaddsub213PD 128-bit Register-Register Tests Completed\n\n");
+}
+
+static void test_256bit_reg_mem_operand() {
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        __m256d va = _mm256_loadu_pd(fma_cases_256_pd[t].a);
+        __m256d vc = _mm256_loadu_pd(fma_cases_256_pd[t].c);
+        
+        double *b_ptr = fma_cases_256_pd[t].b;
+        __m256d va1 = va;
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (*(const __m256d*)b_ptr), [c] "x" (vc)
+        );
+
+        double res[4];
+        _mm256_storeu_pd(res, va1);
+        
+        printf("Memory Operand Test: %s\n", fma_cases_256_pd[t].desc);
+        print_double_vec("A     :", fma_cases_256_pd[t].a, 4);
+        print_double_vec("B     :", fma_cases_256_pd[t].b, 4);
+        print_double_vec("C     :", fma_cases_256_pd[t].c, 4);
+        print_double_vec("Aligned memory:", res, 4);
+        printf("\n");
+    }
+    printf("vfmaddsub213PD 256-bit Register-Memory Tests Completed\n\n");
+}
+
+static void test_128bit_reg_mem_operand() {
+    for (int t = 0; t < FMA_TEST_CASE_COUNT; t++) {
+        __m128d va = _mm_loadu_pd(fma_cases_256_pd[t].a);
+        __m128d vc = _mm_loadu_pd(fma_cases_256_pd[t].c);
+        
+        double *b_ptr = fma_cases_256_pd[t].b;
+        
+        __m128d va1 = va;
+        __asm__ __volatile__(
+            "vfmaddsub213pd %[b], %[c], %[a]"
+            : [a] "+x" (va1)
+            : [b] "m" (*(const __m128d*)b_ptr), [c] "x" (vc)
+        );
+        
+        double res[2];
+        _mm_storeu_pd(res, va1);
+        
+        printf("Memory Operand Test: %s\n", fma_cases_256_pd[t].desc);
+        print_double_vec("A     :", fma_cases_256_pd[t].a, 2);
+        print_double_vec("B     :", fma_cases_256_pd[t].b, 2);
+        print_double_vec("C     :", fma_cases_256_pd[t].c, 2);
+        print_double_vec("Aligned memory:", res, 2);
+        printf("\n");
+    }
+    printf("vfmaddsub213PD 128-bit Register-Memory Tests Completed\n\n");
 }
 
 int main() {
-    printf("================================\n");
-    printf("VFMADDSUB213PD Comprehensive Tests\n");
-    printf("================================\n\n");
+    printf("==================================\n");
+    printf("vfmaddsub213PD Comprehensive Tests\n");
+    printf("==================================\n\n");
     
-    test_reg_reg_operand();
-    test_reg_mem_operand();
+    test_128bit_reg_reg_operand();
+    test_256bit_reg_reg_operand();
+    test_128bit_reg_mem_operand();
+    test_256bit_reg_mem_operand();
     
-    printf("VFMADDSUB213PD tests completed.\n");
+    printf("vfmaddsub213PD normal values tests completed.\n");
     
     return 0;
 }

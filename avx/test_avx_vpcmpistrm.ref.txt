@@ -1,0 +1,30 @@
+
+Test: Equal any (Mode:0x00)
+Operand A: "HelloWorld123456"
+Operand B: "World\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+Result mask: 1f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Equal range (Mode:0x04)
+Operand A: "HelloWorld123456"
+Operand B: "hello\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+Result mask: 1e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Equal each (Mode:0x08)
+Operand A: "HelloWorld123456"
+Operand B: "HelloWorld123456"
+Result mask: ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Equal ordered (Mode:0x0c)
+Operand A: "HelloWorld123456"
+Operand B: "123456\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+Result mask: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Empty string (Mode:0x00)
+Operand A: "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+Operand B: "HelloWorld123456"
+Result mask: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test: Both empty (Mode:0x00)
+Operand A: "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+Operand B: "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+Result mask: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 

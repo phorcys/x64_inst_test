@@ -1,0 +1,56 @@
+
+Test: Normal > Normal
+a=1.23456789 b=-9.87654321
+Result flags: ZF=0 PF=0 CF=0
+
+Test: Normal < Normal
+a=-9.87654321 b=1.23456789
+Result flags: ZF=0 PF=0 CF=1
+
+Test: Normal == Normal
+a=1.23456789 b=1.23456789
+Result flags: ZF=1 PF=0 CF=0
+
+Test: Zero == Zero
+a=0 b=0
+Result flags: ZF=1 PF=0 CF=0
+
+Test: Normal > Zero
+a=1.23456789 b=0
+Result flags: ZF=0 PF=0 CF=0
+
+Test: Normal < Zero
+a=-9.87654321 b=0
+Result flags: ZF=0 PF=0 CF=1
+
+Test: Inf == Inf
+a=inf b=inf
+Result flags: ZF=1 PF=0 CF=0
+
+Test: Inf > Normal
+a=inf b=1.23456789
+Result flags: ZF=0 PF=0 CF=0
+
+Test: Normal < Inf
+a=1.23456789 b=inf
+Result flags: ZF=0 PF=0 CF=1
+
+Test: NaN vs Normal
+a=nan b=1.23456789
+Result flags: ZF=1 PF=1 CF=1
+
+Test: Normal vs NaN
+a=1.23456789 b=nan
+Result flags: ZF=1 PF=1 CF=1
+
+Test: NaN vs NaN
+a=nan b=nan
+Result flags: ZF=1 PF=1 CF=1
+
+Test: NaN vs Inf
+a=nan b=inf
+Result flags: ZF=1 PF=1 CF=1
+
+Test: Inf vs NaN
+a=inf b=nan
+Result flags: ZF=1 PF=1 CF=1
