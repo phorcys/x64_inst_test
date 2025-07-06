@@ -83,3 +83,19 @@ inf,0x7ff0000000000000,"+Inf","Round toward zero",-2147483648,0x80000000
 -2147483649,0xc1e0000000200000,"< Min int32","Round toward -inf",-2147483648,0x80000000
 -2147483649,0xc1e0000000200000,"< Min int32","Round toward +inf",-2147483648,0x80000000
 -2147483649,0xc1e0000000200000,"< Min int32","Round toward zero",-2147483648,0x80000000
+2147483647.4999998,0x41dfffffffdfffff,"int32 max border 1 prev","Round to nearest",0,0x0
+2147483647.4999998,0x41dfffffffdfffff,"int32 max border 1","Round to nearest",2147483647,0x7fffffff
+2147483646.5,0x41dfffffffa00000,"int32 max border2 prev","Round to nearest",0,0x0
+2147483646.5,0x41dfffffffa00000,"int32 max border2","Round to nearest",2147483646,0x7ffffffe
+2147483647.9999997,0x41dfffffffffffff,"int32 max border 1 prev","Round toward -inf",0,0x0
+2147483647.9999997,0x41dfffffffffffff,"int32 max border 1","Round toward -inf",2147483647,0x7fffffff
+2147483646.9999997,0x41dfffffffbfffff,"int32 max border2 prev","Round toward -inf",0,0x0
+2147483646.9999997,0x41dfffffffbfffff,"int32 max border2","Round toward -inf",2147483646,0x7ffffffe
+2147483647,0x41dfffffffc00000,"int32 max border 1 prev","Round toward +inf",0,0x0
+2147483647,0x41dfffffffc00000,"int32 max border 1","Round toward +inf",2147483647,0x7fffffff
+2147483646,0x41dfffffff800000,"int32 max border2 prev","Round toward +inf",0,0x0
+2147483646,0x41dfffffff800000,"int32 max border2","Round toward +inf",2147483646,0x7ffffffe
+2147483647.9999997,0x41dfffffffffffff,"int32 max border 1 prev","Round toward zero",0,0x0
+2147483647.9999997,0x41dfffffffffffff,"int32 max border 1","Round toward zero",2147483647,0x7fffffff
+2147483646.9999997,0x41dfffffffbfffff,"int32 max border2 prev","Round toward zero",0,0x0
+2147483646.9999997,0x41dfffffffbfffff,"int32 max border2","Round toward zero",2147483646,0x7ffffffe

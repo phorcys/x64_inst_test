@@ -126,11 +126,99 @@ void run_tests() {
                    result);
         }
     }
+     union {
+        double d;
+        uint64_t u;
+    } a_union;
+    union  {
+        int32_t i;
+        uint32_t u;
+    } t1,t2;
+
+    t1.u = 0x7fffffff;
+    t2.u = 0x7ffffffe;
+    for (int m = 0; m < num_modes; m++) {
+        set_rounding(rounding_modes[m].mode);
+        a_union.u = 0x41e0000000000000;
+        int32_t print1 =0;
+        int32_t print2 =0;
+        do{
+            
+            int32_t result = 0;
+            double last = a_union.d;
+            uint64_t last_u = a_union.u;
+            int32_t last_result = 0;
+            // X86实现
+            #if defined(__x86_64__) || defined(_M_X64) || defined(i386) || defined(__i386__) || defined(__i386) || defined(_M_IX86)
+            // 创建包含4个相同值的256位向量
+            double a_vec_x86[4] = {a_union.d, a_union.d, a_union.d, a_union.d};
+            __m256d a_val = _mm256_loadu_pd(a_vec_x86);
+            __m128i res = TEST_INSTR_X86(a_val);
+            int32_t res_arr[4];
+            _mm_storeu_si128((__m128i*)res_arr, res);
+            result = res_arr[0];
+            #endif
+            
+            // LoongArch实现
+            #if defined(LOONGARCH) || defined(__loongarch__)
+            // 创建包含2个相同值的128位向量
+            double a_vec_loong[2] = {a_union.d, a_union.d};
+            __m128d a_val = (__m128d)__lsx_vld(a_vec_loong, 0);
+            __m128i res = TEST_INSTR_LOONGARCH(a_val);
+            int32_t res_arr[4];
+            __lsx_vst(res, res_arr, 0);
+            result = res_arr[0];
+            #endif
+            
+            if(print1 == 0&& result == t1.i){
+                print1 = 1;
+                printf("%.17g,0x%llx,\"%s\",\"%s\",%d,0x%x\n",
+                last,
+                last_u,
+                "int32 max border 1 prev",
+                rounding_modes[m].name,
+                last_result,
+                last_result);
+                printf("%.17g,0x%llx,\"%s\",\"%s\",%d,0x%x\n",
+                a_union.d,
+                a_union.u,
+                "int32 max border 1",
+                rounding_modes[m].name,
+                result,
+                result);
+            }
+            if(print2 == 0 && result == t2.i){
+                print2 = 1;
+                printf("%.17g,0x%llx,\"%s\",\"%s\",%d,0x%x\n",
+                last,
+                last_u,
+                "int32 max border2 prev",
+                rounding_modes[m].name,
+                last_result,
+                last_result);
+                printf("%.17g,0x%llx,\"%s\",\"%s\",%d,0x%x\n",
+                a_union.d,
+                a_union.u,
+                "int32 max border2",
+                rounding_modes[m].name,
+                result,
+                result);
+                break;
+            }
+            last = a_union.d;
+            last_u = a_union.u;
+            last_result = result;
+            a_union.u -= 1;
+        }while(1);
+
+    }
 }
 
 int main() {
     // 初始化FPU环境
     feclearexcept(FE_ALL_EXCEPT);
     run_tests();
+   
+
     return 0;
 }
