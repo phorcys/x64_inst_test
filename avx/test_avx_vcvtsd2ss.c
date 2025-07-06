@@ -14,15 +14,12 @@ static void test_reg_operand(double d_val, float expected, const char* test_name
         : [dst] "+x" (dst)
         : [src] "x" (src)
     );
-    
-    uint32_t mxcsr_after = get_mxcsr();
-    float result = _mm_cvtss_f32(dst);
-    
+    float result = dst[0];
     printf("\nTest: %s\n", test_name);
     printf("Input double: %.15g (0x%016lX)\n", d_val, *(uint64_t*)&d_val);
     printf("Expected float: %.15g (0x%08X)\n", expected, *(uint32_t*)&expected);
     printf("Actual result:   %.15g (0x%08X)\n", result, *(uint32_t*)&result);
-    print_mxcsr(mxcsr_after);
+    //print_mxcsr(mxcsr_after);
     
     int pass = 1;
     if (isnan(d_val)) {
@@ -65,14 +62,13 @@ static void test_mem_operand(double d_val, float expected, const char* test_name
         : [src] "m" (d_val)
     );
     
-    uint32_t mxcsr_after = get_mxcsr();
-    float result = _mm_cvtss_f32(dst);
+    float result = dst[0];
     
     printf("\nTest: %s (Memory operand)\n", test_name);
     printf("Input double: %.15g (0x%016lX)\n", d_val, *(uint64_t*)&d_val);
     printf("Expected float: %.15g (0x%08X)\n", expected, *(uint32_t*)&expected);
     printf("Actual result:   %.15g (0x%08X)\n", result, *(uint32_t*)&result);
-    print_mxcsr(mxcsr_after);
+    //print_mxcsr(mxcsr_after);
     
     int pass = 1;
     if (isnan(d_val)) {
@@ -127,9 +123,13 @@ int main() {
     test_reg_operand(INFINITY, INFINITY, "Positive infinity");
     test_reg_operand(-INFINITY, -INFINITY, "Negative infinity");
     test_reg_operand(NAN, NAN, "NaN");
+    test_reg_operand(-NAN, -NAN, "-NaN");
     
     // Test precision limits
     test_mem_operand(DBL_MAX, INFINITY, "Double max to infinity");
+    test_mem_operand(DBL_MIN, FLT_MIN, "Double min to zero");
+    test_mem_operand(-DBL_MAX, -INFINITY, "Double max to negtive infinity");
+    test_mem_operand(-DBL_MIN, 0.0f, "Double min to zero");
     test_mem_operand(1.234567890123456e300, INFINITY, "Large value to infinity");
     
     return 0;

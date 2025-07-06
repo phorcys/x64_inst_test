@@ -41,7 +41,7 @@ static void test_reg_operand(double double_val, int32_t expected, const char* te
     printf("Input double: %.6f (0x%016lX)\n", double_val, *(uint64_t*)&double_val);
     printf("Expected integer: %d (0x%08X)\n", expected, expected);
     printf("Actual result:   %d (0x%08X)\n", result, result);
-    print_mxcsr(mxcsr_after);
+    //print_mxcsr(mxcsr_after);
     
     // Check result and flags
     int pass = 1;
@@ -103,7 +103,7 @@ static void test_mem_operand(double double_val, int32_t expected, const char* te
     printf("Input double: %.6f (0x%016lX)\n", double_val, *(uint64_t*)&double_val);
     printf("Expected integer: %d (0x%08X)\n", expected, expected);
     printf("Actual result:   %d (0x%08X)\n", result, result);
-    print_mxcsr(mxcsr_after);
+   // print_mxcsr(mxcsr_after);
     
     // Check result and flags
     int pass = 1;
