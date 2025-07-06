@@ -79,6 +79,14 @@ static inline void print_int32_vec(const char* name, int32_t* vec, int count) {
     printf("\n");
 }
 
+// 打印32位整数向量
+static inline void print_int32_vec_hex(const char* name, int32_t* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        printf("0x%x ", vec[i]);
+    }
+    printf("\n");
+}
 // 打印64位整数向量
 static inline void print_int64_vec(const char* name, int64_t* vec, int count) {
     printf("%s: ", name);
