@@ -36,8 +36,8 @@ static void test_reg_operand() {
     _mm256_storeu_si256((__m256i*)res+8, result2);
     
     printf("VCVTTPS2DQ Test (Register Operand):\n");
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
     for (int i = 0; i < 8; i++) {
         printf("  Input: ");
@@ -79,8 +79,8 @@ static void test_mem_operand() {
     _mm256_storeu_si256((__m256i*)res+8, result2);
     
     printf("VCVTTPS2DQ Test (Memory Operand):\n");
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
     for (int i = 0; i < 8; i++) {
         printf("  Input: ");

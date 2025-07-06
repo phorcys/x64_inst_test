@@ -67,10 +67,12 @@ int main() {
         
         printf("Input:  ");
         print_double_vec("", src, 2);
+        print_double_vec_hex("Input Hex", src, 2);
         printf("Output: ");
         print_int_vec("", dst, 2);
-        printf("--- MXCSR State After Operation ---\n");
-        print_mxcsr(mxcsr);
+        print_int32_vec_hex("Output Hex: ", dst, 2);
+       // printf("--- MXCSR State After Operation ---\n");
+       // print_mxcsr(mxcsr);
         printf("\n");
     }
 
@@ -85,10 +87,12 @@ int main() {
         
         printf("Input:  ");
         print_double_vec("", src, 4);
+        print_double_vec_hex("Input Hex", src, 4);
         printf("Output: ");
         print_int_vec("", dst, 4);
-        printf("--- MXCSR State After Operation ---\n");
-        print_mxcsr(mxcsr);
+        print_int32_vec_hex("Output Hex: ", dst, 4);
+       // printf("--- MXCSR State After Operation ---\n");
+      //  print_mxcsr(mxcsr);
         printf("\n");
     }
 
