@@ -1,18 +1,24 @@
 Starting VPHMINPOSUW tests
 =========================
 Testing VPHMINPOSUW basic functionality
+  Source: : 4660 22136 39612 57072 0 65535 4369 8738 
   Min value: 0x0000 (expected 0x0000)
   Min index: 4 (expected 4)
+  Result: : 0 4 0 0 0 0 0 0 
   Test PASSED
 
 Testing VPHMINPOSUW with duplicate minimum values
+  Source: : 4369 4369 8738 13107 4369 17476 21845 4369 
   Min value: 0x1111 (expected 0x1111)
   Min index: 0 (should be first occurrence)
+  Result: : 4369 0 0 0 0 0 0 0 
   Test PASSED
 
 Testing VPHMINPOSUW boundary values
+  Source: : 65535 65535 65535 0 65535 65535 65535 65535 
   Min value: 0x0000 (expected 0x0000)
   Min index: 3 (expected 3)
+  Result: : 0 3 0 0 0 0 0 0 
   Test PASSED
 
 VPHMINPOSUW tests completed

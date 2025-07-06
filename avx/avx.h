@@ -70,6 +70,21 @@ static inline void print_hex_float_vec(const char* name, float* vec, int count) 
     printf("\n");
 }
 
+static inline void print_uint16_vec(const char* name, uint16_t* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        printf("%u ", vec[i]);
+    }
+    printf("\n");
+}
+static inline void print_int16_vec(const char* name, int16_t* vec, int count) {
+    printf("%s: ", name);
+    for(int i=0; i<count; i++) {
+        printf("%d ", vec[i]);
+    }
+    printf("\n");
+}
+
 // 打印32位整数向量
 static inline void print_int32_vec(const char* name, int32_t* vec, int count) {
     printf("%s: ", name);

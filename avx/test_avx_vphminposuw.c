@@ -13,9 +13,10 @@ static void test_vphminposuw_basic() {
     
     uint16_t min_val = _mm_extract_epi16(result, 0);
     uint16_t min_idx = _mm_extract_epi16(result, 1);
-    
+    print_uint16_vec("  Source: ", (uint16_t*)&src, 8);
     printf("  Min value: 0x%04x (expected 0x0000)\n", min_val);
     printf("  Min index: %d (expected 4)\n", min_idx);
+    print_uint16_vec("  Result: ", (uint16_t*)&result, 8);
     printf("  Test %s\n", (min_val == 0x0000 && min_idx == 4) ? "PASSED" : "FAILED");
 }
 
@@ -30,9 +31,10 @@ static void test_vphminposuw_duplicate_min() {
     
     uint16_t min_val = _mm_extract_epi16(result, 0);
     uint16_t min_idx = _mm_extract_epi16(result, 1);
-    
+    print_uint16_vec("  Source: ", (uint16_t*)&src, 8);
     printf("  Min value: 0x%04x (expected 0x1111)\n", min_val);
     printf("  Min index: %d (should be first occurrence)\n", min_idx);
+    print_uint16_vec("  Result: ", (uint16_t*)&result, 8);
     printf("  Test %s\n", (min_val == 0x1111 && min_idx == 0) ? "PASSED" : "FAILED");
 }
 
@@ -47,9 +49,10 @@ static void test_vphminposuw_boundary() {
     
     uint16_t min_val = _mm_extract_epi16(result, 0);
     uint16_t min_idx = _mm_extract_epi16(result, 1);
-    
+    print_uint16_vec("  Source: ", (uint16_t*)&src, 8);
     printf("  Min value: 0x%04x (expected 0x0000)\n", min_val);
     printf("  Min index: %d (expected 3)\n", min_idx);
+    print_uint16_vec("  Result: ", (uint16_t*)&result, 8);
     printf("  Test %s\n", (min_val == 0x0000 && min_idx == 3) ? "PASSED" : "FAILED");
 }
 
