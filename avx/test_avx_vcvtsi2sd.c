@@ -29,13 +29,13 @@ static void test_reg_operand(int32_t int_val, double expected, const char* test_
     
     double res[2];
     _mm_storeu_pd(res, result);
-    uint32_t mxcsr_after = get_mxcsr();
+    //uint32_t mxcsr_after = get_mxcsr();
     
     printf("\nTest: %s\n", test_name);
     printf("Input integer: %d (0x%08X)\n", int_val, int_val);
     printf("Expected double: %.6f (0x%016lX)\n", expected, *(uint64_t*)&expected);
     printf("Actual result:  %.6f (0x%016lX)\n", res[0], *(uint64_t*)&res[0]);
-    print_mxcsr(mxcsr_after);
+   // print_mxcsr(mxcsr_after);
     
     // Check result and upper vector preservation
     int pass = 1;
@@ -65,13 +65,13 @@ static void test_mem_operand(int32_t int_val, double expected, const char* test_
     
     double res[2];
     _mm_storeu_pd(res, result);
-    uint32_t mxcsr_after = get_mxcsr();
+   // uint32_t mxcsr_after = get_mxcsr();
     
     printf("\nTest: %s (Memory operand)\n", test_name);
     printf("Input integer: %d (0x%08X)\n", int_val, int_val);
     printf("Expected double: %.6f (0x%016lX)\n", expected, *(uint64_t*)&expected);
     printf("Actual result:  %.6f (0x%016lX)\n", res[0], *(uint64_t*)&res[0]);
-    print_mxcsr(mxcsr_after);
+   // print_mxcsr(mxcsr_after);
     
     // Check result and upper vector preservation
     int pass = 1;
