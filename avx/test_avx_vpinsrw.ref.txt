@@ -1,0 +1,79 @@
+=== VPINSRW tests ===
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0x1234
+  Index   : 0
+  Expected: 34 12 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Actual  : 34 12 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, reg, 0 (insert at pos 0)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0x5678
+  Index   : 3
+  Expected: 01 00 02 00 03 00 78 56 05 00 06 00 07 00 08 00 
+  Actual  : 01 00 02 00 03 00 78 56 05 00 06 00 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, reg, 3 (insert at pos 3)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0x9ABC
+  Index   : 7
+  Expected: 01 00 02 00 03 00 04 00 05 00 06 00 07 00 bc 9a 
+  Actual  : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 bc 9a 
+  [PASS] VPINSRW xmm, xmm, reg, 7 (insert at pos 7)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0xDEF0
+  Index   : 2
+  Expected: 01 00 02 00 f0 de 04 00 05 00 06 00 07 00 08 00 
+  Actual  : 01 00 02 00 f0 de 04 00 05 00 06 00 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, mem, 2 (insert at pos 2)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0x0FED
+  Index   : 5
+  Expected: 01 00 02 00 03 00 04 00 05 00 ed 0f 07 00 08 00 
+  Actual  : 01 00 02 00 03 00 04 00 05 00 ed 0f 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, mem, 5 (insert at pos 5)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0x0000
+  Index   : 0
+  Expected: 00 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Actual  : 00 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, reg, 0 (min value)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0xFFFF
+  Index   : 7
+  Expected: 01 00 02 00 03 00 04 00 05 00 06 00 07 00 ff ff 
+  Actual  : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 ff ff 
+  [PASS] VPINSRW xmm, xmm, reg, 7 (max value)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0x7FFF
+  Index   : 4
+  Expected: 01 00 02 00 03 00 04 00 ff 7f 06 00 07 00 08 00 
+  Actual  : 01 00 02 00 03 00 04 00 ff 7f 06 00 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, mem, 4 (0x7FFF)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0x8000
+  Index   : 1
+  Expected: 01 00 00 80 03 00 04 00 05 00 06 00 07 00 08 00 
+  Actual  : 01 00 00 80 03 00 04 00 05 00 06 00 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, mem, 1 (0x8000)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0xABCD
+  Index   : 8
+  Expected: cd ab 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Actual  : cd ab 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  [PASS] VPINSRW xmm, xmm, reg, 8 (wrap to 0)
+
+  SRC     : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 
+  Word    : 0xDCBA
+  Index   : 15
+  Expected: 01 00 02 00 03 00 04 00 05 00 06 00 07 00 ba dc 
+  Actual  : 01 00 02 00 03 00 04 00 05 00 06 00 07 00 ba dc 
+  [PASS] VPINSRW xmm, xmm, reg, 15 (wrap to 7)
+
+=== VPINSRW tests completed ===
