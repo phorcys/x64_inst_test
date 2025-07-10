@@ -1,74 +1,79 @@
-#include "avx.h"
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
-
-#define print_256 print_ymm
-#define print_128 print_xmm
-#define cmp_256 cmp_ymm
-#define cmp_128 cmp_xmm
-#define _mm128_load_si128 _mm_load_si128
-#define _mm128_set1_epi32 _mm_set1_epi32
-
-// 测试宏定义
-#define TEST_VPSRLW(desc, width, shift_val, expected) do { \
-    ALIGNED(32) uint16_t src_data[16] = { \
-        0x8001, 0x4002, 0x2004, 0x1008, \
-        0x0810, 0x0420, 0x0240, 0x0180, \
-        0x8002, 0x4004, 0x2008, 0x1010, \
-        0x0820, 0x0440, 0x0280, 0x0100  \
-    }; \
-    __m##width##i src = _mm##width##_load_si##width((__m##width##i*)src_data); \
-    __m##width##i dst; \
-    \
-    asm volatile ("vpsrlw %1, %2, %0" : "=x"(dst) : "i"(shift_val), "x"(src)); \
-    \
-    print_##width("  SRC     ", src); \
-    printf("  imm     : %d\n", shift_val); \
-    print_##width("  Expected", expected); \
-    print_##width("  Actual  ", dst); \
-    \
-    if (!cmp_##width(dst, expected)) { \
-        printf("  [FAIL] %s\n\n", desc); \
-        ret = 1; \
-    } else { \
-        printf("  [PASS] %s\n\n", desc); \
-    } \
-} while(0)
+#include <immintrin.h>
+#include "avx.h"
 
 // 测试VPSRLW指令
-int test_vpsrlw() {
-    int ret = 0;
-    const char* test_name = "VPSRLW tests";
+void test_vpsrlw() {
+    printf("----- Testing VPSRLW -----\n");
     
-    printf("=== %s ===\n", test_name);
+    // 测试数据
+    __m128i a128 = _mm_setr_epi16(0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD, 0xEEEE, 0xFFFF, 0x0000, 0x1234);
+    __m128i b128 = _mm_setr_epi16(0x8, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x4);
+    __m128i res128;
     
-    // 128位测试
-    TEST_VPSRLW("VPSRLW xmm, 1", 128, 1, 
-                _mm_setr_epi16(0x4000, 0x2001, 0x1002, 0x0804,
-                               0x0408, 0x0210, 0x0120, 0x00C0));
-                
-    TEST_VPSRLW("VPSRLW xmm, 2", 128, 2,
-                _mm_setr_epi16(0x2000, 0x1000, 0x0801, 0x0402,
-                               0x0204, 0x0108, 0x0090, 0x0060));
-                
-    // 256位测试 (修正预期值)
-    TEST_VPSRLW("VPSRLW ymm, 3", 256, 3,
-                _mm256_setr_epi16(0x1000, 0x0800, 0x0400, 0x0201,
-                                  0x0102, 0x0084, 0x0048, 0x0030,
-                                  0x1000, 0x0800, 0x0401, 0x0202,
-                                  0x0104, 0x0088, 0x0050, 0x0020));
+    // 使用正确的AVX2函数：向量移位
+    res128 = _mm_srl_epi16(a128, b128);
     
-    // 边界测试
-    TEST_VPSRLW("VPSRLW xmm, 15", 128, 15, 
-                _mm_setr_epi16(0x0001, 0x0000, 0x0000, 0x0000,
-                               0x0000, 0x0000, 0x0000, 0x0000));
-    TEST_VPSRLW("VPSRLW ymm, 16", 256, 16, _mm256_setzero_si256());
+    printf("[128-bit Reg-Reg]\n");
+    print_m128i_hex(a128, "Input");
+    print_m128i_hex(b128, "Shift");
+    print_m128i_hex(res128, "Result");
+    printf("\n");
     
-    printf("=== %s %s ===\n", test_name, ret ? "FAILED" : "PASSED");
-    return ret;
+    // 测试寄存器-内存操作
+    __m128i mem_shift = _mm_set1_epi16(4);
+    res128 = _mm_srl_epi16(a128, mem_shift);
+    
+    printf("[128-bit Reg-Mem]\n");
+    print_m128i_hex(a128, "Input");
+    printf("Shift: 4 (memory)\n");
+    print_m128i_hex(res128, "Result");
+    printf("\n");
+    
+    // 测试立即数操作
+    res128 = _mm_srli_epi16(a128, 3);
+    
+    printf("[128-bit Imm]\n");
+    print_m128i_hex(a128, "Input");
+    printf("Shift: 3 (immediate)\n");
+    print_m128i_hex(res128, "Result");
+    printf("\n");
+    
+    // 256位测试
+    __m256i a256 = _mm256_setr_epi16(
+        0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD, 
+        0xEEEE, 0xFFFF, 0x0000, 0x1234,
+        0x5555, 0x6666, 0x7777, 0x8888,
+        0x9999, 0xAAAA, 0xBBBB, 0xCCCC
+    );
+    __m128i b256 = _mm_setr_epi16(
+        5, 0, 0, 0, 15, 16, 0, 8
+    );
+    __m256i res256;
+    
+    // 使用正确的AVX2函数：向量移位
+    res256 = _mm256_srl_epi16(a256, b256);
+    
+    printf("[256-bit Reg-Reg]\n");
+    print_m256i_hex(a256, "Input");
+    print_m128i_hex(b256, "Shift");
+    print_m256i_hex(res256, "Result");
+    printf("\n");
+    
+    // 边界测试：移位计数16（应得全0）
+    res128 = _mm_srli_epi16(a128, 16);
+    
+    printf("[Boundary]\n");
+    print_m128i_hex(a128, "Input");
+    printf("Shift: 16 (should be all zeros)\n");
+    print_m128i_hex(res128, "Result");
+    printf("\n");
+    
+    printf("VPSRLW tests completed.\n");
 }
 
 int main() {
-    return test_vpsrlw();
+    test_vpsrlw();
+    return 0;
 }

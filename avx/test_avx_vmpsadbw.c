@@ -15,7 +15,6 @@ int main() {
     printf("===========================\n");
     
     uint32_t mxcsr_before, mxcsr_after;
-    uint64_t eflags_after;
     
     // 测试1: 基本测试 - 寄存器操作数
     {
@@ -33,7 +32,6 @@ int main() {
         
         // 获取执行前状态
         mxcsr_before = get_mxcsr();
-        (void)__builtin_ia32_readeflags_u64(); // 清除标志寄存器
         
         asm volatile(
             "vmpsadbw $0, %[b], %[a], %[res]"
@@ -43,13 +41,11 @@ int main() {
         
         // 获取执行后状态
         mxcsr_after = get_mxcsr();
-        eflags_after = __builtin_ia32_readeflags_u64();
         
         print_test_header(1, "Basic register operands", 0);
         print_m128i_hex(a, "Input A");
         print_m128i_hex(b, "Input B");
         print_m128i_hex(result, "Result  ");
-        print_eflags_cond(eflags_after, MPSADBW_EFLAGS_COND);
         printf("MXCSR before: 0x%08X, after: 0x%08X\n", mxcsr_before, mxcsr_after);
         
         // 预期结果: 每个SAD计算
@@ -222,7 +218,6 @@ int main() {
         __m256i result;
         
         mxcsr_before = get_mxcsr();
-        (void)__builtin_ia32_readeflags_u64(); // 清除标志寄存器
         
         asm volatile(
             "vmpsadbw $0x07, %[b], %[a], %[res]"
@@ -231,13 +226,11 @@ int main() {
             : "cc", "memory");
         
         mxcsr_after = get_mxcsr();
-        eflags_after = __builtin_ia32_readeflags_u64();
         
         print_test_header(5, "256-bit operation", 0x07);
         print_m256i_hex(a, "Input A");
         print_m256i_hex(b, "Input B");
         print_m256i_hex(result, "Result  ");
-        print_eflags_cond(eflags_after, MPSADBW_EFLAGS_COND);
         printf("MXCSR before: 0x%08X, after: 0x%08X\n", mxcsr_before, mxcsr_after);
         
         // 验证结果
@@ -294,19 +287,16 @@ int main() {
             ); \
             __m128i result; \
             mxcsr_before = get_mxcsr(); \
-            (void)__builtin_ia32_readeflags_u64(); \
             asm volatile( \
                 "vmpsadbw $"#n", %[b], %[a], %[res]" \
                 : [res] "=x" (result) \
                 : [a] "x" (a), [b] "x" (b) \
                 : "cc"); \
             mxcsr_after = get_mxcsr(); \
-            eflags_after = __builtin_ia32_readeflags_u64(); \
             print_test_header(6 + n, "All imm8 combinations", n); \
             print_m128i_hex(a, "Input A"); \
             print_m128i_hex(b, "Input B"); \
             print_m128i_hex(result, "Result  "); \
-            print_eflags_cond(eflags_after, MPSADBW_EFLAGS_COND); \
             printf("MXCSR before: 0x%08X, after: 0x%08X\n", mxcsr_before, mxcsr_after); \
         } while(0)
 

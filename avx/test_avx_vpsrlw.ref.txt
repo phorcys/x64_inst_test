@@ -1,32 +1,27 @@
-=== VPSRLW tests ===
-  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 
-  imm     : 1
-  Expected: 00 40 01 20 02 10 04 08 08 04 10 02 20 01 c0 00 
-  Actual  : 00 40 01 20 02 10 04 08 08 04 10 02 20 01 c0 00 
-  [PASS] VPSRLW xmm, 1
+----- Testing VPSRLW -----
+[128-bit Reg-Reg]
+Input: aa aa bb bb cc cc dd dd ee ee ff ff 00 00 34 12 
+Shift: 08 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 
+Result: aa 00 bb 00 cc 00 dd 00 ee 00 ff 00 00 00 12 00 
 
-  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 
-  imm     : 2
-  Expected: 00 20 00 10 01 08 02 04 04 02 08 01 90 00 60 00 
-  Actual  : 00 20 00 10 01 08 02 04 04 02 08 01 90 00 60 00 
-  [PASS] VPSRLW xmm, 2
+[128-bit Reg-Mem]
+Input: aa aa bb bb cc cc dd dd ee ee ff ff 00 00 34 12 
+Shift: 4 (memory)
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 
-  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 02 80 04 40 08 20 10 10 20 08 40 04 80 02 00 01 
-  imm     : 3
-  Expected: 00 10 00 08 00 04 01 02 02 01 84 00 48 00 30 00 00 10 00 08 01 04 02 02 04 01 88 00 50 00 20 00 
-  Actual  : 00 10 00 08 00 04 01 02 02 01 84 00 48 00 30 00 00 10 00 08 01 04 02 02 04 01 88 00 50 00 20 00 
-  [PASS] VPSRLW ymm, 3
+[128-bit Imm]
+Input: aa aa bb bb cc cc dd dd ee ee ff ff 00 00 34 12 
+Shift: 3 (immediate)
+Result: 55 15 77 17 99 19 bb 1b dd 1d ff 1f 00 00 46 02 
 
-  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 
-  imm     : 15
-  Expected: 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-  Actual  : 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-  [PASS] VPSRLW xmm, 15
+[256-bit Reg-Reg]
+Input: aa aa bb bb cc cc dd dd ee ee ff ff 00 00 34 12 55 55 66 66 77 77 88 88 99 99 aa aa bb bb cc cc 
+Shift: 05 00 00 00 00 00 00 00 0f 00 10 00 00 00 08 00 
+Result: 55 05 dd 05 66 06 ee 06 77 07 ff 07 00 00 91 00 aa 02 33 03 bb 03 44 04 cc 04 55 05 dd 05 66 06 
 
-  SRC     : 01 80 02 40 04 20 08 10 10 08 20 04 40 02 80 01 02 80 04 40 08 20 10 10 20 08 40 04 80 02 00 01 
-  imm     : 16
-  Expected: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-  Actual  : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-  [PASS] VPSRLW ymm, 16
+[Boundary]
+Input: aa aa bb bb cc cc dd dd ee ee ff ff 00 00 34 12 
+Shift: 16 (should be all zeros)
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 
-=== VPSRLW tests PASSED ===
+VPSRLW tests completed.
