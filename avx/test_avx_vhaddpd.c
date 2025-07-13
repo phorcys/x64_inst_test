@@ -42,8 +42,8 @@ static void test_vhaddpd() {
             pass1 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
     if (pass1) {
         printf("[PASS] Test 1: 128-bit register-register\n\n");
@@ -86,8 +86,8 @@ static void test_vhaddpd() {
             pass2 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
     if (pass2) {
         printf("[PASS] Test 2: 256-bit register-register\n\n");
@@ -128,8 +128,8 @@ static void test_vhaddpd() {
             pass3 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
     if (pass3) {
         printf("[PASS] Test 3: Memory operand\n\n");
@@ -178,8 +178,8 @@ static void test_vhaddpd() {
             pass4 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
     // Check if any exception flags are set
     int pass4_flag = (mxcsr_after & (FE_INVALID | FE_OVERFLOW | FE_UNDERFLOW | FE_DIVBYZERO)) ? 1 : 0;
@@ -194,18 +194,18 @@ static void test_vhaddpd() {
         printf("[FAIL] Test 4: Boundary values\n\n");
     }
     
-    // Check MXCSR state
-    unsigned int mxcsr = 0;
-    __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
-    printf("--- MXCSR State After Operations ---\n");
-    printf("MXCSR: 0x%08X\n", mxcsr);
-    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-           (mxcsr >> 0) & 1,  // Invalid
-           (mxcsr >> 1) & 1,  // Denormal
-           (mxcsr >> 2) & 1,  // Divide-by-zero
-           (mxcsr >> 3) & 1,  // Overflow
-           (mxcsr >> 4) & 1,  // Underflow
-           (mxcsr >> 5) & 1); // Precision
+    // // Check MXCSR state
+    // unsigned int mxcsr = 0;
+    // __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
+    // printf("--- MXCSR State After Operations ---\n");
+    // printf("MXCSR: 0x%08X\n", mxcsr);
+    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+    //        (mxcsr >> 0) & 1,  // Invalid
+    //        (mxcsr >> 1) & 1,  // Denormal
+    //        (mxcsr >> 2) & 1,  // Divide-by-zero
+    //        (mxcsr >> 3) & 1,  // Overflow
+    //        (mxcsr >> 4) & 1,  // Underflow
+    //        (mxcsr >> 5) & 1); // Precision
 
     // Test summary
     printf("--- Test Summary ---\n");

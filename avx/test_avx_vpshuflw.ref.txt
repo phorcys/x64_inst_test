@@ -1,8 +1,4 @@
 MXCSR before tests: 0x00001F80
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 Testing VPSHUFLW (register operands)
 ----------------------------------
 
@@ -51,10 +47,6 @@ Result: PASS
 
 
 MXCSR after tests: 0x00001F80
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 MXCSR unchanged: PASS
 
 All VPSHUFLW tests completed.

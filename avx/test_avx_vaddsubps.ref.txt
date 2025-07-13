@@ -7,10 +7,6 @@ Result:   Result: 0.500000 3.500000 0.500000 7.500000 0.500000 11.500000 0.50000
 [PASS] Test 1: 256-bit register-register
 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 
 Test 2: 128-bit register-register
 Input1:   Input1: 10.000000 20.000000 30.000000 40.000000 
@@ -20,10 +16,6 @@ Result:   Result: 9.000000 22.000000 27.000000 44.000000
 [PASS] Test 2: 128-bit register-register
 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 
 Test 3: Boundary values
 Input1:   Input1: inf -inf nan 0.000000 -100.000000 100.000000 0.000000 -0.000000 

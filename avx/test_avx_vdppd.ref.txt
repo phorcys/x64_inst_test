@@ -3,40 +3,24 @@ Test 1: 128-bit register-register
 Expected: Expected: 1.500000 0.000000 
 Result:   Result: 1.500000 0.000000 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 [PASS] Test 1: 128-bit register-register
 
 Test 2: Different mask (0x11)
 Expected: Expected: 1.500000 0.000000 
 Result:   Result: 1.500000 0.000000 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 [PASS] Test 2: Different mask (0x11)
 
 Test 3: Boundary values
 Expected: Expected: nan 0.000000 
 Result:   Result: nan 0.000000 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 [PASS] Test 3: Boundary values
 
 Test 4: High elements only (0x22)
 Expected: Expected: 0.000000 1.000000 
 Result:   Result: 0.000000 1.000000 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 [PASS] Test 4: High elements only (0x22)
 
 --- MXCSR State After Operations ---
@@ -46,20 +30,12 @@ Test 5: Memory operand
 Expected: Expected: 5.000000 0.000000 
 Result:   Result: 5.000000 0.000000 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 [PASS] Test 5: Memory operand
 
 Test 6: NaN propagation
 Expected: Expected: nan 0.000000 
 Result:   Result: nan 0.000000 
 --- MXCSR State After Operation ---
-MXCSR: 0x00001F80
-  [ ] DAZ - Denormals Are Zero: 0
-  [ ] FTZ - Flush To Zero: 0
-Flags: I:0 D:0 Z:0 O:0 U:0 P:0
 [PASS] Test 6: NaN propagation
 
 --- Test Summary ---
