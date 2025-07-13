@@ -1,6 +1,11 @@
 === Testing VPHADDW ===
 -- Testing 128-bit operation --
 Result: ff ff bc bb 33 33 77 77 ff ff 44 44 cd cc 89 88 
-Expected: -1 -17476 13107 30583 -1 17476 -13107 -30583 
+Expect: ff ff bc bb 33 33 77 77 ff ff 44 44 cd cc 89 88 
+
+-- Testing 256-bit operation --
+Result: ff ff bc bb 33 33 77 77 ff ff 44 44 cd cc 89 88 ff ff bc bb 33 33 77 77 ff ff 44 44 cd cc 89 88 
+Expect: ff ff bc bb 33 33 77 77 ff ff 44 44 cd cc 89 88 ff ff bc bb 33 33 77 77 ff ff 44 44 cd cc 89 88 
+
 
 === VPHADDW test completed ===

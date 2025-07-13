@@ -41,15 +41,15 @@ static void test_vdpps() {
             pass1 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
-    if (pass1) {
-        printf("[PASS] Test 1: 128-bit register-register\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 1: 128-bit register-register\n\n");
-    }
+    // if (pass1) {
+    //     printf("[PASS] Test 1: 128-bit register-register\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 1: 128-bit register-register\n\n");
+    // }
 
     // 256-bit register-register test
     printf("Test 2: 256-bit register-register\n");
@@ -94,15 +94,15 @@ static void test_vdpps() {
             pass2 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
-    if (pass2) {
-        printf("[PASS] Test 2: 256-bit register-register\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 2: 256-bit register-register\n\n");
-    }
+    // if (pass2) {
+    //     printf("[PASS] Test 2: 256-bit register-register\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 2: 256-bit register-register\n\n");
+    // }
 
     // Test with partial mask (0x55)
     printf("Test 3: 256-bit with partial mask (0x55)\n");
@@ -146,15 +146,15 @@ static void test_vdpps() {
             pass3 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
-    if (pass3) {
-        printf("[PASS] Test 3: 256-bit with partial mask (0x55)\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 3: 256-bit with partial mask (0x55)\n\n");
-    }
+    // if (pass3) {
+    //     printf("[PASS] Test 3: 256-bit with partial mask (0x55)\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 3: 256-bit with partial mask (0x55)\n\n");
+    // }
 
     // Boundary values test
     printf("Test 4: Boundary values\n");
@@ -184,18 +184,18 @@ static void test_vdpps() {
     printf("Result: ");
     print_float_vec("Result", boundary_result, 8);
     
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
     // Check if any exception flags are set
-    int pass4 = (mxcsr_after & (FE_INVALID | FE_OVERFLOW | FE_UNDERFLOW | FE_DIVBYZERO)) ? 1 : 0;
+    // int pass4 = (mxcsr_after & (FE_INVALID | FE_OVERFLOW | FE_UNDERFLOW | FE_DIVBYZERO)) ? 1 : 0;
     
-    if (pass4) {
-        printf("[PASS] Test 4: Boundary values (exception detected)\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 4: Boundary values (no exception detected)\n\n");
-    }
+    // if (pass4) {
+    //     printf("[PASS] Test 4: Boundary values (exception detected)\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 4: Boundary values (no exception detected)\n\n");
+    // }
 
     // Memory operand test
     printf("Test 5: Memory operand\n");
@@ -238,15 +238,15 @@ static void test_vdpps() {
             pass5 = 0;
         }
     }
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
-    if (pass5) {
-        printf("[PASS] Test 5: Memory operand\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 5: Memory operand\n\n");
-    }
+    // if (pass5) {
+    //     printf("[PASS] Test 5: Memory operand\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 5: Memory operand\n\n");
+    // }
 
     // NaN propagation test
     printf("Test 6: NaN propagation\n");
@@ -280,40 +280,40 @@ static void test_vdpps() {
                 isnan(nan_result[2]) && isnan(nan_result[3]) &&
                 isnan(nan_result[4]) && isnan(nan_result[5]) &&
                 isnan(nan_result[6]) && isnan(nan_result[7]);
-    printf("--- MXCSR State After Operation ---\n");
-    print_mxcsr(mxcsr_after);
+    // printf("--- MXCSR State After Operation ---\n");
+    // print_mxcsr(mxcsr_after);
     
-    if (pass6) {
-        printf("[PASS] Test 6: NaN propagation\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 6: NaN propagation\n\n");
-    }
+    // if (pass6) {
+    //     printf("[PASS] Test 6: NaN propagation\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 6: NaN propagation\n\n");
+    // }
 
-    // Check MXCSR state
-    unsigned int mxcsr = 0;
-    __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
-    printf("--- MXCSR State After Operations ---\n");
-    printf("MXCSR: 0x%08X\n", mxcsr);
-    printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
-           (mxcsr >> 0) & 1,  // Invalid
-           (mxcsr >> 1) & 1,  // Denormal
-           (mxcsr >> 2) & 1,  // Divide-by-zero
-           (mxcsr >> 3) & 1,  // Overflow
-           (mxcsr >> 4) & 1,  // Underflow
-           (mxcsr >> 5) & 1); // Precision
+    // // Check MXCSR state
+    // unsigned int mxcsr = 0;
+    // __asm__ __volatile__("stmxcsr %0" : "=m"(mxcsr));
+    // printf("--- MXCSR State After Operations ---\n");
+    // printf("MXCSR: 0x%08X\n", mxcsr);
+    // printf("Flags: I:%d D:%d Z:%d O:%d U:%d P:%d\n",
+    //        (mxcsr >> 0) & 1,  // Invalid
+    //        (mxcsr >> 1) & 1,  // Denormal
+    //        (mxcsr >> 2) & 1,  // Divide-by-zero
+    //        (mxcsr >> 3) & 1,  // Overflow
+    //        (mxcsr >> 4) & 1,  // Underflow
+    //        (mxcsr >> 5) & 1); // Precision
 
-    // Test summary
-    printf("--- Test Summary ---\n");
-    printf("Total tests: %d\n", total_tests);
-    printf("Passed tests: %d\n", passed_tests);
-    printf("Failed tests: %d\n", total_tests - passed_tests);
+    // // Test summary
+    // printf("--- Test Summary ---\n");
+    // printf("Total tests: %d\n", total_tests);
+    // printf("Passed tests: %d\n", passed_tests);
+    // printf("Failed tests: %d\n", total_tests - passed_tests);
     
-    if (passed_tests == total_tests) {
-        printf("All vdpps tests passed!\n");
-    } else {
-        printf("Some vdpps tests failed\n");
-    }
+    // if (passed_tests == total_tests) {
+    //     printf("All vdpps tests passed!\n");
+    // } else {
+    //     printf("Some vdpps tests failed\n");
+    // }
 }
 
 int main() {

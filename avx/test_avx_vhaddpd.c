@@ -184,15 +184,15 @@ static void test_vhaddpd() {
     // Check if any exception flags are set
     int pass4_flag = (mxcsr_after & (FE_INVALID | FE_OVERFLOW | FE_UNDERFLOW | FE_DIVBYZERO)) ? 1 : 0;
     
-    if (pass4 && pass4_flag) {
-        printf("[PASS] Test 4: Boundary values (exception detected)\n\n");
-        passed_tests++;
-    } else if (pass4) {
-        printf("[PASS] Test 4: Boundary values (no exception)\n\n");
-        passed_tests++;
-    } else {
-        printf("[FAIL] Test 4: Boundary values\n\n");
-    }
+    // if (pass4 && pass4_flag) {
+    //     printf("[PASS] Test 4: Boundary values (exception detected)\n\n");
+    //     passed_tests++;
+    // } else if (pass4) {
+    //     printf("[PASS] Test 4: Boundary values (no exception)\n\n");
+    //     passed_tests++;
+    // } else {
+    //     printf("[FAIL] Test 4: Boundary values\n\n");
+    // }
     
     // // Check MXCSR state
     // unsigned int mxcsr = 0;

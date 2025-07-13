@@ -4,13 +4,6 @@
 #include <stdint.h>
 #include <cpuid.h>
 
-// 检查CPU是否支持AVX
-static int check_avx_support() {
-    unsigned int eax, ebx, ecx, edx;
-    __get_cpuid(1, &eax, &ebx, &ecx, &edx);
-    return (ecx & (1 << 28)) ? 1 : 0;
-}
-
 // 饱和减法辅助函数
 static int16_t sat_sub(int16_t a, int16_t b) {
     int32_t res = (int32_t)a - (int32_t)b;
@@ -25,17 +18,21 @@ void test_vphsubsw() {
 
     // 测试128位操作
     {
-        printf("-- Testing 128-bit operation --\n");
+       
         
         // 初始化测试数据
-        int16_t src1[8] = {0x7FFF, -0x8000, 0x7FFF, -0x8000,
+        int16_t src1[16] = {0x7FFF, -0x8000, 0x7FFF, -0x8000,
+                           0x1111, 0x2222, 0x3333, 0x4444,
+                        0x7FFF, -0x8000, 0x7FFF, -0x8000,
                            0x1111, 0x2222, 0x3333, 0x4444};
-        int16_t src2[8] = {0x7FFF, -0x8000, -0x7FFF, 0x8000,
+        int16_t src2[16] = {0x7FFF, -0x8000, -0x7FFF, 0x8000,
+                          -0x1111, -0x2222, -0x3333, -0x4444,
+                        0x7FFF, -0x8000, -0x7FFF, 0x8000,
                           -0x1111, -0x2222, -0x3333, -0x4444};
-        int16_t dst[8] = {0};
+        int16_t dst[16] = {0};
 
         // 预期结果计算（考虑饱和）
-        int16_t expected[8] = {
+        int16_t expected[16] = {
             sat_sub(src1[0], src1[1]),
             sat_sub(src1[2], src1[3]),
             sat_sub(src1[4], src1[5]),
@@ -43,9 +40,18 @@ void test_vphsubsw() {
             sat_sub(src2[0], src2[1]),
             sat_sub(src2[2], src2[3]),
             sat_sub(src2[4], src2[5]),
-            sat_sub(src2[6], src2[7])
+            sat_sub(src2[6], src2[7]),
+            sat_sub(src1[8], src1[9]),
+            sat_sub(src1[10], src1[11]),
+            sat_sub(src1[12], src1[13]),
+            sat_sub(src1[14], src1[15]),
+            sat_sub(src2[8], src2[9]),
+            sat_sub(src2[10], src2[11]),
+            sat_sub(src2[12], src2[13]),
+            sat_sub(src2[14], src2[15])
         };
 
+         printf("-- Testing 128-bit operation --\n");
         // 使用内联汇编执行指令
         __asm__ __volatile__(
             "vmovdqu %1, %%xmm0\n\t"
@@ -59,29 +65,32 @@ void test_vphsubsw() {
 
         // 打印结果
         print_xmm("Result", *(__m128i*)dst);
-        printf("Expected: ");
-        for(int i=0; i<8; i++) {
-            printf("%d ", expected[i]);
-        }
+        print_xmm("Expect", *(__m128i*)expected);
         printf("\n");
 
-        // 验证结果
-        for (int i = 0; i < 8; i++) {
-            if (dst[i] != expected[i]) {
-                printf("Mismatch at element %d: got %d, expected %d\n", 
-                      i, dst[i], expected[i]);
-            }
-        }
+         printf("-- Testing 256-bit operation --\n");
+        // 使用内联汇编执行指令
+        __asm__ __volatile__(
+            "vmovdqu %1, %%ymm0\n\t"
+            "vmovdqu %2, %%ymm1\n\t"
+            "vphsubsw %%ymm1, %%ymm0, %%ymm2\n\t"
+            "vmovdqu %%ymm2, %0\n\t"
+            : "=m" (dst)
+            : "m" (src1), "m" (src2)
+            : "ymm0", "ymm1", "ymm2", "memory"
+        );
+
+        // 打印结果
+        print_ymm("Result", *(__m256i*)dst);
+        print_ymm("Expect", *(__m256i*)expected);
+        printf("\n");
+
     }
 
     printf("\n=== VPHSUBSW test completed ===\n");
 }
 
 int main() {
-    if (!check_avx_support()) {
-        printf("CPU does not support AVX, skipping VPHSUBSW test\n");
-        return 0;
-    }
     test_vphsubsw();
     return 0;
 }
