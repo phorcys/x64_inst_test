@@ -1,0 +1,19 @@
+=== VPGATHERQPD Test ===
+--- Testing 128-bit version ---
+Testing basic gather
+Result: [1.1, 4.4]
+Expected: [1.1, 4.4]
+Test PASSED
+
+Testing special floating-point values
+Result: [0.000000, -inf]
+Expected: [0.000000, -inf]
+Test PASSED
+
+--- Testing 256-bit version ---
+Testing 256-bit gather
+Result: [1.1, 4.4, 7.7, 10.1]
+Expected: [1.1, 4.4, 7.7, 10.1]
+Test PASSED
+
+All VPGATHERQPD tests completed successfully.
