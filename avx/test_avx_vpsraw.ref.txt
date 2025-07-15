@@ -1,0 +1,32 @@
+=== VPSRAW tests ===
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 
+  imm     : 1
+  Expected: 00 00 01 c0 02 20 04 e0 08 10 10 d0 20 08 40 c8 
+  Actual  : 00 00 01 c0 02 20 04 e0 08 10 10 d0 20 08 40 c8 
+  [PASS] VPSRAW xmm, 1
+
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 
+  imm     : 2
+  Expected: 00 00 00 e0 01 10 02 f0 04 08 08 e8 10 04 20 e4 
+  Actual  : 00 00 00 e0 01 10 02 f0 04 08 08 e8 10 04 20 e4 
+  [PASS] VPSRAW xmm, 2
+
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 01 08 02 84 04 42 08 c1 10 21 20 a2 40 14 80 98 
+  imm     : 3
+  Expected: 00 00 00 f0 00 08 01 f8 02 04 04 f4 08 02 10 f2 00 01 80 f0 40 08 21 f8 22 04 44 f4 88 02 10 f3 
+  Actual  : 00 00 00 f0 00 08 01 f8 02 04 04 f4 08 02 10 f2 00 01 80 f0 40 08 21 f8 22 04 44 f4 88 02 10 f3 
+  [PASS] VPSRAW ymm, 3
+
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 
+  imm     : 15
+  Expected: 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  Actual  : 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  [PASS] VPSRAW xmm, 15
+
+  SRC     : 01 00 02 80 04 40 08 c0 10 20 20 a0 40 10 80 90 01 08 02 84 04 42 08 c1 10 21 20 a2 40 14 80 98 
+  imm     : 16
+  Expected: 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  Actual  : 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 00 00 ff ff 
+  [PASS] VPSRAW ymm, 16
+
+=== VPSRAW tests PASSED ===

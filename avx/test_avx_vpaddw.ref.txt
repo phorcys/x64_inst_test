@@ -1,0 +1,27 @@
+Testing VPADDW instruction
+=========================
+Test 1: Basic functionality
+Operand A: 1000 2000 3000 4000 5000 6000 7000 8000 
+Operand B: 500 1000 1500 2000 2500 3000 3500 4000 
+Result: 1500 3000 4500 6000 7500 9000 10500 12000 
+[PASS]
+
+Test 2: Boundary values (overflow wrap-around)
+Operand A: 32767 32767 32767 -32768 -32768 -32768 -32768 0 
+Operand B: 1 0 -1 -1 1 0 -1 -32768 
+Result: -32768 32767 32766 32767 -32767 -32768 32767 -32768 
+[PASS]
+
+Test 3: All zeros
+Operand A: 0 0 0 0 0 0 0 0 
+Operand B: 0 0 0 0 0 0 0 0 
+Result: 0 0 0 0 0 0 0 0 
+[PASS]
+
+Test 4: Memory operand
+Operand A (Memory): 100 200 300 400 500 600 700 800 
+Operand B: 50 100 150 200 250 300 350 400 
+Result: 150 300 450 600 750 900 1050 1200 
+[PASS]
+
+VPADDW tests completed.

@@ -1,0 +1,20 @@
+Testing VPABSW instruction
+=========================
+
+Test 1: 128-bit register operands (mixed positive/negative)
+Input: 00 80 00 c0 ff ff 00 00 01 00 ff 3f ff 7f 00 00 
+Result: 8000 4000 0001 0000 0001 3FFF 7FFF 0000 
+[PASS]
+
+Test 2: 128-bit memory operand (boundary values)
+Input: ff 7f 00 80 00 00 ff ff 01 00 00 c0 ff 3f 00 00 
+Result: 7FFF 8000 0000 0001 0001 4000 3FFF 0000 
+[PASS]
+
+Test 3: 256-bit register operands
+Input: 00 80 00 c0 ff ff 00 00 01 00 ff 3f ff 7f 00 00 ff 7f 00 80 00 00 ff ff 01 00 00 c0 ff 3f 00 00 
+Result (low): 8000 4000 0001 0000 0001 3FFF 7FFF 0000 
+Result (high): 7FFF 8000 0000 0001 0001 4000 3FFF 0000 
+[PASS]
+
+VPABSW tests completed.

@@ -1,0 +1,27 @@
+Testing VPAVGW instruction
+=========================
+Test 1: Basic functionality (rounding)
+Operand A: 1000 2000 3000 4000 5000 6000 7000 8000 
+Operand B: 500 1000 1500 2000 2500 3000 3500 4000 
+Result: 750 1500 2250 3000 3750 4500 5250 6000 
+[PASS]
+
+Test 2: Boundary values (rounding)
+Operand A: 65535 65535 65535 65535 1 1 1 1 
+Operand B: 0 1 2 65535 0 1 2 3 
+Result: 32768 32768 32769 65535 1 1 2 2 
+[PASS]
+
+Test 3: All zeros
+Operand A: 0 0 0 0 0 0 0 0 
+Operand B: 0 0 0 0 0 0 0 0 
+Result: 0 0 0 0 0 0 0 0 
+[PASS]
+
+Test 4: Memory operand
+Operand A (Memory): 100 200 300 400 500 600 700 800 
+Operand B: 50 100 150 200 250 300 350 400 
+Result: 75 150 225 300 375 450 525 600 
+[PASS]
+
+VPAVGW tests completed.

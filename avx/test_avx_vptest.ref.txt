@@ -1,0 +1,18 @@
+
+Test 128: Normal case
+Result flags: ZF=1 CF=0
+
+Test 128: All zeros
+Result flags: ZF=1 CF=1
+
+Test 128: Self test
+Result flags: ZF=0 CF=1
+
+Test 256: Normal case
+Result flags: ZF=0 CF=0
+
+Test 256: All zeros
+Result flags: ZF=1 CF=1
+
+Test 256: Self test
+Result flags: ZF=0 CF=1

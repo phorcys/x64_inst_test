@@ -1,0 +1,19 @@
+--- Testing VPACKUSWB (Pack with Unsigned Saturation) ---
+
+[128-bit test]
+Input A: 34 12 78 56 bc 9a f0 de ff 7f 00 80 ff 00 00 01 
+Input B: 22 11 44 33 66 55 88 77 ff 00 00 80 ff 7f 00 00 
+Result: ff ff 00 00 ff 00 ff ff ff ff ff ff ff 00 ff 00 
+128-bit reg-reg test PASSED
+
+[256-bit test]
+Input A: 34 12 78 56 bc 9a f0 de ff 7f 00 80 ff 00 00 01 22 11 44 33 66 55 88 77 ff 00 00 80 ff 7f 00 00 
+Input B: 22 11 44 33 66 55 88 77 ff 00 00 80 ff 7f 00 00 34 12 78 56 bc 9a f0 de ff 7f 00 80 ff 00 00 01 
+Result: ff ff 00 00 ff 00 ff ff ff ff ff ff ff 00 ff 00 ff ff ff ff ff 00 ff 00 ff ff 00 00 ff 00 ff ff 
+256-bit reg-reg test PASSED
+
+[Memory operand test]
+Input A: 34 12 78 56 bc 9a f0 de ff 7f 00 80 ff 00 00 01 
+Memory operand: 1122 3344 5566 7788 00ff ffff8000 7fff 0000 
+Result: ff ff 00 00 ff 00 ff ff ff ff ff ff ff 00 ff 00 
+Memory operand test PASSED

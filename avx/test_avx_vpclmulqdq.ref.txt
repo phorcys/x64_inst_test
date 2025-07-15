@@ -1,0 +1,34 @@
+Comprehensive VPCLMULQDQ instruction test
+=======================================
+
+Test 1: All 1s multiply (imm8=0x00)
+Operand A: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Operand B: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Result: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 
+[PASS]
+
+Test 2: High*Low (imm8=0x01)
+Operand A: 02 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 
+Operand B: 04 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
+Result: 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[PASS]
+
+Test 3: Low*High (imm8=0x10)
+Operand A: 02 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 
+Operand B: 04 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
+Result: 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[PASS]
+
+Test 4: High*High (imm8=0x11)
+Operand A: 02 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 
+Operand B: 04 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
+Result: 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[PASS]
+
+Test 5: MSB boundary test (imm8=0x00)
+Operand A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 
+Operand B: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[PASS]
+
+VPCLMULQDQ tests completed.
