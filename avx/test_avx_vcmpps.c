@@ -69,28 +69,21 @@ static vcmpps256_func_t vcmpps256_funcs[32] = {
 };
 
 // 统一的调用函数（256位）
-static void vcmpps256(__m256 *dst, __m256 a, __m256 b, int imm) {
-    if (imm >= 0 && imm < 32) {
-        vcmpps256_funcs[imm](dst, a, b);
-    } else {
-        *dst = _mm256_setzero_ps();
-    }
-}
+// 删除未使用的vcmpps256函数
 
 // 统一的调用函数（128位）
 
 // ========== 添加内存操作数支持 ==========
-// 带内存操作数的256位比较宏（修复操作数）
+// 修正内存操作数处理：传递完整向量而非单个浮点数
 #define DEFINE_CMP256_MEM_FUNC(imm) \
-static void vcmpps256_mem_##imm(__m256 *dst, __m256 a, float *mem) { \
+static void vcmpps256_mem_##imm(__m256 *dst, __m256 a, __m256 *mem) { \
     asm volatile("vcmpps $"#imm", %2, %1, %0" \
                  : "=x"(*dst) \
                  : "x"(a), "m"(*mem)); \
 }
 
-// 带内存操作数的128位比较宏（修复操作数）
 #define DEFINE_CMP128_MEM_FUNC(imm) \
-static void vcmpps128_mem_##imm(__m128 *dst, __m128 a, float *mem) { \
+static void vcmpps128_mem_##imm(__m128 *dst, __m128 a, __m128 *mem) { \
     asm volatile("vcmpps $"#imm", %2, %1, %0" \
                  : "=x"(*dst) \
                  : "x"(a), "m"(*mem)); \
@@ -116,8 +109,8 @@ DEFINE_CMP128_MEM_FUNC(0x14) DEFINE_CMP128_MEM_FUNC(0x15) DEFINE_CMP128_MEM_FUNC
 DEFINE_CMP128_MEM_FUNC(0x18) DEFINE_CMP128_MEM_FUNC(0x19) DEFINE_CMP128_MEM_FUNC(0x1A) DEFINE_CMP128_MEM_FUNC(0x1B)
 DEFINE_CMP128_MEM_FUNC(0x1C) DEFINE_CMP128_MEM_FUNC(0x1D) DEFINE_CMP128_MEM_FUNC(0x1E) DEFINE_CMP128_MEM_FUNC(0x1F)
 
-// 256位内存操作数函数指针类型和数组
-typedef void (*vcmpps256_mem_func_t)(__m256*, __m256, float*);
+// 修正内存操作数函数指针类型
+typedef void (*vcmpps256_mem_func_t)(__m256*, __m256, __m256*);
 static vcmpps256_mem_func_t vcmpps256_mem_funcs[32] = {
     vcmpps256_mem_0x00, vcmpps256_mem_0x01, vcmpps256_mem_0x02, vcmpps256_mem_0x03,
     vcmpps256_mem_0x04, vcmpps256_mem_0x05, vcmpps256_mem_0x06, vcmpps256_mem_0x07,
@@ -129,8 +122,7 @@ static vcmpps256_mem_func_t vcmpps256_mem_funcs[32] = {
     vcmpps256_mem_0x1C, vcmpps256_mem_0x1D, vcmpps256_mem_0x1E, vcmpps256_mem_0x1F
 };
 
-// 128位内存操作数函数指针类型和数组
-typedef void (*vcmpps128_mem_func_t)(__m128*, __m128, float*);
+typedef void (*vcmpps128_mem_func_t)(__m128*, __m128, __m128*);
 static vcmpps128_mem_func_t vcmpps128_mem_funcs[32] = {
     vcmpps128_mem_0x00, vcmpps128_mem_0x01, vcmpps128_mem_0x02, vcmpps128_mem_0x03,
     vcmpps128_mem_0x04, vcmpps128_mem_0x05, vcmpps128_mem_0x06, vcmpps128_mem_0x07,
@@ -158,9 +150,10 @@ static int test_case(const char *name, void *a, void *b, int imm, void *expected
         __m256 expected_reg = _mm256_loadu_ps((float*)expected);
         
         if (test_type == TEST_REG) {
+            b_reg = _mm256_loadu_ps((float*)b);
             vcmpps256_funcs[imm](&res, a_reg, b_reg);
         } else { // TEST_MEM
-            vcmpps256_mem_funcs[imm](&res, a_reg, (float*)b);
+            vcmpps256_mem_funcs[imm](&res, a_reg, (__m256*)b);
         }
         
         // 比较结果
@@ -174,7 +167,8 @@ static int test_case(const char *name, void *a, void *b, int imm, void *expected
             printf("  A: ");
             for (int k = 0; k < (width ? 8 : 4); k++) printf("%f ", ((float*)a)[k]);
             printf("\n  B: ");
-            for (int k = 0; k < (width ? 8 : 4); k++) printf("%f ", test_type == TEST_REG ? ((float*)b)[k] : ((float*)b)[0]);
+            for (int k = 0; k < (width ? 8 : 4); k++) 
+                printf("%f ", test_type == TEST_REG ? ((float*)b)[k] : (width ? ((float*)b)[k] : ((float*)b)[0]));
             printf("\n  Expected: ");
             for (int k = 0; k < (width ? 8 : 4); k++) printf("0x%08X ", ((uint32_t*)expected)[k]);
             printf("\n  Got:      ");
@@ -191,6 +185,9 @@ static int test_case(const char *name, void *a, void *b, int imm, void *expected
         __m128 b_reg;
         __m128 expected_reg = _mm_loadu_ps((float*)expected);
         
+        // 改进128位测试输出
+        int ret;
+        
         if (test_type == TEST_REG) {
             b_reg = _mm_loadu_ps((float*)b);
         } else {
@@ -201,16 +198,30 @@ static int test_case(const char *name, void *a, void *b, int imm, void *expected
             b_reg = _mm_loadu_ps((float*)b);
             vcmpps128_funcs[imm](&res, a_reg, b_reg);
         } else { // TEST_MEM
-            vcmpps128_mem_funcs[imm](&res, a_reg, (float*)b);
+            vcmpps128_mem_funcs[imm](&res, a_reg, (__m128*)b);
         }
         
         // 比较结果
         __m128i res_i = _mm_castps_si128(res);
         __m128i expected_i = _mm_castps_si128(expected_reg);
-        int ret = _mm_testc_si128(res_i, expected_i) && 
-                  _mm_testc_si128(expected_i, res_i);
+        ret = _mm_testc_si128(res_i, expected_i) && 
+              _mm_testc_si128(expected_i, res_i);
         
-        printf("%s: %s\n", name, ret ? "✅ PASS" : "❌ FAIL");
+        if (!ret) {
+            printf("❌ FAIL: %s\n", name);
+            printf("  A: ");
+            for (int k = 0; k < 4; k++) printf("%f ", ((float*)a)[k]);
+            printf("\n  B: ");
+            for (int k = 0; k < 4; k++) 
+                printf("%f ", test_type == TEST_REG ? ((float*)b)[k] : ((float*)b)[0]);
+            printf("\n  Expected: ");
+            for (int k = 0; k < 4; k++) printf("0x%08X ", ((uint32_t*)expected)[k]);
+            printf("\n  Got:      ");
+            for (int k = 0; k < 4; k++) printf("0x%08X ", ((uint32_t*)&res)[k]);
+            printf("\n");
+        } else {
+            printf("✅ PASS: %s\n", name);
+        }
         return ret;
     }
 }
@@ -274,18 +285,26 @@ int main() {
     total++;
     
     // 测试所有32种比较条件
-        for (int imm = 0; imm < 32; imm++) {
-            char name[64];
-            snprintf(name, sizeof(name), "vcmpps imm=0x%02X", imm);
-            
-            __m256 expected = _mm256_setzero_ps();
+    for (int imm = 0; imm < 32; imm++) {
+        char name[64];
+        snprintf(name, sizeof(name), "vcmpps imm=0x%02X", imm);
         
+        __m256 expected = _mm256_setzero_ps();
+    
         // 根据比较条件设置预期结果
         int32_t exp_int[8];
         for (int i = 0; i < 8; i++) {
             float ai = a[i];
             float bi = b[i];
             int cmp_result = 0;
+            
+            // 简化条件判断逻辑
+            int unordered = isnan(ai) || isnan(bi);
+            int ordered = !unordered;
+            int equal = (ai == bi);
+            int less = (ai < bi);
+            int greater = (ai > bi);
+            (void)unordered; (void)ordered; (void)equal; (void)less; (void)greater; // 防止未使用警告
             
             switch(imm) {
                 case 0x00: // EQ (equal)
@@ -312,8 +331,8 @@ int main() {
                 case 0x07: // ORD (ordered)
                     cmp_result = !(isnan(ai) || isnan(bi));
                     break;
-                case 0x08: // EQ_UQ (equal, unordered or equal)
-                    cmp_result = (ai == bi) || (isnan(ai) && isnan(bi));
+                    case 0x08: // EQ_UQ (equal, unordered or equal)
+                    cmp_result = (ai == bi) || (isnan(ai) || isnan(bi));
                     break;
                 case 0x09: // NGE (not greater than or equal)
                     cmp_result = !(ai >= bi);
@@ -402,11 +421,8 @@ int main() {
     // 保留边界值测试
     
     // 专门的边界值测试（覆盖所有16种核心条件）
-    const char* condition_names[16] = {
-        "EQ", "LT", "LE", "UNORD", "NEQ", "NLT", "NLE", "ORD",
-        "EQ_UQ", "NGE", "NGT", "FALSE", "NEQ_OQ", "GE", "GT", "TRUE"
-    };
-    
+    // 删除未使用的condition_names数组
+    // 边界值测试向量：包含各种边界情况
     // 边界值测试向量：包含各种边界情况
     float boundary_values[] = {
         0.0f, -0.0f, INFINITY, -INFINITY, 
@@ -419,26 +435,27 @@ int main() {
             __m256 bound_a = _mm256_set1_ps(boundary_values[i]);
             __m256 bound_b = _mm256_set1_ps(boundary_values[j]);
             
-            // 测试所有16种核心条件
-            for (int imm = 0; imm < 16; imm++) {
-                char name[128];
-                snprintf(name, sizeof(name), "vcmpps BOUNDARY [%d:%d] cond=%s", 
-                         i, j, condition_names[imm]);
+    // 测试所有32种条件
+    for (int imm = 0; imm < 32; imm++) {
+        char name[128];
+        snprintf(name, sizeof(name), "vcmpps BOUNDARY [%d:%d] imm=0x%02X", 
+                 i, j, imm);
                 
                 // 计算预期结果
                 __m256 expected = _mm256_setzero_ps();
                 int32_t exp_int[8];
-                for (int k = 0; k < 8; k++) {
-                    float ai = boundary_values[i];
-                    float bi = boundary_values[j];
-                    int cmp_result = 0;
-                    
-                // 根据imm值计算预期结果（正确处理特殊值）
-                int unordered = isnan(ai) || isnan(bi);
-                int ordered = !unordered;
-                int equal = (ai == bi);
-                int less = (ai < bi);
-                int greater = (ai > bi);
+        for (int k = 0; k < 8; k++) {
+            float ai = boundary_values[i];
+            float bi = boundary_values[j];
+            int cmp_result = 0;
+            
+            // 根据imm值计算预期结果（正确处理特殊值）
+            int unordered = isnan(ai) || isnan(bi);
+            int ordered = !unordered;
+            int equal = (ai == bi);
+            int less = (ai < bi);
+            int greater = (ai > bi);
+            (void)unordered; (void)ordered; (void)equal; (void)less; (void)greater; // 防止未使用警告
                 
                 switch(imm) {
                     case 0x00: cmp_result = equal; break;                      // EQ
@@ -449,7 +466,7 @@ int main() {
                     case 0x05: cmp_result = !less || unordered; break;         // NLT
                     case 0x06: cmp_result = !(less || equal) || unordered; break; // NLE
                     case 0x07: cmp_result = ordered; break;                    // ORD
-                    case 0x08: cmp_result = equal || (isnan(ai) && isnan(bi)); break; // EQ_UQ
+                    case 0x08: cmp_result = (ai == bi) || (isnan(ai) || isnan(bi)); break; // EQ_UQ
                     case 0x09: cmp_result = !(greater || equal) || unordered; break; // NGE
                     case 0x0A: cmp_result = !greater || unordered; break;      // NGT
                     case 0x0B: cmp_result = 0; break;                          // FALSE
@@ -495,21 +512,37 @@ int main() {
     printf("Failed tests: %d\n", total - passed);
     printf("====================\n");
     
-    // ========== 添加内存操作数测试 ==========
-    printf("\n=== Testing memory operands ===\n");
-    float mem_operand[8] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f};
+    // ========== 修正内存操作数测试 ==========
+    printf("\n=== Testing memory operands with correct conditions ===\n");
+    // 使用相同的值进行内存操作数测试
+    __m256 a_eq = _mm256_set1_ps(1.0f);
+    __m256 expected_eq = _mm256_castsi256_ps(_mm256_set1_epi32(0xFFFFFFFF));
+    __m256 expected_neq = _mm256_castsi256_ps(_mm256_set1_epi32(0x00000000));
     
-    // 测试256位内存操作数
-    __m256 mem_expected = _mm256_castsi256_ps(_mm256_set1_epi32(0xFFFFFFFF));
-    passed += test_case("vcmpps256 memory operand", &a, mem_operand, 0x00, 
-                       &mem_expected, 1, TEST_MEM);
+    // 测试EQ条件
+    // 修正内存操作数测试：使用完整向量
+    __m256 mem_operand_vec = _mm256_set1_ps(1.0f);
+    __m128 mem_operand_vec128 = _mm_set1_ps(1.0f);
+    
+    passed += test_case("vcmpps256 mem operand EQ", &a_eq, &mem_operand_vec, 0x00, 
+                       &expected_eq, 1, TEST_MEM);
     total++;
     
-    // 测试128位内存操作数
-    __m128 a128 = _mm_setr_ps(1.0f, 2.0f, 3.0f, 4.0f);
-    __m128 mem_expected128 = _mm_castsi128_ps(_mm_set1_epi32(0xFFFFFFFF));
-    passed += test_case("vcmpps128 memory operand", &a128, mem_operand, 0x00, 
-                       &mem_expected128, 0, TEST_MEM);
+    passed += test_case("vcmpps256 mem operand NEQ", &a_eq, &mem_operand_vec, 0x04, 
+                       &expected_neq, 1, TEST_MEM);
+    total++;
+    
+    // 128位内存操作数测试
+    __m128 a128_eq = _mm_set1_ps(1.0f);
+    __m128 expected128_eq = _mm_castsi128_ps(_mm_set1_epi32(0xFFFFFFFF));
+    __m128 expected128_neq = _mm_castsi128_ps(_mm_set1_epi32(0x00000000));
+    
+    passed += test_case("vcmpps128 mem operand EQ", &a128_eq, &mem_operand_vec128, 0x00, 
+                       &expected128_eq, 0, TEST_MEM);
+    total++;
+    
+    passed += test_case("vcmpps128 mem operand NEQ", &a128_eq, &mem_operand_vec128, 0x04, 
+                       &expected128_neq, 0, TEST_MEM);
     total++;
 
     // ========== 扩展特殊值测试到所有32种条件 ==========
@@ -518,36 +551,132 @@ int main() {
         char name[64];
         snprintf(name, sizeof(name), "vcmpps special values imm=0x%02X", imm);
         
-        // 256位特殊值测试
-        __m256 special_expected = _mm256_castsi256_ps(_mm256_setr_epi32(
-            0xFFFFFFFF,  // 0.0 == -0.0 -> true
-            0xFFFFFFFF,  // -0.0 == 0.0 -> true
-            0x00000000,  // inf != neg_inf -> false
-            0x00000000,  // neg_inf != inf -> false
-            0x00000000,  // NaN != NaN -> false
-            0x00000000,  // 1.0 != 4.0 -> false
-            0x00000000,  // 2.0 != 5.0 -> false
-            0x00000000   // 3.0 != 6.0 -> false
-        ));
+        // 计算特殊值的预期结果
+        int32_t exp_int[8];
+        for (int k = 0; k < 8; k++) {
+            float ai = special_a[k];
+            float bi = special_b[k];
+            int cmp_result = 0;
+            
+            int unordered = isnan(ai) || isnan(bi);
+            int ordered = !unordered;
+            int equal = (ai == bi);
+            int less = (ai < bi);
+            int greater = (ai > bi);
+            
+            // 根据条件计算预期结果
+            switch(imm) {
+                case 0x00: cmp_result = equal; break;
+                case 0x01: cmp_result = less && ordered; break;
+                case 0x02: cmp_result = (less || equal) && ordered; break;
+                case 0x03: cmp_result = unordered; break;
+                case 0x04: cmp_result = !equal; break;
+                case 0x05: cmp_result = !less || unordered; break;
+                case 0x06: cmp_result = !(less || equal) || unordered; break;
+                case 0x07: cmp_result = ordered; break;
+                case 0x08: cmp_result = equal || (isnan(ai) && isnan(bi)); break;
+                case 0x09: cmp_result = !(greater || equal) || unordered; break;
+                case 0x0A: cmp_result = !greater || unordered; break;
+                case 0x0B: cmp_result = 0; break;
+                case 0x0C: cmp_result = !equal && ordered; break;
+                case 0x0D: cmp_result = (greater || equal) && ordered; break;
+                case 0x0E: cmp_result = greater && ordered; break;
+                case 0x0F: cmp_result = 1; break;
+                case 0x10: cmp_result = equal && ordered; break;
+                case 0x11: cmp_result = less && ordered; break;
+                case 0x12: cmp_result = (less || equal) && ordered; break;
+                case 0x13: cmp_result = unordered; break;
+                case 0x14: cmp_result = !equal || unordered; break;
+                case 0x15: cmp_result = !less || unordered; break;
+                case 0x16: cmp_result = !(less || equal) || unordered; break;
+                case 0x17: cmp_result = ordered; break;
+                case 0x18: cmp_result = equal || unordered; break;
+                case 0x19: cmp_result = !(greater || equal) || unordered; break;
+                case 0x1A: cmp_result = !greater || unordered; break;
+                case 0x1B: cmp_result = 0; break;
+                case 0x1C: cmp_result = !equal && ordered; break;
+                case 0x1D: cmp_result = (greater || equal) && ordered; break;
+                case 0x1E: cmp_result = greater && ordered; break;
+                case 0x1F: cmp_result = 1; break;
+            }
+            // 改进NaN处理：确保QNaN和SNaN正确处理
+            if (isnan(ai) && (imm == 0x03 || imm == 0x07 || imm == 0x13 || imm == 0x17)) {
+                // 对于UNORD/ORD条件，NaN应返回特定值
+                cmp_result = (imm == 0x03 || imm == 0x13) ? 1 : 
+                             (imm == 0x07 || imm == 0x17) ? 0 : cmp_result;
+            }
+            exp_int[k] = cmp_result ? 0xFFFFFFFF : 0x00000000;
+        }
+        __m256i expected_i = _mm256_loadu_si256((__m256i*)exp_int);
+        __m256 expected = _mm256_castsi256_ps(expected_i);
         
         passed += test_case(name, &special_a, &special_b, imm, 
-                           &special_expected, 1, TEST_REG);
+                           &expected, 1, TEST_REG);
         total++;
         
         // 128位特殊值测试
         __m128 special_a128 = _mm_setr_ps(zero, neg_zero, inf, nan);
         __m128 special_b128 = _mm_setr_ps(neg_zero, zero, neg_inf, nan);
-        __m128 special_expected128 = _mm_castsi128_ps(_mm_setr_epi32(
-            0xFFFFFFFF,  // 0.0 == -0.0 -> true
-            0xFFFFFFFF,  // -0.0 == 0.0 -> true
-            0x00000000,  // inf != neg_inf -> false
-            0x00000000   // NaN != NaN -> false
-        ));
+        
+        // 计算128位特殊值预期结果
+        int32_t exp_int128[4];
+        for (int k = 0; k < 4; k++) {
+            float ai = special_a128[k];
+            float bi = special_b128[k];
+            int cmp_result = 0;
+            
+            // 使用相同的条件计算逻辑
+            int unordered = isnan(ai) || isnan(bi);
+            int ordered = !unordered;
+            int equal = (ai == bi);
+            int less = (ai < bi);
+            int greater = (ai > bi);
+            
+            // 根据条件计算预期结果
+            switch(imm) {
+                case 0x00: cmp_result = equal; break;
+                case 0x01: cmp_result = less && ordered; break;
+                case 0x02: cmp_result = (less || equal) && ordered; break;
+                case 0x03: cmp_result = unordered; break;
+                case 0x04: cmp_result = !equal; break;
+                case 0x05: cmp_result = !less || unordered; break;
+                case 0x06: cmp_result = !(less || equal) || unordered; break;
+                case 0x07: cmp_result = ordered; break;
+                case 0x08: cmp_result = equal || (isnan(ai) && isnan(bi)); break;
+                case 0x09: cmp_result = !(greater || equal) || unordered; break;
+                case 0x0A: cmp_result = !greater || unordered; break;
+                case 0x0B: cmp_result = 0; break;
+                case 0x0C: cmp_result = !equal && ordered; break;
+                case 0x0D: cmp_result = (greater || equal) && ordered; break;
+                case 0x0E: cmp_result = greater && ordered; break;
+                case 0x0F: cmp_result = 1; break;
+                case 0x10: cmp_result = equal && ordered; break;
+                case 0x11: cmp_result = less && ordered; break;
+                case 0x12: cmp_result = (less || equal) && ordered; break;
+                case 0x13: cmp_result = unordered; break;
+                case 0x14: cmp_result = !equal || unordered; break;
+                case 0x15: cmp_result = !less || unordered; break;
+                case 0x16: cmp_result = !(less || equal) || unordered; break;
+                case 0x17: cmp_result = ordered; break;
+                case 0x18: cmp_result = equal || unordered; break;
+                case 0x19: cmp_result = !(greater || equal) || unordered; break;
+                case 0x1A: cmp_result = !greater || unordered; break;
+                case 0x1B: cmp_result = 0; break;
+                case 0x1C: cmp_result = !equal && ordered; break;
+                case 0x1D: cmp_result = (greater || equal) && ordered; break;
+                case 0x1E: cmp_result = greater && ordered; break;
+                case 0x1F: cmp_result = 1; break;
+            }
+            
+            exp_int128[k] = cmp_result ? 0xFFFFFFFF : 0x00000000;
+        }
+        __m128i expected_i128 = _mm_loadu_si128((__m128i*)exp_int128);
+        __m128 expected128 = _mm_castsi128_ps(expected_i128);
         
         char name128[64];
         snprintf(name128, sizeof(name128), "vcmpps128 special values imm=0x%02X", imm);
         passed += test_case(name128, &special_a128, &special_b128, imm, 
-                           &special_expected128, 0, TEST_REG);
+                           &expected128, 0, TEST_REG);
         total++;
     }
 

@@ -129,7 +129,7 @@ static inline int cmp_xmm(__m128i a, __m128i b) {
 
 // Function to print MXCSR register with flag details
 static void __attribute__((unused)) print_mxcsr(uint32_t mxcsr) {
-    // (void)mxcsr;  // 消除未使用参数警告
+    (void)mxcsr;  // 明确标记参数为未使用
     // 输出MXCSR状态, 注释掉因为box64 暂时不实现mxcsr各位域正确。
     // printf("MXCSR: 0x%08X\n", mxcsr);
     // printf("  [ ] DAZ - Denormals Are Zero: %d\n", (mxcsr >> 6) & 1);
