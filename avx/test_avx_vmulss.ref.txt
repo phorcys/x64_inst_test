@@ -1,62 +1,675 @@
-Testing VMULSS
-Test case 1:
-Input A: 1.5
-Input B: 2
-Result: 3
-Expected: 3
+--- Testing vmulss (scalar single-precision multiplication) ---
+--- 128-bit normal values ---
+Input1: 1.500000 
+Input2: 0.500000 
+Result: 0.750000 
+Hex   : 0x3F400000 
+--- End of test ---
 
-Test case 2:
-Input A: 0
-Input B: 1
-Result: 0
-Expected: 0
+--- 128-bit normal values ---
+Input1: 1.500000 
+Input2: 0.500000 
+Result: 0.750000 
+Hex   : 0x3F400000 
+--- End of test ---
 
-Test case 3:
-Input A: -0
-Input B: -1
-Result: 0
-Expected: 0
+--- 128-bit boundary values ---
+Input1: 0.000000 
+Input2: 1.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
 
-Test case 4:
-Input A: inf
-Input B: 1
-Result: inf
-Expected: inf
+--- 128-bit boundary values ---
+Input1: 0.000000 
+Input2: 1.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
 
-Test case 5:
-Input A: -inf
-Input B: 1
-Result: -inf
-Expected: -inf
+--- 128-bit boundary values 2 ---
+Input1: inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
 
-Test case 6:
-Input A: nan
-Input B: 1
-Result: nan
-Expected: nan
+--- 128-bit boundary values 2 ---
+Input1: inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
 
-Test case 7:
-Input A: 1
-Input B: nan
-Result: nan
-Expected: nan
+--- 128-bit NaN tests 2 ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
 
-Test case 8:
-Input A: 3.40282347e+38
-Input B: 2
-Result: inf
-Expected: inf
+--- 128-bit NaN tests 2 ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
 
-Test case 9:
-Input A: -3.40282347e+38
-Input B: 2
-Result: -inf
-Expected: -inf
+--- 128-bit NaN tests 2 ---
+Input1: nan 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
 
-Test case 10:
-Input A: 1.17549435e-38
-Input B: 0.5
-Result: 5.87747175e-39
-Expected: 5.87747175e-39
+--- 128-bit NaN tests 2 ---
+Input1: nan 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
 
-VMULSS tests completed
+--- 128-bit NaN tests 3 ---
+Input1: nan 
+Input2: 0.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit NaN tests 3 ---
+Input1: nan 
+Input2: 0.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3F800000 
+--- End of test ---
+
+--- 128-bit memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3F800000 
+--- End of test ---
+
+--- Denormal values (128-bit) ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- Denormal values (128-bit) ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: 0.0f combinations 1 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: 0.0f combinations 1 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: 0.0f combinations 2 ---
+Input1: 0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: 0.0f combinations 2 ---
+Input1: 0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: 0.0f combinations 3 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: 0.0f combinations 3 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: -0.0f combinations 1 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -0.0f combinations 1 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -0.0f combinations 2 ---
+Input1: -0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -0.0f combinations 2 ---
+Input1: -0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -0.0f combinations 3 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -0.0f combinations 3 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: INFINITY combinations 1 ---
+Input1: inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: INFINITY combinations 1 ---
+Input1: inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: INFINITY combinations 2 ---
+Input1: inf 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: INFINITY combinations 2 ---
+Input1: inf 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: INFINITY combinations 3 ---
+Input1: inf 
+Input2: 0.000000 
+Result: inf 
+Hex   : 0x7F800000 
+--- End of test ---
+
+--- 128-bit special: INFINITY combinations 3 ---
+Input1: inf 
+Input2: 0.000000 
+Result: inf 
+Hex   : 0x7F800000 
+--- End of test ---
+
+--- 128-bit special: -INFINITY combinations 1 ---
+Input1: -inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: -INFINITY combinations 1 ---
+Input1: -inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: -INFINITY combinations 2 ---
+Input1: -inf 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -INFINITY combinations 2 ---
+Input1: -inf 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -INFINITY combinations 3 ---
+Input1: -inf 
+Input2: 0.000000 
+Result: -inf 
+Hex   : 0xFF800000 
+--- End of test ---
+
+--- 128-bit special: -INFINITY combinations 3 ---
+Input1: -inf 
+Input2: 0.000000 
+Result: -inf 
+Hex   : 0xFF800000 
+--- End of test ---
+
+--- 128-bit special: NAN combinations 1 ---
+Input1: nan 
+Input2: 0.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: NAN combinations 1 ---
+Input1: nan 
+Input2: 0.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: NAN combinations 2 ---
+Input1: nan 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: NAN combinations 2 ---
+Input1: nan 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: NAN combinations 3 ---
+Input1: nan 
+Input2: 0.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: NAN combinations 3 ---
+Input1: nan 
+Input2: 0.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -NAN combinations 1 ---
+Input1: -nan 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: -NAN combinations 1 ---
+Input1: -nan 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: -NAN combinations 2 ---
+Input1: -nan 
+Input2: nan 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: -NAN combinations 2 ---
+Input1: -nan 
+Input2: nan 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: -NAN combinations 3 ---
+Input1: -nan 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: -NAN combinations 3 ---
+Input1: -nan 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 128-bit special: FLT_MAX combinations 1 ---
+Input1: 340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: FLT_MAX combinations 1 ---
+Input1: 340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: FLT_MAX combinations 2 ---
+Input1: 340282346638528859811704183484516925440.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: FLT_MAX combinations 2 ---
+Input1: 340282346638528859811704183484516925440.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: FLT_MAX combinations 3 ---
+Input1: 340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: 4.000000 
+Hex   : 0x407FFFFF 
+--- End of test ---
+
+--- 128-bit special: FLT_MAX combinations 3 ---
+Input1: 340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: 4.000000 
+Hex   : 0x407FFFFF 
+--- End of test ---
+
+--- 128-bit special: -FLT_MAX combinations 1 ---
+Input1: -340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MAX combinations 1 ---
+Input1: -340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MAX combinations 2 ---
+Input1: -340282346638528859811704183484516925440.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MAX combinations 2 ---
+Input1: -340282346638528859811704183484516925440.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MAX combinations 3 ---
+Input1: -340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: -4.000000 
+Hex   : 0xC07FFFFF 
+--- End of test ---
+
+--- 128-bit special: -FLT_MAX combinations 3 ---
+Input1: -340282346638528859811704183484516925440.000000 
+Input2: 0.000000 
+Result: -4.000000 
+Hex   : 0xC07FFFFF 
+--- End of test ---
+
+--- 128-bit special: FLT_MIN combinations 1 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: FLT_MIN combinations 1 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: FLT_MIN combinations 2 ---
+Input1: 0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: FLT_MIN combinations 2 ---
+Input1: 0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: FLT_MIN combinations 3 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: FLT_MIN combinations 3 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MIN combinations 1 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MIN combinations 1 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MIN combinations 2 ---
+Input1: -0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MIN combinations 2 ---
+Input1: -0.000000 
+Input2: nan 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MIN combinations 3 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 128-bit special: -FLT_MIN combinations 3 ---
+Input1: -0.000000 
+Input2: 0.000000 
+Result: -0.000000 
+Hex   : 0x80000000 
+--- End of test ---
+
+--- 256-bit normal values (reg-reg) ---
+Input1: 1.100000 
+Input2: 0.900000 
+Result: 0.990000 
+Hex   : 0x3F7D70A4 
+--- End of test ---
+
+--- 256-bit normal values (reg-reg) ---
+Input1: 1.100000 
+Input2: 0.900000 
+Result: 0.990000 
+Hex   : 0x3F7D70A4 
+--- End of test ---
+
+--- 256-bit boundary values (reg-reg) ---
+Input1: 0.000000 
+Input2: 1.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 256-bit boundary values (reg-reg) ---
+Input1: 0.000000 
+Input2: 1.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 256-bit NaN tests (reg-reg) ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 256-bit NaN tests (reg-reg) ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7FC00000 
+--- End of test ---
+
+--- 256-bit special combinations (reg-reg) ---
+Input1: inf 
+Input2: -inf 
+Result: -inf 
+Hex   : 0xFF800000 
+--- End of test ---
+
+--- 256-bit special combinations (reg-reg) ---
+Input1: inf 
+Input2: -inf 
+Result: -inf 
+Hex   : 0xFF800000 
+--- End of test ---
+
+--- 256-bit memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3F800000 
+--- End of test ---
+
+--- 256-bit memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3F800000 
+--- End of test ---
+
+--- Denormal values (256-bit) ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- Denormal values (256-bit) ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 256-bit special: full combinations 1 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 256-bit special: full combinations 1 ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x00000000 
+--- End of test ---
+
+--- 256-bit special: full combinations 2 ---
+Input1: 0.000000 
+Input2: 340282346638528859811704183484516925440.000000 
+Result: 4.000000 
+Hex   : 0x407FFFFF 
+--- End of test ---
+
+--- 256-bit special: full combinations 2 ---
+Input1: 0.000000 
+Input2: 340282346638528859811704183484516925440.000000 
+Result: 4.000000 
+Hex   : 0x407FFFFF 
+--- End of test ---
+
+--- 256-bit special: full combinations 3 ---
+Input1: -inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 256-bit special: full combinations 3 ---
+Input1: -inf 
+Input2: 0.000000 
+Result: -nan 
+Hex   : 0xFFC00000 
+--- End of test ---
+
+--- 256-bit special: full combinations 4 ---
+Input1: 0.000000 
+Input2: -340282346638528859811704183484516925440.000000 
+Result: -4.000000 
+Hex   : 0xC07FFFFF 
+--- End of test ---
+
+--- 256-bit special: full combinations 4 ---
+Input1: 0.000000 
+Input2: -340282346638528859811704183484516925440.000000 
+Result: -4.000000 
+Hex   : 0xC07FFFFF 
+--- End of test ---
+
+
+--- TEST COMPLETED ---

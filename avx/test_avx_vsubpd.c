@@ -1,80 +1,113 @@
 #include "avx.h"
+#include "avxfloat.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <math.h>
 
-// VSUBPD - Subtract Packed Double-Precision Floating-Point Values
-// Performs subtraction on packed double-precision floating-point values
+static int run_test_case(const char *desc, int width, int op_type, 
+                         const double *src1, const double *src2, 
+                         int count) {
+    printf("--- %s ---\n", desc);
+    
+    int align = (width == 256) ? 32 : 16;
+    double *aligned_src1 = (double*)aligned_alloc(align, count * sizeof(double));
+    double *aligned_src2 = (double*)aligned_alloc(align, count * sizeof(double));
+    double *result = (double*)aligned_alloc(align, count * sizeof(double));
+    
+    if (!aligned_src1 || !aligned_src2 || !result) {
+        perror("Memory allocation failed");
+        free(aligned_src1);
+        free(aligned_src2);
+        free(result);
+        return 0;
+    }
+    
+    memcpy(aligned_src1, src1, count * sizeof(double));
+    memcpy(aligned_src2, src2, count * sizeof(double));
+    memset(result, 0, count * sizeof(double));
+    
+    if (width == 128) {
+        if (op_type == 0) { // reg-reg
+            __asm__ __volatile__(
+                "vmovapd %1, %%xmm0\n\t"
+                "vmovapd %2, %%xmm1\n\t"
+                "vsubpd %%xmm1, %%xmm0, %%xmm2\n\t"
+                "vmovapd %%xmm2, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "xmm0", "xmm1", "xmm2"
+            );
+        } else { // reg-mem
+            __asm__ __volatile__(
+                "vmovapd %1, %%xmm0\n\t"
+                "vsubpd %2, %%xmm0, %%xmm1\n\t"
+                "vmovapd %%xmm1, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "xmm0", "xmm1"
+            );
+        }
+    } else { // 256-bit
+        if (op_type == 0) { // reg-reg
+            __asm__ __volatile__(
+                "vmovapd %1, %%ymm0\n\t"
+                "vmovapd %2, %%ymm1\n\t"
+                "vsubpd %%ymm1, %%ymm0, %%ymm2\n\t"
+                "vmovapd %%ymm2, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "ymm0", "ymm1", "ymm2"
+            );
+        } else { // reg-mem
+            __asm__ __volatile__(
+                "vmovapd %1, %%ymm0\n\t"
+                "vsubpd %2, %%ymm0, %%ymm1\n\t"
+                "vmovapd %%ymm1, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "ymm0", "ymm1"
+            );
+        }
+    }
+    
+    print_double_vec("Input1", aligned_src1, count);
+    print_double_vec("Input2", aligned_src2, count);
+    print_double_vec("Result", result, count);
+    print_double_vec_hex("Hex   ", result, count);
+    
+    free(aligned_src1);
+    free(aligned_src2);
+    free(result);
+    printf("--- End of test ---\n\n");
+    
+    return 1;
+}
 
 static void test_vsubpd() {
-    printf("Testing VSUBPD\n");
+    printf("--- Testing vsubpd (packed double-precision subtraction) ---\n");
     
-    // 测试128位和256位版本
-    double input1_128[2] = {1.0, 4.0};
-    double input2_128[2] = {0.5, 2.0};
-    double expected_128[2] = {0.5, 2.0};
-    double result_128[2] = {0};
+    // 测试128位用例
+    int num_128 = sizeof(double_tests_128) / sizeof(double_tests_128[0]);
+    for (int i = 0; i < num_128; i++) {
+        DoubleTest128 *test = &double_tests_128[i];
+        run_test_case(test->name, 128, 0, test->input1, test->input2, 2);
+        run_test_case(test->name, 128, 1, test->input1, test->input2, 2);
+    }
     
-    double input1_256[4] = {1.0, 4.0, 16.0, 64.0};
-    double input2_256[4] = {0.5, 2.0, 4.0, 8.0};
-    double expected_256[4] = {0.5, 2.0, 12.0, 56.0};
-    double result_256[4] = {0};
-
-    // 测试128位版本
-    printf("Testing VSUBPD (128-bit)\n");
-    __asm__ __volatile__(
-        "vmovupd %1, %%xmm0\n\t"
-        "vmovupd %2, %%xmm1\n\t"
-        "vsubpd %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovupd %%xmm2, %0\n\t"
-        : "=m"(result_128)
-        : "m"(input1_128), "m"(input2_128)
-        : "xmm0", "xmm1", "xmm2"
-    );
-
-    for (int i = 0; i < 2; i++) {
-        printf("Test case %d (128-bit):\n", i+1);
-        printf("Input1: %.17g\n", input1_128[i]);
-        printf("Input2: %.17g\n", input2_128[i]);
-        printf("Result: %.17g\n", result_128[i]);
-        printf("Expected: %.17g\n", expected_128[i]);
-        
-        if (fabs(result_128[i] - expected_128[i]) > 0.0000001) {
-            printf("Mismatch: got %.17g, expected %.17g\n", 
-                  result_128[i], expected_128[i]);
-        }
-        printf("\n");
+    // 测试256位用例
+    int num_256 = sizeof(double_tests_256) / sizeof(double_tests_256[0]);
+    for (int i = 0; i < num_256; i++) {
+        DoubleTest256 *test = &double_tests_256[i];
+        run_test_case(test->name, 256, 0, test->input1, test->input2, 4);
+        run_test_case(test->name, 256, 1, test->input1, test->input2, 4);
     }
-
-    // 测试256位版本
-    printf("Testing VSUBPD (256-bit)\n");
-    __asm__ __volatile__(
-        "vmovupd %1, %%ymm0\n\t"
-        "vmovupd %2, %%ymm1\n\t"
-        "vsubpd %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovupd %%ymm2, %0\n\t"
-        : "=m"(result_256)
-        : "m"(input1_256), "m"(input2_256)
-        : "ymm0", "ymm1", "ymm2"
-    );
-
-    for (int i = 0; i < 4; i++) {
-        printf("Test case %d (256-bit):\n", i+1);
-        printf("Input1: %.17g\n", input1_256[i]);
-        printf("Input2: %.17g\n", input2_256[i]);
-        printf("Result: %.17g\n", result_256[i]);
-        printf("Expected: %.17g\n", expected_256[i]);
-        
-        if (fabs(result_256[i] - expected_256[i]) > 0.0000001) {
-            printf("Mismatch: got %.17g, expected %.17g\n", 
-                  result_256[i], expected_256[i]);
-        }
-        printf("\n");
-    }
+    
+    printf("\n--- TEST COMPLETED ---\n");
 }
 
 int main() {
     test_vsubpd();
-    printf("VSUBPD tests completed\n");
     return 0;
 }

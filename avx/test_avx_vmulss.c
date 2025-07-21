@@ -1,68 +1,74 @@
 #include "avx.h"
+#include "avxfloat.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <math.h>
 
-// VMULSS - Scalar Single-FP Multiply
-// Multiplies scalar single-precision floating-point values
-
-static void test_vmulss() {
-    printf("Testing VMULSS\n");
+static int run_test_case(const char *desc, int op_type, 
+                         float src1, float src2) {
+    printf("--- %s ---\n", desc);
     
-    struct TestCase {
-        float a;
-        float b;
-        float expected;
-    } test_cases[] = {
-        {1.5f, 2.0f, 3.0f},  // 基本测试
-        {0.0f, 1.0f, 0.0f},  // 零值测试
-        {-0.0f, -1.0f, 0.0f}, // 负零测试
-        {INFINITY, 1.0f, INFINITY}, // 无穷大测试
-        {-INFINITY, 1.0f, -INFINITY},
-        {NAN, 1.0f, NAN},  // NaN测试
-        {1.0f, NAN, NAN},
-        {3.402823466e+38f, 2.0f, INFINITY}, // 溢出测试
-        {-3.402823466e+38f, 2.0f, -INFINITY},
-        {1.175494351e-38f, 0.5f, 5.877471754e-39f} // 下溢测试
-    };
-
-    for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
-        float result = 0;
-        
+    float result;
+    
+    if (op_type == 0) { // reg-reg
         __asm__ __volatile__(
             "vmovss %1, %%xmm0\n\t"
             "vmovss %2, %%xmm1\n\t"
             "vmulss %%xmm1, %%xmm0, %%xmm2\n\t"
             "vmovss %%xmm2, %0\n\t"
             : "=m"(result)
-            : "m"(test_cases[i].a), "m"(test_cases[i].b)
+            : "m"(src1), "m"(src2)
             : "xmm0", "xmm1", "xmm2"
         );
-
-        printf("Test case %zu:\n", i+1);
-        printf("Input A: %.9g\n", test_cases[i].a);
-        printf("Input B: %.9g\n", test_cases[i].b);
-        printf("Result: %.9g\n", result);
-        printf("Expected: %.9g\n", test_cases[i].expected);
-
-        if (isnan(test_cases[i].expected)) {
-            if (!isnan(result)) {
-                printf("Mismatch: expected NaN\n");
-            }
-        } else if (isinf(test_cases[i].expected) && isinf(result)) {
-            if (signbit(test_cases[i].expected) != signbit(result)) {
-                printf("Mismatch: sign differs for infinity\n");
-            }
-        } else if (!float_equal(result, test_cases[i].expected, 0.0001f)) {
-            printf("Mismatch: got %.9g, expected %.9g\n", 
-                  result, test_cases[i].expected);
-        }
-        printf("\n");
+    } else { // reg-mem
+        __asm__ __volatile__(
+            "vmovss %1, %%xmm0\n\t"
+            "vmulss %2, %%xmm0, %%xmm1\n\t"
+            "vmovss %%xmm1, %0\n\t"
+            : "=m"(result)
+            : "m"(src1), "m"(src2)
+            : "xmm0", "xmm1"
+        );
     }
+    
+    float inputs1[1] = {src1};
+    float inputs2[1] = {src2};
+    float results[1] = {result};
+    
+    print_float_vec("Input1", inputs1, 1);
+    print_float_vec("Input2", inputs2, 1);
+    print_float_vec("Result", results, 1);
+    print_hex_float_vec("Hex   ", results, 1);
+    
+    printf("--- End of test ---\n\n");
+    return 1;
+}
+
+static void test_vmulss() {
+    printf("--- Testing vmulss (scalar single-precision multiplication) ---\n");
+    
+    // 测试128位用例（仅取第一个元素）
+    int num_128 = sizeof(float_tests_128) / sizeof(float_tests_128[0]);
+    for (int i = 0; i < num_128; i++) {
+        FloatTest128 *test = &float_tests_128[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    // 测试256位用例（仅取第一个元素）
+    int num_256 = sizeof(float_tests_256) / sizeof(float_tests_256[0]);
+    for (int i = 0; i < num_256; i++) {
+        FloatTest256 *test = &float_tests_256[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    printf("\n--- TEST COMPLETED ---\n");
 }
 
 int main() {
     test_vmulss();
-    printf("VMULSS tests completed\n");
     return 0;
 }

@@ -1,147 +1,116 @@
 #include "avx.h"
+#include "avxfloat.h"
 #include <stdio.h>
-#include <stdint.h>
-#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
-// VMULPS - Packed Single-FP Multiply
-// Multiplies packed single-precision floating-point values
-
-static void test_vmulps() {
-    printf("Testing VMULPS\n");
+static void run_test_case(const char *desc, int width, int op_type, 
+                          const float *src1, const float *src2, int count) {
+    printf("--- %s ---\n", desc);
     
-    // 128-bit test cases
-    {
-        printf("Testing VMULPS (128-bit)\n");
-        struct TestCase128 {
-            float a[4];
-            float b[4];
-            float expected[4];
-        } test_cases[] = {
-            {{1.5f, 2.5f, 3.5f, 4.5f}, 
-             {2.0f, 3.0f, 4.0f, 5.0f}, 
-             {3.0f, 7.5f, 14.0f, 22.5f}},  // 基本测试
-            {{0.0f, -0.0f, INFINITY, -INFINITY}, 
-             {1.0f, -1.0f, 1.0f, 1.0f}, 
-             {0.0f, 0.0f, INFINITY, -INFINITY}}, // 边界测试
-            {{NAN, 1.0f, 3.402823466e+38f, -3.402823466e+38f},
-             {1.0f, NAN, 2.0f, 2.0f},
-             {NAN, NAN, INFINITY, -INFINITY}}  // 特殊值测试
-        };
-
-        for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
-            float result[4] = {0};
-            
+    // 对齐分配源数据和结果内存
+    int align = (width == 256) ? 32 : 16;
+    float *aligned_src1 = (float*)aligned_alloc(align, count * sizeof(float));
+    float *aligned_src2 = (float*)aligned_alloc(align, count * sizeof(float));
+    float *result = (float*)aligned_alloc(align, count * sizeof(float));
+    
+    if (!aligned_src1 || !aligned_src2 || !result) {
+        perror("Memory allocation failed");
+        free(aligned_src1);
+        free(aligned_src2);
+        free(result);
+        return;
+    }
+    
+    // 复制源数据到对齐内存
+    memcpy(aligned_src1, src1, count * sizeof(float));
+    memcpy(aligned_src2, src2, count * sizeof(float));
+    memset(result, 0, count * sizeof(float));
+    
+    if (width == 128) {
+        if (op_type == 0) { // reg-reg
             __asm__ __volatile__(
-                "vmovups %1, %%xmm0\n\t"
-                "vmovups %2, %%xmm1\n\t"
+                "vmovaps %1, %%xmm0\n\t"
+                "vmovaps %2, %%xmm1\n\t"
                 "vmulps %%xmm1, %%xmm0, %%xmm2\n\t"
-                "vmovups %%xmm2, %0\n\t"
-                : "=m"(result)
-                : "m"(test_cases[i].a), "m"(test_cases[i].b)
+                "vmovaps %%xmm2, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
                 : "xmm0", "xmm1", "xmm2"
             );
-
-            printf("Test case %zu (128-bit):\n", i+1);
-            printf("Input A: [%.9g, %.9g, %.9g, %.9g]\n", 
-                  test_cases[i].a[0], test_cases[i].a[1],
-                  test_cases[i].a[2], test_cases[i].a[3]);
-            printf("Input B: [%.9g, %.9g, %.9g, %.9g]\n", 
-                  test_cases[i].b[0], test_cases[i].b[1],
-                  test_cases[i].b[2], test_cases[i].b[3]);
-            printf("Result: [%.9g, %.9g, %.9g, %.9g]\n", 
-                  result[0], result[1], result[2], result[3]);
-            printf("Expected: [%.9g, %.9g, %.9g, %.9g]\n", 
-                  test_cases[i].expected[0], test_cases[i].expected[1],
-                  test_cases[i].expected[2], test_cases[i].expected[3]);
-
-            for (int j = 0; j < 4; j++) {
-                if (isnan(test_cases[i].expected[j])) {
-                    if (!isnan(result[j])) {
-                        printf("Mismatch at element %d: expected NaN\n", j);
-                    }
-                } else if (isinf(test_cases[i].expected[j]) && isinf(result[j])) {
-                    if (signbit(test_cases[i].expected[j]) != signbit(result[j])) {
-                        printf("Mismatch at element %d: sign differs for infinity\n", j);
-                    }
-                } else if (!float_equal(result[j], test_cases[i].expected[j], 0.0001f)) {
-                    printf("Mismatch at element %d: got %.9g, expected %.9g\n", 
-                          j, result[j], test_cases[i].expected[j]);
-                }
-            }
-            printf("\n");
-        }
-    }
-
-    // 256-bit test cases
-    {
-        printf("Testing VMULPS (256-bit)\n");
-        struct TestCase256 {
-            float a[8];
-            float b[8];
-            float expected[8];
-        } test_cases[] = {
-            {{1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f, 8.5f},
-             {2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f},
-             {3.0f, 7.5f, 14.0f, 22.5f, 33.0f, 45.5f, 60.0f, 76.5f}},
-            {{0.0f, -0.0f, INFINITY, -INFINITY, NAN, 1.0f, 3.402823466e+38f, -3.402823466e+38f},
-             {1.0f, -1.0f, 1.0f, 1.0f, 1.0f, NAN, 2.0f, 2.0f},
-             {0.0f, 0.0f, INFINITY, -INFINITY, NAN, NAN, INFINITY, -INFINITY}}
-        };
-
-        for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
-            float result[8] = {0};
-            
+        } else { // reg-mem
             __asm__ __volatile__(
-                "vmovups %1, %%ymm0\n\t"
-                "vmovups %2, %%ymm1\n\t"
+                "vmovaps %1, %%xmm0\n\t"
+                "vmulps %2, %%xmm0, %%xmm1\n\t"
+                "vmovaps %%xmm1, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "xmm0", "xmm1"
+            );
+        }
+    } else { // 256-bit
+        if (op_type == 0) { // reg-reg
+            __asm__ __volatile__(
+                "vmovaps %1, %%ymm0\n\t"
+                "vmovaps %2, %%ymm1\n\t"
                 "vmulps %%ymm1, %%ymm0, %%ymm2\n\t"
-                "vmovups %%ymm2, %0\n\t"
-                : "=m"(result)
-                : "m"(test_cases[i].a), "m"(test_cases[i].b)
+                "vmovaps %%ymm2, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
                 : "ymm0", "ymm1", "ymm2"
             );
-
-            printf("Test case %zu (256-bit):\n", i+1);
-            printf("Input A: [%.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g]\n", 
-                  test_cases[i].a[0], test_cases[i].a[1],
-                  test_cases[i].a[2], test_cases[i].a[3],
-                  test_cases[i].a[4], test_cases[i].a[5],
-                  test_cases[i].a[6], test_cases[i].a[7]);
-            printf("Input B: [%.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g]\n", 
-                  test_cases[i].b[0], test_cases[i].b[1],
-                  test_cases[i].b[2], test_cases[i].b[3],
-                  test_cases[i].b[4], test_cases[i].b[5],
-                  test_cases[i].b[6], test_cases[i].b[7]);
-            printf("Result: [%.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g]\n", 
-                  result[0], result[1], result[2], result[3],
-                  result[4], result[5], result[6], result[7]);
-            printf("Expected: [%.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g, %.9g]\n", 
-                  test_cases[i].expected[0], test_cases[i].expected[1],
-                  test_cases[i].expected[2], test_cases[i].expected[3],
-                  test_cases[i].expected[4], test_cases[i].expected[5],
-                  test_cases[i].expected[6], test_cases[i].expected[7]);
-
-            for (int j = 0; j < 8; j++) {
-                if (isnan(test_cases[i].expected[j])) {
-                    if (!isnan(result[j])) {
-                        printf("Mismatch at element %d: expected NaN\n", j);
-                    }
-                } else if (isinf(test_cases[i].expected[j]) && isinf(result[j])) {
-                    if (signbit(test_cases[i].expected[j]) != signbit(result[j])) {
-                        printf("Mismatch at element %d: sign differs for infinity\n", j);
-                    }
-                } else if (!float_equal(result[j], test_cases[i].expected[j], 0.0001f)) {
-                    printf("Mismatch at element %d: got %.9g, expected %.9g\n", 
-                          j, result[j], test_cases[i].expected[j]);
-                }
-            }
-            printf("\n");
+        } else { // reg-mem
+            __asm__ __volatile__(
+                "vmovaps %1, %%ymm0\n\t"
+                "vmulps %2, %%ymm0, %%ymm1\n\t"
+                "vmovaps %%ymm1, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "ymm0", "ymm1"
+            );
         }
     }
+    
+    // 打印测试信息
+    print_float_vec("Input1", aligned_src1, count);
+    print_float_vec("Input2", aligned_src2, count);
+    print_float_vec("Result ", result, count);
+    print_hex_float_vec("Hex   ", result, count);
+
+    // 释放内存
+    free(aligned_src1);
+    free(aligned_src2);
+    free(result);
+    printf("--- End of test ---\n\n");
+}
+
+static void test_vmulps() {
+    printf("--- Testing vmulps (packed single-precision multiplication) ---\n");
+    
+    // 测试128位用例
+    int num_128 = sizeof(float_tests_128) / sizeof(float_tests_128[0]);
+    for (int i = 0; i < num_128; i++) {
+        FloatTest128 *test = &float_tests_128[i];
+        // 测试寄存器-寄存器操作
+        run_test_case(test->name, 128, 0, test->input1, test->input2, 4);
+        // 测试寄存器-内存操作
+        run_test_case(test->name, 128, 1, test->input1, test->input2, 4);
+    }
+    
+    // 测试256位用例
+    int num_256 = sizeof(float_tests_256) / sizeof(float_tests_256[0]);
+    for (int i = 0; i < num_256; i++) {
+        FloatTest256 *test = &float_tests_256[i];
+        // 测试寄存器-寄存器操作
+        run_test_case(test->name, 256, 0, test->input1, test->input2, 8);
+        // 测试寄存器-内存操作
+        run_test_case(test->name, 256, 1, test->input1, test->input2, 8);
+    }
+    
+    printf("--- All tests completed. Check output for verification ---\n");
 }
 
 int main() {
     test_vmulps();
-    printf("VMULPS tests completed\n");
     return 0;
 }

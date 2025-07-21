@@ -1,62 +1,199 @@
-Testing VMULSD
-Test case 1:
-Input A: 1.5
-Input B: 2
-Result: 3
-Expected: 3
+--- Testing vmulsd (scalar double-precision multiplication) ---
+--- 128-bit double normal values ---
+Input1: 1.500000 
+Input2: 0.500000 
+Result: 0.750000 
+Hex   : 0x3fe8000000000000 
+--- End of test ---
 
-Test case 2:
-Input A: 0
-Input B: 1
-Result: 0
-Expected: 0
+--- 128-bit double normal values ---
+Input1: 1.500000 
+Input2: 0.500000 
+Result: 0.750000 
+Hex   : 0x3fe8000000000000 
+--- End of test ---
 
-Test case 3:
-Input A: -0
-Input B: -1
-Result: 0
-Expected: 0
+--- 128-bit double boundary values ---
+Input1: 0.000000 
+Input2: inf 
+Result: -nan 
+Hex   : 0xfff8000000000000 
+--- End of test ---
 
-Test case 4:
-Input A: inf
-Input B: 1
-Result: inf
-Expected: inf
+--- 128-bit double boundary values ---
+Input1: 0.000000 
+Input2: inf 
+Result: -nan 
+Hex   : 0xfff8000000000000 
+--- End of test ---
 
-Test case 5:
-Input A: -inf
-Input B: 1
-Result: -inf
-Expected: -inf
+--- 128-bit double NaN tests ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7ff8000000000000 
+--- End of test ---
 
-Test case 6:
-Input A: nan
-Input B: 1
-Result: nan
-Expected: nan
+--- 128-bit double NaN tests ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7ff8000000000000 
+--- End of test ---
 
-Test case 7:
-Input A: 1
-Input B: nan
-Result: nan
-Expected: nan
+--- 128-bit double memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3ff0000000000000 
+--- End of test ---
 
-Test case 8:
-Input A: 1.7976931348623157e+308
-Input B: 2
-Result: inf
-Expected: inf
+--- 128-bit double memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3ff0000000000000 
+--- End of test ---
 
-Test case 9:
-Input A: -1.7976931348623157e+308
-Input B: 2
-Result: -inf
-Expected: -inf
+--- 128-bit double denormal values ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
 
-Test case 10:
-Input A: 2.2250738585072014e-308
-Input B: 0.5
-Result: 1.1125369292536007e-308
-Expected: 1.1125369292536007e-308
+--- 128-bit double denormal values ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
 
-VMULSD tests completed
+--- 128-bit double special: 0.0 combinations ---
+Input1: 0.000000 
+Input2: inf 
+Result: -nan 
+Hex   : 0xfff8000000000000 
+--- End of test ---
+
+--- 128-bit double special: 0.0 combinations ---
+Input1: 0.000000 
+Input2: inf 
+Result: -nan 
+Hex   : 0xfff8000000000000 
+--- End of test ---
+
+--- 128-bit double special: min/max combinations ---
+Input1: 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000 
+Input2: 0.000000 
+Result: 4.000000 
+Hex   : 0x400fffffffffffff 
+--- End of test ---
+
+--- 128-bit double special: min/max combinations ---
+Input1: 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000 
+Input2: 0.000000 
+Result: 4.000000 
+Hex   : 0x400fffffffffffff 
+--- End of test ---
+
+--- 256-bit double normal values ---
+Input1: 1.100000 
+Input2: 0.900000 
+Result: 0.990000 
+Hex   : 0x3fefae147ae147af 
+--- End of test ---
+
+--- 256-bit double normal values ---
+Input1: 1.100000 
+Input2: 0.900000 
+Result: 0.990000 
+Hex   : 0x3fefae147ae147af 
+--- End of test ---
+
+--- 256-bit double boundary values ---
+Input1: 0.000000 
+Input2: 1.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
+
+--- 256-bit double boundary values ---
+Input1: 0.000000 
+Input2: 1.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
+
+--- 256-bit double NaN tests ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7ff8000000000000 
+--- End of test ---
+
+--- 256-bit double NaN tests ---
+Input1: nan 
+Input2: 1.000000 
+Result: nan 
+Hex   : 0x7ff8000000000000 
+--- End of test ---
+
+--- 256-bit double special combinations ---
+Input1: inf 
+Input2: -inf 
+Result: -inf 
+Hex   : 0xfff0000000000000 
+--- End of test ---
+
+--- 256-bit double special combinations ---
+Input1: inf 
+Input2: -inf 
+Result: -inf 
+Hex   : 0xfff0000000000000 
+--- End of test ---
+
+--- 256-bit double memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3ff0000000000000 
+--- End of test ---
+
+--- 256-bit double memory operand (reg-mem) ---
+Input1: 10.000000 
+Input2: 0.100000 
+Result: 1.000000 
+Hex   : 0x3ff0000000000000 
+--- End of test ---
+
+--- 256-bit double denormal values ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
+
+--- 256-bit double denormal values ---
+Input1: 0.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
+
+--- 256-bit double special: min/max combinations ---
+Input1: 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
+
+--- 256-bit double special: min/max combinations ---
+Input1: 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000 
+Input2: 0.000000 
+Result: 0.000000 
+Hex   : 0x0000000000000000 
+--- End of test ---
+
+
+--- TEST COMPLETED ---

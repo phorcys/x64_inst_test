@@ -1,80 +1,116 @@
 #include "avx.h"
+#include "avxfloat.h"
 #include <stdio.h>
-#include <stdint.h>
-#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
-// VSUBPS - Subtract Packed Single-Precision Floating-Point Values
-// Performs subtraction on packed single-precision floating-point values
+static void run_test_case(const char *desc, int width, int op_type, 
+                          const float *src1, const float *src2, int count) {
+    printf("--- %s ---\n", desc);
+    
+    // 对齐分配源数据和结果内存
+    int align = (width == 256) ? 32 : 16;
+    float *aligned_src1 = (float*)aligned_alloc(align, count * sizeof(float));
+    float *aligned_src2 = (float*)aligned_alloc(align, count * sizeof(float));
+    float *result = (float*)aligned_alloc(align, count * sizeof(float));
+    
+    if (!aligned_src1 || !aligned_src2 || !result) {
+        perror("Memory allocation failed");
+        free(aligned_src1);
+        free(aligned_src2);
+        free(result);
+        return;
+    }
+    
+    // 复制源数据到对齐内存
+    memcpy(aligned_src1, src1, count * sizeof(float));
+    memcpy(aligned_src2, src2, count * sizeof(float));
+    memset(result, 0, count * sizeof(float));
+    
+    if (width == 128) {
+        if (op_type == 0) { // reg-reg
+            __asm__ __volatile__(
+                "vmovaps %1, %%xmm0\n\t"
+                "vmovaps %2, %%xmm1\n\t"
+                "vsubps %%xmm1, %%xmm0, %%xmm2\n\t"
+                "vmovaps %%xmm2, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "xmm0", "xmm1", "xmm2"
+            );
+        } else { // reg-mem
+            __asm__ __volatile__(
+                "vmovaps %1, %%xmm0\n\t"
+                "vsubps %2, %%xmm0, %%xmm1\n\t"
+                "vmovaps %%xmm1, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "xmm0", "xmm1"
+            );
+        }
+    } else { // 256-bit
+        if (op_type == 0) { // reg-reg
+            __asm__ __volatile__(
+                "vmovaps %1, %%ymm0\n\t"
+                "vmovaps %2, %%ymm1\n\t"
+                "vsubps %%ymm1, %%ymm0, %%ymm2\n\t"
+                "vmovaps %%ymm2, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "ymm0", "ymm1", "ymm2"
+            );
+        } else { // reg-mem
+            __asm__ __volatile__(
+                "vmovaps %1, %%ymm0\n\t"
+                "vsubps %2, %%ymm0, %%ymm1\n\t"
+                "vmovaps %%ymm1, %0\n\t"
+                : "=m"(*result)
+                : "m"(*aligned_src1), "m"(*aligned_src2)
+                : "ymm0", "ymm1"
+            );
+        }
+    }
+    
+    // 打印测试信息
+    print_float_vec("Input1", aligned_src1, count);
+    print_float_vec("Input2", aligned_src2, count);
+    print_float_vec("Result ", result, count);
+    print_hex_float_vec("Hex   ", result, count);
+
+    // 释放内存
+    free(aligned_src1);
+    free(aligned_src2);
+    free(result);
+    printf("--- End of test ---\n\n");
+}
 
 static void test_vsubps() {
-    printf("Testing VSUBPS\n");
+    printf("--- Testing vsubps (packed single-precision subtraction) ---\n");
     
-    // 测试128位和256位版本
-    float input1_128[4] = {1.0f, 4.0f, 16.0f, 64.0f};
-    float input2_128[4] = {0.5f, 2.0f, 4.0f, 8.0f};
-    float expected_128[4] = {0.5f, 2.0f, 12.0f, 56.0f};
-    float result_128[4] = {0};
+    // 测试128位用例
+    int num_128 = sizeof(float_tests_128) / sizeof(float_tests_128[0]);
+    for (int i = 0; i < num_128; i++) {
+        FloatTest128 *test = &float_tests_128[i];
+        // 测试寄存器-寄存器操作
+        run_test_case(test->name, 128, 0, test->input1, test->input2, 4);
+        // 测试寄存器-内存操作
+        run_test_case(test->name, 128, 1, test->input1, test->input2, 4);
+    }
     
-    float input1_256[8] = {1.0f, 4.0f, 16.0f, 64.0f, 256.0f, 1024.0f, 4096.0f, 16384.0f};
-    float input2_256[8] = {0.5f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f, 128.0f};
-    float expected_256[8] = {0.5f, 2.0f, 12.0f, 56.0f, 240.0f, 992.0f, 4032.0f, 16256.0f};
-    float result_256[8] = {0};
-
-    // 测试128位版本
-    printf("Testing VSUBPS (128-bit)\n");
-    __asm__ __volatile__(
-        "vmovups %1, %%xmm0\n\t"
-        "vmovups %2, %%xmm1\n\t"
-        "vsubps %%xmm1, %%xmm0, %%xmm2\n\t"
-        "vmovups %%xmm2, %0\n\t"
-        : "=m"(result_128)
-        : "m"(input1_128), "m"(input2_128)
-        : "xmm0", "xmm1", "xmm2"
-    );
-
-    for (int i = 0; i < 4; i++) {
-        printf("Test case %d (128-bit):\n", i+1);
-        printf("Input1: %.9g\n", input1_128[i]);
-        printf("Input2: %.9g\n", input2_128[i]);
-        printf("Result: %.9g\n", result_128[i]);
-        printf("Expected: %.9g\n", expected_128[i]);
-        
-        if (fabsf(result_128[i] - expected_128[i]) > 0.0001f) {
-            printf("Mismatch: got %.9g, expected %.9g\n", 
-                  result_128[i], expected_128[i]);
-        }
-        printf("\n");
+    // 测试256位用例
+    int num_256 = sizeof(float_tests_256) / sizeof(float_tests_256[0]);
+    for (int i = 0; i < num_256; i++) {
+        FloatTest256 *test = &float_tests_256[i];
+        // 测试寄存器-寄存器操作
+        run_test_case(test->name, 256, 0, test->input1, test->input2, 8);
+        // 测试寄存器-内存操作
+        run_test_case(test->name, 256, 1, test->input1, test->input2, 8);
     }
-
-    // 测试256位版本
-    printf("Testing VSUBPS (256-bit)\n");
-    __asm__ __volatile__(
-        "vmovups %1, %%ymm0\n\t"
-        "vmovups %2, %%ymm1\n\t"
-        "vsubps %%ymm1, %%ymm0, %%ymm2\n\t"
-        "vmovups %%ymm2, %0\n\t"
-        : "=m"(result_256)
-        : "m"(input1_256), "m"(input2_256)
-        : "ymm0", "ymm1", "ymm2"
-    );
-
-    for (int i = 0; i < 8; i++) {
-        printf("Test case %d (256-bit):\n", i+1);
-        printf("Input1: %.9g\n", input1_256[i]);
-        printf("Input2: %.9g\n", input2_256[i]);
-        printf("Result: %.9g\n", result_256[i]);
-        printf("Expected: %.9g\n", expected_256[i]);
-        
-        if (fabsf(result_256[i] - expected_256[i]) > 0.0001f) {
-            printf("Mismatch: got %.9g, expected %.9g\n", 
-                  result_256[i], expected_256[i]);
-        }
-        printf("\n");
-    }
+    
+    printf("--- All tests completed. Check output for verification ---\n");
 }
 
 int main() {
     test_vsubps();
-    printf("VSUBPS tests completed\n");
     return 0;
 }

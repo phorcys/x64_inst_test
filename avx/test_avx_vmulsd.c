@@ -1,68 +1,74 @@
 #include "avx.h"
+#include "avxfloat.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <math.h>
 
-// VMULSD - Scalar Double-FP Multiply
-// Multiplies scalar double-precision floating-point values
-
-static void test_vmulsd() {
-    printf("Testing VMULSD\n");
+static int run_test_case(const char *desc, int op_type, 
+                         double src1, double src2) {
+    printf("--- %s ---\n", desc);
     
-    struct TestCase {
-        double a;
-        double b;
-        double expected;
-    } test_cases[] = {
-        {1.5, 2.0, 3.0},  // 基本测试
-        {0.0, 1.0, 0.0},  // 零值测试
-        {-0.0, -1.0, 0.0}, // 负零测试
-        {INFINITY, 1.0, INFINITY}, // 无穷大测试
-        {-INFINITY, 1.0, -INFINITY},
-        {NAN, 1.0, NAN},  // NaN测试
-        {1.0, NAN, NAN},
-        {1.7976931348623157e+308, 2.0, INFINITY}, // 溢出测试
-        {-1.7976931348623157e+308, 2.0, -INFINITY},
-        {2.2250738585072014e-308, 0.5, 1.1125369292536007e-308} // 下溢测试
-    };
-
-    for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
-        double result = 0;
-        
+    double result;
+    
+    if (op_type == 0) { // reg-reg
         __asm__ __volatile__(
             "vmovsd %1, %%xmm0\n\t"
             "vmovsd %2, %%xmm1\n\t"
             "vmulsd %%xmm1, %%xmm0, %%xmm2\n\t"
             "vmovsd %%xmm2, %0\n\t"
             : "=m"(result)
-            : "m"(test_cases[i].a), "m"(test_cases[i].b)
+            : "m"(src1), "m"(src2)
             : "xmm0", "xmm1", "xmm2"
         );
-
-        printf("Test case %zu:\n", i+1);
-        printf("Input A: %.17g\n", test_cases[i].a);
-        printf("Input B: %.17g\n", test_cases[i].b);
-        printf("Result: %.17g\n", result);
-        printf("Expected: %.17g\n", test_cases[i].expected);
-
-        if (isnan(test_cases[i].expected)) {
-            if (!isnan(result)) {
-                printf("Mismatch: expected NaN\n");
-            }
-        } else if (isinf(test_cases[i].expected) && isinf(result)) {
-            if (signbit(test_cases[i].expected) != signbit(result)) {
-                printf("Mismatch: sign differs for infinity\n");
-            }
-        } else if (!double_equal(result, test_cases[i].expected, 0.0001)) {
-            printf("Mismatch: got %.17g, expected %.17g\n", 
-                  result, test_cases[i].expected);
-        }
-        printf("\n");
+    } else { // reg-mem
+        __asm__ __volatile__(
+            "vmovsd %1, %%xmm0\n\t"
+            "vmulsd %2, %%xmm0, %%xmm1\n\t"
+            "vmovsd %%xmm1, %0\n\t"
+            : "=m"(result)
+            : "m"(src1), "m"(src2)
+            : "xmm0", "xmm1"
+        );
     }
+    
+    double inputs1[1] = {src1};
+    double inputs2[1] = {src2};
+    double results[1] = {result};
+    
+    print_double_vec("Input1", inputs1, 1);
+    print_double_vec("Input2", inputs2, 1);
+    print_double_vec("Result", results, 1);
+    print_double_vec_hex("Hex   ", results, 1);
+    
+    printf("--- End of test ---\n\n");
+    return 1;
+}
+
+static void test_vmulsd() {
+    printf("--- Testing vmulsd (scalar double-precision multiplication) ---\n");
+    
+    // 测试128位用例（仅取第一个元素）
+    int num_128 = sizeof(double_tests_128) / sizeof(double_tests_128[0]);
+    for (int i = 0; i < num_128; i++) {
+        DoubleTest128 *test = &double_tests_128[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    // 测试256位用例（仅取第一个元素）
+    int num_256 = sizeof(double_tests_256) / sizeof(double_tests_256[0]);
+    for (int i = 0; i < num_256; i++) {
+        DoubleTest256 *test = &double_tests_256[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    printf("\n--- TEST COMPLETED ---\n");
 }
 
 int main() {
     test_vmulsd();
-    printf("VMULSD tests completed\n");
     return 0;
 }

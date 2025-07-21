@@ -1,62 +1,74 @@
 #include "avx.h"
+#include "avxfloat.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <math.h>
 
-// VSUBSD - Subtract Scalar Double-Precision Floating-Point Values
-// Performs subtraction on scalar double-precision floating-point values
-
-static void test_vsubsd() {
-    printf("Testing VSUBSD\n");
+static int run_test_case(const char *desc, int op_type, 
+                         double src1, double src2) {
+    printf("--- %s ---\n", desc);
     
-    // 测试用例
-    struct TestCase {
-        double input1;
-        double input2;
-        double expected;
-    } test_cases[] = {
-        {1.0, 0.5, 0.5},       // 基本减法
-        {4.0, 2.0, 2.0},       // 整数减法
-        {1.5e300, 0.5e300, 1.0e300},  // 大数减法
-        {1.5e-300, 0.5e-300, 1.0e-300}, // 小数减法
-        {0.0, 0.0, 0.0},       // 零减零
-        {-1.0, 0.5, -1.5},     // 负数减法
-        {INFINITY, 1.0, INFINITY}, // 无穷大减有限数
-        {NAN, 1.0, NAN},       // NaN减有限数
-    };
-
-    for (size_t i = 0; i < sizeof(test_cases)/sizeof(test_cases[0]); i++) {
-        double result = 0.0;
+    double result;
+    
+    if (op_type == 0) { // reg-reg
         __asm__ __volatile__(
             "vmovsd %1, %%xmm0\n\t"
             "vmovsd %2, %%xmm1\n\t"
             "vsubsd %%xmm1, %%xmm0, %%xmm2\n\t"
             "vmovsd %%xmm2, %0\n\t"
             : "=m"(result)
-            : "m"(test_cases[i].input1), "m"(test_cases[i].input2)
+            : "m"(src1), "m"(src2)
             : "xmm0", "xmm1", "xmm2"
         );
-
-        printf("Test case %zu:\n", i+1);
-        printf("Input1: %.17g\n", test_cases[i].input1);
-        printf("Input2: %.17g\n", test_cases[i].input2);
-        printf("Result: %.17g\n", result);
-        printf("Expected: %.17g\n", test_cases[i].expected);
-        
-        if (isnan(test_cases[i].expected)) {
-            if (!isnan(result)) {
-                printf("Mismatch: expected NaN\n");
-            }
-        } else if (fabs(result - test_cases[i].expected) > 0.0000001) {
-            printf("Mismatch: got %.17g, expected %.17g\n", 
-                  result, test_cases[i].expected);
-        }
-        printf("\n");
+    } else { // reg-mem
+        __asm__ __volatile__(
+            "vmovsd %1, %%xmm0\n\t"
+            "vsubsd %2, %%xmm0, %%xmm1\n\t"
+            "vmovsd %%xmm1, %0\n\t"
+            : "=m"(result)
+            : "m"(src1), "m"(src2)
+            : "xmm0", "xmm1"
+        );
     }
+    
+    double inputs1[1] = {src1};
+    double inputs2[1] = {src2};
+    double results[1] = {result};
+    
+    print_double_vec("Input1", inputs1, 1);
+    print_double_vec("Input2", inputs2, 1);
+    print_double_vec("Result", results, 1);
+    print_double_vec_hex("Hex   ", results, 1);
+    
+    printf("--- End of test ---\n\n");
+    return 1;
+}
+
+static void test_vsubsd() {
+    printf("--- Testing vsubsd (scalar double-precision subtraction) ---\n");
+    
+    // 测试128位用例（仅取第一个元素）
+    int num_128 = sizeof(double_tests_128) / sizeof(double_tests_128[0]);
+    for (int i = 0; i < num_128; i++) {
+        DoubleTest128 *test = &double_tests_128[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    // 测试256位用例（仅取第一个元素）
+    int num_256 = sizeof(double_tests_256) / sizeof(double_tests_256[0]);
+    for (int i = 0; i < num_256; i++) {
+        DoubleTest256 *test = &double_tests_256[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    printf("\n--- TEST COMPLETED ---\n");
 }
 
 int main() {
     test_vsubsd();
-    printf("VSUBSD tests completed\n");
     return 0;
 }

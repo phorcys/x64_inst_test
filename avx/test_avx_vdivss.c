@@ -1,72 +1,73 @@
 #include "avx.h"
+#include "avxfloat.h"
 #include <stdio.h>
-#include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <math.h>
 
-// VDIVSS指令测试函数
-static void test_vdivss() {
-    printf("=== Testing VDIVSS ===\n");
-
-    // 测试用例数组
-    struct TestCase {
-        float a;
-        float b;
-        float expected;
-        const char* desc;
-    } test_cases[] = {
-        {10.0f, 2.0f, 5.0f, "10.0 / 2.0 = 5.0"},
-        {1.0f, 4.0f, 0.25f, "1.0 / 4.0 = 0.25"},
-        {0.0f, 1.0f, 0.0f, "0.0 / 1.0 = 0.0"},
-        {-10.0f, 2.0f, -5.0f, "-10.0 / 2.0 = -5.0"},
-        {1.0f, 0.0f, INFINITY, "1.0 / 0.0 = INF"},
-        {0.0f, 0.0f, NAN, "0.0 / 0.0 = NAN"},
-        {INFINITY, 2.0f, INFINITY, "INF / 2.0 = INF"},
-        {1.0f, INFINITY, 0.0f, "1.0 / INF = 0.0"},
-        {NAN, 2.0f, NAN, "NAN / 2.0 = NAN"},
-        {1.0f, NAN, NAN, "1.0 / NAN = NAN"}
-    };
-
-    int num_tests = sizeof(test_cases) / sizeof(test_cases[0]);
-    int passed = 0;
-
-    for (int i = 0; i < num_tests; i++) {
-        float a = test_cases[i].a;
-        float b = test_cases[i].b;
-        float expected = test_cases[i].expected;
-        float result;
-
-        // 使用内联汇编执行VDIVSS指令
-        __asm__ __volatile__ (
-            "vdivss %[b], %[a], %[res]\n\t"
-            : [res] "=x" (result)
-            : [a] "x" (a),
-              [b] "x" (b)
+static int run_test_case(const char *desc, int op_type, 
+                         float src1, float src2) {
+    printf("--- %s ---\n", desc);
+    
+    float result;
+    
+    if (op_type == 0) { // reg-reg
+        __asm__ __volatile__(
+            "vmovss %1, %%xmm0\n\t"
+            "vmovss %2, %%xmm1\n\t"
+            "vdivss %%xmm1, %%xmm0, %%xmm2\n\t"
+            "vmovss %%xmm2, %0\n\t"
+            : "=m"(result)
+            : "m"(src1), "m"(src2)
+            : "xmm0", "xmm1", "xmm2"
         );
-
-        // 比较结果
-        int is_equal;
-        if (isnan(expected)) {
-            is_equal = isnan(result);
-        } else if (isinf(expected)) {
-            is_equal = isinf(result) && (signbit(expected) == signbit(result));
-        } else {
-            is_equal = float_equal(result, expected, 0.0001f);
-        }
-
-        // 打印测试结果
-        printf("Test %d: %s\n", i+1, test_cases[i].desc);
-        printf("  Operands: a=%f, b=%f\n", a, b);
-        printf("  Expected: %f (0x%08X)\n", expected, *(uint32_t*)&expected);
-        printf("  Result:   %f (0x%08X)\n", result, *(uint32_t*)&result);
-        printf("  %s\n", is_equal ? "PASS" : "FAIL");
-
-        if (is_equal) passed++;
+    } else { // reg-mem
+        __asm__ __volatile__(
+            "vmovss %1, %%xmm0\n\t"
+            "vdivss %2, %%xmm0, %%xmm1\n\t"
+            "vmovss %%xmm1, %0\n\t"
+            : "=m"(result)
+            : "m"(src1), "m"(src2)
+            : "xmm0", "xmm1"
+        );
     }
-
-    printf("\nSummary: %d/%d tests passed\n\n", passed, num_tests);
+    
+    float inputs1[1] = {src1};
+    float inputs2[1] = {src2};
+    float results[1] = {result};
+    
+    print_float_vec("Input1", inputs1, 1);
+    print_float_vec("Input2", inputs2, 1);
+    print_float_vec("Result", results, 1);
+    print_hex_float_vec("Hex   ", results, 1);
+    
+    printf("--- End of test ---\n\n");
+    return 1;
 }
 
-// 主函数
+static void test_vdivss() {
+    printf("--- Testing vdivss (scalar single-precision division) ---\n");
+    
+    // 测试128位用例（仅取第一个元素）
+    int num_128 = sizeof(float_tests_128) / sizeof(float_tests_128[0]);
+    for (int i = 0; i < num_128; i++) {
+        FloatTest128 *test = &float_tests_128[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    // 测试256位用例（仅取第一个元素）
+    int num_256 = sizeof(float_tests_256) / sizeof(float_tests_256[0]);
+    for (int i = 0; i < num_256; i++) {
+        FloatTest256 *test = &float_tests_256[i];
+        run_test_case(test->name, 0, test->input1[0], test->input2[0]);
+        run_test_case(test->name, 1, test->input1[0], test->input2[0]);
+    }
+    
+    printf("\n--- TEST COMPLETED ---\n");
+}
+
 int main() {
     test_vdivss();
     return 0;
