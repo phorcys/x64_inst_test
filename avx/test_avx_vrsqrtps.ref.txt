@@ -1,64 +1,271 @@
-Testing VRSQRTPS
-Testing VRSQRTPS (128-bit)
-Test case 1 (128-bit):
+Starting VRSQRTPS tests...
+
+--- Testing Basic values (128-bit) ---
+
+Test case 1: Basic values
 Input: 1
-Result: 0.99987793
+Register result: 0.99987793
 Expected: 1
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 0.99987793
+[OK] Memory: within tolerance (rel error 0.0122%)
 
-Test case 2 (128-bit):
+Test case 2: Basic values
 Input: 4
-Result: 0.499938965
+Register result: 0.499938965
 Expected: 0.5
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 0.499938965
+[OK] Memory: within tolerance (rel error 0.0122%)
 
-Test case 3 (128-bit):
+Test case 3: Basic values
 Input: 16
-Result: 0.249969482
+Register result: 0.249969482
 Expected: 0.25
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 0.249969482
+[OK] Memory: within tolerance (rel error 0.0122%)
 
-Test case 4 (128-bit):
+Test case 4: Basic values
 Input: 64
-Result: 0.124984741
+Register result: 0.124984741
 Expected: 0.125
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 0.124984741
+[OK] Memory: within tolerance (rel error 0.0122%)
 
-Testing VRSQRTPS (256-bit)
-Test case 1 (256-bit):
-Input: 1
-Result: 0.99987793
-Expected: 1
+--- Testing Zero values (128-bit) ---
 
-Test case 2 (256-bit):
-Input: 4
-Result: 0.499938965
-Expected: 0.5
+Test case 1: Zero values
+Input: 0
+Register result: inf
+Expected: inf
+[OK] Register: infinity with correct sign
+Memory result: inf
+[OK] Memory: infinity with correct sign
 
-Test case 3 (256-bit):
-Input: 16
-Result: 0.249969482
-Expected: 0.25
+Test case 2: Zero values
+Input: -0
+Register result: -inf
+Expected: -inf
+[OK] Register: infinity with correct sign
+Memory result: -inf
+[OK] Memory: infinity with correct sign
 
-Test case 4 (256-bit):
-Input: 64
-Result: 0.124984741
-Expected: 0.125
+Test case 3: Zero values
+Input: 1.17549435e-38
+Register result: 9.22224614e+18
+Expected: 9.22337204e+18
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 9.22224614e+18
+[OK] Memory: within tolerance (rel error 0.0122%)
 
-Test case 5 (256-bit):
-Input: 0.25
-Result: 1.99975586
-Expected: 2
-
-Test case 6 (256-bit):
-Input: -0.25
-Result: -nan
+Test case 4: Zero values
+Input: -1.17549435e-38
+Register result: -nan
 Expected: nan
+[OK] Register: NaN as expected
+Memory result: -nan
+[OK] Memory: NaN as expected
 
-Test case 7 (256-bit):
+--- Testing Special values (128-bit) ---
+
+Test case 1: Special values
 Input: inf
-Result: 0
+Register result: 0
 Expected: 0
+[OK] Register: within tolerance (abs error 0)
+Memory result: 0
+[OK] Memory: within tolerance (abs error 0)
 
-Test case 8 (256-bit):
-Input: nan
-Result: nan
+Test case 2: Special values
+Input: -inf
+Register result: -nan
 Expected: nan
+[OK] Register: NaN as expected
+Memory result: -nan
+[OK] Memory: NaN as expected
+
+Test case 3: Special values
+Input: nan
+Register result: nan
+Expected: nan
+[OK] Register: NaN as expected
+Memory result: nan
+[OK] Memory: NaN as expected
+
+Test case 4: Special values
+Input: -nan
+Register result: -nan
+Expected: nan
+[OK] Register: NaN as expected
+Memory result: -nan
+[OK] Memory: NaN as expected
+
+--- Testing Mixed values (256-bit) ---
+
+Test case 1: Mixed values
+Input: 1
+Register result: 0.99987793
+Expected: 1
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 0.99987793
+[OK] Memory: within tolerance (rel error 0.0122%)
+
+Test case 2: Mixed values
+Input: 4
+Register result: 0.499938965
+Expected: 0.5
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 0.499938965
+[OK] Memory: within tolerance (rel error 0.0122%)
+
+Test case 3: Mixed values
+Input: 0.25
+Register result: 1.99975586
+Expected: 2
+[OK] Register: within tolerance (rel error 0.0122%)
+Memory result: 1.99975586
+[OK] Memory: within tolerance (rel error 0.0122%)
+
+Test case 4: Mixed values
+Input: 100
+Register result: 0.0999908447
+Expected: 0.100000001
+[OK] Register: within tolerance (rel error 0.0092%)
+Memory result: 0.0999908447
+[OK] Memory: within tolerance (rel error 0.0092%)
+
+Test case 5: Mixed values
+Input: 0
+Register result: inf
+Expected: inf
+[OK] Register: infinity with correct sign
+Memory result: inf
+[OK] Memory: infinity with correct sign
+
+Test case 6: Mixed values
+Input: -1
+Register result: -nan
+Expected: nan
+[OK] Register: NaN as expected
+Memory result: -nan
+[OK] Memory: NaN as expected
+
+Test case 7: Mixed values
+Input: inf
+Register result: 0
+Expected: 0
+[OK] Register: within tolerance (abs error 0)
+Memory result: 0
+[OK] Memory: within tolerance (abs error 0)
+
+Test case 8: Mixed values
+Input: nan
+Register result: nan
+Expected: nan
+[OK] Register: NaN as expected
+Memory result: nan
+[OK] Memory: NaN as expected
+
+--- Testing Boundary values (256-bit) ---
+
+Test case 1: Boundary values
+Input: 3.40282347e+38
+Register result: 5.42101086e-20
+Expected: 5.42101151e-20
+[OK] Register: within tolerance (rel error 0.0000%)
+Memory result: 5.42101086e-20
+[OK] Memory: within tolerance (rel error 0.0000%)
+
+Test case 2: Boundary values
+Input: -3.40282347e+38
+Register result: -nan
+Expected: nan
+[OK] Register: NaN as expected
+Memory result: -nan
+[OK] Memory: NaN as expected
+
+Test case 3: Boundary values
+Input: 1.40129846e-45
+Register result: inf
+Expected: inf
+[OK] Register: infinity with correct sign
+Memory result: inf
+[OK] Memory: infinity with correct sign
+
+Test case 4: Boundary values
+Input: 1e-30
+Register result: 1.00000583e+15
+Expected: 9.99999987e+14
+[OK] Register: within tolerance (rel error 0.0006%)
+Memory result: 1.00000583e+15
+[OK] Memory: within tolerance (rel error 0.0006%)
+
+Test case 5: Boundary values
+Input: -1e-30
+Register result: -nan
+Expected: nan
+[OK] Register: NaN as expected
+Memory result: -nan
+[OK] Memory: NaN as expected
+
+Test case 6: Boundary values
+Input: 1.00000002e+30
+Register result: 1.00006808e-15
+Expected: 1e-15
+[OK] Register: within tolerance (rel error 0.0068%)
+Memory result: 1.00006808e-15
+[OK] Memory: within tolerance (rel error 0.0068%)
+
+Test case 7: Boundary values
+Input: -1.00000002e+30
+Register result: -nan
+Expected: nan
+[OK] Register: NaN as expected
+Memory result: -nan
+[OK] Memory: NaN as expected
+
+Test case 8: Boundary values
+Input: 0
+Register result: inf
+Expected: inf
+[OK] Register: infinity with correct sign
+Memory result: inf
+[OK] Memory: infinity with correct sign
+
+--- Testing Known precision issues (128-bit) ---
+
+Test case 1: Known precision issues
+Input: 1e-30
+Register result: 1.00000583e+15
+Expected: 9.99999987e+14
+[OK] Register: within tolerance (rel error 0.0006%)
+Memory result: 1.00000583e+15
+[OK] Memory: within tolerance (rel error 0.0006%)
+
+Test case 2: Known precision issues
+Input: 9.99999968e-21
+Register result: 9.99922074e+09
+Expected: 1e+10
+[OK] Register: within tolerance (rel error 0.0078%)
+Memory result: 9.99922074e+09
+[OK] Memory: within tolerance (rel error 0.0078%)
+
+Test case 3: Known precision issues
+Input: 1.00000001e-10
+Register result: 100000
+Expected: 100000
+[OK] Register: within tolerance (rel error 0.0000%)
+Memory result: 100000
+[OK] Memory: within tolerance (rel error 0.0000%)
+
+Test case 4: Known precision issues
+Input: 1e+10
+Register result: 1.00005418e-05
+Expected: 9.99999975e-06
+[OK] Register: within tolerance (rel error 0.0054%)
+Memory result: 1.00005418e-05
+[OK] Memory: within tolerance (rel error 0.0054%)
 
 VRSQRTPS tests completed
