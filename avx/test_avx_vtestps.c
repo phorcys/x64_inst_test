@@ -21,7 +21,10 @@ static void test_vtestps_128(const char* name, __m128 a, __m128 b) {
         : [flags] "=r"(flags)
         : [a] "x"(a), [b] "xm"(b)
         : "rax", "cc");
-    
+    print_vector128("  A       ", a);
+    print_m128i_hex((__m128i)a, "  A (hex) ");
+    print_vector128("  B       ", b);
+    print_m128i_hex((__m128i)b, "  B (hex) ");
     printf("\nTest 128: %s\n", name);
     print_flags("Result flags", flags);
 }
@@ -40,6 +43,10 @@ static void test_vtestps_256(const char* name, __m256 a, __m256 b) {
         : "rax", "cc");
     
     printf("\nTest 256: %s\n", name);
+    print_vector256("  A       ", a);
+    print_m256i_hex((__m256i)a, "  A (hex) ");
+    print_vector256("  B       ", b);
+    print_m256i_hex((__m256i)b, "  B (hex) ");
     print_flags("Result flags", flags);
 }
 

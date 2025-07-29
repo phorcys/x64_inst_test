@@ -23,6 +23,10 @@ static void test_vtestpd_128(const char* name, __m128d a, __m128d b) {
         : "rax", "cc");
     
     printf("\nTest 128: %s\n", name);
+    print_vector128d("  A       ", a);
+    print_m128i_hex((__m128i)a, "  A (hex) ");
+    print_vector128d("  B       ", b);
+    print_m128i_hex((__m128i)b, "  B (hex) ");
     print_flags("Result flags", flags);
 }
 
@@ -40,6 +44,10 @@ static void test_vtestpd_256(const char* name, __m256d a, __m256d b) {
         : "rax", "cc");
     
     printf("\nTest 256: %s\n", name);
+    print_vector256d("  A       ", a);
+    print_m256i_hex((__m256i)a, "  A (hex) ");
+    print_vector256d("  B       ", b);
+    print_m256i_hex((__m256i)b, "  B (hex) ");
     print_flags("Result flags", flags);
 }
 

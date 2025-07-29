@@ -218,7 +218,13 @@ static void __attribute__((unused)) print_vector128(const char* name, __m128 vec
     _mm_storeu_ps(f, vec);
     printf("%s: [%.6f, %.6f, %.6f, %.6f]\n", name, f[0], f[1], f[2], f[3]);
 }
-
+// Helper to print 128-bit vector (double precision)
+static void __attribute__((unused)) print_vector128d(const char* name, __m128d vec) {
+    double d[2];
+    _mm_storeu_pd(d, vec);
+    printf("%s: [%.6f, %.6f]\n", 
+           name, d[0], d[1]);
+}
 // Helper to print 256-bit vector (single precision)
 static void __attribute__((unused)) print_vector256(const char* name, __m256 vec) {
     float f[8];
