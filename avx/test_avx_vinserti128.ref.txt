@@ -3,7 +3,23 @@ vinsertf128 low 128-bits tests.
 src1:: 1 2 3 4 5 6 7 8 
 src2:: 10 20 30 40 
 dst :: 10 20 30 40 5 6 7 8 
-vinsertf128 low 128-bits tests.
+vinsertf128 low 128-bits tests, q0==q2.
+src1:: 1 2 3 4 5 6 7 8 
+src2:: 10 20 30 40 
+dst :: 10 20 30 40 5 6 7 8 
+vinsertf128 low 128-bits tests, q0==q1.
+src1:: 1 2 3 4 5 6 7 8 
+src2:: 10 20 30 40 
+dst :: 10 20 30 40 5 6 7 8 
+vinsertf128 high 128-bits tests.
+src1:: 1 2 3 4 5 6 7 8 
+src2:: 10 20 30 40 
+dst :: 1 2 3 4 10 20 30 40 
+vinsertf128 high 128-bits tests, q0==q2.
+src1:: 1 2 3 4 5 6 7 8 
+src2:: 10 20 30 40 
+dst :: 1 2 3 4 10 20 30 40 
+vinsertf128 high 128-bits tests, q0==q1.
 src1:: 1 2 3 4 5 6 7 8 
 src2:: 10 20 30 40 
 dst :: 1 2 3 4 10 20 30 40 

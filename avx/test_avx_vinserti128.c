@@ -35,7 +35,39 @@ static void test_vinserti128() {
     print_int32_vec("src1:", src1, 8);
     print_int32_vec("src2:", src2, 4);
     print_int32_vec("dst :", dst, 8);
+
+        // 测试插入低128位(立即数0)
+    __asm__ __volatile__(
+        "vmovdqu %1, %%ymm0\n\t"
+        "vmovdqu %2, %%xmm1\n\t"
+        "vinserti128 $0, %%xmm1, %%ymm0, %%ymm1\n\t"
+        "vmovdqu %%ymm1, %0\n\t"
+        : "=m"(dst)
+        : "m"(src1), "m"(src2)
+        : "ymm0", "ymm1", "ymm2"
+    );
     
+    printf("vinsertf128 low 128-bits tests, q0==q2.\n");
+    print_int32_vec("src1:", src1, 8);
+    print_int32_vec("src2:", src2, 4);
+    print_int32_vec("dst :", dst, 8);
+    
+        // 测试插入低128位(立即数0)
+    __asm__ __volatile__(
+        "vmovdqu %1, %%ymm0\n\t"
+        "vmovdqu %2, %%xmm1\n\t"
+        "vinserti128 $0, %%xmm1, %%ymm0, %%ymm0\n\t"
+        "vmovdqu %%ymm0, %0\n\t"
+        : "=m"(dst)
+        : "m"(src1), "m"(src2)
+        : "ymm0", "ymm1", "ymm2"
+    );
+    
+    printf("vinsertf128 low 128-bits tests, q0==q1.\n");
+    print_int32_vec("src1:", src1, 8);
+    print_int32_vec("src2:", src2, 4);
+    print_int32_vec("dst :", dst, 8);
+
     int32_t src11[8] = {1, 2, 3, 4, 5, 6, 7, 8};
     int32_t src21[4] = {10, 20, 30, 40};
     int32_t dst1[8];
@@ -50,7 +82,37 @@ static void test_vinserti128() {
         : "ymm0", "ymm1", "ymm2"
     );
     
-    printf("vinsertf128 low 128-bits tests.\n");
+    printf("vinsertf128 high 128-bits tests.\n");
+    print_int32_vec("src1:", src11, 8);
+    print_int32_vec("src2:", src21, 4);
+    print_int32_vec("dst :", dst1, 8);
+
+        __asm__ __volatile__(
+        "vmovdqu %1, %%ymm0\n\t"
+        "vmovdqu %2, %%xmm1\n\t"
+        "vinserti128 $1, %%xmm1, %%ymm0, %%ymm1\n\t"
+        "vmovdqu %%ymm1, %0\n\t"
+        : "=m"(dst1)
+        : "m"(src11), "m"(src21)
+        : "ymm0", "ymm1", "ymm2"
+    );
+    
+    printf("vinsertf128 high 128-bits tests, q0==q2.\n");
+    print_int32_vec("src1:", src11, 8);
+    print_int32_vec("src2:", src21, 4);
+    print_int32_vec("dst :", dst1, 8);
+
+    __asm__ __volatile__(
+        "vmovdqu %1, %%ymm0\n\t"
+        "vmovdqu %2, %%xmm1\n\t"
+        "vinserti128 $1, %%xmm1, %%ymm0, %%ymm0\n\t"
+        "vmovdqu %%ymm0, %0\n\t"
+        : "=m"(dst1)
+        : "m"(src11), "m"(src21)
+        : "ymm0", "ymm1", "ymm2"
+    );
+    
+    printf("vinsertf128 high 128-bits tests, q0==q1.\n");
     print_int32_vec("src1:", src11, 8);
     print_int32_vec("src2:", src21, 4);
     print_int32_vec("dst :", dst1, 8);
