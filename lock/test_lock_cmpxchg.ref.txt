@@ -1,0 +1,22 @@
+Testing 8-bit CMPXCHG:
+Reg target [match]: mem=34 (expected 0x34), result=12 (expected 0x12) - PASS
+Aligned mem [fail]: mem=56 (expected 0x56), result=56 (expected 0x56) - PASS
+Unaligned mem [match]: mem=CD (expected 0xCD), result=AB (expected 0xAB) - PASS
+
+Testing 16-bit CMPXCHG:
+Reg target [match]: mem=5678 (expected 0x5678), result=1234 (expected 0x1234) - PASS
+Aligned mem [fail]: mem=9ABC (expected 0x9ABC), result=9ABC (expected 0x9ABC) - PASS
+Unaligned mem [match]: mem=2222 (expected 0x2222), result=1111 (expected 0x1111) - PASS
+
+Testing 32-bit CMPXCHG:
+Reg target [match]: mem=9ABCDEF0 (expected 0x9ABCDEF0), result=12345678 (expected 0x12345678) - PASS
+Aligned mem [fail]: mem=11223344 (expected 0x11223344), result=11223344 (expected 0x11223344) - PASS
+Unaligned mem [match]: mem=CAFEBABE (expected 0xCAFEBABE), result=DEADBEEF (expected 0xDEADBEEF) - PASS
+
+Testing 64-bit CMPXCHG:
+Reg target [match]: mem=1122334455667788 (expected 0x1122334455667788), result=123456789ABCDEF0 (expected 0x123456789ABCDEF0) - PASS
+Aligned mem [fail]: mem=DEADBEEFCAFEBABE (expected 0xDEADBEEFCAFEBABE), result=DEADBEEFCAFEBABE (expected 0xDEADBEEFCAFEBABE) - PASS
+Unaligned mem [match]: mem=2233445566778899 (expected 0x2233445566778899), result=AABBCCDDEEFF0011 (expected 0xAABBCCDDEEFF0011) - PASS
+
+Testing multithreaded 32-bit CMPXCHG:
+Final value: 4000 (expected 4000) - PASS
