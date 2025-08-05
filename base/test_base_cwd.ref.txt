@@ -1,0 +1,22 @@
+Testing CWD (16-bit):
+=====================
+Positive value (0x7FFF):
+  DX:AX = 0x0000:7FFF
+Negative value (0x8000):
+  DX:AX = 0xFFFF:8000
+
+Testing CDQ (32-bit):
+=====================
+Positive value (0x7FFFFFFF):
+  EDX:EAX = 0x00000000:7FFFFFFF
+Negative value (0x80000000):
+  EDX:EAX = 0xFFFFFFFF:80000000
+
+Testing CQO (64-bit):
+=====================
+Positive value (0x7FFFFFFFFFFFFFFF):
+  RDX:RAX = 0x0000000000000000:7FFFFFFFFFFFFFFF
+Negative value (0x8000000000000000):
+  RDX:RAX = 0xFFFFFFFFFFFFFFFF:8000000000000000
+
+CWD/CDQ/CQO tests completed.

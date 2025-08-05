@@ -1,0 +1,22 @@
+
+Testing BSWAP 32-bit
+BSWAP(0x00000000) = 0x00000000 [PASS]
+BSWAP(0x12345678) = 0x78563412 [PASS]
+BSWAP(0xaabbccdd) = 0xddccbbaa [PASS]
+BSWAP(0x11223344) = 0x44332211 [PASS]
+BSWAP(0xdeadbeef) = 0xefbeadde [PASS]
+BSWAP(0x00ff00ff) = 0xff00ff00 [PASS]
+BSWAP(0x0f0f0f0f) = 0x0f0f0f0f [PASS]
+BSWAP(0xffffffff) = 0xffffffff [PASS]
+
+Testing BSWAP 64-bit
+BSWAP(0x0000000000000000) = 0x0000000000000000 [PASS]
+BSWAP(0x1122334455667788) = 0x8877665544332211 [PASS]
+BSWAP(0xaabbccddeeff0011) = 0x1100ffeeddccbbaa [PASS]
+BSWAP(0xdeadbeefcafebabe) = 0xbebafecaefbeadde [PASS]
+BSWAP(0x00ff00ff00ff00ff) = 0xff00ff00ff00ff00 [PASS]
+BSWAP(0x0f0f0f0f0f0f0f0f) = 0x0f0f0f0f0f0f0f0f [PASS]
+BSWAP(0xffffffffffffffff) = 0xffffffffffffffff [PASS]
+BSWAP(0x1234567890abcdef) = 0xefcdab9078563412 [PASS]
+
+BSWAP tests completed.

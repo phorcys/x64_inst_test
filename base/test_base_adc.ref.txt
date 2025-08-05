@@ -1,0 +1,1656 @@
+
+Testing ADC reg, reg
+
+8-bit tests (carry=0)
+ADC 0x00, 0x00 = 0x00
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC 0xff, 0x01 = 0x00
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC 0x7f, 0x01 = 0x80
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC 0x0f, 0x01 = 0x10
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+8-bit tests (carry=1)
+ADC 0x00, 0x00 = 0x01
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC 0xff, 0x01 = 0x01
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC 0x7f, 0x01 = 0x81
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC 0x0f, 0x01 = 0x11
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Testing ADC reg, mem
+
+32-bit tests (carry=0)
+ADC reg(0x00000000), mem(0x00000000) = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000000) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x80000000), mem(0x00000000) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000000) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000000), mem(0xffffffff) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0xffffffff) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x80000000), mem(0xffffffff) = 0x7fffffff
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(0x00000001), mem(0xffffffff) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000000), mem(0x7fffffff) = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x7fffffff) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(0x80000000), mem(0x7fffffff) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x7fffffff) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(0x00000000), mem(0x00000fff) = 0x00000fff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000fff) = 0x00001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x80000000), mem(0x00000fff) = 0x80000fff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000fff) = 0x00001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+32-bit tests (carry=1)
+ADC reg(0x00000000), mem(0x00000000) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000000) = 0x00000002
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x80000000), mem(0x00000000) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000000) = 0x00000002
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000000), mem(0xffffffff) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0xffffffff) = 0x00000001
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x80000000), mem(0xffffffff) = 0x80000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0xffffffff) = 0x00000001
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000000), mem(0x7fffffff) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x7fffffff) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(0x80000000), mem(0x7fffffff) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x7fffffff) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(0x00000000), mem(0x00000fff) = 0x00001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000fff) = 0x00001001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x80000000), mem(0x00000fff) = 0x80001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(0x00000001), mem(0x00000fff) = 0x00001001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Testing ADC mem, reg
+
+32-bit tests (carry=0)
+ADC mem(0x00000000), reg(0x00000000) = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000001), reg(0x00000001) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), reg(0x80000000) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000001), reg(0x00000001) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0xffffffff), reg(0x00000000) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000000), reg(0x00000001) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x7fffffff), reg(0x80000000) = 0x7fffffff
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x00000000), reg(0x00000001) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x7fffffff), reg(0x00000000) = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), reg(0x00000001) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0xffffffff), reg(0x80000000) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), reg(0x00000001) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x00000fff), reg(0x00000000) = 0x00000fff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00001000), reg(0x00000001) = 0x00001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000fff), reg(0x80000000) = 0x80000fff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00001000), reg(0x00000001) = 0x00001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+32-bit tests (carry=1)
+ADC mem(0x00000001), reg(0x00000000) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000002), reg(0x00000001) = 0x00000002
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000001), reg(0x80000000) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000002), reg(0x00000001) = 0x00000002
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000000), reg(0x00000000) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000001), reg(0x00000001) = 0x00000001
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), reg(0x80000000) = 0x80000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000001), reg(0x00000001) = 0x00000001
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), reg(0x00000000) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x80000001), reg(0x00000001) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x00000000), reg(0x80000000) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000001), reg(0x00000001) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x00001000), reg(0x00000000) = 0x00001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00001001), reg(0x00000001) = 0x00001001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80001000), reg(0x80000000) = 0x80001000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00001001), reg(0x00000001) = 0x00001001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Testing ADC reg, imm
+
+Tests (carry=0)
+ADC reg(8-bit) 0x00, imm 0x00 = 0x00
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x00, imm 0x01 = 0x01
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x00, imm 0x00 = 0x00
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x00, imm 0xff = 0xff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0x00 = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0x01 = 0xffffff00
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0x00 = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0xff = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0x00 = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0x01 = 0x7fffff00
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0x00 = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0xff = 0x7ffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0x00 = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0x01 = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0x00 = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0xff = 0x800000ff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0x0001 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0xffff = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0x0001 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0xffff = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0x0001 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0xffff = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0x0001 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0xffff = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x00000000 = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x00000001 = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x80000000 = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x7fffffff = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x00000000 = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x00000001 = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x80000000 = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x7fffffff = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x00000000 = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x00000001 = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x80000000 = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x7fffffff = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x00000000 = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x00000001 = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x80000000 = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x7fffffff = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x0000000000000000 = 0x0000000000000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x0000000000000001 = 0x0000000000000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x0000000080000000 = 0x0000000080000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x000000007fffffff = 0x000000007fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x0000000000000000 = 0x00000000ffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x0000000000000001 = 0x0000000100000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x0000000080000000 = 0x000000017fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x000000007fffffff = 0x000000017ffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x0000000000000000 = 0x000000007fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x0000000000000001 = 0x0000000080000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x0000000080000000 = 0x00000000ffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x000000007fffffff = 0x00000000fffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x0000000000000000 = 0x0000000080000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x0000000000000001 = 0x0000000080000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x0000000080000000 = 0x0000000100000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x000000007fffffff = 0x00000000ffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Tests (carry=1)
+ADC reg(8-bit) 0x00, imm 0x00 = 0x00
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x00, imm 0x01 = 0x01
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x00, imm 0x00 = 0x00
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x00, imm 0xff = 0xff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0x00 = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0x01 = 0xffffff00
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0x00 = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0xffffffff, imm 0xff = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0x00 = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0x01 = 0x7fffff00
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0x00 = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x7fffffff, imm 0xff = 0x7ffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0x00 = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0x01 = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0x00 = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(8-bit) 0x80000000, imm 0xff = 0x800000ff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0x0001 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x0000, imm 0xffff = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0x0001 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0xffffffff, imm 0xffff = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0x0001 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0x0000 = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x7fffffff, imm 0xffff = 0xfffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0x0001 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0x0000 = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(16-bit) 0x80000000, imm 0xffff = 0x0000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x00000000 = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x00000001 = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x80000000 = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x00000000, imm 0x7fffffff = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x00000000 = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x00000001 = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x80000000 = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0xffffffff, imm 0x7fffffff = 0xfffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x00000000 = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x00000001 = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x80000000 = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x7fffffff, imm 0x7fffffff = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x00000000 = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x00000001 = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x80000000 = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(32-bit) 0x80000000, imm 0x7fffffff = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x0000000000000000 = 0x0000000000000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x0000000000000001 = 0x0000000000000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x0000000080000000 = 0x0000000080000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000000000000, imm 0x000000007fffffff = 0x000000007fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x0000000000000000 = 0x00000000ffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x0000000000000001 = 0x0000000100000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x0000000080000000 = 0x000000017fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x00000000ffffffff, imm 0x000000007fffffff = 0x000000017ffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x0000000000000000 = 0x000000007fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x0000000000000001 = 0x0000000080000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x0000000080000000 = 0x00000000ffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x000000007fffffff, imm 0x000000007fffffff = 0x00000000fffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x0000000000000000 = 0x0000000080000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x0000000000000001 = 0x0000000080000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x0000000080000000 = 0x0000000100000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC reg(64-bit) 0x0000000080000000, imm 0x000000007fffffff = 0x00000000ffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Testing ADC mem, imm
+
+32-bit tests (carry=0)
+ADC mem(0x00000000), imm(0x00000000) = 0x00000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000001), imm(0x00000001) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), imm(0x80000000) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x7fffffff), imm(0x7fffffff) = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0xffffffff), imm(0x00000000) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000000), imm(0x00000001) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x7fffffff), imm(0x80000000) = 0x7fffffff
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x7ffffffe), imm(0x7fffffff) = 0x7ffffffe
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x7fffffff), imm(0x00000000) = 0x7fffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), imm(0x00000001) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0xffffffff), imm(0x80000000) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0xfffffffe), imm(0x7fffffff) = 0xfffffffe
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x80000000), imm(0x00000000) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000001), imm(0x00000001) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000000), imm(0x80000000) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0xffffffff), imm(0x7fffffff) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+32-bit tests (carry=1)
+ADC mem(0x00000001), imm(0x00000000) = 0x00000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000002), imm(0x00000001) = 0x00000002
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000001), imm(0x80000000) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), imm(0x7fffffff) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x00000000), imm(0x00000000) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000001), imm(0x00000001) = 0x00000001
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), imm(0x80000000) = 0x80000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x7fffffff), imm(0x7fffffff) = 0x7fffffff
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000000), imm(0x00000000) = 0x80000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x80000001), imm(0x00000001) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x00000000), imm(0x80000000) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0xffffffff), imm(0x7fffffff) = 0xffffffff
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x80000001), imm(0x00000000) = 0x80000001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x80000002), imm(0x00000001) = 0x80000002
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ADC mem(0x00000001), imm(0x80000000) = 0x00000001
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+ADC mem(0x00000000), imm(0x7fffffff) = 0x00000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+ADC tests completed.

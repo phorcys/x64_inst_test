@@ -1,0 +1,31 @@
+Testing CMPXCHG8B:
+==================
+Aligned memory (success):
+  Expected: 0x123456789ABCDEF0, Actual: 0xFEDCBA9876543210
+  ZF: 1
+  Flags: 0x040
+Aligned memory (failure):
+  Expected: 0x123456789ABCDEF0, Actual: 0x1122334455667788
+  ZF: 0
+  Flags: 0x000
+Unaligned memory (success):
+  Expected: 0x123456789ABCDEF0, Actual: 0xFEDCBA9876543210
+  ZF: 1
+  Flags: 0x040
+Unaligned memory (failure):
+  Expected: 0x123456789ABCDEF0, Actual: 0x1122334455667788
+  ZF: 0
+  Flags: 0x000
+
+Testing LOCK CMPXCHG8B:
+=======================
+LOCK CMPXCHG8B (success):
+  Expected: 0x0000000000000000, Actual: 0x123456789ABCDEF0
+  ZF: 1
+  Flags: 0x040
+LOCK CMPXCHG8B (failure):
+  Expected: 0x0000000000000000, Actual: 0x1122334455667788
+  ZF: 0
+  Flags: 0x000
+
+CMPXCHG8B tests completed.

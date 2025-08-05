@@ -1,0 +1,5 @@
+Starting CALL instruction test
+PASS: Near relative call test
+PASS: Near absolute indirect call (register operand)
+PASS: Near absolute indirect call (memory operand)
+All CALL instruction tests passed!

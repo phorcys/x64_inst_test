@@ -1,0 +1,11 @@
+Starting CLD (Clear Direction Flag) instruction test
+Test 1: Clear direction flag when set
+  DF before: 1, DF after: 0 - PASS
+
+Test 2: Clear direction flag when already cleared
+  DF before: 0, DF after: 0 - PASS
+
+Test 3: Verify other flags are not affected
+  Changed flags (excluding DF): 0x000 - PASS
+
+CLD instruction tests completed!

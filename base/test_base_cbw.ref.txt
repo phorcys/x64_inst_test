@@ -1,0 +1,23 @@
+Starting CBW/CWDE/CDQE instruction tests
+Testing CBW (Convert Byte to Word):
+  Input: 0x00, Expected: 0x0000, Result: 0x0000 - PASS
+  Input: 0x7F, Expected: 0x007F, Result: 0x007F - PASS
+  Input: 0x80, Expected: 0xFF80, Result: 0xFF80 - PASS
+  Input: 0xFF, Expected: 0xFFFF, Result: 0xFFFF - PASS
+  Input: 0x55, Expected: 0x0055, Result: 0x0055 - PASS
+  Input: 0xAA, Expected: 0xFFAA, Result: 0xFFAA - PASS
+Testing CWDE (Convert Word to Doubleword):
+  Input: 0x0000, Expected: 0x00000000, Result: 0x00000000 - PASS
+  Input: 0x7FFF, Expected: 0x00007FFF, Result: 0x00007FFF - PASS
+  Input: 0x8000, Expected: 0xFFFF8000, Result: 0xFFFF8000 - PASS
+  Input: 0xFFFF, Expected: 0xFFFFFFFF, Result: 0xFFFFFFFF - PASS
+  Input: 0x5555, Expected: 0x00005555, Result: 0x00005555 - PASS
+  Input: 0xAAAA, Expected: 0xFFFFAAAA, Result: 0xFFFFAAAA - PASS
+Testing CDQE (Convert Doubleword to Quadword):
+  Input: 0x00000000, Expected: 0x0000000000000000, Result: 0x0000000000000000 - PASS
+  Input: 0x7FFFFFFF, Expected: 0x000000007FFFFFFF, Result: 0x000000007FFFFFFF - PASS
+  Input: 0x80000000, Expected: 0xFFFFFFFF80000000, Result: 0xFFFFFFFF80000000 - PASS
+  Input: 0xFFFFFFFF, Expected: 0xFFFFFFFFFFFFFFFF, Result: 0xFFFFFFFFFFFFFFFF - PASS
+  Input: 0x55555555, Expected: 0x0000000055555555, Result: 0x0000000055555555 - PASS
+  Input: 0xAAAAAAAA, Expected: 0xFFFFFFFFAAAAAAAA, Result: 0xFFFFFFFFAAAAAAAA - PASS
+All CBW/CWDE/CDQE instruction tests completed!

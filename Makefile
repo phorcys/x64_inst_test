@@ -1,16 +1,17 @@
 # Makefile for compiling and generating reference outputs
 
 # Target directories 
-DIRS := mmx lock sse sse2 sse3 sse4 avx crypt arith x87
+DIRS := base mmx lock sse sse2 sse3 sse4 avx crypt arith x87
 
 # Default CFLAGS
-CC := gcc
+CC := clang
 CFLAGS := -Wall -Wextra -O0 -march=core2 -pthread -D_GNU_SOURCE
 MMX_CFLAGS := -Wall -Wextra -O0 -mmmx -pthread -D_GNU_SOURCE -lm
 SSE_CFLAGS := -Wall -Wextra -O0 -msse -msse2 -msse3 -msse4 -msse4.1 -msse4.2 -mlzcnt \
              -pthread -D_GNU_SOURCE
 AVX_CFLAGS := -Wall -Wextra -O0 -march=core2 -mavx -mavx2 -pthread -D_GNU_SOURCE -lm
 X87_CFLAGS := -Wall -Wextra -O0 -march=core2 -pthread -D_GNU_SOURCE
+BASE_CFLAGS := -Wall -Wextra -O0 -march=core2 -pthread -D_GNU_SOURCE
 
 # Get all .c files
 SRCS := $(foreach dir,$(DIRS),$(wildcard $(dir)/*.c))
@@ -37,6 +38,8 @@ all: $(EXES)
 		$(CC) $(X87_CFLAGS) -o $@ $< x87/ficomp_asm.o -lm; \
 	elif echo "$@" | grep -q '^x87/'; then \
 		$(CC) $(X87_CFLAGS) -o $@ $< -lm; \
+	elif echo "$@" | grep -q '^base/'; then \
+		$(CC) $(BASE_CFLAGS) -o $@ $< -lm; \
 	else \
 		$(CC) $(CFLAGS) -o $@ $<; \
 	fi

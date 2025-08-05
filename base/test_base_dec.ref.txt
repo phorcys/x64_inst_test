@@ -1,0 +1,43 @@
+Testing DEC with register operands:
+==================================
+8-bit (0x42 -> 0x41):
+  Result: 0x41
+  Flags: 0x004
+8-bit underflow (0x00 -> 0xFF):
+  Result: 0xFF
+  Flags: 0x094
+16-bit (0x1234 -> 0x1233):
+  Result: 0x1233
+  Flags: 0x004
+16-bit underflow (0x0000 -> 0xFFFF):
+  Result: 0xFFFF
+  Flags: 0x094
+32-bit (0x12345678 -> 0x12345677):
+  Result: 0x12345677
+  Flags: 0x004
+32-bit underflow (0x00000000 -> 0xFFFFFFFF):
+  Result: 0xFFFFFFFF
+  Flags: 0x094
+64-bit (0x123456789ABCDEF0 -> 0x123456789ABCDEEF):
+  Result: 0x123456789ABCDEEF
+  Flags: 0x010
+64-bit underflow (0x0000000000000000 -> 0xFFFFFFFFFFFFFFFF):
+  Result: 0xFFFFFFFFFFFFFFFF
+  Flags: 0x094
+
+Testing DEC with memory operands:
+================================
+Aligned memory (0x12345678 -> 0x12345677):
+  Result: 0x12345677
+  Flags: 0x004
+Unaligned memory (0x12345678 -> 0x12345677):
+  Result: 0x12345677
+  Flags: 0x004
+
+Testing LOCK DEC:
+=================
+LOCK DEC (0x12345678 -> 0x12345677):
+  Result: 0x12345677
+  Flags: 0x004
+
+DEC tests completed.

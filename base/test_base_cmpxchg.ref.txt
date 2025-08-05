@@ -1,0 +1,66 @@
+Testing CMPXCHG with register operands:
+======================================
+8-bit (success):
+  AL before: 0x12, after: 0x12
+  Dest before: 0x12, after: 0x34
+  Flags: 0x044
+8-bit (failure):
+  AL before: 0x12, after: 0x56
+  Dest before: 0x56, after: 0x56
+  Flags: 0x091
+16-bit (success):
+  AX before: 0x1234, after: 0x1234
+  Dest before: 0x1234, after: 0x5678
+  Flags: 0x044
+16-bit (failure):
+  AX before: 0x1234, after: 0x9ABC
+  Dest before: 0x9ABC, after: 0x9ABC
+  Flags: 0x015
+32-bit (success):
+  EAX before: 0x12345678, after: 0x12345678
+  Dest before: 0x12345678, after: 0x9ABCDEF0
+  Flags: 0x044
+32-bit (failure):
+  EAX before: 0x12345678, after: 0x11223344
+  Dest before: 0x11223344, after: 0x11223344
+  Flags: 0x000
+64-bit (success):
+  RAX before: 0x123456789ABCDEF0, after: 0x123456789ABCDEF0
+  Dest before: 0x123456789ABCDEF0, after: 0xFEDCBA9876543210
+  Flags: 0x044
+64-bit (failure):
+  RAX before: 0x123456789ABCDEF0, after: 0x1122334455667788
+  Dest before: 0x1122334455667788, after: 0x1122334455667788
+  Flags: 0x010
+
+Testing CMPXCHG with memory operands:
+====================================
+Aligned memory (success):
+  Memory before: 0x12345678, after: 0x9ABCDEF0
+  EAX before: 0x12345678, after: 0x12345678
+  Flags: 0x044
+Aligned memory (failure):
+  Memory before: 0x11223344, after: 0x11223344
+  EAX before: 0x12345678, after: 0x11223344
+  Flags: 0x000
+Unaligned memory (success):
+  Memory before: 0x12345678, after: 0x9ABCDEF0
+  EAX before: 0x12345678, after: 0x12345678
+  Flags: 0x044
+Unaligned memory (failure):
+  Memory before: 0x11223344, after: 0x11223344
+  EAX before: 0x12345678, after: 0x11223344
+  Flags: 0x000
+
+Testing LOCK CMPXCHG:
+=====================
+LOCK CMPXCHG (success):
+  Memory before: 0x00000000, after: 0x12345678
+  EAX before: 0x00000000, after: 0x00000000
+  Flags: 0x044
+LOCK CMPXCHG (failure):
+  Memory before: 0x11223344, after: 0x11223344
+  EAX before: 0x00000000, after: 0x11223344
+  Flags: 0x091
+
+CMPXCHG tests completed.

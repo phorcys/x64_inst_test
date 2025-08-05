@@ -1,0 +1,117 @@
+Testing CMOVcc instructions:
+============================
+
+
+Testing CMOVa (Above (CF=0 and ZF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVae (Above or Equal (CF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVb (Below (CF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVbe (Below or Equal (CF=1 or ZF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVc (Carry (CF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVe (Equal (ZF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVg (Greater (ZF=0 and SF=OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVge (Greater or Equal (SF=OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVl (Less (SF≠OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVle (Less or Equal (ZF=1 or SF≠OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVna (Not Above (CF=1 or ZF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnae (Not Above or Equal (CF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnb (Not Below (CF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnbe (Not Below or Equal (CF=0 and ZF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnc (Not Carry (CF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVne (Not Equal (ZF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVng (Not Greater (ZF=1 or SF≠OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnge (Not Greater or Equal (SF≠OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnl (Not Less (SF=OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnle (Not Less or Equal (ZF=0 and SF=OF)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVno (Not Overflow (OF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnp (Not Parity (PF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVns (Not Sign (SF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVnz (Not Zero (ZF=0)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVo (Overflow (OF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVp (Parity (PF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVs (Sign (SF=1)):
+----------------------------
+  Passed: 14/14
+
+Testing CMOVz (Zero (ZF=1)):
+----------------------------
+  Passed: 14/14
+
+CMOVcc tests completed.
