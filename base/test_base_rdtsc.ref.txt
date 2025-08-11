@@ -1,0 +1,12 @@
+RDTSC instruction test
+======================
+TSC increment: PASS 
+RDTSC with CPUID serialization: PASS
+RDTSC with memory barrier: PASS
+Monotonic TSC check: PASS
+
+RDTSC test completed
+====================
+Total tests: 6
+Passed: 6
+Failed: 0

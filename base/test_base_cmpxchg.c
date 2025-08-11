@@ -266,9 +266,11 @@ static void test_lock_cmpxchg() {
     src_val = 0x12345678;
     CLEAR_FLAGS;
     asm volatile (
-        "movl %2, %%eax\n\t"
-        "lock cmpxchgl %3, %0\n\t"
-        : "+m" (shared_mem), "+a" (eax_val)
+        "movl %3, %%eax\n\t"
+        "lock cmpxchgl %4, %0\n\t"
+        "pushfq\n\t"
+        "pop %2\n\t"
+        : "+m" (shared_mem), "+a" (eax_val), "=r"(flags)
         : "r" (eax_val), "r" (src_val)
         : "cc"
     );
@@ -284,9 +286,11 @@ static void test_lock_cmpxchg() {
     src_val = 0x55667788;
     CLEAR_FLAGS;
     asm volatile (
-        "movl %2, %%eax\n\t"
-        "lock cmpxchgl %3, %0\n\t"
-        : "+m" (shared_mem), "+a" (eax_val)
+        "movl %3, %%eax\n\t"
+        "lock cmpxchgl %4, %0\n\t"
+        "pushfq\n\t"
+        "pop %2\n\t"        
+        : "+m" (shared_mem), "+a" (eax_val), "=r"(flags)
         : "r" (eax_val), "r" (src_val)
         : "cc"
     );

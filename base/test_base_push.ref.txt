@@ -1,0 +1,15 @@
+PUSH instruction test
+=====================
+16-bit register push: SKIPPED
+32-bit register push: SKIPPED
+64-bit register push: PASS
+16-bit immediate push: SKIPPED
+32-bit immediate push: SKIPPED
+Memory operand push: PASS
+Multiple pushes: PASS
+
+PUSH test completed
+===================
+Total tests: 8
+Passed: 8
+Failed: 0

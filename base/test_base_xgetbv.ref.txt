@@ -1,0 +1,10 @@
+XGETBV instruction test
+=======================
+CPU supports XSAVE feature
+XCR0 value: 0x0000000000000207
+  SSE state: Supported
+  AVX state: Supported
+  XGETBV basic functionality: PASS
+
+XGETBV test completed
+=====================

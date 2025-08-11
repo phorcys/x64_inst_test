@@ -1,0 +1,16 @@
+SHL instruction test
+====================
+8-bit SHL (<<1): 0001 0110 
+16-bit SHL (<<1): 0x2468
+32-bit SHL (<<8): 0x00000100
+64-bit SHL (<<65 masked to 1): 0x0000000000000002
+Memory SHL (<<1): 0x8000
+8-bit SHL CF test: val=0x00, CF=1
+8-bit SHL OF test: val=0x80, OF=1
+8-bit SHL ZF test: val=0x00, ZF=1
+
+SHL test completed
+==================
+Total tests: 8
+Passed: 8
+Failed: 0

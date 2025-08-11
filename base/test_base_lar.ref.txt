@@ -1,0 +1,45 @@
+Starting LAR tests
+==================
+
+Test 1: Valid selector CS (0x0033)
+  ZF: 1
+  Access Rights: 0xFB00
+
+Test 2: Valid selector SS (0x002B)
+  ZF: 1
+  Access Rights: 0xF300
+
+Test 3: Valid selector User Segment (0x0033)
+  ZF: 1
+  Access Rights: 0xFB00
+
+Test 4: Invalid selector 0x0000
+  ZF: 0
+  Access Rights: 0x0000
+
+Test 5: Invalid selector 0xFFF8
+  ZF: 0
+  Access Rights: 0x0000
+
+Test 6: Invalid selector 0x1234
+  ZF: 0
+  Access Rights: 0x0000
+
+Test 7: Valid selector CS (0x0033) with 32-bit destination
+  ZF: 1
+  Access Rights: 0x00AFFB00
+
+Test 8: Valid selector SS (0x002B) with 32-bit destination
+  ZF: 1
+  Access Rights: 0x00CFF300
+
+Test 9: Valid selector User Segment (0x0033) with 32-bit destination
+  ZF: 1
+  Access Rights: 0x00AFFB00
+
+
+LAR tests completed
+====================
+Total tests: 9
+Passed: 9
+Failed: 0

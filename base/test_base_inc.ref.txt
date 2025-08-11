@@ -1,0 +1,73 @@
+Starting INC instruction tests
+=============================
+
+Testing INC on memory operands:
+-------------------------------
+INC byte (0xFE -> 0xFF): 0xFF
+Flags:
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+INC byte (0xFF -> 0x00): 0x00
+Flags:
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+INC word (0x7FFF -> 0x8000): 0x8000
+Flags:
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+INC dword (0xFFFFFFFF -> 0x00000000): 0x00000000
+Flags:
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+INC qword (0x7FFFFFFFFFFFFFFF -> 0x8000000000000000): 0x8000000000000000
+Flags:
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+Testing INC on register operands:
+--------------------------------
+INC AL (0x41 -> 0x42): 0x42
+Flags:
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+INC AX (0xFFFF -> 0x0000): 0x0000
+Flags:
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+INC EAX (0x80000000 -> 0x80000001): 0x80000001
+Flags:
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+INC RAX (0x0 -> 0x1): 0x0000000000000001
+Flags:
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+All INC tests completed.

@@ -1,0 +1,9 @@
+SMSW instruction test
+=====================
+SMSW (16-bit): 0x0033
+
+SMSW test completed
+===================
+Total tests: 4
+Passed: 4
+Failed: 0

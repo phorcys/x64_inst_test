@@ -1,0 +1,7 @@
+XRSTOR instruction test
+=======================
+  MXCSR restored successfully: 0x00001f80
+  XRSTOR basic functionality: PASS
+
+XRSTOR test completed
+=====================

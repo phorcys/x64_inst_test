@@ -1,0 +1,9 @@
+RDPMC instruction test
+======================
+RDPMC caused SIGSEGV (expected in user mode): PASS
+
+RDPMC test completed
+====================
+Total tests: 1
+Passed: 1
+Failed: 0

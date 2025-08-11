@@ -1,0 +1,12 @@
+NOP instruction test
+====================
+Register test: PASS
+Memory test: PASS
+Multiple NOPs execution: PASS
+NOP with operand: PASS
+
+NOP test completed
+==================
+Total tests: 4
+Passed: 4
+Failed: 0

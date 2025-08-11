@@ -1,0 +1,22 @@
+VERW instruction test
+=====================
+Testing VERW with register operand:
+SS register: 0x002b
+  Expected ZF: 1, Actual ZF: 1
+    OK
+Null selector: 0x0000
+  Expected ZF: 0, Actual ZF: 0
+    OK
+Testing VERW with memory operand:
+SS selector: 0x002b
+  Expected ZF: 1, Actual ZF: 1
+    OK
+Null selector: 0x0000
+  Expected ZF: 0, Actual ZF: 0
+    OK
+Explicit memory location: 0x002b
+  Expected ZF: 1, Actual ZF: 1
+    OK
+
+VERW test completed
+==================

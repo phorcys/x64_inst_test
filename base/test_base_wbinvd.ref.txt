@@ -1,0 +1,7 @@
+WBINVD instruction test
+=======================
+Attempting to execute WBINVD...
+Received SIGILL (expected in user mode)
+
+WBINVD test completed
+====================

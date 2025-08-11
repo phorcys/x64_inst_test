@@ -1,0 +1,57 @@
+TEST instruction test
+====================
+Testing TEST with immediate forms:
+  Result: 0x00, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x00000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000000000000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+Testing TEST with memory-immediate forms:
+  Result: 0x00, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x00000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000000000000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+Testing TEST with register-register forms:
+  Result: 0x00, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x00000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000000000000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+Testing TEST with register-memory forms:
+  Result: 0x00, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x00000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+  Result: 0x0000000000000000, Flags: 0x00000246
+  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+    Flags OK
+
+TEST test completed
+==================

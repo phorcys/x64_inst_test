@@ -10,8 +10,6 @@ static void test_div8() {
     uint16_t dividend;
     uint8_t divisor;
     uint8_t quotient, remainder;
-    uint64_t flags;
-    
     // Case 1: Normal division
     dividend = 0x1234;
     divisor = 0x56;
@@ -47,8 +45,6 @@ static void test_div16() {
     uint32_t dividend;
     uint16_t divisor;
     uint16_t quotient, remainder;
-    uint64_t flags;
-    
     // Case 1: Normal division
     dividend = 0x12345678;
     divisor = 0x9ABC;
@@ -84,8 +80,6 @@ static void test_div32() {
     uint64_t dividend;
     uint32_t divisor;
     uint32_t quotient, remainder;
-    uint64_t flags;
-    
     // Case 1: Normal division
     dividend = 0x123456789ABCDEF0;
     divisor = 0x12345678;
@@ -121,11 +115,9 @@ static void test_div64() {
     unsigned __int128 dividend;
     uint64_t divisor;
     uint64_t quotient, remainder;
-    uint64_t flags;
-    
     // Case 1: Normal division
-    dividend = (unsigned __int128)0x123456789ABCDEF0 << 64 | 0xFEDCBA9876543210;
-    divisor = 0x123456789ABCDEF0;
+    dividend = 100;
+    divisor = 5;
     CLEAR_FLAGS;
     asm volatile (
         "divq %2\n\t"
@@ -133,13 +125,12 @@ static void test_div64() {
         : "r" (divisor), "a" ((uint64_t)dividend), "d" ((uint64_t)(dividend >> 64))
         : "cc"
     );
-    printf("0x%016lX%016lX / 0x%016lX:\n", 
-           (uint64_t)(dividend >> 64), (uint64_t)dividend, divisor);
-    printf("  Quotient: 0x%016lX, Remainder: 0x%016lX\n", quotient, remainder);
+    printf("%llu / %llu:\n", (unsigned long long)dividend, (unsigned long long)divisor);
+    printf("  Quotient: %llu, Remainder: %llu\n", (unsigned long long)quotient, (unsigned long long)remainder);
     
     // Case 2: Division with remainder
-    dividend = (unsigned __int128)0xFEDCBA9876543210 << 64 | 0x123456789ABCDEF0;
-    divisor = 0x123456789ABCDEF0;
+    dividend = 100;
+    divisor = 7;
     CLEAR_FLAGS;
     asm volatile (
         "divq %2\n\t"
@@ -147,9 +138,8 @@ static void test_div64() {
         : "r" (divisor), "a" ((uint64_t)dividend), "d" ((uint64_t)(dividend >> 64))
         : "cc"
     );
-    printf("0x%016lX%016lX / 0x%016lX:\n", 
-           (uint64_t)(dividend >> 64), (uint64_t)dividend, divisor);
-    printf("  Quotient: 0x%016lX, Remainder: 0x%016lX\n", quotient, remainder);
+    printf("%llu / %llu:\n", (unsigned long long)dividend, (unsigned long long)divisor);
+    printf("  Quotient: %llu, Remainder: %llu\n", (unsigned long long)quotient, (unsigned long long)remainder);
 }
 
 // Test DIV with memory operands
@@ -157,40 +147,79 @@ static void test_div_mem() {
     printf("\nTesting DIV with memory operands:\n");
     printf("================================\n");
     
-    // Aligned memory
-    uint32_t aligned_divisor __attribute__((aligned(4)));
-    uint32_t unaligned_divisor;
-    uint32_t *unaligned_ptr = (uint32_t*)((char*)&unaligned_divisor + 1);
-    
-    uint64_t dividend;
-    uint32_t quotient, remainder;
+    char buffer[32] __attribute__((aligned(8)));
     uint64_t flags;
     
-    // Test aligned memory
-    dividend = 0x123456789ABCDEF0;
-    aligned_divisor = 0x12345678;
+    // 8-bit memory divisor
+    uint8_t *div8 = (uint8_t*)&buffer[0];
+    *div8 = 10;
+    uint16_t dividend8 = 1000;
     CLEAR_FLAGS;
     asm volatile (
-        "divl %1\n\t"
-        : "=a" (quotient), "=d" (remainder)
-        : "m" (aligned_divisor), "a" (dividend), "d" (dividend >> 32)
+        "divb %1\n\t"
+        : "+a" (dividend8)
+        : "m" (*div8)
         : "cc"
     );
-    printf("Aligned memory (0x%016lX / 0x%08X):\n", dividend, aligned_divisor);
-    printf("  Quotient: 0x%08X, Remainder: 0x%08X\n", quotient, remainder);
+    uint8_t quotient8 = dividend8 & 0xFF;
+    uint8_t remainder8 = dividend8 >> 8;
+    flags = get_eflags();
+    printf("8-bit memory divisor (1000 / 10):\n");
+    printf("  Quotient: 0x%02X, Remainder: 0x%02X\n", quotient8, remainder8);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
     
-    // Test unaligned memory
-    dividend = 0xFEDCBA9876543210;
-    *unaligned_ptr = 0xABCDEF01;
+    // 16-bit memory divisor
+    uint16_t *div16 = (uint16_t*)&buffer[0];
+    *div16 = 0x9ABC;
+    uint32_t dividend32 = 0x12345678;
+    CLEAR_FLAGS;
+    asm volatile (
+        "divw %1\n\t"
+        : "+a" (dividend32)
+        : "m" (*div16)
+        : "cc", "dx"
+    );
+    uint16_t quotient16 = dividend32 & 0xFFFF;
+    uint16_t remainder16 = dividend32 >> 16;
+    flags = get_eflags();
+    printf("16-bit memory divisor (0x12345678 / 0x9ABC):\n");
+    printf("  Quotient: 0x%04X, Remainder: 0x%04X\n", quotient16, remainder16);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 32-bit memory divisor
+    uint32_t *div32 = (uint32_t*)&buffer[0];
+    *div32 = 0x12345678;
+    uint64_t dividend64 = 0x123456789ABCDEF0;
     CLEAR_FLAGS;
     asm volatile (
         "divl %1\n\t"
-        : "=a" (quotient), "=d" (remainder)
-        : "m" (*unaligned_ptr), "a" (dividend), "d" (dividend >> 32)
+        : "+a" (dividend64)
+        : "m" (*div32)
+        : "cc", "dx"
+    );
+    uint32_t quotient32 = dividend64 & 0xFFFFFFFF;
+    uint32_t remainder32 = dividend64 >> 32;
+    flags = get_eflags();
+    printf("32-bit memory divisor (0x123456789ABCDEF0 / 0x12345678):\n");
+    printf("  Quotient: 0x%08X, Remainder: 0x%08X\n", quotient32, remainder32);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 64-bit memory divisor
+    uint64_t *div64 = (uint64_t*)&buffer[0];
+    *div64 = 5;
+    uint64_t rax = 100;
+    uint64_t rdx = 0;
+    CLEAR_FLAGS;
+    asm volatile (
+        "divq %2\n\t"
+        : "=a" (rax), "=d" (rdx)
+        : "m" (*div64), "a" (rax), "d" (rdx)
         : "cc"
     );
-    printf("Unaligned memory (0x%016lX / 0x%08X):\n", dividend, *unaligned_ptr);
-    printf("  Quotient: 0x%08X, Remainder: 0x%08X\n", quotient, remainder);
+    flags = get_eflags();
+    printf("64-bit memory divisor (100 / 5):\n");
+    printf("  Quotient: %llu, Remainder: %llu\n", (unsigned long long)rax, (unsigned long long)rdx);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
 }
 
 int main() {

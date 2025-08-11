@@ -1,0 +1,14 @@
+SAHF instruction test
+=====================
+SAHF (all flags): PASS - SF: 1, ZF: 1, AF: 1, PF: 1, CF: 1
+SAHF (clear flags): PASS - SF: 0, ZF: 0, AF: 0, PF: 0, CF: 0
+SAHF (partial flags): PASS - SF: 1, ZF: 0, AF: 1, PF: 1, CF: 1
+SAHF conditional jump (ZF=1): PASS
+SAHF CF behavior: PASS
+SAHF non-target flags: PASS
+
+SAHF test completed
+===================
+Total tests: 6
+Passed: 6
+Failed: 0

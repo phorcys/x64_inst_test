@@ -1,0 +1,33 @@
+Starting INS instruction tests
+=============================
+
+Testing INSB (byte input from port to string):
+---------------------------------------------
+INSB (port 0x0000): Segmentation fault (expected) at (nil)
+INSB (port 0x0001): Segmentation fault (expected) at (nil)
+INSB (port 0x007F): Segmentation fault (expected) at (nil)
+INSB (port 0x0080): Segmentation fault (expected) at (nil)
+INSB (port 0xFFFF): Segmentation fault (expected) at (nil)
+
+Testing INSW (word input from port to string):
+---------------------------------------------
+INSW (port 0x0000): Segmentation fault (expected) at (nil)
+INSW (port 0x0001): Segmentation fault (expected) at (nil)
+INSW (port 0x007F): Segmentation fault (expected) at (nil)
+INSW (port 0x0080): Segmentation fault (expected) at (nil)
+INSW (port 0xFFFF): Segmentation fault (expected) at (nil)
+
+Testing INSD (dword input from port to string):
+----------------------------------------------
+INSD (port 0x0000): Segmentation fault (expected) at (nil)
+INSD (port 0x0001): Segmentation fault (expected) at (nil)
+INSD (port 0x007F): Segmentation fault (expected) at (nil)
+INSD (port 0x0080): Segmentation fault (expected) at (nil)
+INSD (port 0xFFFF): Segmentation fault (expected) at (nil)
+
+Testing INS with direction flag set:
+-----------------------------------
+INSB with DF=1 (port 0x0080): Segmentation fault (expected) at (nil)
+INSB with DF=0 (port 0x0080): Segmentation fault (expected) at (nil)
+
+All INS tests completed.

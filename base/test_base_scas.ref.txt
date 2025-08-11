@@ -1,0 +1,14 @@
+SCAS instruction test
+=====================
+SCASB forward: PASS
+SCASB backward: PASS
+SCASW: PASS
+SCASD: PASS
+SCASQ: PASS
+SCASB not found: PASS
+
+SCAS test completed
+===================
+Total tests: 6
+Passed: 6
+Failed: 0

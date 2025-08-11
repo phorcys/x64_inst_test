@@ -1,0 +1,16 @@
+PUSHF instruction test
+======================
+Reserved bit set: PASS
+CF set: PASS
+ZF set: PASS
+SF set: PASS
+DF set: PASS
+OF set: PASS
+Multiple pushes: PASS
+Error: Stack not 16-byte aligned after PUSHF. 
+
+PUSHF test completed
+===================
+Total tests: 8
+Passed: 7
+Failed: 1

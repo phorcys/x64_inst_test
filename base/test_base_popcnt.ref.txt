@@ -1,0 +1,15 @@
+POPCNT instruction test
+=======================
+16-bit POPCNT: PASS
+32-bit POPCNT: PASS
+64-bit POPCNT: PASS
+Zero input: PASS
+All bits set: PASS
+Memory operand: PASS
+RBX register: PASS
+
+POPCNT test completed
+=====================
+Total tests: 7
+Passed: 7
+Failed: 0

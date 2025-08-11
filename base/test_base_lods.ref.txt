@@ -1,0 +1,31 @@
+Starting LODS tests...
+
+Testing LODSB (aligned, forward):
+  Value: 0x01, Expected: 0x01 - PASS
+Testing LODSB (unaligned, forward):
+  Value: 0x02, Expected: 0x02 - PASS
+Testing LODSB (aligned, backward):
+  Value: 0x08, Expected: 0x08 - PASS
+
+Testing LODSW (aligned, forward):
+  Value: 0x0102, Expected: 0x0102 - PASS
+Testing LODSW (unaligned, forward):
+  Value: 0x0401, Expected: 0x0401 - PASS
+Testing LODSW (aligned, backward):
+  Value: 0x0708, Expected: 0x0708 - PASS
+
+Testing LODSD (aligned, forward):
+  Value: 0x01020304, Expected: 0x01020304 - PASS
+Testing LODSD (unaligned, forward):
+  Value: 0x08010203, Expected: 0x08010203 - PASS
+Testing LODSD (aligned, backward):
+  Value: 0x0D0E0F10, Expected: 0x0D0E0F10 - PASS
+
+Testing LODSQ (aligned, forward):
+  Value: 0x0102030405060708, Expected: 0x0102030405060708 - PASS
+Testing LODSQ (unaligned, forward):
+  Value: 0x0E0F100102030405, Expected: 0x0E0F100102030405 - PASS
+Testing LODSQ (aligned, backward):
+  Value: 0x191A1B1C1D1E1F20, Expected: 0x191A1B1C1D1E1F20 - PASS
+
+All LODS tests completed.

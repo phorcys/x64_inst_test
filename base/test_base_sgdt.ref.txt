@@ -1,0 +1,12 @@
+SGDT instruction test
+=====================
+GDT Limit: 0x0000
+GDT Base:  0xFFFFFFFFFFFE0000
+Note: GDT limit is 0x0000 (may be 0 in some environments)
+SGDT test passed
+
+SGDT test completed
+===================
+Total tests: 3
+Passed: 3
+Failed: 0

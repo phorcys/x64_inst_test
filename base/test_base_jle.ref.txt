@@ -1,0 +1,35 @@
+Starting JLE instruction tests
+=============================
+
+Testing basic JLE functionality:
+------------------------------
+Case 1 (ZF=1): Jump taken
+Flags: CF=0 PF=1 AF=0 ZF=1 SF=0 OF=0
+
+Case 2 (SF=1, OF=0): Jump not taken
+Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0
+
+Case 3 (SF=0, OF=0, ZF=0): Jump not taken
+Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0
+
+Testing JLE with arithmetic operations:
+-------------------------------------
+Case 1 (-5 < 10): Jump taken
+Flags: CF=0 PF=0 AF=0 ZF=0 SF=1 OF=0
+
+Case 2 (10 == 10): Jump taken
+Flags: CF=0 PF=1 AF=0 ZF=1 SF=0 OF=0
+
+Case 3 (15 > 10): Jump not taken
+Flags: CF=0 PF=1 AF=0 ZF=0 SF=0 OF=0
+
+Testing JLE with memory operand:
+------------------------------
+Case 1 (mem < imm): Jump taken
+Flags: CF=0 PF=1 AF=0 ZF=0 SF=1 OF=0
+
+Case 2 (mem == imm): Jump taken
+Flags: CF=0 PF=1 AF=0 ZF=1 SF=0 OF=0
+
+
+All JLE tests completed.

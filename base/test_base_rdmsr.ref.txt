@@ -1,0 +1,12 @@
+RDMSR instruction test
+======================
+RDMSR for MSR 0x10 caused SIGSEGV (expected in user mode)
+RDMSR for MSR 0x1b caused SIGSEGV (expected in user mode)
+RDMSR for invalid MSR 0xffffffff caused SIGSEGV (expected)
+RDMSR for MSR 0x0 caused SIGSEGV (expected in user mode)
+
+RDMSR test completed
+====================
+Note: RDMSR is a privileged instruction and typically causes SIGSEGV in user mode
+Total tests: 4
+Errors: 0

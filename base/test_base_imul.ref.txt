@@ -1,0 +1,538 @@
+Testing IMUL instruction:
+=========================
+
+8-bit one-operand form:
+------------------------
+IMULb: AL=0 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=-2 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=64 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=-64 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=127 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=-128 * 0 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=0 * 1 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * 1 = 1 (AX=0x0001)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * 1 = -1 (AX=0xFFFFFFFF)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * 1 = 2 (AX=0x0002)
+  Flags: CF=0, OF=0
+IMULb: AL=-2 * 1 = -2 (AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULb: AL=64 * 1 = 64 (AX=0x0040)
+  Flags: CF=0, OF=0
+IMULb: AL=-64 * 1 = -64 (AX=0xFFFFFFC0)
+  Flags: CF=0, OF=0
+IMULb: AL=127 * 1 = 127 (AX=0x007F)
+  Flags: CF=0, OF=0
+IMULb: AL=-128 * 1 = -128 (AX=0xFFFFFF80)
+  Flags: CF=0, OF=0
+IMULb: AL=0 * -1 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * -1 = -1 (AX=0xFFFFFFFF)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * -1 = 1 (AX=0x0001)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * -1 = -2 (AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULb: AL=-2 * -1 = 2 (AX=0x0002)
+  Flags: CF=0, OF=0
+IMULb: AL=64 * -1 = -64 (AX=0xFFFFFFC0)
+  Flags: CF=0, OF=0
+IMULb: AL=-64 * -1 = 64 (AX=0x0040)
+  Flags: CF=0, OF=0
+IMULb: AL=127 * -1 = -127 (AX=0xFFFFFF81)
+  Flags: CF=0, OF=0
+IMULb: AL=-128 * -1 = -128 (AX=0x0080)
+  Flags: CF=1, OF=1
+IMULb: AL=0 * 2 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * 2 = 2 (AX=0x0002)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * 2 = -2 (AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * 2 = 4 (AX=0x0004)
+  Flags: CF=0, OF=0
+IMULb: AL=-2 * 2 = -4 (AX=0xFFFFFFFC)
+  Flags: CF=0, OF=0
+IMULb: AL=64 * 2 = -128 (AX=0x0080)
+  Flags: CF=1, OF=1
+IMULb: AL=-64 * 2 = -128 (AX=0xFFFFFF80)
+  Flags: CF=0, OF=0
+IMULb: AL=127 * 2 = -2 (AX=0x00FE)
+  Flags: CF=1, OF=1
+IMULb: AL=-128 * 2 = 0 (AX=0xFFFFFF00)
+  Flags: CF=1, OF=1
+IMULb: AL=0 * -2 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * -2 = -2 (AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * -2 = 2 (AX=0x0002)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * -2 = -4 (AX=0xFFFFFFFC)
+  Flags: CF=0, OF=0
+IMULb: AL=-2 * -2 = 4 (AX=0x0004)
+  Flags: CF=0, OF=0
+IMULb: AL=64 * -2 = -128 (AX=0xFFFFFF80)
+  Flags: CF=0, OF=0
+IMULb: AL=-64 * -2 = -128 (AX=0x0080)
+  Flags: CF=1, OF=1
+IMULb: AL=127 * -2 = 2 (AX=0xFFFFFF02)
+  Flags: CF=1, OF=1
+IMULb: AL=-128 * -2 = 0 (AX=0x0100)
+  Flags: CF=1, OF=1
+IMULb: AL=0 * 64 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * 64 = 64 (AX=0x0040)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * 64 = -64 (AX=0xFFFFFFC0)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * 64 = -128 (AX=0x0080)
+  Flags: CF=1, OF=1
+IMULb: AL=-2 * 64 = -128 (AX=0xFFFFFF80)
+  Flags: CF=0, OF=0
+IMULb: AL=64 * 64 = 0 (AX=0x1000)
+  Flags: CF=1, OF=1
+IMULb: AL=-64 * 64 = 0 (AX=0xFFFFF000)
+  Flags: CF=1, OF=1
+IMULb: AL=127 * 64 = -64 (AX=0x1FC0)
+  Flags: CF=1, OF=1
+IMULb: AL=-128 * 64 = 0 (AX=0xFFFFE000)
+  Flags: CF=1, OF=1
+IMULb: AL=0 * -64 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * -64 = -64 (AX=0xFFFFFFC0)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * -64 = 64 (AX=0x0040)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * -64 = -128 (AX=0xFFFFFF80)
+  Flags: CF=0, OF=0
+IMULb: AL=-2 * -64 = -128 (AX=0x0080)
+  Flags: CF=1, OF=1
+IMULb: AL=64 * -64 = 0 (AX=0xFFFFF000)
+  Flags: CF=1, OF=1
+IMULb: AL=-64 * -64 = 0 (AX=0x1000)
+  Flags: CF=1, OF=1
+IMULb: AL=127 * -64 = 64 (AX=0xFFFFE040)
+  Flags: CF=1, OF=1
+IMULb: AL=-128 * -64 = 0 (AX=0x2000)
+  Flags: CF=1, OF=1
+IMULb: AL=0 * 127 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * 127 = 127 (AX=0x007F)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * 127 = -127 (AX=0xFFFFFF81)
+  Flags: CF=0, OF=0
+IMULb: AL=2 * 127 = -2 (AX=0x00FE)
+  Flags: CF=1, OF=1
+IMULb: AL=-2 * 127 = 2 (AX=0xFFFFFF02)
+  Flags: CF=1, OF=1
+IMULb: AL=64 * 127 = -64 (AX=0x1FC0)
+  Flags: CF=1, OF=1
+IMULb: AL=-64 * 127 = 64 (AX=0xFFFFE040)
+  Flags: CF=1, OF=1
+IMULb: AL=127 * 127 = 1 (AX=0x3F01)
+  Flags: CF=1, OF=1
+IMULb: AL=-128 * 127 = -128 (AX=0xFFFFC080)
+  Flags: CF=1, OF=1
+IMULb: AL=0 * -128 = 0 (AX=0x0000)
+  Flags: CF=0, OF=0
+IMULb: AL=1 * -128 = -128 (AX=0xFFFFFF80)
+  Flags: CF=0, OF=0
+IMULb: AL=-1 * -128 = -128 (AX=0x0080)
+  Flags: CF=1, OF=1
+IMULb: AL=2 * -128 = 0 (AX=0xFFFFFF00)
+  Flags: CF=1, OF=1
+IMULb: AL=-2 * -128 = 0 (AX=0x0100)
+  Flags: CF=1, OF=1
+IMULb: AL=64 * -128 = 0 (AX=0xFFFFE000)
+  Flags: CF=1, OF=1
+IMULb: AL=-64 * -128 = 0 (AX=0x2000)
+  Flags: CF=1, OF=1
+IMULb: AL=127 * -128 = -128 (AX=0xFFFFC080)
+  Flags: CF=1, OF=1
+IMULb: AL=-128 * -128 = 0 (AX=0x4000)
+  Flags: CF=1, OF=1
+
+16-bit one-operand form:
+-------------------------
+IMULw: AX=0 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=-2 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=256 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=-256 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=32767 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=-32768 * 0 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=0 * 1 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * 1 = 1 (DX:AX=0x00000001)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * 1 = -1 (DX:AX=0xFFFFFFFF)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * 1 = 2 (DX:AX=0x00000002)
+  Flags: CF=0, OF=0
+IMULw: AX=-2 * 1 = -2 (DX:AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULw: AX=256 * 1 = 256 (DX:AX=0x00000100)
+  Flags: CF=0, OF=0
+IMULw: AX=-256 * 1 = -256 (DX:AX=0xFFFFFF00)
+  Flags: CF=0, OF=0
+IMULw: AX=32767 * 1 = 32767 (DX:AX=0x00007FFF)
+  Flags: CF=0, OF=0
+IMULw: AX=-32768 * 1 = -32768 (DX:AX=0xFFFF8000)
+  Flags: CF=0, OF=0
+IMULw: AX=0 * -1 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * -1 = -1 (DX:AX=0xFFFFFFFF)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * -1 = 1 (DX:AX=0x00000001)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * -1 = -2 (DX:AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULw: AX=-2 * -1 = 2 (DX:AX=0x00000002)
+  Flags: CF=0, OF=0
+IMULw: AX=256 * -1 = -256 (DX:AX=0xFFFFFF00)
+  Flags: CF=0, OF=0
+IMULw: AX=-256 * -1 = 256 (DX:AX=0x00000100)
+  Flags: CF=0, OF=0
+IMULw: AX=32767 * -1 = -32767 (DX:AX=0xFFFF8001)
+  Flags: CF=0, OF=0
+IMULw: AX=-32768 * -1 = -32768 (DX:AX=0x00008000)
+  Flags: CF=1, OF=1
+IMULw: AX=0 * 2 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * 2 = 2 (DX:AX=0x00000002)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * 2 = -2 (DX:AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * 2 = 4 (DX:AX=0x00000004)
+  Flags: CF=0, OF=0
+IMULw: AX=-2 * 2 = -4 (DX:AX=0xFFFFFFFC)
+  Flags: CF=0, OF=0
+IMULw: AX=256 * 2 = 512 (DX:AX=0x00000200)
+  Flags: CF=0, OF=0
+IMULw: AX=-256 * 2 = -512 (DX:AX=0xFFFFFE00)
+  Flags: CF=0, OF=0
+IMULw: AX=32767 * 2 = -2 (DX:AX=0x0000FFFE)
+  Flags: CF=1, OF=1
+IMULw: AX=-32768 * 2 = 0 (DX:AX=0xFFFF0000)
+  Flags: CF=1, OF=1
+IMULw: AX=0 * -2 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * -2 = -2 (DX:AX=0xFFFFFFFE)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * -2 = 2 (DX:AX=0x00000002)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * -2 = -4 (DX:AX=0xFFFFFFFC)
+  Flags: CF=0, OF=0
+IMULw: AX=-2 * -2 = 4 (DX:AX=0x00000004)
+  Flags: CF=0, OF=0
+IMULw: AX=256 * -2 = -512 (DX:AX=0xFFFFFE00)
+  Flags: CF=0, OF=0
+IMULw: AX=-256 * -2 = 512 (DX:AX=0x00000200)
+  Flags: CF=0, OF=0
+IMULw: AX=32767 * -2 = 2 (DX:AX=0xFFFF0002)
+  Flags: CF=1, OF=1
+IMULw: AX=-32768 * -2 = 0 (DX:AX=0x00010000)
+  Flags: CF=1, OF=1
+IMULw: AX=0 * 256 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * 256 = 256 (DX:AX=0x00000100)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * 256 = -256 (DX:AX=0xFFFFFF00)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * 256 = 512 (DX:AX=0x00000200)
+  Flags: CF=0, OF=0
+IMULw: AX=-2 * 256 = -512 (DX:AX=0xFFFFFE00)
+  Flags: CF=0, OF=0
+IMULw: AX=256 * 256 = 0 (DX:AX=0x00010000)
+  Flags: CF=1, OF=1
+IMULw: AX=-256 * 256 = 0 (DX:AX=0xFFFF0000)
+  Flags: CF=1, OF=1
+IMULw: AX=32767 * 256 = -256 (DX:AX=0x007FFF00)
+  Flags: CF=1, OF=1
+IMULw: AX=-32768 * 256 = 0 (DX:AX=0xFF800000)
+  Flags: CF=1, OF=1
+IMULw: AX=0 * -256 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * -256 = -256 (DX:AX=0xFFFFFF00)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * -256 = 256 (DX:AX=0x00000100)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * -256 = -512 (DX:AX=0xFFFFFE00)
+  Flags: CF=0, OF=0
+IMULw: AX=-2 * -256 = 512 (DX:AX=0x00000200)
+  Flags: CF=0, OF=0
+IMULw: AX=256 * -256 = 0 (DX:AX=0xFFFF0000)
+  Flags: CF=1, OF=1
+IMULw: AX=-256 * -256 = 0 (DX:AX=0x00010000)
+  Flags: CF=1, OF=1
+IMULw: AX=32767 * -256 = 256 (DX:AX=0xFF800100)
+  Flags: CF=1, OF=1
+IMULw: AX=-32768 * -256 = 0 (DX:AX=0x00800000)
+  Flags: CF=1, OF=1
+IMULw: AX=0 * 32767 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * 32767 = 32767 (DX:AX=0x00007FFF)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * 32767 = -32767 (DX:AX=0xFFFF8001)
+  Flags: CF=0, OF=0
+IMULw: AX=2 * 32767 = -2 (DX:AX=0x0000FFFE)
+  Flags: CF=1, OF=1
+IMULw: AX=-2 * 32767 = 2 (DX:AX=0xFFFF0002)
+  Flags: CF=1, OF=1
+IMULw: AX=256 * 32767 = -256 (DX:AX=0x007FFF00)
+  Flags: CF=1, OF=1
+IMULw: AX=-256 * 32767 = 256 (DX:AX=0xFF800100)
+  Flags: CF=1, OF=1
+IMULw: AX=32767 * 32767 = 1 (DX:AX=0x3FFF0001)
+  Flags: CF=1, OF=1
+IMULw: AX=-32768 * 32767 = -32768 (DX:AX=0xC0008000)
+  Flags: CF=1, OF=1
+IMULw: AX=0 * -32768 = 0 (DX:AX=0x00000000)
+  Flags: CF=0, OF=0
+IMULw: AX=1 * -32768 = -32768 (DX:AX=0xFFFF8000)
+  Flags: CF=0, OF=0
+IMULw: AX=-1 * -32768 = -32768 (DX:AX=0x00008000)
+  Flags: CF=1, OF=1
+IMULw: AX=2 * -32768 = 0 (DX:AX=0xFFFF0000)
+  Flags: CF=1, OF=1
+IMULw: AX=-2 * -32768 = 0 (DX:AX=0x00010000)
+  Flags: CF=1, OF=1
+IMULw: AX=256 * -32768 = 0 (DX:AX=0xFF800000)
+  Flags: CF=1, OF=1
+IMULw: AX=-256 * -32768 = 0 (DX:AX=0x00800000)
+  Flags: CF=1, OF=1
+IMULw: AX=32767 * -32768 = -32768 (DX:AX=0xC0008000)
+  Flags: CF=1, OF=1
+IMULw: AX=-32768 * -32768 = 0 (DX:AX=0x40000000)
+  Flags: CF=1, OF=1
+
+32-bit two-operand form:
+-------------------------
+IMULl: EAX=0 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=-2 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=65536 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=-65536 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=2147483647 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=-2147483648 * 0 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=0 * 1 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * 1 = 1
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * 1 = -1
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * 1 = 2
+  Flags: CF=0, OF=0
+IMULl: EAX=-2 * 1 = -2
+  Flags: CF=0, OF=0
+IMULl: EAX=65536 * 1 = 65536
+  Flags: CF=0, OF=0
+IMULl: EAX=-65536 * 1 = -65536
+  Flags: CF=0, OF=0
+IMULl: EAX=2147483647 * 1 = 2147483647
+  Flags: CF=0, OF=0
+IMULl: EAX=-2147483648 * 1 = -2147483648
+  Flags: CF=0, OF=0
+IMULl: EAX=0 * -1 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * -1 = -1
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * -1 = 1
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * -1 = -2
+  Flags: CF=0, OF=0
+IMULl: EAX=-2 * -1 = 2
+  Flags: CF=0, OF=0
+IMULl: EAX=65536 * -1 = -65536
+  Flags: CF=0, OF=0
+IMULl: EAX=-65536 * -1 = 65536
+  Flags: CF=0, OF=0
+IMULl: EAX=2147483647 * -1 = -2147483647
+  Flags: CF=0, OF=0
+IMULl: EAX=-2147483648 * -1 = -2147483648
+  Flags: CF=1, OF=1
+IMULl: EAX=0 * 2 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * 2 = 2
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * 2 = -2
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * 2 = 4
+  Flags: CF=0, OF=0
+IMULl: EAX=-2 * 2 = -4
+  Flags: CF=0, OF=0
+IMULl: EAX=65536 * 2 = 131072
+  Flags: CF=0, OF=0
+IMULl: EAX=-65536 * 2 = -131072
+  Flags: CF=0, OF=0
+IMULl: EAX=2147483647 * 2 = -2
+  Flags: CF=1, OF=1
+IMULl: EAX=-2147483648 * 2 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=0 * -2 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * -2 = -2
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * -2 = 2
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * -2 = -4
+  Flags: CF=0, OF=0
+IMULl: EAX=-2 * -2 = 4
+  Flags: CF=0, OF=0
+IMULl: EAX=65536 * -2 = -131072
+  Flags: CF=0, OF=0
+IMULl: EAX=-65536 * -2 = 131072
+  Flags: CF=0, OF=0
+IMULl: EAX=2147483647 * -2 = 2
+  Flags: CF=1, OF=1
+IMULl: EAX=-2147483648 * -2 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=0 * 65536 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * 65536 = 65536
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * 65536 = -65536
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * 65536 = 131072
+  Flags: CF=0, OF=0
+IMULl: EAX=-2 * 65536 = -131072
+  Flags: CF=0, OF=0
+IMULl: EAX=65536 * 65536 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=-65536 * 65536 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=2147483647 * 65536 = -65536
+  Flags: CF=1, OF=1
+IMULl: EAX=-2147483648 * 65536 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=0 * -65536 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * -65536 = -65536
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * -65536 = 65536
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * -65536 = -131072
+  Flags: CF=0, OF=0
+IMULl: EAX=-2 * -65536 = 131072
+  Flags: CF=0, OF=0
+IMULl: EAX=65536 * -65536 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=-65536 * -65536 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=2147483647 * -65536 = 65536
+  Flags: CF=1, OF=1
+IMULl: EAX=-2147483648 * -65536 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=0 * 2147483647 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * 2147483647 = 2147483647
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * 2147483647 = -2147483647
+  Flags: CF=0, OF=0
+IMULl: EAX=2 * 2147483647 = -2
+  Flags: CF=1, OF=1
+IMULl: EAX=-2 * 2147483647 = 2
+  Flags: CF=1, OF=1
+IMULl: EAX=65536 * 2147483647 = -65536
+  Flags: CF=1, OF=1
+IMULl: EAX=-65536 * 2147483647 = 65536
+  Flags: CF=1, OF=1
+IMULl: EAX=2147483647 * 2147483647 = 1
+  Flags: CF=1, OF=1
+IMULl: EAX=-2147483648 * 2147483647 = -2147483648
+  Flags: CF=1, OF=1
+IMULl: EAX=0 * -2147483648 = 0
+  Flags: CF=0, OF=0
+IMULl: EAX=1 * -2147483648 = -2147483648
+  Flags: CF=0, OF=0
+IMULl: EAX=-1 * -2147483648 = -2147483648
+  Flags: CF=1, OF=1
+IMULl: EAX=2 * -2147483648 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=-2 * -2147483648 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=65536 * -2147483648 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=-65536 * -2147483648 = 0
+  Flags: CF=1, OF=1
+IMULl: EAX=2147483647 * -2147483648 = -2147483648
+  Flags: CF=1, OF=1
+IMULl: EAX=-2147483648 * -2147483648 = 0
+  Flags: CF=1, OF=1
+
+64-bit three-operand form:
+---------------------------
+IMULq: 0 * 2 = 0
+  Flags (imm8): CF=0, OF=0
+IMULq: 0 * 4 = 0
+  Flags (imm32): CF=0, OF=0
+IMULq: 1 * 2 = 2
+  Flags (imm8): CF=0, OF=0
+IMULq: 1 * 4 = 4
+  Flags (imm32): CF=0, OF=0
+IMULq: -1 * 2 = -2
+  Flags (imm8): CF=0, OF=0
+IMULq: -1 * 4 = -4
+  Flags (imm32): CF=0, OF=0
+IMULq: 2 * 2 = 4
+  Flags (imm8): CF=0, OF=0
+IMULq: 2 * 4 = 8
+  Flags (imm32): CF=0, OF=0
+IMULq: -2 * 2 = -4
+  Flags (imm8): CF=0, OF=0
+IMULq: -2 * 4 = -8
+  Flags (imm32): CF=0, OF=0
+IMULq: 4294967296 * 2 = 8589934592
+  Flags (imm8): CF=0, OF=0
+IMULq: 4294967296 * 4 = 17179869184
+  Flags (imm32): CF=0, OF=0
+IMULq: -4294967296 * 2 = -8589934592
+  Flags (imm8): CF=0, OF=0
+IMULq: -4294967296 * 4 = -17179869184
+  Flags (imm32): CF=0, OF=0
+IMULq: 9223372036854775807 * 2 = -2
+  Flags (imm8): CF=1, OF=1
+IMULq: 9223372036854775807 * 4 = -4
+  Flags (imm32): CF=1, OF=1
+IMULq: -9223372036854775808 * 2 = 0
+  Flags (imm8): CF=1, OF=1
+IMULq: -9223372036854775808 * 4 = 0
+  Flags (imm32): CF=1, OF=1
+
+IMUL tests completed.

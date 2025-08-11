@@ -1,0 +1,14 @@
+MUL instruction test
+====================
+8-bit MUL (small): PASS
+8-bit MUL (overflow): PASS
+16-bit MUL: PASS
+32-bit MUL: PASS
+64-bit MUL (no overflow): PASS
+64-bit MUL (overflow): PASS
+
+MUL test completed
+==================
+Total tests: 6
+Passed: 6
+Failed: 0

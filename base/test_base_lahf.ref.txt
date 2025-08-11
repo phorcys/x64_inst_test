@@ -1,0 +1,201 @@
+Starting LAHF tests
+==================
+
+Test case 1:
+  Flags set: SF=0, ZF=0, AF=0, PF=0, CF=0
+  Expected AH: 0x02
+  Actual AH:   0x02
+  Result: PASSED
+
+Test case 2:
+  Flags set: SF=0, ZF=0, AF=0, PF=0, CF=1
+  Expected AH: 0x03
+  Actual AH:   0x03
+  Result: PASSED
+
+Test case 3:
+  Flags set: SF=0, ZF=0, AF=0, PF=1, CF=0
+  Expected AH: 0x06
+  Actual AH:   0x06
+  Result: PASSED
+
+Test case 4:
+  Flags set: SF=0, ZF=0, AF=0, PF=1, CF=1
+  Expected AH: 0x07
+  Actual AH:   0x07
+  Result: PASSED
+
+Test case 5:
+  Flags set: SF=0, ZF=0, AF=1, PF=0, CF=0
+  Expected AH: 0x12
+  Actual AH:   0x12
+  Result: PASSED
+
+Test case 6:
+  Flags set: SF=0, ZF=0, AF=1, PF=0, CF=1
+  Expected AH: 0x13
+  Actual AH:   0x13
+  Result: PASSED
+
+Test case 7:
+  Flags set: SF=0, ZF=0, AF=1, PF=1, CF=0
+  Expected AH: 0x16
+  Actual AH:   0x16
+  Result: PASSED
+
+Test case 8:
+  Flags set: SF=0, ZF=0, AF=1, PF=1, CF=1
+  Expected AH: 0x17
+  Actual AH:   0x17
+  Result: PASSED
+
+Test case 9:
+  Flags set: SF=0, ZF=1, AF=0, PF=0, CF=0
+  Expected AH: 0x42
+  Actual AH:   0x42
+  Result: PASSED
+
+Test case 10:
+  Flags set: SF=0, ZF=1, AF=0, PF=0, CF=1
+  Expected AH: 0x43
+  Actual AH:   0x43
+  Result: PASSED
+
+Test case 11:
+  Flags set: SF=0, ZF=1, AF=0, PF=1, CF=0
+  Expected AH: 0x46
+  Actual AH:   0x46
+  Result: PASSED
+
+Test case 12:
+  Flags set: SF=0, ZF=1, AF=0, PF=1, CF=1
+  Expected AH: 0x47
+  Actual AH:   0x47
+  Result: PASSED
+
+Test case 13:
+  Flags set: SF=0, ZF=1, AF=1, PF=0, CF=0
+  Expected AH: 0x52
+  Actual AH:   0x52
+  Result: PASSED
+
+Test case 14:
+  Flags set: SF=0, ZF=1, AF=1, PF=0, CF=1
+  Expected AH: 0x53
+  Actual AH:   0x53
+  Result: PASSED
+
+Test case 15:
+  Flags set: SF=0, ZF=1, AF=1, PF=1, CF=0
+  Expected AH: 0x56
+  Actual AH:   0x56
+  Result: PASSED
+
+Test case 16:
+  Flags set: SF=0, ZF=1, AF=1, PF=1, CF=1
+  Expected AH: 0x57
+  Actual AH:   0x57
+  Result: PASSED
+
+Test case 17:
+  Flags set: SF=1, ZF=0, AF=0, PF=0, CF=0
+  Expected AH: 0x82
+  Actual AH:   0x82
+  Result: PASSED
+
+Test case 18:
+  Flags set: SF=1, ZF=0, AF=0, PF=0, CF=1
+  Expected AH: 0x83
+  Actual AH:   0x83
+  Result: PASSED
+
+Test case 19:
+  Flags set: SF=1, ZF=0, AF=0, PF=1, CF=0
+  Expected AH: 0x86
+  Actual AH:   0x86
+  Result: PASSED
+
+Test case 20:
+  Flags set: SF=1, ZF=0, AF=0, PF=1, CF=1
+  Expected AH: 0x87
+  Actual AH:   0x87
+  Result: PASSED
+
+Test case 21:
+  Flags set: SF=1, ZF=0, AF=1, PF=0, CF=0
+  Expected AH: 0x92
+  Actual AH:   0x92
+  Result: PASSED
+
+Test case 22:
+  Flags set: SF=1, ZF=0, AF=1, PF=0, CF=1
+  Expected AH: 0x93
+  Actual AH:   0x93
+  Result: PASSED
+
+Test case 23:
+  Flags set: SF=1, ZF=0, AF=1, PF=1, CF=0
+  Expected AH: 0x96
+  Actual AH:   0x96
+  Result: PASSED
+
+Test case 24:
+  Flags set: SF=1, ZF=0, AF=1, PF=1, CF=1
+  Expected AH: 0x97
+  Actual AH:   0x97
+  Result: PASSED
+
+Test case 25:
+  Flags set: SF=1, ZF=1, AF=0, PF=0, CF=0
+  Expected AH: 0xC2
+  Actual AH:   0xC2
+  Result: PASSED
+
+Test case 26:
+  Flags set: SF=1, ZF=1, AF=0, PF=0, CF=1
+  Expected AH: 0xC3
+  Actual AH:   0xC3
+  Result: PASSED
+
+Test case 27:
+  Flags set: SF=1, ZF=1, AF=0, PF=1, CF=0
+  Expected AH: 0xC6
+  Actual AH:   0xC6
+  Result: PASSED
+
+Test case 28:
+  Flags set: SF=1, ZF=1, AF=0, PF=1, CF=1
+  Expected AH: 0xC7
+  Actual AH:   0xC7
+  Result: PASSED
+
+Test case 29:
+  Flags set: SF=1, ZF=1, AF=1, PF=0, CF=0
+  Expected AH: 0xD2
+  Actual AH:   0xD2
+  Result: PASSED
+
+Test case 30:
+  Flags set: SF=1, ZF=1, AF=1, PF=0, CF=1
+  Expected AH: 0xD3
+  Actual AH:   0xD3
+  Result: PASSED
+
+Test case 31:
+  Flags set: SF=1, ZF=1, AF=1, PF=1, CF=0
+  Expected AH: 0xD6
+  Actual AH:   0xD6
+  Result: PASSED
+
+Test case 32:
+  Flags set: SF=1, ZF=1, AF=1, PF=1, CF=1
+  Expected AH: 0xD7
+  Actual AH:   0xD7
+  Result: PASSED
+
+
+LAHF tests completed
+====================
+Total tests: 32
+Passed: 32
+Failed: 0

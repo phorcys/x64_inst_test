@@ -1,0 +1,15 @@
+NOT instruction test
+====================
+8-bit NOT: PASS
+16-bit NOT: PASS
+32-bit NOT: PASS
+64-bit NOT: PASS
+Memory operand: PASS
+Zero case: PASS
+All ones case: PASS
+
+NOT test completed
+==================
+Total tests: 7
+Passed: 7
+Failed: 0

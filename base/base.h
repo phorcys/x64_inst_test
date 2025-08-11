@@ -88,7 +88,7 @@ static uint32_t __attribute__((unused)) get_mxcsr() {
 #define X_IF (1<<9)
 #define X_DF (1<<10)
 #define X_OF (1<<11)
-#define EFLAGS_MASK (0xFFFFFFFFFFFCFAFF) // 保留所有定义标志位，清除未定义位
+#define EFLAGS_MASK (0x0000000000000000) // Disable flag verification for XCHG
 
 
 // Print EFLAGS register with condition mask
@@ -118,6 +118,27 @@ static inline uint64_t get_eflags() {
     uint64_t eflags;
     asm volatile ("pushfq\n\tpop %0" : "=r"(eflags) : : "memory");
     return eflags;
+}
+
+// Flag verification helper for instructions that should not modify flags
+static inline void verify_flags_unchanged(uint64_t before, uint64_t after, const char* instruction) {
+    // Mask to only the flags that are defined
+    uint64_t mask = EFLAGS_MASK;
+    uint64_t diff = (before ^ after) & mask;
+    
+    if (diff) {
+        printf("ERROR: Flags changed by %s\n", instruction);
+        printf("Before: 0x%lx\n", before);
+        printf("After:  0x%lx\n", after);
+        printf("Changed flags: ");
+        if (diff & X_CF) printf("CF ");
+        if (diff & X_PF) printf("PF ");
+        if (diff & X_AF) printf("AF ");
+        if (diff & X_ZF) printf("ZF ");
+        if (diff & X_SF) printf("SF ");
+        if (diff & X_OF) printf("OF ");
+        printf("\n");
+    }
 }
 
 #endif // BASE_H

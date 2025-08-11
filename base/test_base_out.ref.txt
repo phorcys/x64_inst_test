@@ -1,0 +1,14 @@
+OUT instruction test
+====================
+8-bit OUT: PASS (segmentation fault as expected)
+16-bit OUT: PASS (segmentation fault as expected)
+32-bit OUT: PASS (segmentation fault as expected)
+8-bit DX OUT: PASS (segmentation fault as expected)
+16-bit DX OUT: PASS (segmentation fault as expected)
+32-bit DX OUT: PASS (segmentation fault as expected)
+
+OUT test completed
+==================
+Total tests: 6
+Passed: 6
+Failed: 0

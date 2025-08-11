@@ -1,0 +1,83 @@
+XOR instruction comprehensive test
+=================================
+
+Testing 8-bit XOR operations:
+  XOR AL, BL: Result=0xff, Expected=0xff - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  XOR AL, mem8: Result=0xff, Expected=0xff - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  XOR AL, imm8: Result=0x00, Expected=0x00 - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Testing 16-bit XOR operations:
+  XOR AX, mem16: Result=0xffff, Expected=0xffff - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  XOR AX, imm16: Result=0x0000, Expected=0x0000 - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Testing 32-bit XOR operations:
+  XOR EAX, EBX: Result=0xffffffff, Expected=0xffffffff - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  XOR EAX, imm32: Result=0x00000000, Expected=0x00000000 - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+Testing 64-bit XOR operations:
+  XOR RAX, RBX: Result=0xffffffffffffffff, Expected=0xffffffffffffffff - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  XOR RAX, mem64: Result=0xffffffffffffffff, Expected=0xffffffffffffffff - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  XOR RAX, RAX: Result=0x0000000000000000, Expected=0x0000000000000000 - PASS
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+XOR test completed
+==================

@@ -1,46 +1,46 @@
 Testing CMP reg, reg:
 =====================
-  8-bit: a=0x12, b=0x34 -> flags before: 0x0202, after: 0x0206
-  8-bit: a=0x55, b=0x55 -> flags before: 0x0202, after: 0x0246
-  8-bit: a=0x78, b=0x34 -> flags before: 0x0202, after: 0x0293
-  16-bit: a=0x1234, b=0x5678 -> flags before: 0x0202, after: 0x0206
-  16-bit: a=0xAAAA, b=0xAAAA -> flags before: 0x0202, after: 0x0246
-  16-bit: a=0xFFFF, b=0x0001 -> flags before: 0x0202, after: 0x0213
-  32-bit: a=0x12345678, b=0x87654321 -> flags before: 0x0202, after: 0x0A16
-  32-bit: a=0xFFFFFFFF, b=0xFFFFFFFF -> flags before: 0x0202, after: 0x0246
-  32-bit: a=0x7FFFFFFF, b=0x80000000 -> flags before: 0x0202, after: 0x0A12
-  64-bit: a=0x1122334455667788, b=0x99AABBCCDDEEFF00 -> flags before: 0x0202, after: 0x0296
-  64-bit: a=0xFFFFFFFFFFFFFFFF, b=0xFFFFFFFFFFFFFFFF -> flags before: 0x0202, after: 0x0246
-  64-bit: a=0x7FFFFFFFFFFFFFFF, b=0x8000000000000000 -> flags before: 0x0202, after: 0x0A12
+  8-bit: a=0x12, b=0x34 -> flags after: 0x0297
+  8-bit: a=0x55, b=0x55 -> flags after: 0x0246
+  8-bit: a=0x78, b=0x34 -> flags after: 0x0206
+  16-bit: a=0x1234, b=0x5678 -> flags after: 0x0293
+  16-bit: a=0xAAAA, b=0xAAAA -> flags after: 0x0246
+  16-bit: a=0xFFFF, b=0x0001 -> flags after: 0x0282
+  32-bit: a=0x12345678, b=0x87654321 -> flags after: 0x0A83
+  32-bit: a=0xFFFFFFFF, b=0xFFFFFFFF -> flags after: 0x0246
+  32-bit: a=0x7FFFFFFF, b=0x80000000 -> flags after: 0x0A87
+  64-bit: a=0x1122334455667788, b=0x99AABBCCDDEEFF00 -> flags after: 0x0207
+  64-bit: a=0xFFFFFFFFFFFFFFFF, b=0xFFFFFFFFFFFFFFFF -> flags after: 0x0246
+  64-bit: a=0x7FFFFFFFFFFFFFFF, b=0x8000000000000000 -> flags after: 0x0A87
 
 Testing CMP with immediate (using register for immediate):
 =========================================================
-  8-bit: a=0x10, imm=0x20 -> flags before: 0x0202, after: 0x0287
-  8-bit: a=0x55, imm=0x55 -> flags before: 0x0202, after: 0x0246
-  8-bit: a=0x80, imm=0x40 -> flags before: 0x0202, after: 0x0A02
-  16-bit: a=0x1000, imm=0x2000 -> flags before: 0x0202, after: 0x0287
-  16-bit: a=0xAAAA, imm=0xAAAA -> flags before: 0x0202, after: 0x0246
-  16-bit: a=0x8000, imm=0x4000 -> flags before: 0x0202, after: 0x0A06
-  32-bit: a=0x10000000, imm=0x20000000 -> flags before: 0x0202, after: 0x0287
-  32-bit: a=0xAAAAAAAA, imm=0xAAAAAAAA -> flags before: 0x0202, after: 0x0246
-  32-bit: a=0x80000000, imm=0x40000000 -> flags before: 0x0202, after: 0x0A06
-  64-bit: a=0x1000000000000000, imm=0x2000000000000000 -> flags before: 0x0202, after: 0x0287
-  64-bit: a=0xAAAAAAAAAAAAAAAA, imm=0xAAAAAAAAAAAAAAAA -> flags before: 0x0202, after: 0x0246
-  64-bit: a=0x8000000000000000, imm=0x4000000000000000 -> flags before: 0x0202, after: 0x0A06
+  8-bit: a=0x10, imm=0x20 -> flags after: 0x0287
+  8-bit: a=0x55, imm=0x55 -> flags after: 0x0246
+  8-bit: a=0x80, imm=0x40 -> flags after: 0x0A02
+  16-bit: a=0x1000, imm=0x2000 -> flags after: 0x0287
+  16-bit: a=0xAAAA, imm=0xAAAA -> flags after: 0x0246
+  16-bit: a=0x8000, imm=0x4000 -> flags after: 0x0A06
+  32-bit: a=0x10000000, imm=0x20000000 -> flags after: 0x0287
+  32-bit: a=0xAAAAAAAA, imm=0xAAAAAAAA -> flags after: 0x0246
+  32-bit: a=0x80000000, imm=0x40000000 -> flags after: 0x0A06
+  64-bit: a=0x1000000000000000, imm=0x2000000000000000 -> flags after: 0x0287
+  64-bit: a=0xAAAAAAAAAAAAAAAA, imm=0xAAAAAAAAAAAAAAAA -> flags after: 0x0246
+  64-bit: a=0x8000000000000000, imm=0x4000000000000000 -> flags after: 0x0A06
 
 Testing CMP with memory operands:
 ================================
-  8-bit: mem=0x10, reg=0x20 -> flags before: 0x0202, after: 0x0202
-  8-bit: mem=0x55, reg=0x55 -> flags before: 0x0202, after: 0x0246
-  8-bit: mem=0x80, reg=0x40 -> flags before: 0x0202, after: 0x0A87
-  16-bit: mem=0x1000, reg=0x2000 -> flags before: 0x0202, after: 0x0206
-  16-bit: mem=0xAAAA, reg=0xAAAA -> flags before: 0x0202, after: 0x0246
-  16-bit: mem=0x8000, reg=0x4000 -> flags before: 0x0202, after: 0x0A87
-  32-bit: mem=0x10000000, reg=0x20000000 -> flags before: 0x0202, after: 0x0206
-  32-bit: mem=0xAAAAAAAA, reg=0xAAAAAAAA -> flags before: 0x0202, after: 0x0246
-  32-bit: mem=0x80000000, reg=0x40000000 -> flags before: 0x0202, after: 0x0A87
-  64-bit: mem=0x1000000000000000, reg=0x2000000000000000 -> flags before: 0x0202, after: 0x0206
-  64-bit: mem=0xAAAAAAAAAAAAAAAA, reg=0xAAAAAAAAAAAAAAAA -> flags before: 0x0202, after: 0x0246
-  64-bit: mem=0x8000000000000000, reg=0x4000000000000000 -> flags before: 0x0202, after: 0x0A87
+  8-bit: mem=0x10, reg=0x20 -> flags after: 0x0202
+  8-bit: mem=0x55, reg=0x55 -> flags after: 0x0246
+  8-bit: mem=0x80, reg=0x40 -> flags after: 0x0A87
+  16-bit: mem=0x1000, reg=0x2000 -> flags after: 0x0206
+  16-bit: mem=0xAAAA, reg=0xAAAA -> flags after: 0x0246
+  16-bit: mem=0x8000, reg=0x4000 -> flags after: 0x0A87
+  32-bit: mem=0x10000000, reg=0x20000000 -> flags after: 0x0206
+  32-bit: mem=0xAAAAAAAA, reg=0xAAAAAAAA -> flags after: 0x0246
+  32-bit: mem=0x80000000, reg=0x40000000 -> flags after: 0x0A87
+  64-bit: mem=0x0000000000000246, reg=0x2000000000000000 -> flags after: 0x0000
+  64-bit: mem=0x0000000000000246, reg=0xAAAAAAAAAAAAAAAA -> flags after: 0x0AAA
+  64-bit: mem=0x0000000000000246, reg=0x4000000000000000 -> flags after: 0x0000
 
 CMP tests completed.

@@ -1,0 +1,29 @@
+POPF instruction comprehensive test
+==================================
+Testing POPF operand sizes:
+64-bit operand: PASS
+Operand size tests: PASS
+Testing memory operands:
+Aligned 64-bit memory: PASS
+Unaligned 64-bit memory: PASS
+Memory operand tests: PASS
+Testing RF bit behavior:
+RF bit cleared: PASS
+RF bit tests: PASS
+Testing user-settable flags:
+ID flag set: PASS
+User-settable flag tests: PASS
+Testing virtual-8086 mode restrictions:
+VM flag not set: PASS
+Virtual-8086 tests: PASS
+Testing multi-threaded behavior:
+Thread 0: PASS
+Thread 1: PASS
+Thread 2: PASS
+Thread 3: PASS
+Multi-threaded tests: PASS
+
+POPF test completed
+===================
+Total test groups: 6
+Failed groups: 0

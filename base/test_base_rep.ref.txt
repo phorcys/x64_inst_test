@@ -1,0 +1,14 @@
+REP prefix instruction test
+===========================
+REP MOVSB: PASS
+REP STOSB: PASS
+REP CMPSB: PASS (equal test only)
+REP SCASB: PASS (found at 1)
+Backward REP MOVSB: PASS
+Zero count: PASS
+
+REP test completed
+==================
+Total tests: 7
+Passed: 7
+Failed: 0

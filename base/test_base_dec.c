@@ -16,11 +16,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decb %0\n\t"
-        : "+r" (val8)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"
+        : "+r" (val8), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("8-bit (0x42 -> 0x41):\n");
     printf("  Result: 0x%02X\n", val8);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -30,11 +31,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decb %0\n\t"
-        : "+r" (val8)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"        
+        : "+r" (val8), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("8-bit underflow (0x00 -> 0xFF):\n");
     printf("  Result: 0x%02X\n", val8);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -47,11 +49,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decw %0\n\t"
-        : "+r" (val16)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"               
+        : "+r" (val16), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("16-bit (0x1234 -> 0x1233):\n");
     printf("  Result: 0x%04X\n", val16);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -61,11 +64,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decw %0\n\t"
-        : "+r" (val16)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"               
+        : "+r" (val16), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("16-bit underflow (0x0000 -> 0xFFFF):\n");
     printf("  Result: 0x%04X\n", val16);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -78,11 +82,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decl %0\n\t"
-        : "+r" (val32)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"               
+        : "+r" (val32), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("32-bit (0x12345678 -> 0x12345677):\n");
     printf("  Result: 0x%08X\n", val32);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -92,11 +97,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decl %0\n\t"
-        : "+r" (val32)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"               
+        : "+r" (val32), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("32-bit underflow (0x00000000 -> 0xFFFFFFFF):\n");
     printf("  Result: 0x%08X\n", val32);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -109,11 +115,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decq %0\n\t"
-        : "+r" (val64)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"               
+        : "+r" (val64), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("64-bit (0x123456789ABCDEF0 -> 0x123456789ABCDEEF):\n");
     printf("  Result: 0x%016lX\n", val64);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -123,11 +130,12 @@ static void test_dec_reg() {
     CLEAR_FLAGS;
     asm volatile (
         "decq %0\n\t"
-        : "+r" (val64)
+        "pushfq\n\t"
+        "popq %[rflags]\n\t"               
+        : "+r" (val64), [rflags] "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
     printf("64-bit underflow (0x0000000000000000 -> 0xFFFFFFFFFFFFFFFF):\n");
     printf("  Result: 0x%016lX\n", val64);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
@@ -138,39 +146,143 @@ static void test_dec_mem() {
     printf("\nTesting DEC with memory operands:\n");
     printf("================================\n");
     
-    // Aligned memory
-    uint32_t aligned_mem __attribute__((aligned(4)));
-    uint32_t unaligned_mem;
-    uint32_t *unaligned_ptr = (uint32_t*)((char*)&unaligned_mem + 1);
-    
+    char buffer[16] __attribute__((aligned(8)));
     uint64_t flags;
     
-    // Test aligned memory
-    aligned_mem = 0x12345678;
+    // 8-bit tests
+    uint8_t *mem8_aligned = (uint8_t*)&buffer[0];
+    uint8_t *mem8_unaligned = (uint8_t*)&buffer[1];
+    
+    // 8-bit aligned
+    *mem8_aligned = 0x42;
     CLEAR_FLAGS;
     asm volatile (
-        "decl %0\n\t"
-        : "+m" (aligned_mem)
+        "decb %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem8_aligned), "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
-    printf("Aligned memory (0x12345678 -> 0x12345677):\n");
-    printf("  Result: 0x%08X\n", aligned_mem);
+    printf("8-bit aligned (0x42 -> 0x41):\n");
+    printf("  Result: 0x%02X\n", *mem8_aligned);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
     
-    // Test unaligned memory
-    *unaligned_ptr = 0x12345678;
+    // 8-bit unaligned
+    *mem8_unaligned = 0x42;
     CLEAR_FLAGS;
     asm volatile (
-        "decl %0\n\t"
-        : "+m" (*unaligned_ptr)
+        "decb %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem8_unaligned), "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
-    printf("Unaligned memory (0x12345678 -> 0x12345677):\n");
-    printf("  Result: 0x%08X\n", *unaligned_ptr);
+    printf("8-bit unaligned (0x42 -> 0x41):\n");
+    printf("  Result: 0x%02X\n", *mem8_unaligned);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 16-bit tests
+    uint16_t *mem16_aligned = (uint16_t*)&buffer[0];
+    uint16_t *mem16_unaligned = (uint16_t*)&buffer[1];
+    
+    // 16-bit aligned
+    *mem16_aligned = 0x1234;
+    CLEAR_FLAGS;
+    asm volatile (
+        "decw %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem16_aligned), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("16-bit aligned (0x1234 -> 0x1233):\n");
+    printf("  Result: 0x%04X\n", *mem16_aligned);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 16-bit unaligned
+    *mem16_unaligned = 0x1234;
+    CLEAR_FLAGS;
+    asm volatile (
+        "decw %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem16_unaligned), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("16-bit unaligned (0x1234 -> 0x1233):\n");
+    printf("  Result: 0x%04X\n", *mem16_unaligned);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 32-bit tests
+    uint32_t *mem32_aligned = (uint32_t*)&buffer[0];
+    uint32_t *mem32_unaligned = (uint32_t*)&buffer[1];
+    
+    // 32-bit aligned
+    *mem32_aligned = 0x12345678;
+    CLEAR_FLAGS;
+    asm volatile (
+        "decl %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem32_aligned), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("32-bit aligned (0x12345678 -> 0x12345677):\n");
+    printf("  Result: 0x%08X\n", *mem32_aligned);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 32-bit unaligned
+    *mem32_unaligned = 0x12345678;
+    CLEAR_FLAGS;
+    asm volatile (
+        "decl %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem32_unaligned), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("32-bit unaligned (0x12345678 -> 0x12345677):\n");
+    printf("  Result: 0x%08X\n", *mem32_unaligned);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 64-bit tests
+    uint64_t *mem64_aligned = (uint64_t*)&buffer[0];
+    uint64_t *mem64_unaligned = (uint64_t*)&buffer[1];
+    
+    // 64-bit aligned
+    *mem64_aligned = 0x123456789ABCDEF0;
+    CLEAR_FLAGS;
+    asm volatile (
+        "decq %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem64_aligned), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("64-bit aligned (0x123456789ABCDEF0 -> 0x123456789ABCDEEF):\n");
+    printf("  Result: 0x%016lX\n", *mem64_aligned);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 64-bit unaligned
+    *mem64_unaligned = 0x123456789ABCDEF0;
+    CLEAR_FLAGS;
+    asm volatile (
+        "decq %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem64_unaligned), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("64-bit unaligned (0x123456789ABCDEF0 -> 0x123456789ABCDEEF):\n");
+    printf("  Result: 0x%016lX\n", *mem64_unaligned);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
 }
 
@@ -179,19 +291,71 @@ static void test_lock_dec() {
     printf("\nTesting LOCK DEC:\n");
     printf("=================\n");
     
-    uint32_t shared_mem = 0x12345678;
+    char buffer[16] __attribute__((aligned(8)));
     uint64_t flags;
     
+    // 8-bit LOCK DEC
+    uint8_t *mem8 = (uint8_t*)&buffer[0];
+    *mem8 = 0x00;
     CLEAR_FLAGS;
     asm volatile (
-        "lock decl %0\n\t"
-        : "+m" (shared_mem)
+        "lock decb %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem8), "=r" (flags)
         : 
         : "cc"
     );
-    flags = get_eflags();
-    printf("LOCK DEC (0x12345678 -> 0x12345677):\n");
-    printf("  Result: 0x%08X\n", shared_mem);
+    printf("LOCK DEC 8-bit underflow (0x00 -> 0xFF):\n");
+    printf("  Result: 0x%02X\n", *mem8);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 16-bit LOCK DEC
+    uint16_t *mem16 = (uint16_t*)&buffer[0];
+    *mem16 = 0x0000;
+    CLEAR_FLAGS;
+    asm volatile (
+        "lock decw %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem16), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("LOCK DEC 16-bit underflow (0x0000 -> 0xFFFF):\n");
+    printf("  Result: 0x%04X\n", *mem16);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 32-bit LOCK DEC
+    uint32_t *mem32 = (uint32_t*)&buffer[0];
+    *mem32 = 0x00000000;
+    CLEAR_FLAGS;
+    asm volatile (
+        "lock decl %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem32), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("LOCK DEC 32-bit underflow (0x00000000 -> 0xFFFFFFFF):\n");
+    printf("  Result: 0x%08X\n", *mem32);
+    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
+    
+    // 64-bit LOCK DEC
+    uint64_t *mem64 = (uint64_t*)&buffer[0];
+    *mem64 = 0x0000000000000000;
+    CLEAR_FLAGS;
+    asm volatile (
+        "lock decq %0\n\t"
+        "pushfq\n\t"
+        "popq %1\n\t"
+        : "+m" (*mem64), "=r" (flags)
+        : 
+        : "cc"
+    );
+    printf("LOCK DEC 64-bit underflow (0x0000000000000000 -> 0xFFFFFFFFFFFFFFFF):\n");
+    printf("  Result: 0x%016lX\n", *mem64);
     printf("  Flags: 0x%03lX\n", flags & 0x8D5);
 }
 

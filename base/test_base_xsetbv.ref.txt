@@ -1,0 +1,7 @@
+XSETBV instruction test
+=======================
+  Got expected SIGSEGV (GP fault) - PASS
+  XSETBV test: PASS
+
+XSETBV test completed
+=====================

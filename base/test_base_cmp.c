@@ -16,13 +16,21 @@ static void test_cmp_reg_reg() {
             case 2: a = 0x78; b = 0x34; break;  // a > b
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(b), "r"(a));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  8-bit: a=0x%02X, b=0x%02X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, b, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %b2, %b1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" ((uint64_t)a), "r" ((uint64_t)b)
+            : "cc", "memory"
+        );
+        printf("  8-bit: a=0x%02X, b=0x%02X -> flags after: 0x%04lX\n", 
+               a, b, flags_after & 0xFFF);
     }
 
     // Test 16-bit registers
@@ -34,13 +42,21 @@ static void test_cmp_reg_reg() {
             case 2: a = 0xFFFF; b = 0x0001; break;
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(b), "r"(a));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  16-bit: a=0x%04X, b=0x%04X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, b, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %w2, %w1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" ((uint64_t)a), "r" ((uint64_t)b)
+            : "cc", "memory"
+        );
+        printf("  16-bit: a=0x%04X, b=0x%04X -> flags after: 0x%04lX\n", 
+               a, b, flags_after & 0xFFF);
     }
 
     // Test 32-bit registers
@@ -52,13 +68,21 @@ static void test_cmp_reg_reg() {
             case 2: a = 0x7FFFFFFF; b = 0x80000000; break;
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(b), "r"(a));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  32-bit: a=0x%08X, b=0x%08X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, b, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %k2, %k1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" ((uint64_t)a), "r" ((uint64_t)b)
+            : "cc", "memory"
+        );
+        printf("  32-bit: a=0x%08X, b=0x%08X -> flags after: 0x%04lX\n", 
+               a, b, flags_after & 0xFFF);
     }
 
     // Test 64-bit registers
@@ -70,13 +94,21 @@ static void test_cmp_reg_reg() {
             case 2: a = 0x7FFFFFFFFFFFFFFF; b = 0x8000000000000000; break;
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(b), "r"(a));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  64-bit: a=0x%016lX, b=0x%016lX -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, b, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %2, %1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" (a), "r" (b)
+            : "cc", "memory"
+        );
+        printf("  64-bit: a=0x%016lX, b=0x%016lX -> flags after: 0x%04lX\n", 
+               a, b, flags_after & 0xFFF);
     }
 }
 
@@ -96,13 +128,21 @@ static void test_cmp_imm() {
         }
         
         uint8_t imm = imm_val;
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(a), "r"(imm));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  8-bit: a=0x%02X, imm=0x%02X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, imm_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %b2, %b1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" ((uint64_t)a), "r" ((uint64_t)imm)
+            : "cc", "memory"
+        );
+        printf("  8-bit: a=0x%02X, imm=0x%02X -> flags after: 0x%04lX\n", 
+               a, imm_val, flags_after & 0xFFF);
     }
 
     // Test 16-bit immediate
@@ -116,13 +156,21 @@ static void test_cmp_imm() {
         }
         
         uint16_t imm = imm_val;
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(a), "r"(imm));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  16-bit: a=0x%04X, imm=0x%04X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, imm_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %w2, %w1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" ((uint64_t)a), "r" ((uint64_t)imm)
+            : "cc", "memory"
+        );
+        printf("  16-bit: a=0x%04X, imm=0x%04X -> flags after: 0x%04lX\n", 
+               a, imm_val, flags_after & 0xFFF);
     }
 
     // Test 32-bit immediate
@@ -136,13 +184,21 @@ static void test_cmp_imm() {
         }
         
         uint32_t imm = imm_val;
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(a), "r"(imm));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  32-bit: a=0x%08X, imm=0x%08X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, imm_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %k2, %k1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" ((uint64_t)a), "r" ((uint64_t)imm)
+            : "cc", "memory"
+        );
+        printf("  32-bit: a=0x%08X, imm=0x%08X -> flags after: 0x%04lX\n", 
+               a, imm_val, flags_after & 0xFFF);
     }
 
     // Test 64-bit immediate
@@ -156,13 +212,21 @@ static void test_cmp_imm() {
         }
         
         uint64_t imm = imm_val;
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(a), "r"(imm));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  64-bit: a=0x%016lX, imm=0x%016lX -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               a, imm_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %2, %1\n\t"
+            "pushfq\n\t"
+            "pop %0"
+            : "=r" (flags_after)
+            : "r" (a), "r" (imm)
+            : "cc", "memory"
+        );
+        printf("  64-bit: a=0x%016lX, imm=0x%016lX -> flags after: 0x%04lX\n", 
+               a, imm_val, flags_after & 0xFFF);
     }
 }
 
@@ -181,13 +245,21 @@ static void test_cmp_mem() {
             case 2: mem_val = 0x80; reg_val = 0x40; break;
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(reg_val), "m"(mem_val));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  8-bit: mem=0x%02X, reg=0x%02X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               mem_val, reg_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmpb %1, %b0\n\t"
+            "pushfq\n\t"
+            "pop %2"
+            : "=r" (flags_after)
+            : "m" (mem_val), "r" ((uint64_t)reg_val)
+            : "cc", "memory"
+        );
+        printf("  8-bit: mem=0x%02X, reg=0x%02X -> flags after: 0x%04lX\n", 
+               mem_val, reg_val, flags_after & 0xFFF);
     }
 
     // Test 16-bit memory
@@ -200,13 +272,21 @@ static void test_cmp_mem() {
             case 2: mem_val = 0x8000; reg_val = 0x4000; break;
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(reg_val), "m"(mem_val));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  16-bit: mem=0x%04X, reg=0x%04X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               mem_val, reg_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmpw %1, %w0\n\t"
+            "pushfq\n\t"
+            "pop %2"
+            : "=r" (flags_after)
+            : "m" (mem_val), "r" ((uint64_t)reg_val)
+            : "cc", "memory"
+        );
+        printf("  16-bit: mem=0x%04X, reg=0x%04X -> flags after: 0x%04lX\n", 
+               mem_val, reg_val, flags_after & 0xFFF);
     }
 
     // Test 32-bit memory
@@ -219,13 +299,21 @@ static void test_cmp_mem() {
             case 2: mem_val = 0x80000000; reg_val = 0x40000000; break;
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(reg_val), "m"(mem_val));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  32-bit: mem=0x%08X, reg=0x%08X -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               mem_val, reg_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmpl %1, %k0\n\t"
+            "pushfq\n\t"
+            "pop %2"
+            : "=r" (flags_after)
+            : "m" (mem_val), "r" ((uint64_t)reg_val)
+            : "cc", "memory"
+        );
+        printf("  32-bit: mem=0x%08X, reg=0x%08X -> flags after: 0x%04lX\n", 
+               mem_val, reg_val, flags_after & 0xFFF);
     }
 
     // Test 64-bit memory
@@ -238,13 +326,21 @@ static void test_cmp_mem() {
             case 2: mem_val = 0x8000000000000000; reg_val = 0x4000000000000000; break;
         }
         
-        CLEAR_FLAGS;
-        uint64_t flags_before = get_eflags();
-        asm volatile ("cmp %1, %0" : : "r"(reg_val), "m"(mem_val));
-        uint64_t flags_after = get_eflags();
-        
-        printf("  64-bit: mem=0x%016lX, reg=0x%016lX -> flags before: 0x%04lX, after: 0x%04lX\n", 
-               mem_val, reg_val, flags_before & 0xFFF, flags_after & 0xFFF);
+        uint64_t flags_after;
+        asm volatile (
+            "push $0\n\t"
+            "popfq\n\t"
+            "push $0\n\t"
+            "popfq\n\t"
+            "cmp %1, %0\n\t"
+            "pushfq\n\t"
+            "pop %2"
+            : "=r" (flags_after)
+            : "r" (reg_val), "m" (mem_val)
+            : "cc", "memory"
+        );
+        printf("  64-bit: mem=0x%016lX, reg=0x%016lX -> flags after: 0x%04lX\n", 
+               mem_val, reg_val, flags_after & 0xFFF);
     }
 }
 

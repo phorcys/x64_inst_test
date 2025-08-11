@@ -1,0 +1,13 @@
+MOV instruction test
+====================
+Register-register move: PASS
+Memory-register move: PASS
+Register-memory move: PASS
+Immediate-register move: PASS
+Different width moves: PASS
+
+MOV test completed
+==================
+Total tests: 5
+Passed: 5
+Failed: 0

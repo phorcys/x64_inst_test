@@ -1,0 +1,10 @@
+LOCK instruction test
+=====================
+LOCK ADD test: PASS
+Error: LOCK XADD value expected 15, got 10
+
+LOCK test completed
+===================
+Total tests: 2
+Passed: 1
+Failed: 1

@@ -1,0 +1,121 @@
+XADD instruction test
+=====================
+Testing XADD byte:
+  Registers: RAX=0x8, RBX=0x5 -> Result: RAX=0x8, RBX=0x5
+  Flags: 
+  Registers: RAX=0x17, RBX=0xf -> Result: RAX=0x17, RBX=0xf
+  Flags: PF AF 
+  Registers: RAX=0x26, RBX=0x19 -> Result: RAX=0x26, RBX=0x19
+  Flags: AF 
+  Registers: RAX=0x35, RBX=0x23 -> Result: RAX=0x35, RBX=0x23
+  Flags: PF 
+  Registers: RAX=0x44, RBX=0x2d -> Result: RAX=0x44, RBX=0x2d
+  Flags: PF AF 
+  Registers: RAX=0x53, RBX=0x37 -> Result: RAX=0x53, RBX=0x37
+  Flags: PF AF 
+  Registers: RAX=0x62, RBX=0x41 -> Result: RAX=0x62, RBX=0x41
+  Flags: 
+  Registers: RAX=0x71, RBX=0x4b -> Result: RAX=0x71, RBX=0x4b
+  Flags: PF AF 
+  Registers: RAX=0x80, RBX=0x55 -> Result: RAX=0x80, RBX=0x55
+  Flags: AF SF OF
+  Registers: RAX=0x8f, RBX=0x5f -> Result: RAX=0x8f, RBX=0x5f
+  Flags: SF OF
+  Aligned Memory:
+    Value=0x12, Register=0x34 -> Result: Memory=0x46, Register=0x12
+  Flags: 
+  Unaligned Memory:
+    Value=0x56, Register=0x78 -> Result: Memory=0xce, Register=0x56
+  Flags: SF OF
+All byte tests passed!
+--------------------------------
+Testing XADD word:
+  Registers: RAX=0x8, RBX=0x5 -> Result: RAX=0x8, RBX=0x5
+  Flags: 
+  Registers: RAX=0x17, RBX=0xf -> Result: RAX=0x17, RBX=0xf
+  Flags: PF AF 
+  Registers: RAX=0x26, RBX=0x19 -> Result: RAX=0x26, RBX=0x19
+  Flags: AF 
+  Registers: RAX=0x35, RBX=0x23 -> Result: RAX=0x35, RBX=0x23
+  Flags: PF 
+  Registers: RAX=0x44, RBX=0x2d -> Result: RAX=0x44, RBX=0x2d
+  Flags: PF AF 
+  Registers: RAX=0x53, RBX=0x37 -> Result: RAX=0x53, RBX=0x37
+  Flags: PF AF 
+  Registers: RAX=0x62, RBX=0x41 -> Result: RAX=0x62, RBX=0x41
+  Flags: 
+  Registers: RAX=0x71, RBX=0x4b -> Result: RAX=0x71, RBX=0x4b
+  Flags: PF AF 
+  Registers: RAX=0x80, RBX=0x55 -> Result: RAX=0x80, RBX=0x55
+  Flags: AF 
+  Registers: RAX=0x8f, RBX=0x5f -> Result: RAX=0x8f, RBX=0x5f
+  Flags: 
+  Aligned Memory:
+    Value=0x1234, Register=0x5678 -> Result: Memory=0x68ac, Register=0x1234
+  Flags: PF 
+  Unaligned Memory:
+    Value=0x9abc, Register=0xdef0 -> Result: Memory=0x79ac, Register=0x9abc
+  Flags: CF PF OF
+All word tests passed!
+--------------------------------
+Testing XADD dword:
+  Registers: RAX=0x8, RBX=0x5 -> Result: RAX=0x8, RBX=0x5
+  Flags: 
+  Registers: RAX=0x17, RBX=0xf -> Result: RAX=0x17, RBX=0xf
+  Flags: PF AF 
+  Registers: RAX=0x26, RBX=0x19 -> Result: RAX=0x26, RBX=0x19
+  Flags: AF 
+  Registers: RAX=0x35, RBX=0x23 -> Result: RAX=0x35, RBX=0x23
+  Flags: PF 
+  Registers: RAX=0x44, RBX=0x2d -> Result: RAX=0x44, RBX=0x2d
+  Flags: PF AF 
+  Registers: RAX=0x53, RBX=0x37 -> Result: RAX=0x53, RBX=0x37
+  Flags: PF AF 
+  Registers: RAX=0x62, RBX=0x41 -> Result: RAX=0x62, RBX=0x41
+  Flags: 
+  Registers: RAX=0x71, RBX=0x4b -> Result: RAX=0x71, RBX=0x4b
+  Flags: PF AF 
+  Registers: RAX=0x80, RBX=0x55 -> Result: RAX=0x80, RBX=0x55
+  Flags: AF 
+  Registers: RAX=0x8f, RBX=0x5f -> Result: RAX=0x8f, RBX=0x5f
+  Flags: 
+  Aligned Memory:
+    Value=0x12345678, Register=0x9abcdef0 -> Result: Memory=0xacf13568, Register=0x12345678
+  Flags: SF 
+  Unaligned Memory:
+    Value=0x11223344, Register=0x55667788 -> Result: Memory=0x6688aacc, Register=0x11223344
+  Flags: PF 
+All dword tests passed!
+--------------------------------
+Testing XADD qword:
+  Registers: RAX=0x8, RBX=0x5 -> Result: RAX=0x8, RBX=0x5
+  Flags: 
+  Registers: RAX=0x17, RBX=0xf -> Result: RAX=0x17, RBX=0xf
+  Flags: PF AF 
+  Registers: RAX=0x26, RBX=0x19 -> Result: RAX=0x26, RBX=0x19
+  Flags: AF 
+  Registers: RAX=0x35, RBX=0x23 -> Result: RAX=0x35, RBX=0x23
+  Flags: PF 
+  Registers: RAX=0x44, RBX=0x2d -> Result: RAX=0x44, RBX=0x2d
+  Flags: PF AF 
+  Registers: RAX=0x53, RBX=0x37 -> Result: RAX=0x53, RBX=0x37
+  Flags: PF AF 
+  Registers: RAX=0x62, RBX=0x41 -> Result: RAX=0x62, RBX=0x41
+  Flags: 
+  Registers: RAX=0x71, RBX=0x4b -> Result: RAX=0x71, RBX=0x4b
+  Flags: PF AF 
+  Registers: RAX=0x80, RBX=0x55 -> Result: RAX=0x80, RBX=0x55
+  Flags: AF 
+  Registers: RAX=0x8f, RBX=0x5f -> Result: RAX=0x8f, RBX=0x5f
+  Flags: 
+  Aligned Memory:
+    Value=0x123456789abcdef0, Register=0xf0f0f0f0f0f0f0f0 -> Result: Memory=0x32547698badcfe0, Register=0x123456789abcdef0
+  Flags: CF 
+  Unaligned Memory:
+    Value=0x1122334455667788, Register=0x99aabbccddeeff00 -> Result: Memory=0xaaccef1133557688, Register=0x1122334455667788
+  Flags: PF SF 
+All qword tests passed!
+--------------------------------
+
+XADD test completed
+===================

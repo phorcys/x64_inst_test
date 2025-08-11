@@ -1,0 +1,29 @@
+Starting JL instruction tests
+============================
+
+Testing basic JL functionality:
+------------------------------
+Case 1 (SF=1, OF=0): Jump not taken
+Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0
+
+Case 2 (SF=0, OF=0): Jump not taken
+Flags: CF=0 PF=0 AF=0 ZF=0 SF=0 OF=0
+
+Testing JL with arithmetic operations:
+-------------------------------------
+Case 1 (-5 < 10): Jump taken
+Flags: CF=0 PF=0 AF=0 ZF=0 SF=1 OF=0
+
+Case 2 (15 > 10): Jump not taken
+Flags: CF=0 PF=1 AF=0 ZF=0 SF=0 OF=0
+
+Case 3 (INT_MAX + 1): Jump not taken
+Flags: CF=0 PF=1 AF=1 ZF=0 SF=1 OF=1
+
+Testing JL with memory operand:
+------------------------------
+Case 1 (mem < imm): Jump taken
+Flags: CF=0 PF=1 AF=0 ZF=0 SF=1 OF=0
+
+
+All JL tests completed.

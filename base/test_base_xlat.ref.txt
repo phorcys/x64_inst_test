@@ -1,0 +1,20 @@
+XLAT instruction comprehensive test (64-bit mode)
+===============================================
+
+Testing basic operations:
+  Index: 0x0a, Expected: 0x0b, Result: 0x0b - PASS
+  Index: 0x14, Expected: 0x15, Result: 0x15 - PASS
+  Index: 0x1e, Expected: 0x1f, Result: 0x1f - PASS
+
+Testing segment overrides:
+  GS Override, Index: 0x28, Expected: 0x29, Result: 0x29 - PASS
+
+Testing explicit operand form:
+  Explicit operand, Index: 0x32, Expected: 0x33, Result: 0x33 - PASS
+
+Testing boundary conditions:
+  Index: 0x00, Expected: 0x01, Result: 0x01 - PASS
+  Index: 0xff, Expected: 0x00, Result: 0x00 - PASS
+
+XLAT test completed
+===================

@@ -1,0 +1,14 @@
+SHLD instruction test
+=====================
+16-bit SHLD (<<8): 0x3456
+32-bit SHLD (<<16): 0x56789ABC
+64-bit SHLD (<<32): 0x89ABCDEFFEDCBA98
+Memory SHLD (<<4): 0x0008
+16-bit SHLD CF test: CF=1
+32-bit masked SHLD (<<33 masked to 1): 0x00000003
+
+SHLD test completed
+===================
+Total tests: 6
+Passed: 6
+Failed: 0

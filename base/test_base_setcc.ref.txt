@@ -1,0 +1,21 @@
+SETcc instruction test
+======================
+SETe (equal): PASS
+SETne (not equal): PASS
+SETg (greater (signed)): PASS
+SETl (less (signed)): PASS
+SETa (above (unsigned)): PASS
+SETb (below (unsigned)): PASS
+SETs (sign): PASS
+SETns (no sign): PASS
+SETo (overflow): PASS
+SETno (no overflow): PASS
+SETp (parity): PASS
+SETnp (no parity): PASS
+SETG with memory operand: PASS
+
+SETcc test completed
+====================
+Total tests: 13
+Passed: 13
+Failed: 0

@@ -1,0 +1,16 @@
+RCL instruction test
+====================
+8-bit RCL(1): PASS - CF: 1, OF: 1
+16-bit RCL(2): PASS
+32-bit RCL(33): PASS
+64-bit RCL(1): PASS - CF: 1, OF: 1
+Memory operand: PASS
+RCL(0) no change: PASS
+Multi-rotate: PASS
+All bits set: PASS
+
+RCL test completed
+==================
+Total tests: 8
+Passed: 8
+Failed: 0

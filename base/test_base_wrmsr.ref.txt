@@ -1,0 +1,7 @@
+WRMSR instruction test
+======================
+Attempting to execute WRMSR...
+Received SIGILL (expected in user mode)
+
+WRMSR test completed
+===================

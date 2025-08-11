@@ -1,0 +1,15 @@
+SBB instruction test
+====================
+8-bit SBB with carry: PASS
+16-bit SBB without carry: PASS
+32-bit SBB immediate: PASS
+64-bit SBB memory: PASS
+ZF/CF flags: PASS
+SF/OF flags: PASS
+AF/PF flags: PASS
+
+SBB test completed
+==================
+Total tests: 7
+Passed: 7
+Failed: 0

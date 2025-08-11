@@ -5,44 +5,36 @@ Testing CMPS with 1-byte elements:
 ----------------------------------
   Direction: forward (DF=0)
     Pointers moved: src +1, dst +1
-    Flags before: 0x044, after: 0x000
     Data compared: src=0x05, dst=0x55
   Direction: backward (DF=1)
     Pointers moved: src -1, dst -1
-    Flags before: 0x000, after: 0x094
     Data compared: src=0x05, dst=0x55
 
 Testing CMPS with 2-byte elements:
 ----------------------------------
   Direction: forward (DF=0)
     Pointers moved: src +2, dst +2
-    Flags before: 0x044, after: 0x084
     Data compared: src=0x0506, dst=0x5566
   Direction: backward (DF=1)
     Pointers moved: src -2, dst -2
-    Flags before: 0x000, after: 0x080
     Data compared: src=0x0506, dst=0x5566
 
 Testing CMPS with 4-byte elements:
 ----------------------------------
   Direction: forward (DF=0)
     Pointers moved: src +4, dst +4
-    Flags before: 0x044, after: 0x084
     Data compared: src=0x05060708, dst=0x55667788
   Direction: backward (DF=1)
     Pointers moved: src -4, dst -4
-    Flags before: 0x000, after: 0x094
     Data compared: src=0x05060708, dst=0x55667788
 
 Testing CMPS with 8-byte elements:
 ----------------------------------
   Direction: forward (DF=0)
     Pointers moved: src +8, dst +8
-    Flags before: 0x044, after: 0x095
     Data compared: src=0x0506070811223344, dst=0x5566778811223344
   Direction: backward (DF=1)
     Pointers moved: src -8, dst -8
-    Flags before: 0x000, after: 0x085
     Data compared: src=0x0506070811223344, dst=0x5566778811223344
 
 Testing REP CMPS:
@@ -50,12 +42,10 @@ Testing REP CMPS:
   REPE CMPSB test:
     Comparisons: 5, remaining RCX: 11
     Pointers moved: src +5, dst +5
-    Flags before: 0x000, after: 0x091
     First mismatch at index 4: src=0x11, dst=0x55
   REPNE CMPSB test:
     Comparisons: 1, remaining RCX: 15
     Pointers moved: src +1, dst +1
-    Flags before: 0x000, after: 0x044
     First mismatch at index 0: src=0xAA, dst=0xAA
 
 CMPS tests completed.

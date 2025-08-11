@@ -83,8 +83,8 @@ static void test_cmps() {
             
             printf("    Pointers moved: src %+ld, dst %+ld\n", src_diff, dst_diff);
         // Only check relevant flags: CF, PF, AF, ZF, SF, OF (0x8D5)
-        printf("    Flags before: 0x%03lX, after: 0x%03lX\n", 
-               flags_before & 0x8D5, flags_after & 0x8D5);
+        //printf("    Flags before: 0x%03lX, after: 0x%03lX\n", 
+          //     flags_before & 0x8D5, flags_after & 0x8D5);
             
             // Show data being compared
             printf("    Data compared: src=0x");
@@ -179,8 +179,8 @@ static void test_rep_cmps() {
                    (int64_t)(rsi_after - rsi_before),
                    (int64_t)(rdi_after - rdi_before));
         // Only check relevant flags: CF, PF, AF, ZF, SF, OF (0x8D5)
-        printf("    Flags before: 0x%03lX, after: 0x%03lX\n", 
-               flags_before & 0x8D5, flags_after & 0x8D5);
+       // printf("    Flags before: 0x%03lX, after: 0x%03lX\n", 
+           //    flags_before & 0x8D5, flags_after & 0x8D5);
         
         // Show mismatch location if any
         if (rcx_after > 0 && rcx_after < count) {

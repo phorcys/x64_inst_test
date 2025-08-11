@@ -1,0 +1,13 @@
+POP instruction test
+====================
+64-bit register POP: PASS
+16-bit register POP: PASS
+64-bit memory POP: PASS
+16-bit memory POP: PASS
+Skipping POP FS and POP GS tests in user mode
+
+POP test completed
+==================
+Total tests: 4
+Passed: 4
+Failed: 0

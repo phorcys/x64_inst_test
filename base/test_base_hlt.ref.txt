@@ -1,0 +1,3 @@
+Testing HLT:
+============
+Attempting to execute HLT instruction...

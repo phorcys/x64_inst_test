@@ -1,0 +1,10 @@
+LSS instruction test
+====================
+LSS test is currently disabled due to segmentation fault issues
+This instruction may require kernel-level privileges to test properly
+
+LSS test completed
+==================
+Total tests: 0
+Passed: 0
+Failed: 0

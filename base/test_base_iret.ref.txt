@@ -1,0 +1,16 @@
+Starting IRET instruction tests
+==============================
+
+Testing basic IRET functionality:
+--------------------------------
+IRET execution failed
+  - Segmentation fault occurred
+  - IRET did not reach target label
+
+Testing IRET with stack switch:
+------------------------------
+Stack switch test failed
+  - Segmentation fault occurred
+  - IRET did not reach target label
+
+All IRET tests completed.

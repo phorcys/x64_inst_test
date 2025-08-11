@@ -1,0 +1,14 @@
+REPZ prefix instruction test
+===========================
+REPZ CMPSB (full match): PASS
+Error: REPZ CMPSB failed. Expected mismatch
+REPZ SCASB: PASS (found mismatch at 4)
+REPZ SCASW: PASS (found at position 2)
+Partial match: PASS
+Zero count: PASS (no crash)
+
+REPZ test completed
+===================
+Total tests: 6
+Passed: 5
+Failed: 1

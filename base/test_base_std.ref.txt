@@ -1,0 +1,10 @@
+STD instruction test
+====================
+DF before STD: 0
+DF after STD: 1
+
+STD test completed
+==================
+Total tests: 3
+Passed: 3
+Failed: 0

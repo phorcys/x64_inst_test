@@ -1,0 +1,15 @@
+OR instruction test
+===================
+8-bit OR (reg-reg): PASS
+16-bit OR (reg-mem): PASS
+32-bit OR (immediate): PASS
+64-bit OR (mem-reg): PASS
+Zero flag test: PASS
+Sign flag test: PASS
+Memory-memory OR: PASS
+
+OR test completed
+================
+Total tests: 7
+Passed: 7
+Failed: 0

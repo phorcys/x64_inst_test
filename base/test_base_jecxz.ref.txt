@@ -1,0 +1,19 @@
+Starting JECXZ instruction tests
+===============================
+
+Testing basic JECXZ functionality:
+--------------------------------
+Case 1 (RCX=0): Jump taken
+
+Case 2 (RCX=1): Jump not taken
+
+Case 3 (RCX=0x100000000): Jump taken
+
+Testing JECXZ with memory operations:
+-----------------------------------
+Case 1 (mem=0): Jump taken
+
+Case 2 (mem=42): Jump not taken
+
+
+All JECXZ tests completed.

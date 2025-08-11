@@ -1,0 +1,12 @@
+MOVBE instruction test
+======================
+16-bit MOVBE: PASS
+32-bit MOVBE: PASS
+64-bit MOVBE: PASS
+Unaligned MOVBE: PASS
+
+MOVBE test completed
+====================
+Total tests: 4
+Passed: 4
+Failed: 0

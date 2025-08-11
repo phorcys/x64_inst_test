@@ -1,0 +1,13 @@
+Starting JMP instruction tests
+=============================
+
+Testing direct JMP:
+-------------------
+Direct jump: success
+
+Testing register-indirect JMP:
+-----------------------------
+Register-indirect jump: success
+
+
+All JMP tests completed.

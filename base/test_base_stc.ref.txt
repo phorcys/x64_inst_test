@@ -1,0 +1,10 @@
+STC instruction test
+====================
+CF before STC: 0
+CF after STC: 1
+
+STC test completed
+==================
+Total tests: 3
+Passed: 3
+Failed: 0

@@ -1,0 +1,1 @@
+LIDT test placeholder - privileged instruction requires kernel mode

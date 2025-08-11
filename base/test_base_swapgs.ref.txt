@@ -1,0 +1,8 @@
+SWAPGS instruction test
+======================
+  Privilege violation correctly detected
+
+SWAPGS test completed
+====================
+Total tests: 1
+Failed tests: 0

@@ -1,0 +1,8 @@
+STOS instruction test
+=====================
+
+STOS test completed
+===================
+Total tests: 5
+Passed: 5
+Failed: 0

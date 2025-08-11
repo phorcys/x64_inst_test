@@ -1,0 +1,8 @@
+XSAVE instruction test
+======================
+  XSAVE header has SSE state: 0x0000000000000202
+  MXCSR saved successfully: 0x00009f80
+  XSAVE basic functionality: PASS
+
+XSAVE test completed
+===================

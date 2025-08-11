@@ -1,0 +1,16 @@
+NEG instruction test
+====================
+8-bit NEG (positive): PASS
+8-bit NEG (zero): PASS
+8-bit NEG (negative): PASS
+16-bit NEG: PASS
+32-bit NEG: PASS
+64-bit NEG: PASS
+Memory operand: PASS
+Overflow case: PASS
+
+NEG test completed
+==================
+Total tests: 8
+Passed: 8
+Failed: 0

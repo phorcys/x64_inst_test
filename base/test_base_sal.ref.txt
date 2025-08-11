@@ -1,0 +1,18 @@
+SAL instruction test
+====================
+8-bit SAL(1): PASS - CF: 0, OF: 1, ZF: 0, SF: 1
+16-bit SAL(1): PASS - CF: 0, OF: 1, ZF: 0, SF: 1
+32-bit SAL(3): PASS
+64-bit SAL(63): PASS
+Memory operand: PASS
+CL register: PASS
+CF behavior: PASS
+ZF/SF behavior: PASS
+SAL(0) no change: PASS
+Shift count modulo: PASS
+
+SAL test completed
+==================
+Total tests: 10
+Passed: 10
+Failed: 0

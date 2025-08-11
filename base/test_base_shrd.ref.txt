@@ -1,0 +1,14 @@
+SHRD instruction test
+=====================
+16-bit SHRD (>>8): 0x7812
+32-bit SHRD (>>16): 0xDEF01234
+64-bit SHRD (>>32): 0x7654321001234567
+Memory SHRD (>>4): 0x1800
+16-bit SHRD CF test: CF=1
+32-bit masked SHRD (>>33 masked to 1): 0xC0000000
+
+SHRD test completed
+===================
+Total tests: 6
+Passed: 6
+Failed: 0

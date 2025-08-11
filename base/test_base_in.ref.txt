@@ -1,0 +1,20 @@
+Starting IN instruction tests
+============================
+
+Testing IN with immediate port addresses:
+----------------------------------------
+IN AL, 0x00: Segmentation fault (expected) at (nil)
+IN AL, 0x01: Segmentation fault (expected) at (nil)
+IN AL, 0x7F: Segmentation fault (expected) at (nil)
+IN AL, 0x80: Segmentation fault (expected) at (nil)
+IN AL, 0xFF: Segmentation fault (expected) at (nil)
+
+Testing IN with DX register:
+----------------------------
+IN AL, DX (0x0000): Segmentation fault (expected) at (nil)
+IN AL, DX (0x0001): Segmentation fault (expected) at (nil)
+IN AL, DX (0x7FFF): Segmentation fault (expected) at (nil)
+IN AL, DX (0x8000): Segmentation fault (expected) at (nil)
+IN AL, DX (0xFFFF): Segmentation fault (expected) at (nil)
+
+All IN tests completed.

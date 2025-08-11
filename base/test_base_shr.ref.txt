@@ -1,0 +1,16 @@
+SHR instruction test
+====================
+8-bit SHR (>>1): 0101 1000 
+16-bit SHR (>>1): 0x091A
+32-bit SHR (>>8): 0x00000001
+64-bit SHR (>>65 masked to 1): 0x0000000000000001
+Memory SHR (>>1): 0x4000
+8-bit SHR CF test: val=0x00, CF=1
+8-bit SHR OF test: val=0x40, OF=1
+8-bit SHR ZF test: val=0x00, ZF=1
+
+SHR test completed
+==================
+Total tests: 8
+Passed: 8
+Failed: 0

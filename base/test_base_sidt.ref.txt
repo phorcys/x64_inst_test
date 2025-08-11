@@ -1,0 +1,10 @@
+SIDT instruction test
+=====================
+IDT limit: 0x0000
+IDT base: 0xFFFFFFFFFFFF0000
+
+SIDT test completed
+===================
+Total tests: 3
+Passed: 3
+Failed: 0

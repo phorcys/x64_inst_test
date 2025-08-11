@@ -1,0 +1,22 @@
+VERR instruction test
+=====================
+Testing VERR with register operand:
+CS register: 0x0033
+  Expected ZF: 1, Actual ZF: 1
+    OK
+Null selector: 0x0000
+  Expected ZF: 0, Actual ZF: 0
+    OK
+Testing VERR with memory operand:
+CS selector: 0x0033
+  Expected ZF: 1, Actual ZF: 1
+    OK
+Null selector: 0x0000
+  Expected ZF: 0, Actual ZF: 0
+    OK
+Explicit memory location: 0x0033
+  Expected ZF: 1, Actual ZF: 1
+    OK
+
+VERR test completed
+==================

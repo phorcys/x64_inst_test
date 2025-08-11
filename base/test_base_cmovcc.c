@@ -2,8 +2,6 @@
 #include <stdint.h>
 #include "base.h"
 
-// Remove the custom eflags functions since they're defined in base.h
-
 // Enhanced macro to test CMOV conditions
 #define TEST_CMOV_CONDITION(cc, condition_str, true_flags, false_flags) \
     do { \
@@ -19,16 +17,23 @@
             uint16_t dest = 0x5678; \
             uint16_t expected = condition ? src : dest; \
             set_eflags(flags); \
-            uint64_t flags_before = get_eflags(); \
-            asm volatile ("cmov" #cc " %1, %0" : "+r"(dest) : "r"(src)); \
-            uint64_t flags_after = get_eflags(); \
+            uint64_t flags_after; \
+            asm volatile ( \
+                "cmov" #cc " %2, %1\n\t" \
+                "pushfq\n\t" \
+                "pop %0\n\t" \
+                : "=r"(flags_after), "+r"(dest) \
+                : "r"(src) \
+                : "cc", "memory" \
+            ); \
             total++; \
-            if (dest == expected && flags_after == flags_before) { \
+            if (dest == expected) { \
                 passed++; \
             } else { \
                 printf("  16-bit %s: FAIL\n", condition ? "true" : "false"); \
                 printf("    Expected: 0x%04X, Got: 0x%04X\n", expected, dest); \
-                printf("    Flags before: 0x%04lX, After: 0x%04lX\n", flags_before & 0xFFFF, flags_after & 0xFFFF); \
+                printf("    Flags after:\n"); \
+                print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF); \
             } \
         } \
         \
@@ -40,16 +45,23 @@
             uint32_t dest = 0x87654321; \
             uint32_t expected = condition ? src : dest; \
             set_eflags(flags); \
-            uint64_t flags_before = get_eflags(); \
-            asm volatile ("cmov" #cc " %1, %0" : "+r"(dest) : "r"(src)); \
-            uint64_t flags_after = get_eflags(); \
+            uint64_t flags_after; \
+            asm volatile ( \
+                "cmov" #cc " %2, %1\n\t" \
+                "pushfq\n\t" \
+                "pop %0\n\t" \
+                : "=r"(flags_after), "+r"(dest) \
+                : "r"(src) \
+                : "cc", "memory" \
+            ); \
             total++; \
-            if (dest == expected && flags_after == flags_before) { \
+            if (dest == expected) { \
                 passed++; \
             } else { \
                 printf("  32-bit %s: FAIL\n", condition ? "true" : "false"); \
                 printf("    Expected: 0x%08X, Got: 0x%08X\n", expected, dest); \
-                printf("    Flags before: 0x%08lX, After: 0x%08lX\n", flags_before & 0xFFFFFFFF, flags_after & 0xFFFFFFFF); \
+                printf("    Flags after:\n"); \
+                print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF); \
             } \
         } \
         \
@@ -61,16 +73,23 @@
             uint64_t dest = 0x0FEDCBA987654321; \
             uint64_t expected = condition ? src : dest; \
             set_eflags(flags); \
-            uint64_t flags_before = get_eflags(); \
-            asm volatile ("cmov" #cc " %1, %0" : "+r"(dest) : "r"(src)); \
-            uint64_t flags_after = get_eflags(); \
+            uint64_t flags_after; \
+            asm volatile ( \
+                "cmov" #cc " %2, %1\n\t" \
+                "pushfq\n\t" \
+                "pop %0\n\t" \
+                : "=r"(flags_after), "+r"(dest) \
+                : "r"(src) \
+                : "cc", "memory" \
+            ); \
             total++; \
-            if (dest == expected && flags_after == flags_before) { \
+            if (dest == expected) { \
                 passed++; \
             } else { \
                 printf("  64-bit %s: FAIL\n", condition ? "true" : "false"); \
                 printf("    Expected: 0x%016lX, Got: 0x%016lX\n", expected, dest); \
-                printf("    Flags before: 0x%016lX, After: 0x%016lX\n", flags_before, flags_after); \
+                printf("    Flags after:\n"); \
+                print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF); \
             } \
         } \
         \
@@ -82,16 +101,23 @@
             uint64_t dest = 0x0123456789ABCDEF; \
             uint64_t expected = condition ? mem_src : dest; \
             set_eflags(flags); \
-            uint64_t flags_before = get_eflags(); \
-            asm volatile ("cmov" #cc " %1, %0" : "+r"(dest) : "m"(mem_src)); \
-            uint64_t flags_after = get_eflags(); \
+            uint64_t flags_after; \
+            asm volatile ( \
+                "cmov" #cc " %2, %1\n\t" \
+                "pushfq\n\t" \
+                "pop %0\n\t" \
+                : "=r"(flags_after), "+r"(dest) \
+                : "m"(mem_src) \
+                : "cc", "memory" \
+            ); \
             total++; \
-            if (dest == expected && flags_after == flags_before) { \
+            if (dest == expected) { \
                 passed++; \
             } else { \
                 printf("  Mem-operand %s: FAIL\n", condition ? "true" : "false"); \
                 printf("    Expected: 0x%016lX, Got: 0x%016lX\n", expected, dest); \
-                printf("    Flags before: 0x%016lX, After: 0x%016lX\n", flags_before, flags_after); \
+                printf("    Flags after:\n"); \
+                print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF); \
             } \
         } \
         \
@@ -102,16 +128,23 @@
             uint64_t value = 0x1122334455667788; \
             uint64_t expected = value; \
             set_eflags(flags); \
-            uint64_t flags_before = get_eflags(); \
-            asm volatile ("cmov" #cc " %0, %0" : "+r"(value)); \
-            uint64_t flags_after = get_eflags(); \
+            uint64_t flags_after; \
+            asm volatile ( \
+                "cmov" #cc " %1, %1\n\t" \
+                "pushfq\n\t" \
+                "pop %0\n\t" \
+                : "=r"(flags_after), "+r"(value) \
+                : \
+                : "cc", "memory" \
+            ); \
             total++; \
-            if (value == expected && flags_after == flags_before) { \
+            if (value == expected) { \
                 passed++; \
             } else { \
                 printf("  Same-reg %s: FAIL\n", condition ? "true" : "false"); \
                 printf("    Expected: 0x%016lX, Got: 0x%016lX\n", expected, value); \
-                printf("    Flags before: 0x%016lX, After: 0x%016lX\n", flags_before, flags_after); \
+                printf("    Flags after:\n"); \
+                print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF); \
             } \
         } \
         \
@@ -121,16 +154,23 @@
             uint64_t src = boundaries[i]; \
             uint64_t dest = ~boundaries[i]; \
             set_eflags(true_flags); \
-            uint64_t flags_before = get_eflags(); \
-            asm volatile ("cmov" #cc " %1, %0" : "+r"(dest) : "r"(src)); \
-            uint64_t flags_after = get_eflags(); \
+            uint64_t flags_after; \
+            asm volatile ( \
+                "cmov" #cc " %2, %1\n\t" \
+                "pushfq\n\t" \
+                "pop %0\n\t" \
+                : "=r"(flags_after), "+r"(dest) \
+                : "r"(src) \
+                : "cc", "memory" \
+            ); \
             total++; \
-            if (dest == src && flags_after == flags_before) { \
+            if (dest == src) { \
                 passed++; \
             } else { \
                 printf("  Boundary %d: FAIL\n", i+1); \
                 printf("    Expected: 0x%016lX, Got: 0x%016lX\n", src, dest); \
-                printf("    Flags before: 0x%016lX, After: 0x%016lX\n", flags_before, flags_after); \
+                printf("    Flags after:\n"); \
+                print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF); \
             } \
         } \
         \

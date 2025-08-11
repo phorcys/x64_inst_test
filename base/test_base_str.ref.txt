@@ -1,0 +1,11 @@
+STR instruction comprehensive test
+=================================
+STR to memory: 0x0040
+STR to 16-bit register: 0x0040
+STR to 32-bit register: 0x00000040
+STR to 64-bit register: 0x0000000000000040
+
+STR test completed
+==================
+Total tests: 4
+Failed tests: 0

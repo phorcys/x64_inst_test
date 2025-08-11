@@ -1,0 +1,17 @@
+ROL instruction test
+====================
+8-bit ROL(1): PASS - CF: 1, OF: 1
+16-bit ROL(4): PASS
+32-bit ROL(17): PASS
+64-bit ROL(1): PASS - CF: 1, OF: 1
+Memory operand: PASS
+CL register: PASS
+OF flag: PASS
+ROL(0) no change: PASS
+All bits set: PASS
+
+ROL test completed
+==================
+Total tests: 9
+Passed: 9
+Failed: 0

@@ -1,0 +1,16 @@
+RCR instruction test
+====================
+8-bit RCR(1): PASS - CF: 1, OF: 1
+16-bit RCR(2): PASS
+32-bit RCR(33): PASS
+64-bit RCR(1): PASS - CF: 1, OF: 0
+Memory operand: PASS
+RCR(0) no change: PASS
+Multi-rotate: PASS
+All bits set: PASS
+
+RCR test completed
+==================
+Total tests: 8
+Passed: 8
+Failed: 0

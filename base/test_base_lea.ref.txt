@@ -1,0 +1,37 @@
+Starting LEA tests
+==================
+
+Test 1: LEA with 64-bit operand (expected: 0x12346a78)
+  Result: 0x12346a78 - PASS
+
+Test 2: LEA with 32-bit operand (expected: 0x12346a78)
+  Result: 0x12346a78 - PASS
+
+Test 3: LEA with 16-bit operand (expected: 0x6a78)
+  Result: 0x6a78 - PASS
+
+Test 4: LEA with 32-bit addressing (expected: 0x12346a78)
+  Result: 0x12346a78 - PASS
+
+Test 5: Direct addressing  Result: PASS
+
+Test 6: Register indirect (expected: 0xcafebabe)
+  Result: 0xcafebabe - PASS
+
+Test 7: Base + displacement (expected: 0x1020)
+  Result: 0x1020 - PASS
+
+Test 8: Negative displacement (expected: 0xfe0)
+  Result: 0xfe0 - PASS
+
+Test 9: Base + index (expected: 0x1100)
+  Result: 0x1100 - PASS
+
+Test 10: Scale factor 8 (expected: 0x1800)
+  Result: 0x1800 - PASS
+
+LEA tests completed
+====================
+Total tests: 10
+Passed: 10
+Failed: 0

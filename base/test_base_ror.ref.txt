@@ -1,0 +1,18 @@
+ROR instruction test
+====================
+8-bit ROR(1): PASS - CF: 1, OF: 1
+16-bit ROR(4): PASS
+32-bit ROR(17): PASS
+64-bit ROR(1): PASS - CF: 1, OF: 1
+Memory operand: PASS
+CL register: PASS
+OF flag: PASS
+ROR(0) no change: PASS
+All bits set: PASS
+Wrapping behavior: PASS
+
+ROR test completed
+==================
+Total tests: 10
+Passed: 10
+Failed: 0

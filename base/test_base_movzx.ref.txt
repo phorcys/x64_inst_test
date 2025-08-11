@@ -1,0 +1,16 @@
+MOVZX instruction test
+======================
+MOVZBW (byte to word): PASS
+MOVZBL (byte to dword): PASS
+MOVZBQ (byte to qword): PASS
+MOVZWL (word to dword): PASS
+MOVZWQ (word to qword): PASS
+Memory operand: PASS
+Positive value: PASS
+Zero value: PASS
+
+MOVZX test completed
+====================
+Total tests: 8
+Passed: 8
+Failed: 0

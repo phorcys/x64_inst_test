@@ -1,0 +1,18 @@
+SAR instruction test
+====================
+8-bit SAR(1): PASS - CF: 1, OF: 0, ZF: 0, SF: 1
+16-bit SAR(1): PASS - CF: 0, OF: 0, ZF: 0, SF: 0
+32-bit SAR(3): PASS
+64-bit SAR(63): PASS
+Memory operand: PASS
+CL register: PASS
+CF behavior: PASS
+ZF/SF behavior: PASS
+SAR(0) no change: PASS
+Shift count modulo: PASS
+
+SAR test completed
+==================
+Total tests: 10
+Passed: 10
+Failed: 0

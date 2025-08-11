@@ -1,0 +1,16 @@
+RSM instruction test
+====================
+Attempting to execute RSM instruction...
+SIGILL caught - RSM instruction trapped as expected
+RSM execution trapped successfully: PASS
+Register access after RSM attempt: PASS
+Memory access after RSM attempt: PASS
+Control flow after RSM attempt: PASS
+Attempting system call after RSM...
+System call after RSM attempt: PASS 
+
+RSM test completed
+==================
+Total tests: 5
+Passed: 5
+Failed: 0

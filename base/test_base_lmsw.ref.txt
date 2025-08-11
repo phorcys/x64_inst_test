@@ -1,0 +1,9 @@
+LMSW instruction test
+=====================
+Test skipped - privileged instruction (requires CPL=0)
+
+LMSW test completed
+===================
+Total tests: 0
+Passed: 0
+Failed: 0

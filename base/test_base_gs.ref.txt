@@ -1,0 +1,8 @@
+Testing GS segment prefix:
+==========================
+GS MOV result: 0x1122334455667788
+Original value: 0x123456789ABCDEF0
+GS ADD result: 150
+GS CMP flags: 0x0000000000000044
+
+GS tests completed.

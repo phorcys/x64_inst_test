@@ -1,0 +1,13 @@
+REPNZ prefix instruction test
+=============================
+REPNZ SCASB: PASS (found at 3)
+REPNZ CMPSB (match): PASS
+Error: REPNZ CMPSB failed. Expected mismatch after 5 bytes
+REPNZ SCASW: PASS (found at position 2)
+Zero count: PASS (no crash)
+
+REPNZ test completed
+====================
+Total tests: 5
+Passed: 4
+Failed: 1

@@ -1,0 +1,50 @@
+Starting INT instruction tests
+=============================
+
+Testing INT (software interrupt):
+--------------------------------
+INT 0x00: Segmentation fault (expected)
+INT 0x01: Segmentation fault (expected)
+INT 0x02: Segmentation fault (expected)
+INT 0x03: Segmentation fault (expected)
+INT 0x04: Segmentation fault (expected)
+INT 0x05: Segmentation fault (expected)
+INT 0x06: Segmentation fault (expected)
+INT 0x07: Segmentation fault (expected)
+INT 0x08: Segmentation fault (expected)
+INT 0x09: Segmentation fault (expected)
+INT 0x0A: Segmentation fault (expected)
+INT 0x0B: Segmentation fault (expected)
+INT 0x0C: Segmentation fault (expected)
+INT 0x0D: Segmentation fault (expected)
+INT 0x0E: Segmentation fault (expected)
+INT 0x0F: Segmentation fault (expected)
+INT 0x10: Segmentation fault (expected)
+INT 0x11: Segmentation fault (expected)
+INT 0x12: Segmentation fault (expected)
+INT 0x13: Segmentation fault (expected)
+INT 0x14: Segmentation fault (expected)
+INT 0x15: Segmentation fault (expected)
+INT 0x16: Segmentation fault (expected)
+INT 0x17: Segmentation fault (expected)
+INT 0x18: Segmentation fault (expected)
+INT 0x19: Segmentation fault (expected)
+INT 0x1A: Segmentation fault (expected)
+INT 0x1B: Segmentation fault (expected)
+INT 0x1C: Segmentation fault (expected)
+INT 0x1D: Segmentation fault (expected)
+INT 0x1E: Segmentation fault (expected)
+INT 0x1F: Segmentation fault (expected)
+INT 0x80: System call interface (expected behavior)
+INT 0x81: Segmentation fault (expected)
+INT 0xFF: Segmentation fault (expected)
+
+Testing INT3 (breakpoint):
+--------------------------
+INT3: Segmentation fault (expected)
+
+Testing INT1 (debug trap):
+--------------------------
+INT1: Segmentation fault (expected)
+
+All INT tests completed.
