@@ -16,15 +16,20 @@
             uint16_t src = 0x1234; \
             uint16_t dest = 0x5678; \
             uint16_t expected = condition ? src : dest; \
-            set_eflags(flags); \
             uint64_t flags_after; \
-            asm volatile ( \
-                "cmov" #cc " %2, %1\n\t" \
-                "pushfq\n\t" \
-                "pop %0\n\t" \
-                : "=r"(flags_after), "+r"(dest) \
-                : "r"(src) \
-                : "cc", "memory" \
+                asm volatile ( \
+                    "xor %%r10, %%r10\n\t" \
+                    "push %%r10\n\t" \
+                    "popfq\n\t" \
+                    "mov %q3, %%r10\n\t" \
+                    "push %%r10\n\t" \
+                    "popfq\n\t" \
+                    "cmov" #cc " %2, %1\n\t" \
+                    "pushfq\n\t" \
+                    "pop %q0\n\t" \
+                : "=&r"(flags_after), "+r"(dest) \
+                : "r"(src), "r"(flags) \
+                : "cc", "memory", "r10" \
             ); \
             total++; \
             if (dest == expected) { \
@@ -47,12 +52,18 @@
             set_eflags(flags); \
             uint64_t flags_after; \
             asm volatile ( \
+                "xor %%r10, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
+                "mov %q3, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
                 "cmov" #cc " %2, %1\n\t" \
                 "pushfq\n\t" \
-                "pop %0\n\t" \
-                : "=r"(flags_after), "+r"(dest) \
-                : "r"(src) \
-                : "cc", "memory" \
+                "pop %q0\n\t" \
+                : "=&r"(flags_after), "+r"(dest) \
+                : "r"(src), "r"(flags) \
+                : "cc", "memory", "r10" \
             ); \
             total++; \
             if (dest == expected) { \
@@ -77,8 +88,8 @@
             asm volatile ( \
                 "cmov" #cc " %2, %1\n\t" \
                 "pushfq\n\t" \
-                "pop %0\n\t" \
-                : "=r"(flags_after), "+r"(dest) \
+                "pop %q0\n\t" \
+                : "=&r"(flags_after), "+r"(dest) \
                 : "r"(src) \
                 : "cc", "memory" \
             ); \
@@ -103,12 +114,18 @@
             set_eflags(flags); \
             uint64_t flags_after; \
             asm volatile ( \
+                "xor %%r10, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
+                "mov %q3, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
                 "cmov" #cc " %2, %1\n\t" \
                 "pushfq\n\t" \
-                "pop %0\n\t" \
-                : "=r"(flags_after), "+r"(dest) \
-                : "m"(mem_src) \
-                : "cc", "memory" \
+                "pop %q0\n\t" \
+                : "=&r"(flags_after), "+r"(dest) \
+                : "m"(mem_src), "r"(flags) \
+                : "cc", "memory", "r10" \
             ); \
             total++; \
             if (dest == expected) { \
@@ -130,12 +147,18 @@
             set_eflags(flags); \
             uint64_t flags_after; \
             asm volatile ( \
+                "xor %%r10, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
+                "mov %q2, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
                 "cmov" #cc " %1, %1\n\t" \
                 "pushfq\n\t" \
-                "pop %0\n\t" \
-                : "=r"(flags_after), "+r"(value) \
-                : \
-                : "cc", "memory" \
+                "pop %q0\n\t" \
+                : "=&r"(flags_after), "+r"(value) \
+                : "r"(flags) \
+                : "cc", "memory", "r10" \
             ); \
             total++; \
             if (value == expected) { \
@@ -156,12 +179,18 @@
             set_eflags(true_flags); \
             uint64_t flags_after; \
             asm volatile ( \
+                "xor %%r10, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
+                "mov %q3, %%r10\n\t" \
+                "push %%r10\n\t" \
+                "popfq\n\t" \
                 "cmov" #cc " %2, %1\n\t" \
                 "pushfq\n\t" \
-                "pop %0\n\t" \
-                : "=r"(flags_after), "+r"(dest) \
-                : "r"(src) \
-                : "cc", "memory" \
+                "pop %q0\n\t" \
+                : "=&r"(flags_after), "+r"(dest) \
+                : "r"(src), "r"(true_flags) \
+                : "cc", "memory", "r10" \
             ); \
             total++; \
             if (dest == src) { \

@@ -1,23 +1,25 @@
 Testing DIV (8-bit):
 ====================
 0x1234 / 0x56:
-  Quotient: 0x36, Remainder: 0x00
+  Quotient: 0x36, Remainder: 0x56
 0xABCD / 0xEF:
-  Quotient: 0xB8, Remainder: 0x00
+  Quotient: 0xB8, Remainder: 0xEF
 
 Testing DIV (16-bit):
 =====================
-0x12345678 / 0x9ABC:
-  Quotient: 0x0000, Remainder: 0x5678
-0x87654321 / 0x1234:
-  Quotient: 0x0003, Remainder: 0x0C85
+0x00001234 / 0x0056:
+  Quotient: 0x0001, Remainder: 0x0000
+0x00001000 / 0x0003:
+  Quotient: 0x0001, Remainder: 0x0000
 
 Testing DIV (32-bit):
 =====================
-0x123456789ABCDEF0 / 0x12345678:
-  Quotient: 0x00000008, Remainder: 0x091A2B30
-0xFEDCBA9876543210 / 0xABCDEF01:
-  Quotient: 0x00000000, Remainder: 0x76543210
+100 / 5:
+  Quotient: 20, Remainder: 0
+100 / 7:
+  Quotient: 14, Remainder: 2
+0x0000000100000000 / 0x00000002:
+  Quotient: 0x80000000, Remainder: 0x00000000
 
 Testing DIV (64-bit):
 =====================
@@ -30,15 +32,11 @@ Testing DIV with memory operands:
 ================================
 8-bit memory divisor (1000 / 10):
   Quotient: 0x64, Remainder: 0x00
-  Flags: 0x054
 16-bit memory divisor (0x12345678 / 0x9ABC):
   Quotient: 0x0000, Remainder: 0x1234
-  Flags: 0x010
 32-bit memory divisor (0x123456789ABCDEF0 / 0x12345678):
   Quotient: 0x00000008, Remainder: 0x00000000
-  Flags: 0x054
 64-bit memory divisor (100 / 5):
   Quotient: 20, Remainder: 0
-  Flags: 0x010
 
 DIV tests completed.

@@ -28,42 +28,70 @@ static void test_cmps() {
             uint8_t* src_ptr = src_buf + 4;
             uint8_t* dst_ptr = dst_buf + 4;
             
-            // Set known initial state for EFLAGS
+            uint64_t rsi_before, rdi_before, rsi_after, rdi_after, flags_after;
+            
+            // Perform comparison with flags captured directly
             asm volatile (
-                "push $0x202\n\t"  // Set bit 1 (reserved) and clear all other flags
+                "push $0x202\n\t"   // Set bit 1 (reserved) and clear all other flags
                 "popf\n\t"
+                ::: "cc"
             );
+            
             if (dir) {
                 asm volatile ("std");
             } else {
                 asm volatile ("cld");
             }
-            uint64_t flags_before = get_eflags();
-            uint64_t rsi_before, rdi_before, rsi_after, rdi_after;
             
-            // Perform comparison
             asm volatile (
-                "mov %1, %%rsi\n\t"
-                "mov %2, %%rdi\n\t"
-                "mov %3, %%rcx\n\t"
+                "mov %[src], %%rsi\n\t"
+                "mov %[dst], %%rdi\n\t"
                 : "=S"(rsi_before), "=D"(rdi_before)
-                : "r"(src_ptr), "r"(dst_ptr), "c"(1)
+                : [src] "r"(src_ptr), [dst] "r"(dst_ptr)
                 : "memory"
             );
             
             // Execute CMPS instruction based on size
             switch (size) {
                 case 1:
-                    asm volatile ("cmpsb" : : "S"(rsi_before), "D"(rdi_before));
+                    asm volatile (
+                        "cmpsb\n\t"
+                        "pushfq\n\t"
+                        "popq %0\n\t"
+                        : "=r" (flags_after)
+                        : "S"(rsi_before), "D"(rdi_before)
+                        : "cc", "memory"
+                    );
                     break;
                 case 2:
-                    asm volatile ("cmpsw" : : "S"(rsi_before), "D"(rdi_before));
+                    asm volatile (
+                        "cmpsw\n\t"
+                        "pushfq\n\t"
+                        "popq %0\n\t"
+                        : "=r" (flags_after)
+                        : "S"(rsi_before), "D"(rdi_before)
+                        : "cc", "memory"
+                    );
                     break;
                 case 4:
-                    asm volatile ("cmpsl" : : "S"(rsi_before), "D"(rdi_before));
+                    asm volatile (
+                        "cmpsl\n\t"
+                        "pushfq\n\t"
+                        "popq %0\n\t"
+                        : "=r" (flags_after)
+                        : "S"(rsi_before), "D"(rdi_before)
+                        : "cc", "memory"
+                    );
                     break;
                 case 8:
-                    asm volatile ("cmpsq" : : "S"(rsi_before), "D"(rdi_before));
+                    asm volatile (
+                        "cmpsq\n\t"
+                        "pushfq\n\t"
+                        "popq %0\n\t"
+                        : "=r" (flags_after)
+                        : "S"(rsi_before), "D"(rdi_before)
+                        : "cc", "memory"
+                    );
                     break;
             }
             
@@ -75,16 +103,13 @@ static void test_cmps() {
                 : "memory"
             );
             
-            uint64_t flags_after = get_eflags();
-            
             // Calculate pointer differences
             intptr_t src_diff = (intptr_t)rsi_after - (intptr_t)rsi_before;
             intptr_t dst_diff = (intptr_t)rdi_after - (intptr_t)rdi_before;
             
             printf("    Pointers moved: src %+ld, dst %+ld\n", src_diff, dst_diff);
-        // Only check relevant flags: CF, PF, AF, ZF, SF, OF (0x8D5)
-        //printf("    Flags before: 0x%03lX, after: 0x%03lX\n", 
-          //     flags_before & 0x8D5, flags_after & 0x8D5);
+            printf("    Flags after:\n");
+            print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF);
             
             // Show data being compared
             printf("    Data compared: src=0x");
@@ -121,56 +146,59 @@ static void test_rep_cmps() {
         uint8_t* dst_ptr = dst_buf;
         size_t count = 16;
         
-        // Set known initial state for EFLAGS
-        asm volatile (
-            "push $0x202\n\t"  // Set bit 1 (reserved) and clear all other flags
-            "popf\n\t"
-        );
-        asm volatile ("cld"); // Always forward for repeated ops
-        uint64_t flags_before = get_eflags();
-        uint64_t rsi_before = (uint64_t)src_ptr;
-        uint64_t rdi_before = (uint64_t)dst_ptr;
-        uint64_t rcx_before = count;
-        uint64_t rsi_after, rdi_after, rcx_after;
-        
-        // Execute REP CMPS in a single asm block
-        if (rep_type) {
-            asm volatile (
-                "mov %[rsi_before], %%rsi\n\t"
-                "mov %[rdi_before], %%rdi\n\t"
-                "mov %[rcx_before], %%rcx\n\t"
-                "repne cmpsb\n\t"
-                "mov %%rsi, %[rsi_after]\n\t"
-                "mov %%rdi, %[rdi_after]\n\t"
-                "mov %%rcx, %[rcx_after]\n\t"
-                : [rsi_after] "=r" (rsi_after),
-                  [rdi_after] "=r" (rdi_after),
-                  [rcx_after] "=r" (rcx_after)
-                : [rsi_before] "r" (rsi_before),
-                  [rdi_before] "r" (rdi_before),
-                  [rcx_before] "r" (rcx_before)
-                : "rsi", "rdi", "rcx", "memory", "cc"
-            );
-        } else {
-            asm volatile (
-                "mov %[rsi_before], %%rsi\n\t"
-                "mov %[rdi_before], %%rdi\n\t"
-                "mov %[rcx_before], %%rcx\n\t"
-                "repe cmpsb\n\t"
-                "mov %%rsi, %[rsi_after]\n\t"
-                "mov %%rdi, %[rdi_after]\n\t"
-                "mov %%rcx, %[rcx_after]\n\t"
-                : [rsi_after] "=r" (rsi_after),
-                  [rdi_after] "=r" (rdi_after),
-                  [rcx_after] "=r" (rcx_after)
-                : [rsi_before] "r" (rsi_before),
-                  [rdi_before] "r" (rdi_before),
-                  [rcx_before] "r" (rcx_before)
-                : "rsi", "rdi", "rcx", "memory", "cc"
-            );
-        }
-        
-        uint64_t flags_after = get_eflags();
+            uint64_t rsi_before = (uint64_t)src_ptr;
+            uint64_t rdi_before = (uint64_t)dst_ptr;
+            uint64_t rcx_before = count;
+            uint64_t rsi_after, rdi_after, rcx_after, flags_after;
+            
+            // Execute REP CMPS in a single asm block with flags captured directly
+            if (rep_type) {
+                asm volatile (
+                    "push $0x202\n\t"   // Set bit 1 (reserved) and clear all other flags
+                    "popf\n\t"
+                    "cld\n\t"           // Always forward for repeated ops
+                    "mov %[rsi_before], %%rsi\n\t"
+                    "mov %[rdi_before], %%rdi\n\t"
+                    "mov %[rcx_before], %%rcx\n\t"
+                    "repne cmpsb\n\t"
+                    "pushfq\n\t"
+                    "popq %[flags_after]\n\t"
+                    "mov %%rsi, %[rsi_after]\n\t"
+                    "mov %%rdi, %[rdi_after]\n\t"
+                    "mov %%rcx, %[rcx_after]\n\t"
+                    : [rsi_after] "=r" (rsi_after),
+                      [rdi_after] "=r" (rdi_after),
+                      [rcx_after] "=r" (rcx_after),
+                      [flags_after] "=r" (flags_after)
+                    : [rsi_before] "r" (rsi_before),
+                      [rdi_before] "r" (rdi_before),
+                      [rcx_before] "r" (rcx_before)
+                    : "rsi", "rdi", "rcx", "memory", "cc"
+                );
+            } else {
+                asm volatile (
+                    "push $0x202\n\t"   // Set bit 1 (reserved) and clear all other flags
+                    "popf\n\t"
+                    "cld\n\t"           // Always forward for repeated ops
+                    "mov %[rsi_before], %%rsi\n\t"
+                    "mov %[rdi_before], %%rdi\n\t"
+                    "mov %[rcx_before], %%rcx\n\t"
+                    "repe cmpsb\n\t"
+                    "pushfq\n\t"
+                    "popq %[flags_after]\n\t"
+                    "mov %%rsi, %[rsi_after]\n\t"
+                    "mov %%rdi, %[rdi_after]\n\t"
+                    "mov %%rcx, %[rcx_after]\n\t"
+                    : [rsi_after] "=r" (rsi_after),
+                      [rdi_after] "=r" (rdi_after),
+                      [rcx_after] "=r" (rcx_after),
+                      [flags_after] "=r" (flags_after)
+                    : [rsi_before] "r" (rsi_before),
+                      [rdi_before] "r" (rdi_before),
+                      [rcx_before] "r" (rcx_before)
+                    : "rsi", "rdi", "rcx", "memory", "cc"
+                );
+            }
         
         // Calculate comparisons done
         size_t comparisons = count - rcx_after;
@@ -178,9 +206,8 @@ static void test_rep_cmps() {
             printf("    Pointers moved: src %+ld, dst %+ld\n",
                    (int64_t)(rsi_after - rsi_before),
                    (int64_t)(rdi_after - rdi_before));
-        // Only check relevant flags: CF, PF, AF, ZF, SF, OF (0x8D5)
-       // printf("    Flags before: 0x%03lX, after: 0x%03lX\n", 
-           //    flags_before & 0x8D5, flags_after & 0x8D5);
+        printf("    Flags after:\n");
+        print_eflags_cond(flags_after, X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF);
         
         // Show mismatch location if any
         if (rcx_after > 0 && rcx_after < count) {

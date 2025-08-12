@@ -1,31 +1,61 @@
-Testing CMPXCHG8B:
-==================
+Testing CMPXCHG8B instruction:
+=============================
 Aligned memory (success):
-  Expected: 0x123456789ABCDEF0, Actual: 0xFEDCBA9876543210
-  ZF: 1
-  Flags: 0x040
+  Memory before: 0x123456789ABCDEF0, after: 0x5566778811223344
+  EDX:EAX before: 0x123456789ABCDEF0, after: 0x123456789ABCDEF0
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 Aligned memory (failure):
-  Expected: 0x123456789ABCDEF0, Actual: 0x1122334455667788
-  ZF: 0
-  Flags: 0x000
+  Memory before: 0x1122334455667788, after: 0x1122334455667788
+  EDX:EAX before: 0x123456789ABCDEF0, after: 0x1122334455667788
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 Unaligned memory (success):
-  Expected: 0x123456789ABCDEF0, Actual: 0xFEDCBA9876543210
-  ZF: 1
-  Flags: 0x040
+  Memory before: 0x123456789ABCDEF0, after: 0x5566778811223344
+  EDX:EAX before: 0x123456789ABCDEF0, after: 0x123456789ABCDEF0
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 Unaligned memory (failure):
-  Expected: 0x123456789ABCDEF0, Actual: 0x1122334455667788
-  ZF: 0
-  Flags: 0x000
+  Memory before: 0x1122334455667788, after: 0x1122334455667788
+  EDX:EAX before: 0x123456789ABCDEF0, after: 0x1122334455667788
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 Testing LOCK CMPXCHG8B:
 =======================
 LOCK CMPXCHG8B (success):
-  Expected: 0x0000000000000000, Actual: 0x123456789ABCDEF0
-  ZF: 1
-  Flags: 0x040
+  Memory before: 0x0000000000000000, after: 0x0000567800001234
+  EDX:EAX before: 0x0000000000000000, after: 0x0000000000000000
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 LOCK CMPXCHG8B (failure):
-  Expected: 0x0000000000000000, Actual: 0x1122334455667788
-  ZF: 0
-  Flags: 0x000
+  Memory before: 0x1122334455667788, after: 0x1122334455667788
+  EDX:EAX before: 0x0000000000000000, after: 0x1122334455667788
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
 
 CMPXCHG8B tests completed.

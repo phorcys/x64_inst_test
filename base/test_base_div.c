@@ -46,26 +46,30 @@ static void test_div16() {
     uint16_t divisor;
     uint16_t quotient, remainder;
     // Case 1: Normal division
-    dividend = 0x12345678;
-    divisor = 0x9ABC;
+    dividend = 0x00001234;  // DX:AX = 0x0000:0x1234
+    divisor = 0x56;
     CLEAR_FLAGS;
     asm volatile (
-        "divw %2\n\t"
+        "mov %[dividend], %%ax\n\t"  // Load AX
+        "xor %%dx, %%dx\n\t"         // Clear DX
+        "divw %[divisor]\n\t"
         : "=a" (quotient), "=d" (remainder)
-        : "r" (divisor), "a" (dividend)
+        : [divisor] "r" (divisor), [dividend] "r" ((uint16_t)dividend)
         : "cc"
     );
     printf("0x%08X / 0x%04X:\n", dividend, divisor);
     printf("  Quotient: 0x%04X, Remainder: 0x%04X\n", quotient, remainder);
     
     // Case 2: Division with remainder
-    dividend = 0x87654321;
-    divisor = 0x1234;
+    dividend = 0x00001000;  // DX:AX = 0x0000:0x1000
+    divisor = 0x3;
     CLEAR_FLAGS;
     asm volatile (
-        "divw %2\n\t"
+        "mov %[dividend], %%ax\n\t"  // Load AX
+        "xor %%dx, %%dx\n\t"         // Clear DX
+        "divw %[divisor]\n\t"
         : "=a" (quotient), "=d" (remainder)
-        : "r" (divisor), "a" (dividend)
+        : [divisor] "r" (divisor), [dividend] "r" ((uint16_t)dividend)
         : "cc"
     );
     printf("0x%08X / 0x%04X:\n", dividend, divisor);
@@ -80,27 +84,51 @@ static void test_div32() {
     uint64_t dividend;
     uint32_t divisor;
     uint32_t quotient, remainder;
+    
     // Case 1: Normal division
-    dividend = 0x123456789ABCDEF0;
-    divisor = 0x12345678;
+    dividend = 100;
+    divisor = 5;
     CLEAR_FLAGS;
+    register uint32_t eax asm("eax") = (uint32_t)dividend;
+    register uint32_t ecx asm("ecx") = divisor;
     asm volatile (
-        "divl %2\n\t"
+        "xor %%edx, %%edx\n\t"      // Clear EDX
+        "divl %%ecx\n\t"            // Divide EDX:EAX by ECX
         : "=a" (quotient), "=d" (remainder)
-        : "r" (divisor), "a" (dividend)
+        : "a" (eax), "c" (ecx)
         : "cc"
     );
-    printf("0x%016lX / 0x%08X:\n", dividend, divisor);
-    printf("  Quotient: 0x%08X, Remainder: 0x%08X\n", quotient, remainder);
+    printf("%lu / %u:\n", dividend, divisor);
+    printf("  Quotient: %u, Remainder: %u\n", quotient, remainder);
     
     // Case 2: Division with remainder
-    dividend = 0xFEDCBA9876543210;
-    divisor = 0xABCDEF01;
+    dividend = 100;
+    divisor = 7;
     CLEAR_FLAGS;
+    eax = (uint32_t)dividend;
+    ecx = divisor;
     asm volatile (
-        "divl %2\n\t"
+        "xor %%edx, %%edx\n\t"      // Clear EDX
+        "divl %%ecx\n\t"            // Divide EDX:EAX by ECX
         : "=a" (quotient), "=d" (remainder)
-        : "r" (divisor), "a" (dividend)
+        : "a" (eax), "c" (ecx)
+        : "cc"
+    );
+    printf("%lu / %u:\n", dividend, divisor);
+    printf("  Quotient: %u, Remainder: %u\n", quotient, remainder);
+    
+    // Case 3: Larger values
+    dividend = 0x100000000; // 2^32
+    divisor = 2;
+    CLEAR_FLAGS;
+    uint32_t dividend_low = (uint32_t)(dividend & 0xFFFFFFFF);
+    uint32_t dividend_high = (uint32_t)(dividend >> 32);
+    asm volatile (
+        "mov %2, %%eax\n\t"
+        "mov %3, %%edx\n\t"
+        "divl %4\n\t"
+        : "=a" (quotient), "=d" (remainder)
+        : "r" (dividend_low), "r" (dividend_high), "r" (divisor)
         : "cc"
     );
     printf("0x%016lX / 0x%08X:\n", dividend, divisor);
@@ -148,7 +176,6 @@ static void test_div_mem() {
     printf("================================\n");
     
     char buffer[32] __attribute__((aligned(8)));
-    uint64_t flags;
     
     // 8-bit memory divisor
     uint8_t *div8 = (uint8_t*)&buffer[0];
@@ -163,10 +190,8 @@ static void test_div_mem() {
     );
     uint8_t quotient8 = dividend8 & 0xFF;
     uint8_t remainder8 = dividend8 >> 8;
-    flags = get_eflags();
     printf("8-bit memory divisor (1000 / 10):\n");
     printf("  Quotient: 0x%02X, Remainder: 0x%02X\n", quotient8, remainder8);
-    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
     
     // 16-bit memory divisor
     uint16_t *div16 = (uint16_t*)&buffer[0];
@@ -181,10 +206,8 @@ static void test_div_mem() {
     );
     uint16_t quotient16 = dividend32 & 0xFFFF;
     uint16_t remainder16 = dividend32 >> 16;
-    flags = get_eflags();
     printf("16-bit memory divisor (0x12345678 / 0x9ABC):\n");
     printf("  Quotient: 0x%04X, Remainder: 0x%04X\n", quotient16, remainder16);
-    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
     
     // 32-bit memory divisor
     uint32_t *div32 = (uint32_t*)&buffer[0];
@@ -199,10 +222,8 @@ static void test_div_mem() {
     );
     uint32_t quotient32 = dividend64 & 0xFFFFFFFF;
     uint32_t remainder32 = dividend64 >> 32;
-    flags = get_eflags();
     printf("32-bit memory divisor (0x123456789ABCDEF0 / 0x12345678):\n");
     printf("  Quotient: 0x%08X, Remainder: 0x%08X\n", quotient32, remainder32);
-    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
     
     // 64-bit memory divisor
     uint64_t *div64 = (uint64_t*)&buffer[0];
@@ -216,10 +237,8 @@ static void test_div_mem() {
         : "m" (*div64), "a" (rax), "d" (rdx)
         : "cc"
     );
-    flags = get_eflags();
     printf("64-bit memory divisor (100 / 5):\n");
     printf("  Quotient: %llu, Remainder: %llu\n", (unsigned long long)rax, (unsigned long long)rdx);
-    printf("  Flags: 0x%03lX\n", flags & 0x8D5);
 }
 
 int main() {

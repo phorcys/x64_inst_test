@@ -1,46 +1,262 @@
 Testing CMP reg, reg:
 =====================
-  8-bit: a=0x12, b=0x34 -> flags after: 0x0297
-  8-bit: a=0x55, b=0x55 -> flags after: 0x0246
-  8-bit: a=0x78, b=0x34 -> flags after: 0x0206
-  16-bit: a=0x1234, b=0x5678 -> flags after: 0x0293
-  16-bit: a=0xAAAA, b=0xAAAA -> flags after: 0x0246
-  16-bit: a=0xFFFF, b=0x0001 -> flags after: 0x0282
-  32-bit: a=0x12345678, b=0x87654321 -> flags after: 0x0A83
-  32-bit: a=0xFFFFFFFF, b=0xFFFFFFFF -> flags after: 0x0246
-  32-bit: a=0x7FFFFFFF, b=0x80000000 -> flags after: 0x0A87
-  64-bit: a=0x1122334455667788, b=0x99AABBCCDDEEFF00 -> flags after: 0x0207
-  64-bit: a=0xFFFFFFFFFFFFFFFF, b=0xFFFFFFFFFFFFFFFF -> flags after: 0x0246
-  64-bit: a=0x7FFFFFFFFFFFFFFF, b=0x8000000000000000 -> flags after: 0x0A87
+  8-bit: a=0x12, b=0x34
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  8-bit: a=0x55, b=0x55
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  8-bit: a=0x78, b=0x34
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  16-bit: a=0x1234, b=0x5678
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  16-bit: a=0xAAAA, b=0xAAAA
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  16-bit: a=0xFFFF, b=0x0001
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  32-bit: a=0x12345678, b=0x87654321
+  [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+  32-bit: a=0xFFFFFFFF, b=0xFFFFFFFF
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  32-bit: a=0x7FFFFFFF, b=0x80000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+  64-bit: a=0x1122334455667788, b=0x99AABBCCDDEEFF00
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  64-bit: a=0xFFFFFFFFFFFFFFFF, b=0xFFFFFFFFFFFFFFFF
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  64-bit: a=0x7FFFFFFFFFFFFFFF, b=0x8000000000000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
 
-Testing CMP with immediate (using register for immediate):
-=========================================================
-  8-bit: a=0x10, imm=0x20 -> flags after: 0x0287
-  8-bit: a=0x55, imm=0x55 -> flags after: 0x0246
-  8-bit: a=0x80, imm=0x40 -> flags after: 0x0A02
-  16-bit: a=0x1000, imm=0x2000 -> flags after: 0x0287
-  16-bit: a=0xAAAA, imm=0xAAAA -> flags after: 0x0246
-  16-bit: a=0x8000, imm=0x4000 -> flags after: 0x0A06
-  32-bit: a=0x10000000, imm=0x20000000 -> flags after: 0x0287
-  32-bit: a=0xAAAAAAAA, imm=0xAAAAAAAA -> flags after: 0x0246
-  32-bit: a=0x80000000, imm=0x40000000 -> flags after: 0x0A06
-  64-bit: a=0x1000000000000000, imm=0x2000000000000000 -> flags after: 0x0287
-  64-bit: a=0xAAAAAAAAAAAAAAAA, imm=0xAAAAAAAAAAAAAAAA -> flags after: 0x0246
-  64-bit: a=0x8000000000000000, imm=0x4000000000000000 -> flags after: 0x0A06
+Testing CMP with immediate:
+===========================
+  8-bit: a=0x10, imm=0x20
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  8-bit: a=0x55, imm=0x55
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  8-bit: a=0x80, imm=0x40
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+  16-bit: a=0x1000, imm=0x2000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  16-bit: a=0xAAAA, imm=0xAAAA
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  16-bit: a=0x8000, imm=0x4000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+  32-bit: a=0x10000000, imm=0x20000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  32-bit: a=0xAAAAAAAA, imm=0xAAAAAAAA
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  32-bit: a=0x80000000, imm=0x40000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
+  64-bit: a=0x1000000000000000, imm=0x2000000000000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  64-bit: a=0xAAAAAAAAAAAAAAAA, imm=0xAAAAAAAAAAAAAAAA
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  64-bit: a=0x8000000000000000, imm=0x4000000000000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
 
 Testing CMP with memory operands:
 ================================
-  8-bit: mem=0x10, reg=0x20 -> flags after: 0x0202
-  8-bit: mem=0x55, reg=0x55 -> flags after: 0x0246
-  8-bit: mem=0x80, reg=0x40 -> flags after: 0x0A87
-  16-bit: mem=0x1000, reg=0x2000 -> flags after: 0x0206
-  16-bit: mem=0xAAAA, reg=0xAAAA -> flags after: 0x0246
-  16-bit: mem=0x8000, reg=0x4000 -> flags after: 0x0A87
-  32-bit: mem=0x10000000, reg=0x20000000 -> flags after: 0x0206
-  32-bit: mem=0xAAAAAAAA, reg=0xAAAAAAAA -> flags after: 0x0246
-  32-bit: mem=0x80000000, reg=0x40000000 -> flags after: 0x0A87
-  64-bit: mem=0x0000000000000246, reg=0x2000000000000000 -> flags after: 0x0000
-  64-bit: mem=0x0000000000000246, reg=0xAAAAAAAAAAAAAAAA -> flags after: 0x0AAA
-  64-bit: mem=0x0000000000000246, reg=0x4000000000000000 -> flags after: 0x0000
+  8-bit: mem=0x10, reg=0x20
+  [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  8-bit: mem=0x55, reg=0x55
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  8-bit: mem=0x80, reg=0x40
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+  16-bit: mem=0x1000, reg=0x2000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  16-bit: mem=0xAAAA, reg=0xAAAA
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  16-bit: mem=0x8000, reg=0x4000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+  32-bit: mem=0x10000000, reg=0x20000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  32-bit: mem=0xAAAAAAAA, reg=0xAAAAAAAA
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  32-bit: mem=0x80000000, reg=0x40000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+  64-bit: mem=0x1000000000000000, reg=0x2000000000000000
+  [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  64-bit: mem=0xAAAAAAAAAAAAAAAA, reg=0xAAAAAAAAAAAAAAAA
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+  64-bit: mem=0x8000000000000000, reg=0x4000000000000000
+  [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [X] OF - Overflow Flag
 
 CMP tests completed.

@@ -106,7 +106,7 @@ static inline void print_eflags_cond(uint32_t eflags, uint32_t cond) {
 
 // 清除标志寄存器（EFLAGS）的宏
 #define CLEAR_FLAGS \
-    asm volatile ("push $0\n\tpopfq\n\tpush $0\n\tpopfq" : : : "cc", "memory")
+    asm volatile ("push $0\n\tpopfq" : : : "cc", "memory")
 
 // Function to set EFLAGS register
 static inline void set_eflags(uint64_t eflags) {
