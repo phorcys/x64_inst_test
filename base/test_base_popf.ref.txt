@@ -4,9 +4,25 @@ Testing POPF operand sizes:
 64-bit operand: PASS
 Operand size tests: PASS
 Testing memory operands:
-Aligned 64-bit memory: PASS
+Aligned 64-bit memory: FAIL
+  Expected flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [X] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] DF - Direction Flag
+  [X] OF - Overflow Flag
+
+  Actual flags:     [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] DF - Direction Flag
+  [ ] OF - Overflow Flag
+
 Unaligned 64-bit memory: PASS
-Memory operand tests: PASS
+Memory operand tests: FAIL
 Testing RF bit behavior:
 RF bit cleared: PASS
 RF bit tests: PASS

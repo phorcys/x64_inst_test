@@ -1,56 +1,136 @@
 TEST instruction test
 ====================
 Testing TEST with immediate forms:
-  Result: 0x00, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x00
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x0000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x00000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x00000000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000000000000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x0000000000000000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
 Testing TEST with memory-immediate forms:
-  Result: 0x00, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x00
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x0000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x00000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x00000000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000000000000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x0000000000000000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
 Testing TEST with register-register forms:
-  Result: 0x00, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x00
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x0000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x00000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x00000000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000000000000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0x0000000000000000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
 Testing TEST with register-memory forms:
-  Result: 0x00, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0xaa
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0xaaaa
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x00000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0xaaaaaaaa
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
-  Result: 0x0000000000000000, Flags: 0x00000246
-  Flags: SF=0 ZF=1 PF=1 CF=0 OF=0
+  Result: 0xaaaaaaaa00000000
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
     Flags OK
 
 TEST test completed

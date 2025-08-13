@@ -3,50 +3,34 @@
 #include <string.h>
 #include "base.h"
 
-static void print_flags(uint64_t flags) {
-    printf("[");
-    if (flags & X_CF) printf("CF ");
-    if (flags & X_PF) printf("PF ");
-    if (flags & X_AF) printf("AF ");
-    if (flags & X_ZF) printf("ZF ");
-    if (flags & X_SF) printf("SF ");
-    if (flags & X_OF) printf("OF");
-    printf("]");
-}
-
-static void print_expected_flags(uint64_t flags) {
-    printf("[");
-    if (flags & X_CF) printf("CF ");
-    if (flags & X_PF) printf("PF ");
-    if (flags & X_AF) printf("AF ");
-    if (flags & X_ZF) printf("ZF ");
-    if (flags & X_SF) printf("SF ");
-    if (flags & X_OF) printf("OF");
-    printf("]");
-}
 
 #define TEST_CASE(title, operation, res_var, expected, flags_expected) \
     do { \
         printf("Test: %s\n", title); \
         CLEAR_FLAGS; \
+        uint64_t flags_after; \
         operation; \
-        uint64_t flags_after = get_eflags(); \
+        __asm__ __volatile__ ( \
+            "pushfq\n\t" \
+            "popq %0" \
+            : "=r" (flags_after) \
+            : \
+            : "cc" \
+        ); \
         uint64_t result_value = (uint64_t)(res_var); \
         uint64_t expected_value = (uint64_t)(expected); \
         printf("  Result: 0x%lx, Expected: 0x%lx\n", result_value, expected_value); \
-        printf("  Flags: "); print_flags(flags_after); \
-        printf("\n"); \
+        printf("  Flags: "); print_eflags_cond(flags_after, (X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF)); printf("\n"); \
         if (result_value != expected_value) { \
             printf("  ERROR: Result mismatch\n"); \
             errors++; \
         } \
         uint64_t changed_flags = flags_after & (X_CF | X_PF | X_AF | X_ZF | X_SF | X_OF); \
-        uint64_t actual_flags = (changed_flags) & (flags_expected); \
-        if ((actual_flags) != (flags_expected)) { \
+        if ((changed_flags & flags_expected) != flags_expected) { \
             printf("  ERROR: Flags mismatch (expected "); \
-            print_expected_flags(flags_expected); \
+            print_eflags_cond(flags_expected, (X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF)); \
             printf(" got "); \
-            print_flags(changed_flags); \
+            print_eflags_cond(changed_flags, (X_CF|X_PF|X_AF|X_ZF|X_SF|X_OF)); \
             printf(")\n"); \
             errors++; \
         } \

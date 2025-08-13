@@ -47,14 +47,22 @@ void test_operand_sizes() {
     
     int errors = 0;
     uint64_t flags_value;
-    
+    uint64_t flags = TEST_FLAGS;
+
     // 64-bit operand
-    flags_value = TEST_FLAGS;
-    set_eflags(flags_value);
-    flags_value = get_eflags();
+    __asm__ __volatile__(
+        "pushq %[flags]\n\t"
+        "popfq\n\t"
+        "pushfq\n\t"
+        "popq %[result]"
+        : [result] "=r" (flags_value)
+        : [flags] "r" (flags)
+    );
     
     if ((flags_value & TEST_FLAGS) != TEST_FLAGS) {
-        printf("64-bit operand: FAIL (expected 0x%x, got 0x%lx)\n", TEST_FLAGS, flags_value & TEST_FLAGS);
+        printf("64-bit operand: FAIL\n");
+        printf("  Expected flags: "); print_eflags_cond(TEST_FLAGS, TEST_FLAGS); printf("\n");
+        printf("  Actual flags:   "); print_eflags_cond(flags_value, TEST_FLAGS); printf("\n");
         errors++;
     } else {
         printf("64-bit operand: PASS\n");
@@ -70,12 +78,19 @@ void test_memory_operands() {
     uint64_t flags_value;
     
     // Aligned memory tests
-    mem_flags64 = TEST_FLAGS;
-    set_eflags(mem_flags64);
-    flags_value = get_eflags();
+    asm volatile (
+        "pushq %[mem]\n\t"
+        "popfq\n\t"
+        "pushfq\n\t"
+        "popq %[result]"
+        : [result] "=r" (flags_value)
+        : [mem] "m" (mem_flags64)
+    );
     
     if ((flags_value & TEST_FLAGS) != TEST_FLAGS) {
-        printf("Aligned 64-bit memory: FAIL (expected 0x%x, got 0x%lx)\n", TEST_FLAGS, flags_value & TEST_FLAGS);
+        printf("Aligned 64-bit memory: FAIL\n");
+        printf("  Expected flags: "); print_eflags_cond(TEST_FLAGS, TEST_FLAGS); printf("\n");
+        printf("  Actual flags:   "); print_eflags_cond(flags_value, TEST_FLAGS); printf("\n");
         errors++;
     } else {
         printf("Aligned 64-bit memory: PASS\n");
@@ -85,11 +100,19 @@ void test_memory_operands() {
     uint8_t* unaligned64 = (uint8_t*)&unaligned_flags64 + 1;
     uint64_t flags64 = TEST_FLAGS;
     memcpy(unaligned64, &flags64, sizeof(flags64));
-    set_eflags(*(uint64_t*)unaligned64);
-    flags_value = get_eflags();
+    asm volatile (
+        "pushq %[mem]\n\t"
+        "popfq\n\t"
+        "pushfq\n\t"
+        "popq %[result]"
+        : [result] "=r" (flags_value)
+        : [mem] "r" (*(uint64_t*)unaligned64)
+    );
     
     if ((flags_value & TEST_FLAGS) != TEST_FLAGS) {
-        printf("Unaligned 64-bit memory: FAIL (expected 0x%x, got 0x%lx)\n", TEST_FLAGS, flags_value & TEST_FLAGS);
+        printf("Unaligned 64-bit memory: FAIL\n");
+        printf("  Expected flags: "); print_eflags_cond(TEST_FLAGS, TEST_FLAGS); printf("\n");
+        printf("  Actual flags:   "); print_eflags_cond(flags_value, TEST_FLAGS); printf("\n");
         errors++;
     } else {
         printf("Unaligned 64-bit memory: PASS\n");
@@ -102,14 +125,21 @@ void test_rf_behavior() {
     printf("Testing RF bit behavior:\n");
     
     int errors = 0;
-    uint64_t flags_value = (1 << 16); // Set RF bit
+    uint64_t flags_value;
     
-    set_eflags(flags_value);
-    flags_value = get_eflags();
+    asm volatile (
+        "pushq %[flags]\n\t"
+        "popfq\n\t"
+        "pushfq\n\t"
+        "popq %[result]"
+        : [result] "=r" (flags_value)
+        : [flags] "r" ((uint64_t)(1 << 16))
+    );
     
     // RF should always be cleared by POPF
     if (flags_value & (1 << 16)) {
-        printf("RF bit not cleared: FAIL (RF=0x%lx)\n", flags_value & (1 << 16));
+        printf("RF bit not cleared: FAIL\n");
+        printf("  Flags: "); print_eflags_cond(flags_value, (1 << 16)); printf("\n");
         errors++;
     } else {
         printf("RF bit cleared: PASS\n");
@@ -123,19 +153,29 @@ void test_privileged_flags() {
     
     int errors = 0;
     uint64_t flags_value;
-    uint64_t current_flags = get_eflags();
+    uint64_t current_flags;
     
-    // Only test ID flag which can be set in user mode
-    // AC and NT are privileged flags that cannot be set in user mode
+    // Get current flags
+    asm volatile (
+        "pushfq\n\t"
+        "popq %[flags]"
+        : [flags] "=r" (current_flags)
+    );
     
     // Test ID flag
-    flags_value = current_flags | FLAG_ID;
-    set_eflags(flags_value);
-    flags_value = get_eflags();
+    asm volatile (
+        "pushq %[flags]\n\t"
+        "popfq\n\t"
+        "pushfq\n\t"
+        "popq %[result]"
+        : [result] "=r" (flags_value)
+        : [flags] "r" (current_flags | FLAG_ID)
+    );
     
     if ((flags_value & FLAG_ID) != FLAG_ID) {
-        printf("ID flag not set: FAIL (expected 0x%x, got 0x%lx)\n", 
-               FLAG_ID, flags_value & FLAG_ID);
+        printf("ID flag not set: FAIL\n");
+        printf("  Expected: "); print_eflags_cond(FLAG_ID, FLAG_ID); printf("\n");
+        printf("  Actual:   "); print_eflags_cond(flags_value, FLAG_ID); printf("\n");
         errors++;
     } else {
         printf("ID flag set: PASS\n");
@@ -148,15 +188,23 @@ void test_virtual_8086() {
     printf("Testing virtual-8086 mode restrictions:\n");
     
     int errors = 0;
-    uint64_t flags_value = FLAG_VM;
+    uint64_t flags_value;
+    uint64_t flags = FLAG_VM;
     
     // Attempt to set VM flag
-    set_eflags(flags_value);
-    flags_value = get_eflags();
+    asm volatile (
+        "pushq %[flags]\n\t"
+        "popfq\n\t"
+        "pushfq\n\t"
+        "popq %[result]"
+        : [result] "=r" (flags_value)
+        : [flags] "r" (flags)
+    );
     
     // VM flag should not be settable in user mode
     if (flags_value & FLAG_VM) {
-        printf("VM flag incorrectly set: FAIL (VM=0x%lx)\n", flags_value & FLAG_VM);
+        printf("VM flag incorrectly set: FAIL\n");
+        printf("  Flags: "); print_eflags_cond(flags_value, FLAG_VM); printf("\n");
         errors++;
     } else {
         printf("VM flag not set: PASS\n");
@@ -189,13 +237,14 @@ void test_multi_threaded() {
         pthread_join(threads[i], &result);
         uint64_t flags_result = (uint64_t)result;
         
-        if ((flags_result & TEST_FLAGS) != (thread_flags[i] & TEST_FLAGS)) {
-            printf("Thread %d: FAIL (expected 0x%lx, got 0x%lx)\n", 
-                   i, thread_flags[i] & TEST_FLAGS, flags_result);
-            errors++;
-        } else {
-            printf("Thread %d: PASS\n", i);
-        }
+    if ((flags_result & TEST_FLAGS) != (thread_flags[i] & TEST_FLAGS)) {
+        printf("Thread %d: FAIL\n", i);
+        printf("  Expected: "); print_eflags_cond(thread_flags[i] & TEST_FLAGS, TEST_FLAGS); printf("\n");
+        printf("  Actual:   "); print_eflags_cond(flags_result, TEST_FLAGS); printf("\n");
+        errors++;
+    } else {
+        printf("Thread %d: PASS\n", i);
+    }
     }
     
     printf("Multi-threaded tests: %s\n", errors ? "FAIL" : "PASS");

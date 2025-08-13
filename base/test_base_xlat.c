@@ -5,22 +5,20 @@
 
 // Test XLAT in 64-bit mode
 static void test_xlat(uint8_t *table, uint8_t index, uint8_t expected) {
-    uint8_t result;
+    uint8_t result = index; // Set AL to index
     uint64_t flags_before, flags_after;
     
-    CLEAR_FLAGS;
-    flags_before = get_eflags();
-    
+    // Capture flags immediately before and after in the same asm block
     asm volatile (
-        "movq %[table], %%rbx \n\t" // Load table address into RBX
-        "movb %[index], %%al \n\t"  // Set index in AL
-        "xlatb \n\t"                // Perform XLAT
-        : "=a" (result)
-        : [table] "r" (table), [index] "r" (index)
-        : "rbx", "memory"
+        "pushfq\n\t"
+        "pop %1\n\t"        // Save flags before
+        "xlatb\n\t"         // Perform XLAT
+        "pushfq\n\t"
+        "pop %2\n\t"        // Save flags after
+        : "+a" (result), "=&r" (flags_before), "=&r" (flags_after)
+        : "b" (table)
+        : "memory", "cc"
     );
-    
-    flags_after = get_eflags();
     
     printf("  Index: 0x%02x, Expected: 0x%02x, Result: 0x%02x - %s\n",
            index, expected, result, 
@@ -30,21 +28,23 @@ static void test_xlat(uint8_t *table, uint8_t index, uint8_t expected) {
         printf("    ERROR: Incorrect value\n");
     }
     
-    verify_flags_unchanged(flags_before, flags_after, "XLAT");
+    if (flags_before != flags_after) {
+        printf("    ERROR: Flags changed (expected unchanged)\n");
+        printf("      Before: "); print_eflags_cond(flags_before, 0); printf("\n");
+        printf("      After:  "); print_eflags_cond(flags_after, 0); printf("\n");
+    }
 }
 
 // Test XLAT with segment overrides
 static void test_segment_override(uint8_t *table, uint8_t index, uint8_t expected) {
     uint8_t result;
     
-    // Test with GS override
+    result = index; // Set AL to index
     asm volatile (
-        "movq %[table], %%rbx \n\t" // Load table address into RBX
-        "movb %[index], %%al \n\t"  // Set index in AL
         "gs xlatb \n\t"             // Perform XLAT with GS override
-        : "=a" (result)
-        : [table] "r" (table), [index] "r" (index)
-        : "rbx", "memory"
+        : "+a" (result)
+        : "b" (table)
+        : "memory"
     );
     
     printf("  GS Override, Index: 0x%02x, Expected: 0x%02x, Result: 0x%02x - %s\n",
@@ -60,13 +60,12 @@ static void test_segment_override(uint8_t *table, uint8_t index, uint8_t expecte
 static void test_explicit_operand(uint8_t *table, uint8_t index, uint8_t expected) {
     uint8_t result;
     
+    result = index; // Set AL to index
     asm volatile (
-        "movq %[table], %%rbx \n\t" // Load table address into RBX
-        "movb %[index], %%al \n\t"  // Set index in AL
         "xlatb \n\t"                // Perform XLAT with explicit operand
-        : "=a" (result)
-        : [table] "r" (table), [index] "r" (index)
-        : "rbx", "memory"
+        : "+a" (result)
+        : "b" (table)
+        : "memory"
     );
     
     printf("  Explicit operand, Index: 0x%02x, Expected: 0x%02x, Result: 0x%02x - %s\n",

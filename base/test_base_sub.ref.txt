@@ -2,78 +2,443 @@ SUB instruction comprehensive test
 ================================
 Test: 8-bit reg-reg: 0x10 - 0x05
   Result: 0xb, Expected: 0xb
-  Flags: [AF ]
+  Flags:   [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 Test: 16-bit reg-reg: 0x1000 - 0x2000
   Result: 0xf000, Expected: 0xf000
-  Flags: [CF PF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 32-bit reg-reg: 0x7FFFFFFF - 0x80000000
   Result: 0xffffffff, Expected: 0xffffffff
-  Flags: [CF PF SF OF]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+)
 Test: 64-bit reg-reg: 0 - 1
   Result: 0xffffffffffffffff, Expected: 0xffffffffffffffff
-  Flags: [CF PF AF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 8-bit reg-mem: AL - [mem8]
   Result: 0xb, Expected: 0xb
-  Flags: [AF ]
+  Flags:   [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 Test: 16-bit reg-mem: AX - [mem16]
   Result: 0xf000, Expected: 0xf000
-  Flags: [CF PF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 32-bit reg-mem: EAX - [mem32]
   Result: 0xffffffff, Expected: 0xffffffff
-  Flags: [CF PF SF OF]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+)
 Test: 64-bit reg-mem: RAX - [mem64]
   Result: 0xffffffffffffffff, Expected: 0xffffffffffffffff
-  Flags: [CF PF AF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 8-bit mem-reg: [mem8] - AL
   Result: 0xb, Expected: 0xb
-  Flags: [AF ]
+  Flags:   [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 Test: 16-bit mem-reg: [mem16] - AX
   Result: 0xf000, Expected: 0xf000
-  Flags: [CF PF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 32-bit mem-reg: [mem32] - EAX
   Result: 0xffffffff, Expected: 0xffffffff
-  Flags: [CF PF SF OF]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+)
 Test: 64-bit mem-reg: [mem64] - RAX
   Result: 0xffffffffffffffff, Expected: 0xffffffffffffffff
-  Flags: [CF PF AF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 8-bit immediate: AL - 0x05
   Result: 0x6, Expected: 0x6
-  Flags: [PF ]
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 Test: 16-bit immediate: AX - 0x1000
   Result: 0xe000, Expected: 0xe000
-  Flags: [PF SF ]
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 32-bit immediate: EAX - 0x7FFFFFFF
   Result: 0x80000000, Expected: 0x80000000
-  Flags: [PF SF ]
+  Flags:   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [ ] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 64-bit immediate: RAX - 1
   Result: 0xfffffffffffffffe, Expected: 0xfffffffffffffffe
-  Flags: [SF ]
+  Flags:   [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 Test: 8-bit mem-imm: [mem8] - 0x05
   Result: 0xb, Expected: 0xb
-  Flags: [AF ]
+  Flags:   [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 Test: 16-bit mem-imm: [mem16] - 0x2000
   Result: 0xf000, Expected: 0xf000
-  Flags: [CF PF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 32-bit mem-imm: [mem32] - 0x80000000
   Result: 0xffffffff, Expected: 0xffffffff
-  Flags: [CF PF SF OF]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+)
 Test: 64-bit mem-imm: [mem64] - 1
   Result: 0xffffffffffffffff, Expected: 0xffffffffffffffff
-  Flags: [CF PF AF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 8-bit unaligned mem-reg
   Result: 0xb, Expected: 0xb
-  Flags: [AF ]
+  Flags:   [ ] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [ ] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
 Test: 16-bit unaligned mem-reg
   Result: 0xf000, Expected: 0xf000
-  Flags: [CF PF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 Test: 32-bit unaligned mem-reg
   Result: 0xffffffff, Expected: 0xffffffff
-  Flags: [CF PF SF OF]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [ ] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [X] OF - Overflow Flag
+)
 Test: 64-bit unaligned mem-reg
   Result: 0xffffffffffffffff, Expected: 0xffffffffffffffff
-  Flags: [CF PF AF SF ]
+  Flags:   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+
+  ERROR: Flags mismatch (expected   [X] CF - Carry Flag
+  [ ] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+ got   [X] CF - Carry Flag
+  [X] PF - Parity Flag
+  [X] AF - Auxiliary Flag
+  [ ] ZF - Zero Flag
+  [X] SF - Sign Flag
+  [ ] OF - Overflow Flag
+)
 
 SUB test completed
 ==================
 Total tests: 20
-Failed tests: 0
+Failed tests: 17

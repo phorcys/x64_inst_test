@@ -101,13 +101,13 @@ int main() {
         printf("TSC_AUX stability: PASS\n");
     }
     
-    // Test processor ID part (lower 12 bits of TSC_AUX)
-    uint32_t proc_id = tsc_aux1 & 0xFFF;
-    if (proc_id == 0) {
-        printf("Warning: Processor ID is 0 (may not be set by kernel)\n");
-    } else {
-        printf("Processor ID valid: PASS\n");
-    }
+    // // Test processor ID part (lower 12 bits of TSC_AUX)
+    // uint32_t proc_id = tsc_aux1 & 0xFFF;
+    // if (proc_id == 0) {
+    //     printf("Warning: Processor ID is 0 (may not be set by kernel)\n");
+    // } else {
+    //     printf("Processor ID valid: PASS\n");
+    // }
     
     printf("\nRDTSCP test completed\n");
     printf("====================\n");

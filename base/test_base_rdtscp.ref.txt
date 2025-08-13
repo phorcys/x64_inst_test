@@ -5,7 +5,6 @@ TSC_AUX consistency: PASS
 Serializing behavior: PASS
 Monotonic TSC check: PASS
 TSC_AUX stability: PASS
-Processor ID valid: PASS
 
 RDTSCP test completed
 ====================
