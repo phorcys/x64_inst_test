@@ -1,34 +1,78 @@
-Comprehensive VPCLMULQDQ instruction test
-=======================================
+Starting VPCLMULQDQ tests...
 
-Test 1: All 1s multiply (imm8=0x00)
-Operand A: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-Operand B: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-Result: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 
-[PASS]
+Test 1/7: imm=0x00 (low x low)
+imm8: 0x00
+Input A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Input B: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+ASM Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Ref Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+✅ Test PASSED
 
-Test 2: High*Low (imm8=0x01)
-Operand A: 02 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 
-Operand B: 04 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
-Result: 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-[PASS]
+Test 2/7: imm=0x11 (high x high)
+imm8: 0x11
+Input A: 00 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 
+Input B: 00 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 
+ASM Result: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 
+Ref Result: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 
+✅ Test PASSED
 
-Test 3: Low*High (imm8=0x10)
-Operand A: 02 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 
-Operand B: 04 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
-Result: 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-[PASS]
+Test 3/7: imm=0x01 (high x low)
+imm8: 0x01
+Input A: 21 43 65 87 a9 cb ed 0f f0 de bc 9a 78 56 34 12 
+Input B: 00 ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 
+ASM Result: 00 50 ba 45 8b 96 3a 81 8b dd 31 cc 00 1b b1 08 
+Ref Result: 00 50 ba 45 8b 96 3a 81 8b dd 31 cc 00 1b b1 08 
+✅ Test PASSED
 
-Test 4: High*High (imm8=0x11)
-Operand A: 02 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 
-Operand B: 04 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 
-Result: 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-[PASS]
+Test 4/7: imm=0x10 (low x high)
+imm8: 0x10
+Input A: ff ee dd cc bb aa 99 88 77 66 55 44 33 22 11 00 
+Input B: 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff 
+ASM Result: 78 7f 77 70 60 67 6f 68 68 6f 67 60 70 77 7f 78 
+Ref Result: 78 7f 77 70 60 67 6f 68 68 6f 67 60 70 77 7f 78 
+✅ Test PASSED
 
-Test 5: MSB boundary test (imm8=0x00)
-Operand A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 
-Operand B: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 
-Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-[PASS]
+Test 5/7: All ones
+imm8: 0x00
+Input A: 00 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 
+Input B: 00 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 
+ASM Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Ref Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+✅ Test PASSED
 
-VPCLMULQDQ tests completed.
+Test 6/7: Alternating bits
+imm8: 0x11
+Input A: 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+Input B: aa aa aa aa aa aa aa aa 55 55 55 55 55 55 55 55 
+ASM Result: 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 
+Ref Result: 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 
+✅ Test PASSED
+
+Test 7/7: AES-GCM polynomial
+imm8: 0x00
+Input A: 00 00 00 00 00 00 00 00 87 00 00 00 00 00 00 00 
+Input B: 00 00 00 00 00 00 00 00 87 00 00 00 00 00 00 00 
+ASM Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Ref Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+✅ Test PASSED
+
+Test 8/9: 256-bit: imm=0x00
+imm8: 0x00
+Input A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Input B: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+ASM Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Ref Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+✅ Test PASSED
+
+Test 9/9: 256-bit: imm=0x11
+imm8: 0x11
+Input A: ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 aa aa aa aa aa aa aa aa 55 55 55 55 55 55 55 55 
+Input B: ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 55 55 55 55 55 55 55 55 aa aa aa aa aa aa aa aa 
+ASM Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 
+Ref Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 
+✅ Test PASSED
+
+===== Test Summary =====
+Total tests: 9
+Passed tests: 9
+Failed tests: 0

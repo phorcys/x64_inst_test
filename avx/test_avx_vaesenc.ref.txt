@@ -1,0 +1,31 @@
+----- VAESENC Test -----
+Test Case 1: Official Vector
+Input State: 5d 47 53 5d 72 6f 74 63 65 56 74 73 65 54 5b 7b 
+Round Key: 5d 6e 6f 72 65 75 47 5d 29 79 61 68 53 28 69 48 
+Result: 95 e5 d7 de 58 4b 10 8d c5 a3 db 9f 2f 1c 31 a8 
+
+Test Case 2: All Zeros
+Input State: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Round Key: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 63 63 63 63 63 63 63 63 63 63 63 63 63 63 63 63 
+
+Test Case 3: All Ones
+Input State: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Round Key: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Result: e9 e9 e9 e9 e9 e9 e9 e9 e9 e9 e9 e9 e9 e9 e9 e9 
+
+Test Case 4: Random Vector 1
+Input State: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Round Key: 8b 7a 6f 5e 4d 3c 2b 1a 09 ba dc fe 21 43 65 87 
+Result: 37 0b 81 b5 0c 76 23 44 0a e0 1c 92 98 38 17 b8 
+
+Test Case 5: Random Vector 2
+Input State: a5 a5 a5 a5 5a 5a 5a 5a 55 aa 55 aa aa 55 aa 55 
+Round Key: c3 c3 c3 c3 3c 3c 3c 3c 33 cc 33 cc cc 33 cc 33 
+Result: 16 41 87 68 1e 28 67 e9 77 67 e6 4e 97 e6 ee 27 
+
+Test Case 6: Boundary Values
+Input State: aa aa aa aa 55 55 55 55 00 00 00 00 ff ff ff ff 
+Round Key: ff ff ff ff 00 00 00 00 55 55 55 55 aa aa aa aa 
+Result: d6 03 53 a3 fc ac 5c 29 f9 09 7c a9 f6 83 56 06 
+

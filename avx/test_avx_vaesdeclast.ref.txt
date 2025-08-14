@@ -1,0 +1,31 @@
+----- VAESDECLAST Test -----
+Test Case 1: Official Vector
+Input State: 5d 47 53 5d 72 6f 74 63 65 56 74 73 65 54 5b 7b 
+Round Key: 5d 6e 6f 72 65 75 47 5d 29 79 61 68 53 28 69 48 
+Result: d0 93 a5 72 7b 63 10 d2 95 7f 31 6b ef 91 a3 c5 
+
+Test Case 2: All Zeros
+Input State: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Round Key: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 
+
+Test Case 3: All Ones
+Input State: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Round Key: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Result: 82 82 82 82 82 82 82 82 82 82 82 82 82 82 82 82 
+
+Test Case 4: Random Vector 1
+Input State: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Round Key: 8b 7a 6f 5e 4d 3c 2b 1a 09 ba dc fe 21 43 65 87 
+Result: 4a c3 17 a5 20 d8 03 2d 1e 40 9a c7 e0 df 8c 4b 
+
+Test Case 5: Random Vector 2
+Input State: a5 a5 a5 a5 5a 5a 5a 5a 55 aa 55 aa aa 55 aa 55 
+Round Key: c3 c3 c3 c3 3c 3c 3c 3c 33 cc 33 cc cc 33 cc 33 
+Result: ea 2e 2e 85 7a 15 5e 5e de 8a 1a 21 ae 51 8a 1a 
+
+Test Case 6: Boundary Values
+Input State: aa aa aa aa 55 55 55 55 00 00 00 00 ff ff ff ff 
+Round Key: ff ff ff ff 00 00 00 00 55 55 55 55 aa aa aa aa 
+Result: 9d 82 ad 12 ed 62 7d 52 07 b8 37 28 d7 f8 47 c8 
+

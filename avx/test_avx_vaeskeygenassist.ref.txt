@@ -1,0 +1,65 @@
+----- VAESKEYGENASSIST Test -----
+Test Case 1: Official Vector (imm=0x01)
+Input: 0f 0e 0d 0c 0b 0a 09 08 07 06 05 04 03 02 01 00 
+Result: 2b 67 01 30 66 01 30 2b 7b 77 7c 63 76 7c 63 7b 
+
+Test Case 2: All Zeros (imm=0x00)
+Input: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 63 63 63 63 63 63 63 63 63 63 63 63 63 63 63 63 
+
+Test Case 3: All Ones (imm=0xFF)
+Input: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Result: 16 16 16 16 e9 16 16 16 16 16 16 16 e9 16 16 16 
+
+Test Case 4: Random Vector 1 (imm=0x0A)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 d2 72 76 eb bc b1 18 c9 bb 18 c9 bc 
+
+Test Case 5: Random Vector 2 (imm=0x55)
+Input: a5 a5 a5 a5 5a 5a 5a 5a 55 aa 55 aa aa 55 aa 55 
+Result: be be be be eb be be be ac fc ac fc a9 ac fc ac 
+
+Test Case 6: Boundary Values (imm=0x80)
+Input: aa aa aa aa 55 55 55 55 00 00 00 00 ff ff ff ff 
+Result: fc fc fc fc 7c fc fc fc 16 16 16 16 96 16 16 16 
+
+Test Case 7.0: Round Constant Test (imm=0x00)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 d8 72 76 eb bc b1 18 c9 b1 18 c9 bc 
+
+Test Case 7.1: Round Constant Test (imm=0x01)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 d9 72 76 eb bc b1 18 c9 b0 18 c9 bc 
+
+Test Case 7.2: Round Constant Test (imm=0x02)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 da 72 76 eb bc b1 18 c9 b3 18 c9 bc 
+
+Test Case 7.3: Round Constant Test (imm=0x03)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 db 72 76 eb bc b1 18 c9 b2 18 c9 bc 
+
+Test Case 7.4: Round Constant Test (imm=0x04)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 dc 72 76 eb bc b1 18 c9 b5 18 c9 bc 
+
+Test Case 7.5: Round Constant Test (imm=0x05)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 dd 72 76 eb bc b1 18 c9 b4 18 c9 bc 
+
+Test Case 7.6: Round Constant Test (imm=0x06)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 de 72 76 eb bc b1 18 c9 b7 18 c9 bc 
+
+Test Case 7.7: Round Constant Test (imm=0x07)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 df 72 76 eb bc b1 18 c9 b6 18 c9 bc 
+
+Test Case 7.8: Round Constant Test (imm=0x08)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 d0 72 76 eb bc b1 18 c9 b9 18 c9 bc 
+
+Test Case 7.9: Round Constant Test (imm=0x09)
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: eb d8 72 76 d1 72 76 eb bc b1 18 c9 b8 18 c9 bc 
+

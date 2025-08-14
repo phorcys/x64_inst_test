@@ -1,0 +1,31 @@
+----- VAESDEC Test -----
+Test Case 1: Official Vector
+Input State: 5d 47 53 5d 72 6f 74 63 65 56 74 73 65 54 5b 7b 
+Round Key: 5d 6e 6f 72 65 75 47 5d 29 79 61 68 53 28 69 48 
+Result: 2a 39 30 b7 5e b9 8e b3 87 27 ea fa 42 c3 8a 13 
+
+Test Case 2: All Zeros
+Input State: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Round Key: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 
+
+Test Case 3: All Ones
+Input State: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Round Key: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Result: 82 82 82 82 82 82 82 82 82 82 82 82 82 82 82 82 
+
+Test Case 4: Random Vector 1
+Input State: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Round Key: 8b 7a 6f 5e 4d 3c 2b 1a 09 ba dc fe 21 43 65 87 
+Result: 0a 2b ba a0 6c 70 78 b2 ee 6c 55 d4 6f fb f3 9f 
+
+Test Case 5: Random Vector 2
+Input State: a5 a5 a5 a5 5a 5a 5a 5a 55 aa 55 aa aa 55 aa 55 
+Round Key: c3 c3 c3 c3 3c 3c 3c 3c 33 cc 33 cc cc 33 cc 33 
+Result: 7e 8e 64 fb 0e 8e f4 1b 94 f4 8e 81 04 14 fe 81 
+
+Test Case 6: Boundary Values
+Input State: aa aa aa aa 55 55 55 55 00 00 00 00 ff ff ff ff 
+Round Key: ff ff ff ff 00 00 00 00 55 55 55 55 aa aa aa aa 
+Result: b4 7d df b6 49 4b 82 20 75 1c 1e d7 28 8a e3 e1 
+

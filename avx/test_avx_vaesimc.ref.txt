@@ -1,0 +1,25 @@
+----- VAESIMC Test -----
+Test Case 1: Official Vector
+Input: 5d 47 53 5d 72 6f 74 63 65 56 74 73 65 54 5b 7b 
+Result: e5 b3 c3 81 0a 33 18 2b c8 09 b1 44 66 6f 7a 62 
+
+Test Case 2: All Zeros
+Input: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Result: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Test Case 3: All Ones
+Input: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+Result: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+
+Test Case 4: Random Vector 1
+Input: 78 69 5a 4b 3c 2d 1e 0f f0 de bc 9a 78 56 34 12 
+Result: d2 87 f0 a5 96 c3 b4 e1 cf 59 93 0d 47 d1 1b 85 
+
+Test Case 5: Random Vector 2
+Input: a5 a5 a5 a5 5a 5a 5a 5a 55 aa 55 aa aa 55 aa 55 
+Result: a5 a5 a5 a5 5a 5a 5a 5a b0 4f b0 4f 4f b0 4f b0 
+
+Test Case 6: Boundary Values
+Input: aa aa aa aa 55 55 55 55 00 00 00 00 ff ff ff ff 
+Result: aa aa aa aa 55 55 55 55 00 00 00 00 ff ff ff ff 
+
