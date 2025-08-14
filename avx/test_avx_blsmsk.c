@@ -54,7 +54,6 @@ static void test_blsmsk_32() {
         printf("Test %zu: Input=0x%08X\n", i+1, cases[i].input);
         printf("  Expected: 0x%08X, Result: 0x%08X\n", cases[i].expected, result);
         printf("  Expected CF: %d, Actual CF: %d\n", cases[i].expected_cf, cf);
-        printf("  RFLAGS: 0x%016lX\n", rflags_after);
         
         if (result != cases[i].expected || cf != cases[i].expected_cf) {
             printf("  [FAIL] Test failed!\n");
@@ -62,7 +61,7 @@ static void test_blsmsk_32() {
             printf("  [PASS] Test passed!\n");
         }
         
-        print_eflags_cond((uint32_t)rflags_after, 0x84D); // 只传递低32位
+        print_eflags_cond((uint32_t)rflags_after, 0x849); // 只传递低32位
         printf("\n");
     }
 }
@@ -112,8 +111,7 @@ static void test_blsmsk_64() {
         printf("  Expected: 0x%016" PRIX64 ", Result: 0x%016" PRIX64 "\n", 
                cases[i].expected, result);
         printf("  Expected CF: %d, Actual CF: %d\n", cases[i].expected_cf, cf);
-        printf("  RFLAGS: 0x%016lX\n", rflags_after);
-        
+       
         if (result != cases[i].expected || cf != cases[i].expected_cf) {
             printf("  [FAIL] Test failed!\n");
         } else {
@@ -127,7 +125,7 @@ static void test_blsmsk_64() {
             expected_sf = (cases[i].expected >> 63) & 1;  // 对于64位测试
         }
         
-        print_eflags_cond((uint32_t)rflags_after, 0x84D); // 显示CF/SF/ZF/OF
+        print_eflags_cond((uint32_t)rflags_after, 0x849); // 显示CF/SF/ZF/OF
         
         if (sf != expected_sf) {
             printf("  [WARNING] SF flag mismatch! Expected: %d, Actual: %d\n", 

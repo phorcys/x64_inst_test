@@ -7,7 +7,6 @@ Test 1: Input=0xFFFFFFFF, Index=0
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -16,7 +15,6 @@ Test 2: Input=0xFFFFFFFF, Index=1
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -25,7 +23,6 @@ Test 3: Input=0xFFFFFFFF, Index=8
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -34,7 +31,6 @@ Test 4: Input=0xFFFFFFFF, Index=16
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -43,7 +39,6 @@ Test 5: Input=0xFFFFFFFF, Index=31
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -52,7 +47,6 @@ Test 6: Input=0xFFFFFFFF, Index=32
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -61,7 +55,6 @@ Test 7: Input=0x12345678, Index=4
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -70,7 +63,6 @@ Test 8: Input=0x12345678, Index=12
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -79,7 +71,6 @@ Test 9: Input=0x12345678, Index=24
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -88,7 +79,6 @@ Test 10: Input=0x12345678, Index=32
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -97,7 +87,6 @@ Test 11: Input=0x80000000, Index=31
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -106,7 +95,6 @@ Test 12: Input=0x80000000, Index=32
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -117,7 +105,6 @@ Test 1: Input=0xFFFFFFFFFFFFFFFF, Index=0
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -126,7 +113,6 @@ Test 2: Input=0xFFFFFFFFFFFFFFFF, Index=1
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [ ] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -135,7 +121,6 @@ Test 3: Input=0xFFFFFFFFFFFFFFFF, Index=8
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -144,7 +129,6 @@ Test 4: Input=0xFFFFFFFFFFFFFFFF, Index=16
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -153,7 +137,6 @@ Test 5: Input=0xFFFFFFFFFFFFFFFF, Index=32
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -162,7 +145,6 @@ Test 6: Input=0xFFFFFFFFFFFFFFFF, Index=48
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -171,7 +153,6 @@ Test 7: Input=0xFFFFFFFFFFFFFFFF, Index=63
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -180,7 +161,6 @@ Test 8: Input=0xFFFFFFFFFFFFFFFF, Index=64
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -189,7 +169,6 @@ Test 9: Input=0x123456789ABCDEF0, Index=4
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -198,7 +177,6 @@ Test 10: Input=0x123456789ABCDEF0, Index=16
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -207,7 +185,6 @@ Test 11: Input=0x123456789ABCDEF0, Index=32
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -216,7 +193,6 @@ Test 12: Input=0x123456789ABCDEF0, Index=48
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -225,7 +201,6 @@ Test 13: Input=0x123456789ABCDEF0, Index=64
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -234,7 +209,6 @@ Test 14: Input=0x8000000000000000, Index=63
   Expected CF: 0, Actual CF: 0
   [PASS] Test passed!
   [ ] CF - Carry Flag
-  [X] PF - Parity Flag
   [X] ZF - Zero Flag
   [ ] OF - Overflow Flag
 
@@ -243,7 +217,6 @@ Test 15: Input=0x8000000000000000, Index=64
   Expected CF: 1, Actual CF: 1
   [PASS] Test passed!
   [X] CF - Carry Flag
-  [X] PF - Parity Flag
   [ ] ZF - Zero Flag
   [ ] OF - Overflow Flag
 

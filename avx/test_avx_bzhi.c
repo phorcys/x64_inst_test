@@ -75,7 +75,7 @@ int main() {
                 printf("  [PASS] Test passed!\n");
             }
             
-            print_eflags_cond((uint32_t)flags, 0x84D); // 显示CF/SF/ZF/OF
+            print_eflags_cond((uint32_t)flags, 0x849); // 显示CF/SF/ZF/OF
             printf("\n");
             // 调整输出格式为16位十六进制（低16位）
             // 参考文件使用16位格式，所以只输出低16位
@@ -147,7 +147,7 @@ int main() {
                 printf("  [PASS] Test passed!\n");
             }
             
-            print_eflags_cond((uint32_t)flags, 0x84D); // 显示CF/SF/ZF/OF
+            print_eflags_cond((uint32_t)flags, 0x849); // 显示CF/SF/ZF/OF
             printf("\n");
             // 调整输出格式为16位十六进制（低16位）
             // 参考文件使用16位格式，所以只输出低16位

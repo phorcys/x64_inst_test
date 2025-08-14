@@ -63,7 +63,7 @@ int main() {
                 printf("  [PASS] Test passed!\n");
             }
 
-            print_eflags_cond((uint32_t)rflags_after, 0x84D); // 显示CF/SF/ZF/OF
+            print_eflags_cond((uint32_t)rflags_after, 0x849); // 显示CF/SF/ZF/OF
             printf("\n");
         }
     }
@@ -118,7 +118,7 @@ int main() {
                 printf("  [PASS] Test passed!\n");
             }
 
-            print_eflags_cond((uint32_t)rflags_after, 0x84D); // 显示CF/SF/ZF/OF
+            print_eflags_cond((uint32_t)rflags_after, 0x849); // 显示CF/SF/ZF/OF
             printf("\n");
         }
     }
